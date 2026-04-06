@@ -1,0 +1,151 @@
+/* ===== CHICAGO GAME SCREEN ===== */
+#gameChicago {
+  width: 92%;
+  max-width: 480px;
+  padding-top: 10px;
+}
+
+#gameChicago.hidden {
+  display: none;
+}
+
+/* ===== SCORES ===== */
+.chicago-scores {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.chicago-score-card {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.25);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 14px 10px 10px;
+  text-align: center;
+  transition: border-color .3s;
+}
+
+.chicago-score-card.active-card {
+  border-color: #FFD700;
+  box-shadow: 0 0 16px rgba(255, 215, 0, 0.25);
+}
+
+.chicago-player-name {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chicago-player-name.chicago-active {
+  color: #FFD700;
+  font-weight: bold;
+}
+
+.chicago-score {
+  font-size: 42px;
+  font-weight: bold;
+  color: white;
+  line-height: 1;
+}
+
+.chicago-score.chicago-active {
+  color: #FFD700;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+}
+
+.chicago-target {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.3);
+  margin-top: 4px;
+}
+
+/* Barre de progression */
+.chicago-progress-bar {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  margin-top: 8px;
+  overflow: hidden;
+}
+
+.chicago-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #FFD700, #FFA500);
+  border-radius: 4px;
+  width: 0%;
+  transition: width .4s ease;
+}
+
+/* ===== TRIANGLE ===== */
+.chicago-triangle-wrap {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 18px;
+  padding: 18px 10px;
+  margin-bottom: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.chicago-row {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.chicago-ball {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  border-radius: 50%;
+  transition: transform .15s, opacity .3s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.chicago-ball img {
+  width: 52px;
+  height: 52px;
+  display: block;
+  pointer-events: none;
+}
+
+.chicago-ball:active:not(:disabled) {
+  transform: scale(1.2);
+}
+
+.chicago-ball.pocketed {
+  opacity: 0.2;
+  cursor: default;
+  filter: grayscale(100%);
+}
+
+/* ===== ACTION BAR ===== */
+.chicago-action-bar {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 18px;
+  padding: 14px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chicago-action-title {
+  text-align: center;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.55);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.btn-chicago-end {
+  background: linear-gradient(145deg, #2196F3, #1565C0);
+  color: white;
+  box-shadow: 0 4px 0 #0D47A1;
+}
