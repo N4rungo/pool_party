@@ -296,6 +296,8 @@ function openReplay() {
   closeOverlay('overlayWin');
   const replayData = state.savedConfig;
 
+  window._replayData = replayData;
+
   document.getElementById('replayList').innerHTML = replayData.map((p, i) => `
     <div class="replay-row">
       <div class="replay-name">${p.name}</div>
@@ -303,9 +305,9 @@ function openReplay() {
       <div class="hearts-picker" id="replayHearts_${i}"></div>
     </div>`).join('');
 
-  replayData.forEach((p, i) => renderReplayHearts(i, p.lives));
+  window._replayData.forEach((p, i) => renderReplayHearts(i, p.lives));
   document.getElementById('overlayReplay').classList.remove('hidden');
-  window._replayData = replayData;
+  
 }
 
 function renderReplayHearts(idx, currentLives) {
