@@ -58,7 +58,6 @@
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-/* ===== BUTTONS ===== */
 .btn-round {
   width: 52px;
   height: 52px;
@@ -66,123 +65,59 @@
   border: none;
   background: linear-gradient(145deg, #FFE44D, #FFD700);
   color: #1a472a;
-  font-size: 28px;
+  font-size: 26px;
   font-weight: bold;
   cursor: pointer;
+  box-shadow: 0 4px 0 #B8960C, 0 6px 12px rgba(0, 0, 0, 0.3);
+  transition: transform .1s, box-shadow .1s;
+}
+
+/* ===== NAME INPUT ===== */
+.name-input-wrap {
   display: flex;
   align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 0 #b8960a;
-  transition: transform .1s, box-shadow .1s;
-}
-
-.btn-round:active {
-  transform: translateY(2px);
-  box-shadow: 0 2px 0 #b8960a;
-}
-
-.btn-primary {
-  width: 100%;
-  padding: 16px;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.25);
   border-radius: 14px;
-  border: none;
-  background: linear-gradient(145deg, #FFE44D, #FFD700);
-  color: #1a472a;
-  font-family: inherit;
-  font-size: 17px;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 4px 0 #b8960a;
-  transition: transform .1s, box-shadow .1s;
-  letter-spacing: 0.5px;
+  padding: 12px 16px;
+  margin: 12px 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.btn-primary:active {
-  transform: translateY(2px);
-  box-shadow: 0 2px 0 #b8960a;
+.player-emoji {
+  font-size: 28px;
 }
 
-.btn-secondary {
-  width: 100%;
-  padding: 13px;
-  border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.07);
-  color: white;
-  font-family: inherit;
-  font-size: 15px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background .2s;
-}
-
-.btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.14);
-}
-
-/* ===== TOGGLE ===== */
-.toggle-row {
-  display: flex;
-  gap: 8px;
-  margin: 14px 0;
-}
-
-.btn-toggle {
+.name-input-wrap input {
   flex: 1;
-  padding: 12px 8px;
-  border-radius: 12px;
-  border: 2px solid rgba(255, 255, 255, 0.15);
-  background: rgba(255, 255, 255, 0.05);
-  color: rgba(255, 255, 255, 0.5);
-  font-family: inherit;
-  font-size: 13px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all .2s;
-}
-
-.btn-toggle.active {
-  border-color: #FFD700;
-  background: rgba(255, 215, 0, 0.12);
-  color: #FFD700;
-}
-
-/* ===== INPUTS ===== */
-.input-name {
-  width: 100%;
-  padding: 13px 16px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.07);
+  background: none;
+  border: none;
+  outline: none;
   color: white;
   font-family: inherit;
-  font-size: 17px;
-  text-align: center;
-  outline: none;
-  margin-bottom: 14px;
+  font-size: 18px;
+  font-weight: bold;
 }
 
-.input-name:focus {
-  border-color: #FFD700;
-  background: rgba(255, 215, 0, 0.08);
+.name-input-wrap input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
 }
 
 /* ===== HEARTS PICKER ===== */
 .hearts-picker {
   display: flex;
-  gap: 6px;
   justify-content: center;
-  flex-wrap: wrap;
-  margin: 10px 0;
+  gap: 8px;
+  margin: 10px 0 6px;
 }
 
 .heart-btn {
   background: none;
   border: none;
-  font-size: 26px;
+  font-size: 30px;
   cursor: pointer;
   transition: transform .15s;
-  padding: 2px;
+  padding: 4px;
 }
 
 .heart-btn:active {
@@ -190,27 +125,66 @@
 }
 
 /* ===== RECAP ===== */
+.recap-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 12px 0;
+  text-align: left;
+}
+
 .recap-row {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  padding: 10px 14px;
   display: flex;
   align-items: center;
   gap: 10px;
-  background: rgba(255, 255, 255, 0.06);
-  border-radius: 12px;
-  padding: 10px 14px;
-  margin-bottom: 8px;
+  font-size: 15px;
 }
 
-.recap-hearts {
+.recap-row .recap-hearts {
   margin-left: auto;
-  font-size: 14px;
-  letter-spacing: 1px;
+  font-size: 16px;
 }
 
-/* ===== SEP ===== */
-.sep {
-  height: 1px;
+/* ===== BUTTONS ===== */
+.btn-main {
+  width: 100%;
+  padding: 15px;
+  border-radius: 50px;
+  border: none;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: transform .1s, box-shadow .1s;
+}
+
+.btn-main:active {
+  transform: translateY(3px);
+  box-shadow: none !important;
+}
+
+.btn-gold {
+  background: linear-gradient(145deg, #FFE44D, #FFD700);
+  color: #1a472a;
+  box-shadow: 0 5px 0 #B8960C, 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.btn-gray {
   background: rgba(255, 255, 255, 0.1);
-  margin: 16px 0;
+  color: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.label-small {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
 }
 
 /* ===== JOKER OVERLAY ===== */
@@ -270,7 +244,7 @@
 
 .target-btn {
   width: 100%;
-  padding: 14px;
+  padding: 13px 18px;
   border-radius: 14px;
   border: 1px solid rgba(255, 255, 255, 0.15);
   background: rgba(255, 255, 255, 0.07);
@@ -282,14 +256,15 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  transition: background .2s;
+  transition: all .2s;
+  text-align: left;
 }
 
 .target-btn:hover {
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.15);
 }
 
-/* ===== WIN ===== */
+/* ===== WIN OVERLAY ===== */
 .win-trophy {
   font-size: 72px;
   margin-bottom: 10px;
@@ -299,28 +274,12 @@
   font-size: 32px;
   font-weight: bold;
   color: #FFD700;
-  text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
   margin-bottom: 6px;
 }
 
 .win-sub {
   font-size: 16px;
   color: rgba(255, 255, 255, 0.6);
-  margin-bottom: 24px;
-}
-
-/* ===== REPLAY ===== */
-.replay-row {
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 14px;
-  padding: 12px 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  text-align: left;
-}
-
-.replay-name {
-  font-size: 15px;
-  font-weight: bold;
+  margin-bottom: 20px;
 }
