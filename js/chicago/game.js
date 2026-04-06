@@ -42,6 +42,13 @@ function chicagoPocketBall(number) {
     return;
   }
 
+  // Vérification fin de partie après chaque bille empochée
+  const [p0, p1] = chicagoState.players;
+
+  // Victoire par score
+  if (p0.score >= CHICAGO_TARGET_SCORE) { showChicagoWin(p0); return; }
+  if (p1.score >= CHICAGO_TARGET_SCORE) { showChicagoWin(p1); return; }
+
   // Toutes les billes empochées
   if (chicagoState.pocketedBalls.size === 15) {
     if (p0.score === p1.score) {
