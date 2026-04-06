@@ -1,0 +1,235 @@
+/* ===== LAUNCHER ===== */
+.launcher {
+  width: 92%;
+  max-width: 440px;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.game-card {
+  background: linear-gradient(160deg, #1e5c34, #143d24);
+  border: 2px solid rgba(255, 215, 0, 0.3);
+  border-radius: 20px;
+  padding: 22px 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: border-color .2s, transform .1s;
+}
+
+.game-card:active {
+  transform: scale(0.98);
+}
+
+.game-card:hover {
+  border-color: #FFD700;
+}
+
+.game-card-icon {
+  font-size: 40px;
+}
+
+.game-card-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #FFD700;
+  margin-bottom: 4px;
+}
+
+.game-card-desc {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* ===== POOL ===== */
+#game {
+  width: 92%;
+  max-width: 440px;
+  margin-top: 16px;
+}
+
+.pool-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.pool-title {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.pool-count {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* ===== PLAYERS ===== */
+.player-card {
+  background: linear-gradient(160deg, #1e5c34, #143d24);
+  border: 2px solid transparent;
+  border-radius: 18px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  transition: border-color .3s, opacity .3s;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.player-card.active {
+  border-color: #FFD700;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.15);
+}
+
+.player-card.eliminated {
+  opacity: 0.35;
+  filter: grayscale(0.5);
+}
+
+.player-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.player-emoji {
+  font-size: 28px;
+}
+
+.player-name {
+  font-size: 17px;
+  font-weight: bold;
+  flex: 1;
+}
+
+.badge-active {
+  background: #FFD700;
+  color: #1a472a;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 50px;
+  letter-spacing: 1px;
+}
+
+.badge-forced {
+  background: #ff4444;
+  color: white;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 50px;
+  letter-spacing: 1px;
+}
+
+.hearts {
+  font-size: 22px;
+  letter-spacing: 2px;
+}
+
+.joker-badges {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+
+.joker-badge {
+  background: linear-gradient(145deg, #7B2FBE, #5a1e8e);
+  border-radius: 50px;
+  padding: 3px 10px;
+  font-size: 12px;
+  transition: opacity .3s;
+}
+
+.joker-badge.used {
+  opacity: 0.25;
+  text-decoration: line-through;
+}
+
+/* ===== JOKER COUNTER ===== */
+.joker-counter {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+  margin-top: 6px;
+}
+
+.joker-counter.maxed {
+  color: rgba(255, 80, 80, 0.6);
+}
+
+/* ===== ACTION ZONE ===== */
+.action-zone {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 18px;
+  padding: 16px;
+  margin-bottom: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.action-title {
+  text-align: center;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.55);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 14px;
+}
+
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btn-action {
+  width: 100%;
+  padding: 15px;
+  border-radius: 14px;
+  border: none;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform .1s, box-shadow .1s, opacity .2s;
+}
+
+.btn-action:active {
+  transform: translateY(2px);
+  box-shadow: none !important;
+}
+
+.btn-action:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.btn-hit {
+  background: linear-gradient(145deg, #4CAF50, #388E3C);
+  color: white;
+  box-shadow: 0 4px 0 #2E7D32;
+}
+
+.btn-miss {
+  background: linear-gradient(145deg, #F44336, #D32F2F);
+  color: white;
+  box-shadow: 0 4px 0 #B71C1C;
+}
+
+.btn-black {
+  background: linear-gradient(145deg, #424242, #212121);
+  color: white;
+  box-shadow: 0 4px 0 #000;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.btn-joker {
+  background: linear-gradient(145deg, #7B2FBE, #5a1e8e);
+  color: white;
+  box-shadow: 0 4px 0 #3d1466;
+}

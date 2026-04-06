@@ -1,0 +1,326 @@
+/* ===== OVERLAY ===== */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.82);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  backdrop-filter: blur(4px);
+}
+
+.overlay.hidden {
+  display: none;
+}
+
+.popup-box {
+  background: linear-gradient(160deg, #1e5c34, #143d24);
+  border: 2px solid #FFD700;
+  border-radius: 20px;
+  padding: 28px 22px;
+  width: 92%;
+  max-width: 440px;
+  text-align: center;
+  box-shadow: 0 0 40px rgba(255, 215, 0, 0.2), 0 8px 32px rgba(0, 0, 0, 0.5);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.popup-box h2 {
+  font-size: 22px;
+  color: #FFD700;
+  margin-bottom: 6px;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+}
+
+.popup-step {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+/* ===== NUMBER SELECTOR ===== */
+.number-selector {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin: 14px 0;
+}
+
+.number-selector span {
+  font-size: 44px;
+  font-weight: bold;
+  min-width: 56px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* ===== BUTTONS ===== */
+.btn-round {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(145deg, #FFE44D, #FFD700);
+  color: #1a472a;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 0 #b8960a;
+  transition: transform .1s, box-shadow .1s;
+}
+
+.btn-round:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #b8960a;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 16px;
+  border-radius: 14px;
+  border: none;
+  background: linear-gradient(145deg, #FFE44D, #FFD700);
+  color: #1a472a;
+  font-family: inherit;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 0 #b8960a;
+  transition: transform .1s, box-shadow .1s;
+  letter-spacing: 0.5px;
+}
+
+.btn-primary:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #b8960a;
+}
+
+.btn-secondary {
+  width: 100%;
+  padding: 13px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.07);
+  color: white;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background .2s;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+/* ===== TOGGLE ===== */
+.toggle-row {
+  display: flex;
+  gap: 8px;
+  margin: 14px 0;
+}
+
+.btn-toggle {
+  flex: 1;
+  padding: 12px 8px;
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.5);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all .2s;
+}
+
+.btn-toggle.active {
+  border-color: #FFD700;
+  background: rgba(255, 215, 0, 0.12);
+  color: #FFD700;
+}
+
+/* ===== INPUTS ===== */
+.input-name {
+  width: 100%;
+  padding: 13px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.07);
+  color: white;
+  font-family: inherit;
+  font-size: 17px;
+  text-align: center;
+  outline: none;
+  margin-bottom: 14px;
+}
+
+.input-name:focus {
+  border-color: #FFD700;
+  background: rgba(255, 215, 0, 0.08);
+}
+
+/* ===== HEARTS PICKER ===== */
+.hearts-picker {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 10px 0;
+}
+
+.heart-btn {
+  background: none;
+  border: none;
+  font-size: 26px;
+  cursor: pointer;
+  transition: transform .15s;
+  padding: 2px;
+}
+
+.heart-btn:active {
+  transform: scale(1.3);
+}
+
+/* ===== RECAP ===== */
+.recap-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 10px 14px;
+  margin-bottom: 8px;
+}
+
+.recap-hearts {
+  margin-left: auto;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+/* ===== SEP ===== */
+.sep {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 16px 0;
+}
+
+/* ===== JOKER OVERLAY ===== */
+.joker-choice-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 16px 0;
+}
+
+.joker-choice-btn {
+  width: 100%;
+  padding: 14px 18px;
+  border-radius: 14px;
+  border: 2px solid rgba(123, 47, 190, 0.5);
+  background: rgba(123, 47, 190, 0.15);
+  color: white;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all .2s;
+  text-align: left;
+}
+
+.joker-choice-btn:hover {
+  background: rgba(123, 47, 190, 0.35);
+  border-color: #9B4FDE;
+}
+
+.joker-choice-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.joker-choice-btn .jc-icon {
+  font-size: 24px;
+}
+
+.joker-choice-btn .jc-desc {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: normal;
+  margin-top: 2px;
+}
+
+/* ===== TARGET OVERLAY ===== */
+.target-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.target-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.07);
+  color: white;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background .2s;
+}
+
+.target-btn:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+/* ===== WIN ===== */
+.win-trophy {
+  font-size: 72px;
+  margin-bottom: 10px;
+}
+
+.win-name {
+  font-size: 32px;
+  font-weight: bold;
+  color: #FFD700;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+  margin-bottom: 6px;
+}
+
+.win-sub {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 24px;
+}
+
+/* ===== REPLAY ===== */
+.replay-row {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 14px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+}
+
+.replay-name {
+  font-size: 15px;
+  font-weight: bold;
+}
