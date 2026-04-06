@@ -20,32 +20,32 @@ function showToast(msg) {
 }
 
 // Palette billard
-const BILLE_COLORS = [
-  { color: '#F5C518', num: 1  },  // jaune
-  { color: '#2980e8', num: 2  },  // bleu
-  { color: '#e74c3c', num: 3  },  // rouge
-  { color: '#8e44ad', num: 4  },  // violet
-  { color: '#e67e22', num: 5  },  // orange
-  { color: '#27ae60', num: 6  },  // vert
-  { color: '#8B2500', num: 7  },  // bordeaux
-  { color: '#111111', num: 8  },  // noire
-];
+function billeIcon(playerIndex) {
+  // playerIndex : 0-based (joueur 1 = index 0 → bille 1)
+  const billeNum = playerIndex + 1; // bille 1 à 8 max
+  
+  // Position dans la grille (bille 0 = blanche, bille 1 à col 1 row 0, etc.)
+  const col = billeNum % 4;       // colonne 0-3
+  const row = Math.floor(billeNum / 4); // ligne 0-3
+  
+  const spriteSize = 1024; // taille totale du sprite
+  const cellSize = 256;    // taille d'une bille dans le sprite
+  const displaySize = 36;  // taille affichée en px
+  const ratio = displaySize / cellSize;
 
-function billeIcon(playerIndex, size = 32) {
-  const { color, num } = BILLE_COLORS[playerIndex % BILLE_COLORS.length];
-  const id = `bg_${playerIndex}`;
-  return `
-    <svg width="${size}" height="${size}" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <radialGradient id="${id}" cx="38%" cy="35%" r="60%">
-          <stop offset="0%"   stop-color="white" stop-opacity="0.7"/>
-          <stop offset="100%" stop-color="${color}"/>
-        </radialGradient>
-      </defs>
-      <circle cx="16" cy="16" r="14" fill="url(#${id})" stroke="rgba(0,0,0,0.25)" stroke-width="1.5"/>
-      <circle cx="16" cy="16" r="7" fill="white" fill-opacity="0.85"/>
-      <text x="16" y="20.5" text-anchor="middle" font-size="8.5"
-            font-weight="bold" font-family="Arial, sans-serif"
-            fill="${color}">${num}</text>
-    </svg>`;
+  const bgX = -(col * cellSize * ratio);
+  const bgY = -(row * cellSize * ratio);
+  const bgSize = spriteSize * ratio; // = 144px
+
+  return `<span style="
+    display: inline-block;
+    width: ${displaySize}px;
+    height: ${displaySize}px;
+    background-image: url('assets/billes.png');
+    background-size: ${bgSize}px ${bgSize}px;
+    background-position: ${bgX}px ${bgY}px;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+    flex-shrink: 0;
+  " aria-label="Bille ${billeNum}"></span>`;
 }
