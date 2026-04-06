@@ -231,7 +231,7 @@ function drawRandomJoker() {
 }
 
 function useJoker(jokerId) {
-  saveHistory();
+  // saveHistory();
   const player = state.players[state.currentIndex];
   player.jokersUsed++;
   if (state.jokerMode === 'choice') player.jokers[jokerId]--;
@@ -239,17 +239,22 @@ function useJoker(jokerId) {
   const joker = JOKER_TYPES.find(j => j.id === jokerId);
   showToast(`${joker.icon} ${player.name} utilise : ${joker.label}`);
 
+  closeOverlay('overlayJoker');
+
   if (jokerId === 'pass') {
+    saveHistory();
     nextTurn();
     renderGame();
   } else if (jokerId === 'hand') {
+    saveHistory();
     renderGame();
   } else if (jokerId === 'target') {
+    saveHistory();
     openTargetOverlay();
-    return; // on ne ferme pas overlayJoker ici, openTargetOverlay le remplace
+    // return; // on ne ferme pas overlayJoker ici, openTargetOverlay le remplace
   }
 
-  closeOverlay('overlayJoker');
+  
 }
 
 function openTargetOverlay() {
