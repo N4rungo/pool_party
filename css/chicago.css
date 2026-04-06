@@ -15,7 +15,13 @@
   object-fit: contain;
 }
 
-.popup-box h2 .icon-title {
+.popup-box h2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-title {
   height: 32px;
   vertical-align: middle;
   margin-right: 8px;
