@@ -35,22 +35,18 @@ function chicagoPocketBall(number) {
   chicagoState.pocketedBalls.add(number);
   chicagoState.players[chicagoState.currentIndex].score += number;
 
-  const winner = chicagoState.players.find(p => p.score >= CHICAGO_TARGET_SCORE);
-  if (winner) {
-    renderChicagoGame();
-    showChicagoWin(winner);
-    return;
-  }
-
-  // Vérification fin de partie après chaque bille empochée
   const [p0, p1] = chicagoState.players;
 
   // Victoire par score
-  if (p0.score >= CHICAGO_TARGET_SCORE) { showChicagoWin(p0); return; }
-  if (p1.score >= CHICAGO_TARGET_SCORE) { showChicagoWin(p1); return; }
+  if (p0.score >= CHICAGO_TARGET_SCORE || p1.score >= CHICAGO_TARGET_SCORE) {
+    renderChicagoGame();
+    showChicagoWin(p0.score > p1.score ? p0 : p1);
+    return;
+  }
 
-  // Toutes les billes empochées
+  // Toutes les billes empochées → fin de partie
   if (chicagoState.pocketedBalls.size === 15) {
+    renderChicagoGame();
     if (p0.score === p1.score) {
       showChicagoDraw(p0.score);
     } else {
@@ -62,6 +58,7 @@ function chicagoPocketBall(number) {
   renderChicagoGame();
   showToast(`🎱 +${number} pts pour ${chicagoState.players[chicagoState.currentIndex].name} !`);
 }
+
 
 function chicagoEndTurn() {
   saveChicagoHistory();
