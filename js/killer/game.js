@@ -275,7 +275,7 @@ function openTargetOverlay() {
 function applyTarget(targetIdx) {
   closeOverlay('overlayTarget');
   const backIdx = state.currentIndex;
-  nextTurn();
+  // nextTurn();
   state.forcedTurnFor  = targetIdx;
   state.forcedTurnBack = backIdx;
   renderGame();
