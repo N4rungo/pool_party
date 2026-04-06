@@ -10,6 +10,7 @@ Ouvrir `index.html` dans un navigateur, ou via GitHub Pages :
 ---
 
 ## 🗂️ Structure du projet
+``` 
 pool-party/
 ├── index.html          # Structure HTML + point d'entrée
 ├── css/
@@ -22,7 +23,7 @@ pool-party/
 │   ├── game.js         # Déroulement du jeu Killer
 │   └── utils.js        # Fonctions utilitaires (shuffle, toast…)
 └── README.md
-
+```
 ---
 
 ## 🎮 Jeux disponibles
