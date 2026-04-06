@@ -9,6 +9,12 @@
   display: none;
 }
 
+.game-card .game-icon img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
 /* ===== SCORES ===== */
 .chicago-scores {
   display: flex;

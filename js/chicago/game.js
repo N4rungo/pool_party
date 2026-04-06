@@ -48,6 +48,19 @@ function chicagoPocketBall(number) {
 
 function chicagoEndTurn() {
   saveChicagoHistory();
+
+  // toutes les billes empochées = égalité possible
+  if (chicagoState.pocketedBalls.size === 15) {
+    const [p0, p1] = chicagoState.players;
+    if (p0.score === p1.score) {
+      showChicagoDraw(p0.score);
+    } else {
+      const winner = p0.score > p1.score ? p0 : p1;
+      showChicagoWin(winner);
+    }
+    return;
+  }
+
   chicagoState.currentIndex = chicagoState.currentIndex === 0 ? 1 : 0;
   renderChicagoGame();
   const current = chicagoState.players[chicagoState.currentIndex];
@@ -56,14 +69,24 @@ function chicagoEndTurn() {
 
 // ── Victoire ─────────────────────────────────────────
 function showChicagoWin(winner) {
+  document.getElementById('chicagoWinTrophy').textContent = '🏆';
+  document.getElementById('chicagoWinSub').textContent    = 'Félicitations !';
   document.getElementById('chicagoWinName').textContent = winner.name;
+  document.getElementById('overlayChicagoWin').classList.remove('hidden');
+}
+
+// ── Egalité ─────────────────────────────────────────
+function showChicagoDraw(score) {
+  document.getElementById('chicagoWinName').textContent  = 'Égalité !';
+  document.getElementById('chicagoWinSub').textContent   = `Les deux joueurs finissent à ${score} points`;
+  document.getElementById('chicagoWinTrophy').textContent = '🤝';
   document.getElementById('overlayChicagoWin').classList.remove('hidden');
 }
 
 function chicagoNewGame() {
   closeOverlay('overlayChicagoWin');
   document.getElementById('gameChicago').classList.add('hidden');
-  showChicagoSetup();
+  showLauncher();
 }
 
 function chicagoReplay() {
@@ -81,6 +104,11 @@ function renderChicagoGame() {
   renderChicagoTriangle();
   renderChicagoActions();
   updateChicagoUndoBtn();
+}
+
+function chicagoBackToLauncher() {
+  closeOverlay('overlayChicagoSetup');
+  showLauncher();
 }
 
 function renderChicagoScores() {

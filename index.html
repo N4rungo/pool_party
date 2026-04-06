@@ -185,16 +185,16 @@
 
       <button class="btn-main btn-gold" onclick="startChicagoGame()" style="margin-top:16px;">🎱 Lancer la partie
         !</button>
-      <button class="btn-main btn-gray" onclick="showLauncher()">← Retour</button>
+      <button class="btn-main btn-gray" onclick="chicagoBackToLauncher()">← Retour</button>
     </div>
   </div>
 
   <!-- ===== CHICAGO WIN ===== -->
   <div class="overlay hidden" id="overlayChicagoWin">
     <div class="popup-box" style="text-align:center;">
-      <div class="win-trophy">🏆</div>
+      <div class="win-trophy" id="chicagoWinTrophy">🏆</div>
       <div class="win-name" id="chicagoWinName"></div>
-      <div class="win-sub">Félicitations !</div>
+      <div class="win-sub" id="chicagoWinSub">Félicitations !</div>
       <button class="btn-main btn-gold" onclick="chicagoReplay()">🔄 Rejouer</button>
       <button class="btn-main btn-gray" onclick="chicagoNewGame()">⚙️ Nouvelle partie</button>
     </div>
@@ -266,7 +266,7 @@
   <script src="js/chicago/state.js"></script>
   <script src="js/chicago/setup.js"></script>
   <script src="js/chicago/game.js"></script>
-  
+
   <script src="js/main.js"></script>
 
 </body>
