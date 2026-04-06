@@ -76,7 +76,8 @@ function renderPlayers() {
       <div class="player-card ${isActive ? 'active' : ''} ${p.eliminated ? 'eliminated' : ''}">
         <div class="card-top">
           <div class="player-name">
-            ${p.name}
+          ${billeIcon(i)}  
+          ${p.name}
             ${isForced  ? '<span class="badge-forced">TOUR FORCÉ</span>'
             : isActive  ? '<span class="badge-active">EN JEU</span>' : ''}
           </div>
@@ -266,7 +267,7 @@ function openTargetOverlay() {
     const i = state.players.indexOf(p);
     return `
       <button class="target-btn" onclick="applyTarget(${i})">
-        <span>${EMOJIS[i % EMOJIS.length]}</span>
+        ${billeIcon(i, 36)}
         <span>${p.name}</span>
         <span style="margin-left:auto;">
           ${Array.from({ length: MAX_LIVES }, (_, h) => h < p.lives ? '❤️' : '🖤').join('')}
@@ -288,7 +289,12 @@ function applyTarget(targetIdx) {
 
 // ── End / Replay ─────────────────────────────────────
 function endGame(winner) {
-  document.getElementById('winName').textContent = `🏆 ${winner.name}`;
+  const winnerIdx = state.players.indexOf(winner);
+
+  document.getElementById('winName').innerHTML =
+  `🏆 ${billeIcon(winnerIdx, 40)} ${winner.name}`;
+
+  // document.getElementById('winName').textContent = `🏆 ${winner.name}`;
   document.getElementById('overlayWin').classList.remove('hidden');
 }
 
