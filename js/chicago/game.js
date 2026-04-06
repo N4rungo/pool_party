@@ -42,25 +42,22 @@ function chicagoPocketBall(number) {
     return;
   }
 
+  // Toutes les billes empochées
+  if (chicagoState.pocketedBalls.size === 15) {
+    if (p0.score === p1.score) {
+      showChicagoDraw(p0.score);
+    } else {
+      showChicagoWin(p0.score > p1.score ? p0 : p1);
+    }
+    return;
+  }
+
   renderChicagoGame();
   showToast(`🎱 +${number} pts pour ${chicagoState.players[chicagoState.currentIndex].name} !`);
 }
 
 function chicagoEndTurn() {
   saveChicagoHistory();
-
-  // toutes les billes empochées = égalité possible
-  if (chicagoState.pocketedBalls.size === 15) {
-    const [p0, p1] = chicagoState.players;
-    if (p0.score === p1.score) {
-      showChicagoDraw(p0.score);
-    } else {
-      const winner = p0.score > p1.score ? p0 : p1;
-      showChicagoWin(winner);
-    }
-    return;
-  }
-
   chicagoState.currentIndex = chicagoState.currentIndex === 0 ? 1 : 0;
   renderChicagoGame();
   const current = chicagoState.players[chicagoState.currentIndex];
