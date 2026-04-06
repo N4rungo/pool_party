@@ -15,6 +15,13 @@
   object-fit: contain;
 }
 
+.icon-title {
+  height: 32px;
+  vertical-align: middle;
+  margin-right: 8px;
+  object-fit: contain;
+}
+
 /* ===== SCORES ===== */
 .chicago-scores {
   display: flex;
