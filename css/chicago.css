@@ -15,11 +15,11 @@
   object-fit: contain;
 }
 
-.icon-title {
+.popup-box h2 .icon-title {
   height: 32px;
   vertical-align: middle;
   margin-right: 8px;
-  /* object-fit: contain; */
+  object-fit: contain;
 }
 
 /* ===== SCORES ===== */
