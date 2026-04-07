@@ -38,6 +38,8 @@ function casinShowStep2() {
 
     document.getElementById('casinStep2Progress').textContent =
         `Joueur ${i + 1} / ${casinSetup.count}`;
+    document.getElementById('casinStep2Title').textContent =
+        `Joueur ${i + 1}`;
     document.getElementById('casinStep2Emoji').textContent =
         EMOJIS[i % EMOJIS.length];
     document.getElementById('casinStep2Name').value = player.name;
@@ -73,7 +75,11 @@ function casinGoPrev() {
     const i = casinSetup.currentPlayerSetup;
     const name = document.getElementById('casinStep2Name').value.trim();
     casinSetup.players[i].name = name;
-    if (i > 0) {
+
+    if (i === 0) {                              // ← nouveau cas
+        closeOverlay('casinOverlayStep2');
+        document.getElementById('casinOverlayStep1').classList.remove('hidden');
+    } else {
         casinSetup.currentPlayerSetup--;
         casinShowStep2();
     }

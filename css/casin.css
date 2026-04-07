@@ -139,6 +139,36 @@
   box-shadow: 0 0 4px rgba(255,215,0,0.6);
 }
 
+/* Bouton coup neutre */
+.casin-neutral-btn {
+  width: 100%;
+  padding: 13px;
+  border-radius: 50px;
+  border: 1px solid rgba(255,255,255,0.25);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.75);
+  margin-bottom: 8px;
+  transition: transform .1s;
+}
+.casin-neutral-btn:active { transform: translateY(2px); }
+
+/* Action bloquée (dernier coup) */
+.casin-action-btn.blocked {
+  background: rgba(244,67,54,0.12);
+  border-color: rgba(244,67,54,0.35);
+  opacity: 0.55;
+}
+
+.casin-blocked-label {
+  font-size: 9px;
+  color: rgba(244,67,54,0.8);
+  margin-top: 2px;
+}
+
 /* ===== NEXT BTN ===== */
 .casin-next-btn {
   width: 100%;
