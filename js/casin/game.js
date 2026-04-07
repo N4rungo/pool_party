@@ -188,30 +188,30 @@ function casinRenderScoreboard() {
         }).join('');
 }
 
-function casinRenderActions() {
-    const player = casinState.players[casinState.currentIndex];
+// function casinRenderActions() {
+//     const player = casinState.players[casinState.currentIndex];
 
-    document.getElementById('casinActionGrid').innerHTML =
-        CASIN_ACTIONS.map(a => {
-            const count = player.scores[a.id];
-            const closed = count >= player.x;
-            const doneThisTurn = player.doneThisturn.includes(a.id);
-            const disabled = closed || doneThisTurn;
+//     document.getElementById('casinActionGrid').innerHTML =
+//         CASIN_ACTIONS.map(a => {
+//             const count = player.scores[a.id];
+//             const closed = count >= player.x;
+//             const doneThisTurn = player.doneThisturn.includes(a.id);
+//             const disabled = closed || doneThisTurn;
 
-            const pips = Array.from({ length: player.x }, (_, h) =>
-                `<span class="casin-pip ${h < count ? 'filled' : ''}"></span>`
-            ).join('');
+//             const pips = Array.from({ length: player.x }, (_, h) =>
+//                 `<span class="casin-pip ${h < count ? 'filled' : ''}"></span>`
+//             ).join('');
 
-            return `
-        <button
-          class="casin-action-btn ${closed ? 'closed' : ''} ${doneThisTurn ? 'done-turn' : ''}"
-          onclick="casinDoAction('${a.id}')"
-          ${disabled ? 'disabled' : ''}
-          title="${a.desc}"
-        >
-          <span class="casin-action-icon">${a.icon}</span>
-          <span class="casin-action-label">${a.label}</span>
-          <div class="casin-pips">${pips}</div>
-        </button>`;
-        }).join('');
-}
+//             return `
+//         <button
+//           class="casin-action-btn ${closed ? 'closed' : ''} ${doneThisTurn ? 'done-turn' : ''}"
+//           onclick="casinDoAction('${a.id}')"
+//           ${disabled ? 'disabled' : ''}
+//           title="${a.desc}"
+//         >
+//           <span class="casin-action-icon">${a.icon}</span>
+//           <span class="casin-action-label">${a.label}</span>
+//           <div class="casin-pips">${pips}</div>
+//         </button>`;
+//         }).join('');
+// }
