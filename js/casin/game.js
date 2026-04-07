@@ -119,7 +119,6 @@ function casinRenderActions() {
           <span class="casin-action-icon">${a.icon}</span>
           <span class="casin-action-label">${a.label}</span>
           <div class="casin-pips">${pips}</div>
-          ${isBlocked ? '<span class="casin-blocked-label">⛔ Dernier coup</span>' : ''}
         </button>`;
         }).join('');
 }
