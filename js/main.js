@@ -3,7 +3,7 @@ function showLauncher() {
   document.getElementById('gameChicago').classList.add('hidden');
   document.getElementById('casinGame').classList.add('hidden');
   document.getElementById('game').classList.add('hidden');
-  ['overlayStep1', 'overlayStep2', 'overlayStep3',
+  ['overlayStep1', 'overlayStep2', 'overlayStep3', 'casinOverlayStep1', 
     'overlayJoker', 'overlayTarget', 'overlayWin', 'overlayReplay'
   ].forEach(id => closeOverlay(id));
 }
