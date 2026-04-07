@@ -7,7 +7,6 @@ function casinStartGame() {
         name: p.name,
         x: p.x,
         scores: Object.fromEntries(CASIN_ACTIONS.map(a => [a.id, 0])),
-        // doneThisturn: [],
         lastAction: null,
     }));
 
@@ -23,26 +22,20 @@ function casinStartGame() {
 // ── History ──────────────────────────────────────────
 
 function casinSaveHistory() {
-    if (casinState.history.length >= 5) casinState.history.shift();
-    casinState.history.push(JSON.stringify({
-        players: casinState.players.map(p => ({
-            ...p,
-            doneThisturn: [...p.doneThisturn],
-        })),
-        currentIndex: casinState.currentIndex,
-    }));
+  if (casinState.history.length >= 5) casinState.history.shift();
+  casinState.history.push(JSON.stringify({
+    players:      casinState.players,
+    currentIndex: casinState.currentIndex,
+  }));
 }
 
 function casinUndo() {
-    if (casinState.history.length === 0) return;
-    const snap = JSON.parse(casinState.history.pop());
-    casinState.players = snap.players.map(p => ({
-        ...p,
-        doneThisturn: p.doneThisturn,
-    }));
-    casinState.currentIndex = snap.currentIndex;
-    casinRender();
-    showToast('↩ Action annulée');
+  if (casinState.history.length === 0) return;
+  const snap = JSON.parse(casinState.history.pop());
+  casinState.players      = snap.players;
+  casinState.currentIndex = snap.currentIndex;
+  casinRender();
+  showToast('↩ Action annulée');
 }
 
 // ── Action ───────────────────────────────────────────
@@ -50,11 +43,6 @@ function casinUndo() {
 function casinDoAction(actionId) {
     const player = casinState.players[casinState.currentIndex];
 
-    // Déjà fait ce tour
-    if (player.doneThisturn.includes(actionId)) {
-        showToast('⛔ Déjà réalisée ce tour !');
-        return;
-    }
     // Action fermée
     if (player.scores[actionId] >= player.x) {
         showToast('✅ Action déjà complétée !');
@@ -97,7 +85,7 @@ function casinNeutralShot() {
 function casinNextPlayer() {
     casinSaveHistory();
 
-    // Reset doneThisturn du joueur courant
+    // Reset lastAction du joueur courant
     casinState.players[casinState.currentIndex].lastAction = null;
 
     // Joueur suivant (skip si on voulait gérer des éliminations — pas le cas ici)
@@ -187,31 +175,3 @@ function casinRenderScoreboard() {
         </div>`;
         }).join('');
 }
-
-// function casinRenderActions() {
-//     const player = casinState.players[casinState.currentIndex];
-
-//     document.getElementById('casinActionGrid').innerHTML =
-//         CASIN_ACTIONS.map(a => {
-//             const count = player.scores[a.id];
-//             const closed = count >= player.x;
-//             const doneThisTurn = player.doneThisturn.includes(a.id);
-//             const disabled = closed || doneThisTurn;
-
-//             const pips = Array.from({ length: player.x }, (_, h) =>
-//                 `<span class="casin-pip ${h < count ? 'filled' : ''}"></span>`
-//             ).join('');
-
-//             return `
-//         <button
-//           class="casin-action-btn ${closed ? 'closed' : ''} ${doneThisTurn ? 'done-turn' : ''}"
-//           onclick="casinDoAction('${a.id}')"
-//           ${disabled ? 'disabled' : ''}
-//           title="${a.desc}"
-//         >
-//           <span class="casin-action-icon">${a.icon}</span>
-//           <span class="casin-action-label">${a.label}</span>
-//           <div class="casin-pips">${pips}</div>
-//         </button>`;
-//         }).join('');
-// }

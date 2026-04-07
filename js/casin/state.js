@@ -6,7 +6,7 @@ let casinSetup = {
 };
 
 let casinState = {
-  players:      [], // { name, x, scores: { [actionId]: count }, doneThisturn: Set }
+  players:      [], // { name, x, scores: { [actionId]: count }, lastAction: Set }
   currentIndex: 0,
   history:      [], // max 5 snapshots JSON
   winner:       null,
