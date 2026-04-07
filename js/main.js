@@ -15,11 +15,7 @@ function launchGame(game) {
   } else if (game === 'chicago') {
     showChicagoSetup();
   } else if (game === 'casin') {
-    document.getElementById('launcher').classList.add('hidden');
-    document.getElementById('casinOverlayStep1').classList.remove('hidden');
-    // Reset affichage step1
-    document.getElementById('casinCountDisplay').textContent = casinSetup.count;
-    document.getElementById('casinGlobalXDisplay').textContent = casinSetup.globalX;
+    showCasinSetup();
   } else {
     showToast('🚧 Bientôt disponible !');
   }
