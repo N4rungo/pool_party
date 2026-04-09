@@ -107,6 +107,6 @@ function ctStartGame() {
   ctState.currentIndex = 0;
   ctState.history = [];
 
-  document.getElementById('game').classList.remove('hidden');
+  document.getElementById('ctGame').classList.remove('hidden');
   ctRenderGame();
 }
