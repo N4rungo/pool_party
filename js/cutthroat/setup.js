@@ -1,3 +1,10 @@
+function ctLaunchGame() {
+    document.getElementById('launcher').classList.add('hidden');
+    ctSetup.count = 3;
+    document.getElementById('ctCountDisplay').textContent = 3;
+    document.getElementById('overlayCtStep1').classList.remove('hidden');
+}
+
 // ── Step 1 : nombre de joueurs ───────────────────────
 function ctChangeCount(delta) {
   ctSetup.count = Math.min(15, Math.max(2, ctSetup.count + delta));
