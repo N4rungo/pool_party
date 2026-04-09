@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="css/killer.css">
   <link rel="stylesheet" href="css/chicago.css">
   <link rel="stylesheet" href="css/casin.css">
+  <link rel="stylesheet" href="css/cutthroat.css">
 
 </head>
 
@@ -356,6 +357,101 @@
   </div>
 
 
+  <!-- ===== CUTTHROAT OVERLAYS ===== -->
+
+  <!-- Step 1 : nb joueurs -->
+  <div class="overlay hidden" id="overlayCtStep1">
+    <div class="popup-box">
+      <div class="popup-step">Cutthroat — Étape 1 / 3</div>
+      <h2>👥 Combien de joueurs ?</h2>
+      <div class="number-selector">
+        <button class="btn-round" onclick="ctChangeCount(-1)">−</button>
+        <span id="ctCountDisplay">3</span>
+        <button class="btn-round" onclick="ctChangeCount(+1)">+</button>
+      </div>
+      <button class="btn-main btn-gold" onclick="ctGoToPlayerSetup()">Suivant →</button>
+      <button class="btn-main btn-gray" onclick="showLauncher()">← Retour</button>
+    </div>
+  </div>
+
+  <!-- Step 2 : noms joueurs -->
+  <div class="overlay hidden" id="overlayCtStep2">
+    <div class="popup-box">
+      <div class="popup-step" id="ctPlayerProgress"></div>
+      <h2 id="ctPlayerTitle"></h2>
+      <div class="label-small" style="margin-bottom:6px;">
+        Du moins au plus expérimenté
+      </div>
+      <div class="name-input-wrap">
+        <span class="player-emoji" id="ctPlayerEmoji"></span>
+        <input type="text" id="ctPlayerName" maxlength="16" placeholder="Pseudo...">
+      </div>
+      <button class="btn-main btn-gold" onclick="ctSavePlayerAndNext()">Suivant →</button>
+      <button class="btn-main btn-gray" id="ctBtnPrevPlayer" onclick="ctPrevPlayer()">← Retour</button>
+    </div>
+  </div>
+
+  <!-- Step 3 : triangle -->
+  <div class="overlay hidden" id="overlayCtTriangle">
+    <div class="popup-box">
+      <div class="popup-step">Cutthroat — Étape 3 / 3</div>
+      <h2>🔺 Formation du triangle</h2>
+
+      <div class="label-small" style="margin-bottom:8px;">Coins du triangle</div>
+      <div id="ctCorners" class="ct-corners"></div>
+
+      <div class="label-small" style="margin:12px 0 6px;">Billes par joueur</div>
+      <div id="ctTriangleRecap" class="recap-list"></div>
+
+      <button class="btn-main btn-gold" onclick="ctStartGame()">🎱 C'est parti !</button>
+      <button class="btn-main btn-gray" onclick="closeOverlay('overlayCtTriangle'); overlayCtStep2Back()">←
+        Retour</button>
+    </div>
+  </div>
+
+  <!-- Faute : sélection fautif -->
+  <div class="overlay hidden" id="overlayCtFault">
+    <div class="popup-box">
+      <h2>⚠️ Qui a fait la faute ?</h2>
+      <div class="joker-choice-list" id="ctFaultPlayerList"></div>
+      <button class="btn-main btn-gray" onclick="closeOverlay('overlayCtFault')">Annuler</button>
+    </div>
+  </div>
+
+  <!-- Faute : résultat remise en jeu -->
+  <div class="overlay hidden" id="overlayCtFaultResult">
+    <div class="popup-box">
+      <h2 id="ctFaultTitle"></h2>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:12px;">
+        Remise en jeu des billes (dans l'ordre) :
+      </div>
+      <div id="ctFaultReturns" class="recap-list"></div>
+      <button class="btn-main btn-gold" onclick="closeOverlay('overlayCtFaultResult')">OK</button>
+    </div>
+  </div>
+
+  <!-- Victoire -->
+  <div class="overlay hidden" id="overlayCtWin">
+    <div class="popup-box" style="text-align:center;">
+      <div class="win-trophy">🏆</div>
+      <div class="win-name" id="ctWinName"></div>
+      <button class="btn-main btn-gold" onclick="ctRestart()">🔄 Rejouer (même config)</button>
+      <button class="btn-main btn-gray" onclick="ctNewGame()">⚙️ Nouvelle partie</button>
+    </div>
+  </div>
+
+  <!-- Écran de jeu Cutthroat (intégré dans #game ou séparé) -->
+  <div id="ctGame" class="hidden">
+    <h1>🎱 CUTTHROAT</h1>
+    <div class="history-bar">
+      <button class="btn-undo" id="btnCtUndo" onclick="ctUndo()">↩ Annuler</button>
+      <button class="btn-fault" onclick="ctOpenFaultMenu()">⚠️ Faute</button>
+    </div>
+    <div class="players-list" id="ctPlayersList"></div>
+  </div>
+
+
+
   <script src="js/killer/constants.js"></script>
   <script src="js/killer/state.js"></script>
   <script src="js/killer/utils.js"></script>
@@ -371,6 +467,11 @@
   <script src="js/casin/state.js"></script>
   <script src="js/casin/setup.js"></script>
   <script src="js/casin/game.js"></script>
+
+  <script src="js/cutthroat/constants.js"></script>
+  <script src="js/cutthroat/state.js"></script>
+  <script src="js/cutthroat/setup.js"></script>
+  <script src="js/cutthroat/game.js"></script>
 
 
   <script src="js/main.js"></script>
