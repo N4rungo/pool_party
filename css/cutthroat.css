@@ -1,5 +1,7 @@
 /* ===== CUTTHROAT ===== */
 
+#ctGame.hidden { display: none; }
+
 .ct-balls-row {
   display: flex;
   flex-wrap: wrap;
