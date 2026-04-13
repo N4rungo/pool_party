@@ -4,6 +4,7 @@ function showLauncher() {
   document.getElementById('gameChicago').classList.add('hidden');
   document.getElementById('casinGame').classList.add('hidden');
   document.getElementById('ctGame').classList.add('hidden');
+  document.getElementById('gameSnooker').classList.add('hidden');
   [
     'overlayStep1', 'overlayStep2', 'overlayStep3',
     'casinOverlayStep1', 'casinOverlayStep2', 'casinOverlayStep3',
@@ -24,6 +25,8 @@ function launchGame(game) {
     showCasinSetup();
   } else if (game == 'cutthroat') {
     ctLaunchGame();
+  } else if (game === 'snooker') {
+    snookerLaunchGame();
   } else {
     showToast('🚧 Bientôt disponible !');
   }
