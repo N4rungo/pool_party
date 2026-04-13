@@ -643,7 +643,13 @@
     </div>
 
     <!-- Zone d'actions (billes cliquables) -->
-    <div class="snooker-action-zone" id="snookerActionZone"></div>
+    <div class="snooker-action-zone">
+      <div class="snooker-balls-zone" id="snookerActionZone"></div>
+      <div class="snooker-fault-zone">
+        <button class="btn-main btn-red snooker-fault-btn" onclick="snookerOpenFault()">⚠️ Faute</button>
+      </div>
+    </div>
+    
   </div>
 
 
