@@ -93,52 +93,48 @@ function snookerEndgameLabel() {
 }
 
 function snookerRenderActions() {
-    const zone = document.getElementById('snookerActionZone');
-    zone.innerHTML = '';
+  const zone = document.getElementById('snookerActionZone');
+  zone.innerHTML = '';
 
-    if (snookerState.phase === 'red') {
-        zone.appendChild(snookerBtnBall('red'));
-        zone.appendChild(snookerBtnMultiRed());
+  if (snookerState.phase === 'red') {
+    const wrap = document.createElement('div');
+    wrap.className = 'snooker-red-wrap';
+    wrap.appendChild(snookerBtnBall('red'));
+    wrap.appendChild(snookerBtnMultiRed());
+    zone.appendChild(wrap);
 
-    } else if (snookerState.phase === 'color' || snookerState.phase === 'color_last') {
-        const grid = document.createElement('div');
-        grid.className = 'snooker-colors-grid';
-        SNOOKER_COLORS_ORDER.forEach(colorId => {
-            grid.appendChild(snookerBtnBall(colorId));
-        });
-        zone.appendChild(grid);
+  } else if (snookerState.phase === 'color' || snookerState.phase === 'color_last') {
+    const grid = document.createElement('div');
+    grid.className = 'snooker-colors-grid';
+    SNOOKER_COLORS_ORDER.forEach(colorId => {
+      grid.appendChild(snookerBtnBall(colorId));
+    });
+    zone.appendChild(grid);
 
-    } else if (snookerState.phase === 'endgame') {
-        const grid = document.createElement('div');
-        grid.className = 'snooker-colors-grid';
-        SNOOKER_COLORS_ORDER.forEach((colorId, idx) => {
-            const btn = snookerBtnBall(colorId);
-            if (idx !== snookerState.endgameColorIdx) {
-                btn.disabled = true;
-                btn.classList.add('snooker-btn-inactive');
-            } else {
-                btn.classList.add('snooker-btn-next');
-            }
-            grid.appendChild(btn);
-        });
-        zone.appendChild(grid);
-    }
+  } else if (snookerState.phase === 'endgame') {
+    const grid = document.createElement('div');
+    grid.className = 'snooker-colors-grid';
+    SNOOKER_COLORS_ORDER.forEach((colorId, idx) => {
+      const btn = snookerBtnBall(colorId);
+      if (idx !== snookerState.endgameColorIdx) {
+        btn.disabled = true;
+        btn.classList.add('snooker-btn-inactive');
+      } else {
+        btn.classList.add('snooker-btn-next');
+      }
+      grid.appendChild(btn);
+    });
+    zone.appendChild(grid);
+  }
 
-    // Free ball (mode expert uniquement, si activée)
-    if (snookerState.freeBallActive && snookerState.mode === 'expert') {
-        const fbBtn = document.createElement('button');
-        fbBtn.className = 'btn-main btn-gold snooker-freeball-btn';
-        fbBtn.textContent = '🎱 Free Ball';
-        fbBtn.onclick = snookerPlayFreeBall;
-        zone.appendChild(fbBtn);
-    }
-
-    // // Bouton faute
-    // const faultBtn = document.createElement('button');
-    // faultBtn.className = 'btn-main btn-red snooker-fault-btn';
-    // faultBtn.textContent = '⚠️ Faute';
-    // faultBtn.onclick = snookerOpenFault;
-    // zone.appendChild(faultBtn);
+  // Free ball (mode expert uniquement, si activée)
+  if (snookerState.freeBallActive && snookerState.mode === 'expert') {
+    const fbBtn = document.createElement('button');
+    fbBtn.className = 'btn-main btn-gold snooker-freeball-btn';
+    fbBtn.textContent = '🎱 Free Ball';
+    fbBtn.onclick = snookerPlayFreeBall;
+    zone.appendChild(fbBtn);
+  }
 }
 
 

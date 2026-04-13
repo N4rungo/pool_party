@@ -90,13 +90,13 @@
 }
 
 .snooker-balls-zone {
-  min-height: 130px;   /* hauteur fixe → absorbe les changements de phase */
+  min-height: 130px;
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
+  flex-direction: column;   /* ← colonne pour empiler grille + freeball */
   align-items: center;
+  justify-content: center;
   width: 100%;
+  max-width: 280px;         /* ← largeur de référence unique */
 }
 
 
@@ -206,4 +206,15 @@
 .snooker-fault-zone .snooker-fault-btn {
   width: 100%;
   margin: 0;
+}
+
+.snooker-red-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;          /* hérite du max-width 280px du parent */
+}
+
+.snooker-red-wrap .snooker-ball-btn {
+  width: 100%;
 }
