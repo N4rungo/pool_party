@@ -340,6 +340,8 @@ function snookerNextPlayer() {
 
     if (snookerState.redsRemaining > 0) {
         snookerState.phase = 'red';
+    } else if (snookerState.redsRemaining === 0 && snookerState.phase === 'color' ) {
+        snookerState.phase = 'endgame';
     }
 }
 
