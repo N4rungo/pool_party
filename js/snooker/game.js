@@ -138,6 +138,7 @@ function snookerRenderActions() {
 }
 
 
+
 function snookerBtnBall(ballId) {
     const b = SNOOKER_BALLS[ballId];
     const btn = document.createElement('button');

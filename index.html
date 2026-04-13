@@ -620,36 +620,40 @@
 
 
   <!-- ===== SNOOKER GAME ===== -->
-  <div id="gameSnooker" class="hidden">
-    <h1>
-      <img src="assets/3_billes_snooker.png" alt="" class="icon-title">
-      SNOOKER
-    </h1>
+<div id="gameSnooker" class="hidden">
+  <h1>
+    <img src="assets/3_billes_snooker.png" alt="" class="icon-title">
+    SNOOKER
+  </h1>
 
-    <!-- Undo + Passer la main -->
-    <div class="history-bar">
-      <button class="btn-undo" id="snookerBtnUndo" onclick="snookerUndo()" disabled>↩ Annuler</button>
-      <button class="btn-pass" onclick="snookerEndTurn()">➡️ Passer la main</button>
+  <!-- Undo seul -->
+  <div class="snooker-undo-bar">
+    <button class="btn-undo" id="snookerBtnUndo" onclick="snookerUndo()" disabled>↩ Annuler</button>
+  </div>
+
+  <!-- Scoreboard -->
+  <div id="snookerScoreboard" class="snooker-scoreboard"></div>
+
+  <!-- Joueur actif + phase -->
+  <div class="snooker-active-info">
+    <div class="snooker-active-name" id="snookerActiveName"></div>
+    <div class="snooker-break-now"   id="snookerBreakNow"></div>
+    <div class="snooker-phase-label" id="snookerPhaseLabel"></div>
+  </div>
+
+  <!-- Zone centrale : billes (variable selon phase) -->
+  <div class="snooker-layout">
+    <div class="snooker-balls-zone" id="snookerActionZone"></div>
+
+    <!-- Zone basse fixe : toujours visible, toujours à la même place -->
+    <div class="snooker-bottom-zone" id="snookerBottomZone">
+      <button class="snooker-bottom-btn btn-pass" onclick="snookerEndTurn()">➡️ Passer la main</button>
+      <button class="snooker-bottom-btn btn-red"  onclick="snookerOpenFault()">⚠️ Faute</button>
     </div>
+  </div>
+</div>
 
-    <!-- Scoreboard -->
-    <div id="snookerScoreboard" class="snooker-scoreboard"></div>
 
-    <!-- Joueur actif + phase -->
-    <div class="snooker-active-info">
-      <div class="snooker-active-name" id="snookerActiveName"></div>
-      <div class="snooker-break-now" id="snookerBreakNow"></div>
-      <div class="snooker-phase-label" id="snookerPhaseLabel"></div>
-    </div>
-
-    <!-- Zone d'actions (billes cliquables) -->
-    <div class="snooker-action-zone">
-      <div class="snooker-balls-zone" id="snookerActionZone"></div>
-      <div class="snooker-fault-zone">
-        <button class="btn-main btn-red snooker-fault-btn" onclick="snookerOpenFault()">⚠️ Faute</button>
-      </div>
-    </div>
-    
   </div>
 
 
