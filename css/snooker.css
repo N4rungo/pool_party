@@ -83,12 +83,22 @@
 
 /* Zone d'actions */
 .snooker-action-zone {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-    margin: 12px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
+
+.snooker-balls-zone {
+  min-height: 130px;   /* hauteur fixe → absorbe les changements de phase */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
 
 /* Bouton bille */
 .snooker-ball-btn {
@@ -176,14 +186,24 @@
 
 /* Grille 3×2 pour les couleurs */
 .snooker-colors-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-    width: 100%;
-    max-width: 280px;
-    margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  width: 100%;
+  max-width: 280px;
 }
 
 .snooker-colors-grid .snooker-ball-btn {
     width: 100%;
+}
+
+.snooker-fault-zone {
+  width: 100%;
+  max-width: 280px;
+  margin-top: 8px;
+}
+
+.snooker-fault-zone .snooker-fault-btn {
+  width: 100%;
+  margin: 0;
 }

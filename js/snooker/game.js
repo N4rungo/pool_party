@@ -133,12 +133,12 @@ function snookerRenderActions() {
         zone.appendChild(fbBtn);
     }
 
-    // Bouton faute
-    const faultBtn = document.createElement('button');
-    faultBtn.className = 'btn-main btn-red snooker-fault-btn';
-    faultBtn.textContent = '⚠️ Faute';
-    faultBtn.onclick = snookerOpenFault;
-    zone.appendChild(faultBtn);
+    // // Bouton faute
+    // const faultBtn = document.createElement('button');
+    // faultBtn.className = 'btn-main btn-red snooker-fault-btn';
+    // faultBtn.textContent = '⚠️ Faute';
+    // faultBtn.onclick = snookerOpenFault;
+    // zone.appendChild(faultBtn);
 }
 
 
