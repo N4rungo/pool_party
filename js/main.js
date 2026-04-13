@@ -10,7 +10,10 @@ function showLauncher() {
     'casinOverlayStep1', 'casinOverlayStep2', 'casinOverlayStep3',
     'overlayCtStep1', 'overlayCtStep2', 'overlayCtTriangle',
     'overlayJoker', 'overlayTarget', 'overlayWin', 'overlayReplay',
-    'overlayCtFault', 'overlayCtFaultResult', 'overlayCtWin'
+    'overlayCtFault', 'overlayCtFaultResult', 'overlayCtWin',
+    'snookerOverlayStep1', 'snookerOverlayStep2', 'snookerOverlayStep3',
+    'snookerOverlayMultiRed', 'snookerOverlayFault', 'snookerOverlayExpertFault',
+    'snookerOverlayFreeBall', 'snookerOverlayWin'
   ].forEach(id => closeOverlay(id));
 }
 
