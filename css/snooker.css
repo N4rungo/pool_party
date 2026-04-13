@@ -1,3 +1,5 @@
+#gameSnooker.hidden { display: none; }
+
 /* Scoreboard */
 .snooker-scoreboard {
   display: flex;
