@@ -99,23 +99,29 @@ function snookerRenderActions() {
     if (snookerState.phase === 'red') {
         zone.appendChild(snookerBtnBall('red'));
         zone.appendChild(snookerBtnMultiRed());
-    } else if (snookerState.phase === 'color') {
-        Object.values(SNOOKER_BALLS).filter(b => b.id !== 'red').forEach(b => {
-            zone.appendChild(snookerBtnBall(b.id));
+
+    } else if (snookerState.phase === 'color' || snookerState.phase === 'color_last') {
+        const grid = document.createElement('div');
+        grid.className = 'snooker-colors-grid';
+        SNOOKER_COLORS_ORDER.forEach(colorId => {
+            grid.appendChild(snookerBtnBall(colorId));
         });
+        zone.appendChild(grid);
+
     } else if (snookerState.phase === 'endgame') {
-        // Seule la bonne bille est cliquable
-        SNOOKER_COLORS_ORDER.forEach((ballId, idx) => {
-            const b = SNOOKER_BALLS[ballId];
-            const btn = snookerBtnBall(ballId);
+        const grid = document.createElement('div');
+        grid.className = 'snooker-colors-grid';
+        SNOOKER_COLORS_ORDER.forEach((colorId, idx) => {
+            const btn = snookerBtnBall(colorId);
             if (idx !== snookerState.endgameColorIdx) {
                 btn.disabled = true;
                 btn.classList.add('snooker-btn-inactive');
             } else {
                 btn.classList.add('snooker-btn-next');
             }
-            zone.appendChild(btn);
+            grid.appendChild(btn);
         });
+        zone.appendChild(grid);
     }
 
     // Free ball (mode expert uniquement, si activée)
@@ -134,6 +140,7 @@ function snookerRenderActions() {
     faultBtn.onclick = snookerOpenFault;
     zone.appendChild(faultBtn);
 }
+
 
 function snookerBtnBall(ballId) {
     const b = SNOOKER_BALLS[ballId];
@@ -340,7 +347,7 @@ function snookerNextPlayer() {
 
     if (snookerState.redsRemaining > 0) {
         snookerState.phase = 'red';
-    } else if (snookerState.redsRemaining === 0 && snookerState.phase === 'color' ) {
+    } else if (snookerState.redsRemaining === 0 && snookerState.phase === 'color') {
         snookerState.phase = 'endgame';
     }
 }

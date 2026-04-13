@@ -1,171 +1,189 @@
-#gameSnooker.hidden { display: none; }
+#gameSnooker.hidden {
+    display: none;
+}
 
 /* Scoreboard */
 .snooker-scoreboard {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin: 12px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 12px 0;
 }
 
 .snooker-score-card {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 12px;
-  padding: 10px 14px;
-  transition: background 0.2s, border-color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 10px 14px;
+    transition: background 0.2s, border-color 0.2s;
 }
 
 .snooker-score-card.active {
-  background: rgba(255,215,0,0.12);
-  border-color: rgba(255,215,0,0.35);
+    background: rgba(255, 215, 0, 0.12);
+    border-color: rgba(255, 215, 0, 0.35);
 }
 
-.snooker-score-emoji { font-size: 20px; }
+.snooker-score-emoji {
+    font-size: 20px;
+}
 
 .snooker-score-name {
-  flex: 1;
-  font-size: 15px;
-  font-weight: 600;
-  color: #fff;
+    flex: 1;
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
 }
 
 .snooker-score-pts {
-  font-size: 22px;
-  font-weight: 700;
-  color: #ffd700;
-  min-width: 40px;
-  text-align: right;
+    font-size: 22px;
+    font-weight: 700;
+    color: #ffd700;
+    min-width: 40px;
+    text-align: right;
 }
 
 .snooker-best-break {
-  font-size: 12px;
-  color: rgba(255,255,255,0.4);
-  min-width: 52px;
-  text-align: right;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.4);
+    min-width: 52px;
+    text-align: right;
 }
 
 /* Infos joueur actif */
 .snooker-active-info {
-  text-align: center;
-  margin: 10px 0 6px;
+    text-align: center;
+    margin: 10px 0 6px;
 }
 
 .snooker-active-name {
-  font-size: 18px;
-  font-weight: 700;
-  color: #ffd700;
+    font-size: 18px;
+    font-weight: 700;
+    color: #ffd700;
 }
 
 .snooker-break-now {
-  font-size: 13px;
-  color: rgba(255,255,255,0.55);
-  margin: 2px 0;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.55);
+    margin: 2px 0;
 }
 
 .snooker-phase-label {
-  font-size: 14px;
-  font-weight: 600;
-  color: rgba(255,255,255,0.85);
-  background: rgba(255,255,255,0.07);
-  border-radius: 8px;
-  padding: 4px 12px;
-  display: inline-block;
-  margin-top: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.85);
+    background: rgba(255, 255, 255, 0.07);
+    border-radius: 8px;
+    padding: 4px 12px;
+    display: inline-block;
+    margin-top: 4px;
 }
 
 /* Zone d'actions */
 .snooker-action-zone {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-  margin: 12px 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin: 12px 0;
 }
 
 /* Bouton bille */
 .snooker-ball-btn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  background: rgba(255,255,255,0.07);
-  border: 2px solid rgba(255,255,255,0.12);
-  border-radius: 14px;
-  padding: 10px 14px;
-  cursor: pointer;
-  transition: background 0.15s, border-color 0.15s, transform 0.1s;
-  min-width: 64px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    background: rgba(255, 255, 255, 0.07);
+    border: 2px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, transform 0.1s;
+    min-width: 64px;
 }
 
 .snooker-ball-btn:hover:not(:disabled) {
-  background: rgba(255,255,255,0.14);
-  border-color: rgba(255,215,0,0.4);
-  transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 215, 0, 0.4);
+    transform: translateY(-2px);
 }
 
 .snooker-ball-btn:active:not(:disabled) {
-  transform: translateY(0);
+    transform: translateY(0);
 }
 
 .snooker-ball-btn img {
-  width: 44px;
-  height: 44px;
-  object-fit: contain;
+    width: 44px;
+    height: 44px;
+    object-fit: contain;
 }
 
 .snooker-ball-btn span {
-  font-size: 12px;
-  font-weight: 600;
-  color: rgba(255,255,255,0.7);
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
 }
 
 /* Bille non cliquable en phase finale (pas grisée, juste éteinte) */
 .snooker-ball-btn.snooker-btn-inactive {
-  opacity: 0.3;
-  cursor: not-allowed;
-  border-color: transparent;
+    opacity: 0.3;
+    cursor: not-allowed;
+    border-color: transparent;
 }
 
 /* Bille à jouer en phase finale (mise en évidence subtile) */
 .snooker-ball-btn.snooker-btn-next {
-  border-color: rgba(255,215,0,0.6);
-  background: rgba(255,215,0,0.1);
-  box-shadow: 0 0 10px rgba(255,215,0,0.2);
+    border-color: rgba(255, 215, 0, 0.6);
+    background: rgba(255, 215, 0, 0.1);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
 }
 
 /* Boutons spéciaux */
 .snooker-multired-btn,
 .snooker-fault-btn,
 .snooker-freeball-btn {
-  width: 100%;
-  margin-top: 4px;
+    width: 100%;
+    margin-top: 4px;
 }
 
 .btn-red {
-  background: rgba(180,30,30,0.7);
-  border-color: rgba(220,50,50,0.5);
+    background: rgba(180, 30, 30, 0.7);
+    border-color: rgba(220, 50, 50, 0.5);
 }
 
 .btn-red:hover {
-  background: rgba(200,40,40,0.85);
+    background: rgba(200, 40, 40, 0.85);
 }
 
 /* History bar (btn-pass) */
 .btn-pass {
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.15);
-  border-radius: 10px;
-  color: #fff;
-  font-size: 13px;
-  padding: 6px 14px;
-  cursor: pointer;
-  transition: background 0.15s;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    color: #fff;
+    font-size: 13px;
+    padding: 6px 14px;
+    cursor: pointer;
+    transition: background 0.15s;
 }
 
 .btn-pass:hover {
-  background: rgba(255,255,255,0.15);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* Grille 3×2 pour les couleurs */
+.snooker-colors-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
+}
+
+.snooker-colors-grid .snooker-ball-btn {
+    width: 100%;
 }
