@@ -280,21 +280,24 @@ function snookerConfirmFault() {
 // Mode expert : choix après faute
 function snookerExpertFaultChoice(replay) {
     closeOverlay('snookerOverlayExpertFault');
-    const val = snookerState._faultVal;
-    const nextIdx = snookerNextIndex();
+    const val       = snookerState._faultVal;
+    const faulterIdx = snookerState.currentIndex;
+    const nextIdx   = snookerNextIndex();
 
-    // Points toujours accordés à l'adversaire
-    snookerState.players[nextIdx].score += val;
+    // Points toujours accordés à tous les non-fautifs
+    snookerState.players.forEach((p, i) => {
+        if (i !== faulterIdx) p.score += val;
+    });
 
     if (replay) {
         // Fautif rejoue — currentIndex ne change pas
         snookerState.mustReplay = true;
-        snookerState.freeBall = false;
+        snookerState.freeBall   = false;
         snookerRender();
     } else {
-        // Adversaire prend la main
+        // Le joueur suivant prend la main
         snookerState.currentIndex = nextIdx;
-        snookerState.mustReplay = false;
+        snookerState.mustReplay   = false;
         if (snookerState.phase === 'red' || snookerState.phase === 'endgame') {
             snookerState.freeBall = true;
             snookerOpenFreeBallChoice();
