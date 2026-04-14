@@ -320,6 +320,7 @@ function snookerConfirmFault() {
 
     // Reset break du fautif
     const faulter = snookerState.players[snookerState.currentIndex];
+    if (faulter.currentBreak > faulter.bestBreak) faulter.bestBreak = faulter.currentBreak; // ← ajout
     faulter.currentBreak = 0;
 
     if (mode === 'simple') {
