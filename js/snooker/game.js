@@ -93,48 +93,48 @@ function snookerEndgameLabel() {
 }
 
 function snookerRenderActions() {
-  const zone = document.getElementById('snookerActionZone');
-  zone.innerHTML = '';
+    const zone = document.getElementById('snookerActionZone');
+    zone.innerHTML = '';
 
-  if (snookerState.phase === 'red') {
-    const wrap = document.createElement('div');
-    wrap.className = 'snooker-red-wrap';
-    wrap.appendChild(snookerBtnBall('red'));
-    wrap.appendChild(snookerBtnMultiRed());
-    zone.appendChild(wrap);
+    if (snookerState.phase === 'red') {
+        const wrap = document.createElement('div');
+        wrap.className = 'snooker-red-wrap';
+        wrap.appendChild(snookerBtnBall('red'));
+        wrap.appendChild(snookerBtnMultiRed());
+        zone.appendChild(wrap);
 
-  } else if (snookerState.phase === 'color' || snookerState.phase === 'color_last') {
-    const grid = document.createElement('div');
-    grid.className = 'snooker-colors-grid';
-    SNOOKER_COLORS_ORDER.forEach(colorId => {
-      grid.appendChild(snookerBtnBall(colorId));
-    });
-    zone.appendChild(grid);
+    } else if (snookerState.phase === 'color' || snookerState.phase === 'color_last') {
+        const grid = document.createElement('div');
+        grid.className = 'snooker-colors-grid';
+        SNOOKER_COLORS_ORDER.forEach(colorId => {
+            grid.appendChild(snookerBtnBall(colorId));
+        });
+        zone.appendChild(grid);
 
-  } else if (snookerState.phase === 'endgame') {
-    const grid = document.createElement('div');
-    grid.className = 'snooker-colors-grid';
-    SNOOKER_COLORS_ORDER.forEach((colorId, idx) => {
-      const btn = snookerBtnBall(colorId);
-      if (idx !== snookerState.endgameColorIdx) {
-        btn.disabled = true;
-        btn.classList.add('snooker-btn-inactive');
-      } else {
-        btn.classList.add('snooker-btn-next');
-      }
-      grid.appendChild(btn);
-    });
-    zone.appendChild(grid);
-  }
+    } else if (snookerState.phase === 'endgame') {
+        const grid = document.createElement('div');
+        grid.className = 'snooker-colors-grid';
+        SNOOKER_COLORS_ORDER.forEach((colorId, idx) => {
+            const btn = snookerBtnBall(colorId);
+            if (idx !== snookerState.endgameColorIdx) {
+                btn.disabled = true;
+                btn.classList.add('snooker-btn-inactive');
+            } else {
+                btn.classList.add('snooker-btn-next');
+            }
+            grid.appendChild(btn);
+        });
+        zone.appendChild(grid);
+    }
 
-  // Free ball (mode expert uniquement, si activée)
-  if (snookerState.freeBallActive && snookerState.mode === 'expert') {
-    const fbBtn = document.createElement('button');
-    fbBtn.className = 'btn-main btn-gold snooker-freeball-btn';
-    fbBtn.textContent = '🎱 Free Ball';
-    fbBtn.onclick = snookerPlayFreeBall;
-    zone.appendChild(fbBtn);
-  }
+    // Free ball (mode expert uniquement, si activée)
+    if (snookerState.freeBallActive && snookerState.mode === 'expert') {
+        const fbBtn = document.createElement('button');
+        fbBtn.className = 'btn-main btn-gold snooker-freeball-btn';
+        fbBtn.textContent = '🎱 Free Ball';
+        fbBtn.onclick = snookerPlayFreeBall;
+        zone.appendChild(fbBtn);
+    }
 }
 
 
@@ -278,30 +278,32 @@ function snookerConfirmFault() {
 }
 
 // Mode expert : choix après faute
-function snookerExpertFaultChoice(takePoints, replay) {
+function snookerExpertFaultChoice(replay) {
     closeOverlay('snookerOverlayExpertFault');
-    const val    = snookerState._faultVal;
-    const nextIdx = snookerNextIndex(); // index de l'adversaire (receveur)
+    const val = snookerState._faultVal;
+    const nextIdx = snookerNextIndex();
 
-    if (takePoints) {
-        snookerState.players[nextIdx].score += val;
-    }
+    // Points toujours accordés à l'adversaire
+    snookerState.players[nextIdx].score += val;
 
     if (replay) {
-        // C'est le joueur SUIVANT (nextIdx) qui rejoue, pas le fautif
+        // Fautif rejoue — currentIndex ne change pas
+        snookerState.mustReplay = true;
+        snookerState.freeBall = false;
+        snookerRender();
+    } else {
+        // Adversaire prend la main
         snookerState.currentIndex = nextIdx;
-        snookerState.mustReplay   = true;
-        // Free ball proposée au joueur qui va rejouer
+        snookerState.mustReplay = false;
         if (snookerState.phase === 'red' || snookerState.phase === 'endgame') {
             snookerState.freeBall = true;
             snookerOpenFreeBallChoice();
             return;
         }
-    } else {
-        snookerNextPlayer();
+        snookerRender();
     }
-    snookerRender();
 }
+
 
 // ── Free Ball ────────────────────────────────────────────────
 function snookerOpenFreeBallChoice() {
@@ -330,13 +332,13 @@ function snookerPlayFreeBall() {
         // phase reste 'endgame'
     }
 
-    player.score        += pts;
+    player.score += pts;
     player.currentBreak += pts;
     if (player.currentBreak > player.bestBreak) player.bestBreak = player.currentBreak;
 
     snookerState.freeBallActive = false;
-    snookerState.freeBall       = false;
-    snookerState.mustReplay     = false;
+    snookerState.freeBall = false;
+    snookerState.mustReplay = false;
 
     snookerRender();
 }
