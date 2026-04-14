@@ -263,6 +263,7 @@ function snookerConfirmMultiShot() {
 
   // Appliquer les points
   snookerState.players[snookerState.currentIndex].score += redPts + colorPts;
+  snookerState.players[snookerState.currentIndex].currentBreak += redPts + colorPts;
 
   // Retirer les rouges
   snookerState.redsRemaining -= ms.reds;
