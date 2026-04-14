@@ -196,18 +196,15 @@ function snookerPocketBall(ballId) {
 
 // ── Multi-billes ─────────────────────────────────────────────
 function snookerOpenMultiShot() {
-  // Init état temporaire
   snookerState.multiShot = {
     reds: Math.min(1, snookerState.redsRemaining),
-    colors: {}, // colorId → true/false
+    colors: {},
   };
-
-  // Remettre les checkboxes à zéro
   SNOOKER_COLORS_ORDER.forEach(c => {
     snookerState.multiShot.colors[c] = false;
   });
 
-  snookerMultiShotRenderColors();
+  snookerMultiShotRenderColors(); // recrée les boutons → pas de classe résiduelle
   snookerMultiShotUpdateUI();
   document.getElementById('snookerOverlayMultiShot').classList.remove('hidden');
 }
@@ -239,7 +236,7 @@ function snookerMultiShotRenderColors() {
 function snookerMultiShotToggleColor(colorId) {
   snookerState.multiShot.colors[colorId] = !snookerState.multiShot.colors[colorId];
   const btn = document.getElementById(`snookerMultiColor_${colorId}`);
-  btn.classList.toggle('snooker-btn-inactive', !snookerState.multiShot.colors[colorId]);
+  btn.classList.toggle('snooker-btn-inactive', snookerState.multiShot.colors[colorId]);
   snookerMultiShotUpdateUI();
 }
 
