@@ -1,6 +1,9 @@
 function showChicagoSetup() {
   document.getElementById('launcher').classList.add('hidden');
   document.getElementById('overlayChicagoSetup').classList.remove('hidden');
+  
+  bindEnterKey('chicagoName1', startChicagoGame);
+  bindEnterKey('chicagoName2', startChicagoGame);
 }
 
 function startChicagoGame() {

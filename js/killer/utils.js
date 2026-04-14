@@ -18,3 +18,21 @@ function showToast(msg) {
   document.body.appendChild(t);
   setTimeout(() => t.remove(), 3000);
 }
+
+/**
+ * Lie la touche Entrée d'un input à une fonction callback.
+ * À appeler à chaque fois que l'input est affiché.
+ */
+function bindEnterKey(inputId, callback) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+  // Retirer l'ancien listener pour éviter les doublons
+  input._enterHandler && input.removeEventListener('keydown', input._enterHandler);
+  input._enterHandler = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      callback();
+    }
+  };
+  input.addEventListener('keydown', input._enterHandler);
+}

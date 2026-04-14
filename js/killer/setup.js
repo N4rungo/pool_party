@@ -35,6 +35,7 @@ function showStep2() {
   document.getElementById('btnPrevPlayer').style.display = i === 0 ? 'none' : 'flex';
   renderHeartsPicker(p.lives);
   document.getElementById('overlayStep2').classList.remove('hidden');
+  bindEnterKey('step2Name', savePlayerAndNext);
 }
 
 function renderHeartsPicker(currentLives) {

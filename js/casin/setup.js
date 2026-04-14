@@ -49,6 +49,7 @@ function casinShowStep2() {
     document.getElementById('casinBtnPrev').disabled = i === 0;
 
     document.getElementById('casinOverlayStep2').classList.remove('hidden');
+    bindEnterKey('casinStep2Name', casinSaveAndNext);
 }
 
 function casinStep2ChangeX(delta) {

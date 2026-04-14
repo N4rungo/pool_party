@@ -34,6 +34,7 @@ function ctShowPlayerSetup() {
   document.getElementById('ctBtnPrevPlayer').disabled = i === 0;
 
   document.getElementById('overlayCtStep2').classList.remove('hidden');
+  bindEnterKey('ctPlayerName', ctSavePlayerAndNext);
 }
 
 function ctSavePlayerAndNext() {

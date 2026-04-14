@@ -31,6 +31,7 @@ function snookerShowStep2() {
   document.getElementById('snookerBtnPrev').classList.toggle('hidden', i === 0);
   document.getElementById('snookerOverlayStep2').classList.remove('hidden');
   setTimeout(() => document.getElementById('snookerStep2Name').focus(), 100);
+  bindEnterKey('snookerStep2Name', snookerSaveAndNext);
 }
 
 function snookerSaveAndNext() {
