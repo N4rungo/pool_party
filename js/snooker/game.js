@@ -225,27 +225,26 @@ function snookerMultiShotRenderColors() {
     return `
       <label style="display:flex;align-items:center;gap:10px;font-size:14px;cursor:pointer;">
         <input type="checkbox" id="snookerMultiColor_${colorId}"
-          onchange="snookerMultiShotToggleColor('${colorId}')"
-          style="width:18px;height:18px;cursor:pointer;">
-        <span>${ball.icon ?? colorId} ${ball.label ?? colorId} (${ball.points} pts)</span>
+          onchange="snookerMultiShotToggleColor('${colorId}')">
+        <img src="${ball.icon}" style="width:24px;height:24px;object-fit:contain;">
+        <span>${ball.label} (${ball.points} pt${ball.points > 1 ? 's' : ''})</span>
       </label>`;
   }).join('');
 }
 
 function snookerMultiShotToggleColor(colorId) {
-  const checked = document.getElementById(`snookerMultiColor_${colorId}`).checked;
-  snookerState.multiShot.colors[colorId] = checked;
+  snookerState.multiShot.colors[colorId] =
+    document.getElementById(`snookerMultiColor_${colorId}`).checked;
   snookerMultiShotUpdateUI();
 }
 
 function snookerMultiShotUpdateUI() {
-  document.getElementById('snookerMultiShotRedCount').textContent = snookerState.multiShot.reds;
-
   const redPts = snookerState.multiShot.reds * SNOOKER_BALLS.red.points;
   const colorPts = SNOOKER_COLORS_ORDER
     .filter(c => snookerState.multiShot.colors[c])
     .reduce((sum, c) => sum + SNOOKER_BALLS[c].points, 0);
 
+  document.getElementById('snookerMultiShotRedCount').textContent = snookerState.multiShot.reds;
   document.getElementById('snookerMultiShotTotal').textContent = redPts + colorPts;
 }
 

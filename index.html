@@ -526,22 +526,30 @@
   </div>
 
 
-  <!-- ===== SNOOKER : MULTI-ROUGES ===== -->
-  <div class="overlay hidden" id="snookerOverlayMultiRed">
+  <!-- ===== SNOOKER : COUP MULTIPLE ===== -->
+  <div class="overlay hidden" id="snookerOverlayMultiShot">
     <div class="popup-box">
-      <h2>🔴 Plusieurs rouges</h2>
-      <div style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:16px;">
-        Combien de rouges sont rentrées ?
-      </div>
+      <h2>🔴🔴 Coup multiple</h2>
+
+      <div class="label-small">Nombre de rouges empochées</div>
       <div class="number-selector">
-        <button class="btn-round" onclick="snookerMultiRedChange(-1)">−</button>
-        <span id="snookerMultiRedCount">2</span>
-        <button class="btn-round" onclick="snookerMultiRedChange(+1)">+</button>
+        <button class="btn-round" onclick="snookerMultiShotRedChange(-1)">−</button>
+        <span id="snookerMultiShotRedCount">1</span>
+        <button class="btn-round" onclick="snookerMultiShotRedChange(+1)">+</button>
       </div>
-      <button class="btn-main btn-gold" onclick="snookerConfirmMultiRed()">Valider</button>
-      <button class="btn-main btn-gray" onclick="closeOverlay('snookerOverlayMultiRed')">Annuler</button>
+
+      <div class="label-small" style="margin-top:14px;">Couleurs empochées également</div>
+      <div id="snookerMultiShotColors" style="display:flex;flex-direction:column;gap:8px;margin:8px 0 16px;"></div>
+
+      <div style="font-size:15px;font-weight:600;margin-bottom:16px;">
+        Total : <span id="snookerMultiShotTotal">1</span> pts
+      </div>
+
+      <button class="btn-main btn-gold" onclick="snookerConfirmMultiShot()">✅ Valider</button>
+      <button class="btn-main btn-gray" onclick="closeOverlay('snookerOverlayMultiShot')">Annuler</button>
     </div>
   </div>
+
 
   <!-- ===== SNOOKER : FAUTE ===== -->
   <div class="overlay hidden" id="snookerOverlayFault">
@@ -574,6 +582,7 @@
 
       <button class="btn-main btn-gold" onclick="snookerExpertFaultChoice(true)">🔄 Faire rejouer le fautif</button>
       <button class="btn-main btn-gold" onclick="snookerExpertFaultChoice(false)">✋ Prendre la main</button>
+
     </div>
   </div>
 
