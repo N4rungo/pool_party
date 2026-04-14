@@ -220,21 +220,26 @@ function snookerMultiShotRedChange(delta) {
 
 function snookerMultiShotRenderColors() {
   const container = document.getElementById('snookerMultiShotColors');
-  container.innerHTML = SNOOKER_COLORS_ORDER.map(colorId => {
-    const ball = SNOOKER_BALLS[colorId];
-    return `
-      <label style="display:flex;align-items:center;gap:10px;font-size:14px;cursor:pointer;">
-        <input type="checkbox" id="snookerMultiColor_${colorId}"
-          onchange="snookerMultiShotToggleColor('${colorId}')">
-        <img src="${ball.icon}" style="width:24px;height:24px;object-fit:contain;">
-        <span>${ball.label} (${ball.points} pt${ball.points > 1 ? 's' : ''})</span>
-      </label>`;
-  }).join('');
+  container.innerHTML = `
+    <div class="snooker-colors-grid">
+      ${SNOOKER_COLORS_ORDER.map(colorId => {
+        const ball = SNOOKER_BALLS[colorId];
+        return `
+          <button
+            class="snooker-ball-btn"
+            id="snookerMultiColor_${colorId}"
+            onclick="snookerMultiShotToggleColor('${colorId}')">
+            <img src="${ball.icon}" alt="${ball.label}">
+            <span class="snooker-ball-pts">${ball.points} pts</span>
+          </button>`;
+      }).join('')}
+    </div>`;
 }
 
 function snookerMultiShotToggleColor(colorId) {
-  snookerState.multiShot.colors[colorId] =
-    document.getElementById(`snookerMultiColor_${colorId}`).checked;
+  snookerState.multiShot.colors[colorId] = !snookerState.multiShot.colors[colorId];
+  const btn = document.getElementById(`snookerMultiColor_${colorId}`);
+  btn.classList.toggle('snooker-btn-inactive', !snookerState.multiShot.colors[colorId]);
   snookerMultiShotUpdateUI();
 }
 
@@ -249,29 +254,36 @@ function snookerMultiShotUpdateUI() {
 }
 
 function snookerConfirmMultiShot() {
-  closeOverlay('snookerOverlayMultiShot');
+  const ms = snookerState.multiShot;
+
+  // Calcul des points
+  const redPts   = ms.reds * SNOOKER_BALLS.red.points;
+  const colorPts = SNOOKER_COLORS_ORDER
+    .filter(c => ms.colors[c])
+    .reduce((sum, c) => sum + SNOOKER_BALLS[c].points, 0);
+
   snookerSaveHistory();
 
-  const player = snookerState.players[snookerState.currentIndex];
-  const { reds, colors } = snookerState.multiShot;
+  // Appliquer les points
+  snookerState.players[snookerState.currentIndex].score += redPts + colorPts;
 
-  const redPts = reds * SNOOKER_BALLS.red.points;
-  const colorPts = SNOOKER_COLORS_ORDER
-    .filter(c => colors[c])
-    .reduce((sum, c) => sum + SNOOKER_BALLS[c].points, 0);
-  const total = redPts + colorPts;
+  // Retirer les rouges
+  snookerState.redsRemaining -= ms.reds;
 
-  player.score += total;
-  player.currentBreak += total;
-  if (player.currentBreak > player.bestBreak) player.bestBreak = player.currentBreak;
+  closeOverlay('snookerOverlayMultiShot');
 
-  snookerState.redsRemaining -= reds;
-  // Les couleurs empochées avec une rouge sont remises sur table → pas de retrait
-  // Phase suivante : couleur (si rouges restantes) ou endgame
-  snookerState.phase = snookerState.redsRemaining > 0 ? 'color' : 'endgame';
+  if (snookerState.redsRemaining > 0) {
+    // Il reste des rouges → phase couleur normale (bille remise en jeu)
+    snookerState.phase = 'color';
+  } else {
+    // Plus de rouges → le joueur doit encore jouer UNE couleur, puis endgame
+    snookerState.phase = 'color';  // pas endgame : la couleur suivante sera remise, puis endgame
+  }
 
   snookerRender();
+  showToast(`🔴×${ms.reds} + couleurs : +${redPts + colorPts} pts`);
 }
+
 
 // ── Fault ────────────────────────────────────────────────────
 function snookerOpenFault() {
