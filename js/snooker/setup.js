@@ -27,6 +27,7 @@ function snookerShowStep2() {
   const n   = snookerSetup.count;
   document.getElementById('snookerStep2Progress').textContent = `Joueur ${i + 1} / ${n}`;
   document.getElementById('snookerStep2Emoji').textContent    = EMOJIS[i % EMOJIS.length];
+  document.getElementById('snookerStep2Title').textContent = `Joueur ${i + 1}`;
   document.getElementById('snookerStep2Name').value           = snookerSetup.players[i].name || '';
   document.getElementById('snookerBtnPrev').classList.toggle('hidden', i === 0);
   document.getElementById('snookerOverlayStep2').classList.remove('hidden');
