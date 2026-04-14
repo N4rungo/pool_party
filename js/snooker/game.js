@@ -280,17 +280,19 @@ function snookerConfirmFault() {
 // Mode expert : choix après faute
 function snookerExpertFaultChoice(takePoints, replay) {
     closeOverlay('snookerOverlayExpertFault');
-    const val = snookerState._faultVal;
-    const nextIdx = snookerNextIndex();
+    const val    = snookerState._faultVal;
+    const nextIdx = snookerNextIndex(); // index de l'adversaire (receveur)
 
     if (takePoints) {
         snookerState.players[nextIdx].score += val;
     }
+
     if (replay) {
-        // Le joueur fautif rejoue (on ne change pas currentIndex)
-        snookerState.mustReplay = true;
-        // Proposer free ball ?
-        if (snookerState.phase === 'red' || snookerState.phase === 'color') {
+        // C'est le joueur SUIVANT (nextIdx) qui rejoue, pas le fautif
+        snookerState.currentIndex = nextIdx;
+        snookerState.mustReplay   = true;
+        // Free ball proposée au joueur qui va rejouer
+        if (snookerState.phase === 'red' || snookerState.phase === 'endgame') {
             snookerState.freeBall = true;
             snookerOpenFreeBallChoice();
             return;
@@ -315,13 +317,27 @@ function snookerConfirmFreeBall(useFreeBall) {
 function snookerPlayFreeBall() {
     snookerSaveHistory();
     const player = snookerState.players[snookerState.currentIndex];
-    // Free ball vaut 1 pt si phase rouge, sinon valeur de la couleur visée
-    const pts = snookerState.phase === 'red' ? 1 : snookerGetMinFault();
-    player.score += pts;
+    let pts;
+
+    if (snookerState.phase === 'red') {
+        pts = 1;
+        // Après free ball en phase rouge → jouer une couleur
+        snookerState.phase = 'color';
+    } else if (snookerState.phase === 'endgame') {
+        const ball = SNOOKER_COLORS_ORDER[snookerState.endgameColorIdx];
+        pts = SNOOKER_BALLS[ball].points;
+        // endgameColorIdx ne bouge PAS, la bille "on" reste à jouer
+        // phase reste 'endgame'
+    }
+
+    player.score        += pts;
     player.currentBreak += pts;
     if (player.currentBreak > player.bestBreak) player.bestBreak = player.currentBreak;
+
     snookerState.freeBallActive = false;
-    snookerState.freeBall = false;
+    snookerState.freeBall       = false;
+    snookerState.mustReplay     = false;
+
     snookerRender();
 }
 
