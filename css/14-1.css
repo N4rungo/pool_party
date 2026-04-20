@@ -106,3 +106,34 @@
   border: 1px solid rgba(220, 50, 50, 0.4);
   color: #ff6b6b;
 }
+
+/* ── Classement victoire ────────────────────────────── */
+.sp-win-ranking {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.sp-ranking-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.sp-ranking-winner {
+  background: rgba(255, 200, 50, 0.12);
+  border: 1px solid rgba(255, 200, 50, 0.3);
+  color: #fff;
+}
+
+.sp-rank       { font-weight: 700; min-width: 18px; }
+.sp-rank-emoji { font-size: 18px; }
+.sp-rank-name  { flex: 1; }
+.sp-rank-score { font-weight: 700; }
+.sp-rank-break { font-size: 12px; color: rgba(255,255,255,0.45); margin-left: 6px; }
