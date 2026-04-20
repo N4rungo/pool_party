@@ -28,7 +28,7 @@
     <div class="games-list">
 
       <div class="game-card available" onclick="launchGame('killer')">
-        <div class="game-icon"><img src="assets/bille_8_killer.png" alt="Chicago"></div>
+        <div class="game-icon"><img src="assets/bille_8_killer.png" alt="Killer"></div>
         <div class="game-info">
           <div class="game-name">Killer</div>
           <div class="game-tagline">There can be only one</div>
@@ -212,6 +212,20 @@
     </div>
   </div>
 
+  <!-- ===== GAME SCREEN ===== -->
+  <div id="game" class="hidden">
+    <h1 id="killerTitle"><img src="assets/bille_8_killer.png" alt="Killer"> KILLER</h1>
+    <div class="history-bar">
+      <button class="btn-undo" id="btnUndo" onclick="undoAction()">↩ Annuler</button>
+    </div>
+    <div id="poolZone"></div>
+    <div class="players-list" id="playersList"></div>
+    <div class="action-zone">
+      <div class="action-title" id="actionTitle">Tour de —</div>
+      <div class="action-buttons" id="actionButtons"></div>
+    </div>
+  </div>
+
   <!-- ===== CHICAGO SETUP ===== -->
   <div class="overlay hidden" id="overlayChicagoSetup">
     <div class="popup-box">
@@ -286,19 +300,6 @@
     </div>
   </div>
 
-  <!-- ===== GAME SCREEN ===== -->
-  <div id="game" class="hidden">
-    <h1 id="killerTitle">🎱 KILLER</h1>
-    <div class="history-bar">
-      <button class="btn-undo" id="btnUndo" onclick="undoAction()">↩ Annuler</button>
-    </div>
-    <div id="poolZone"></div>
-    <div class="players-list" id="playersList"></div>
-    <div class="action-zone">
-      <div class="action-title" id="actionTitle">Tour de —</div>
-      <div class="action-buttons" id="actionButtons"></div>
-    </div>
-  </div>
 
   <!-- 14-1 Continu -->
   <!-- STEP 1 -->
