@@ -165,7 +165,8 @@
       <h2>📋 Récapitulatif</h2>
       <div style="font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:4px;" id="recapMode"></div>
       <div class="recap-list" id="recapList"></div>
-      <button class="btn-main btn-gold" onclick="startGame()">🎱 Lancer la partie !</button>
+      <button class="btn-main btn-gold" onclick="startGame()"><img src="assets/bille_8_killer.png" alt="Killer"> Lancer
+        la partie !</button>
       <button class="btn-main btn-gray" onclick="goToStep2FromRecap()">← Modifier</button>
     </div>
   </div>
@@ -214,7 +215,7 @@
 
   <!-- ===== GAME SCREEN ===== -->
   <div id="game" class="hidden">
-    <h1 id="killerTitle"><img src="assets/bille_8_killer.png" alt="Killer"> KILLER</h1>
+    <h1 id="killerTitle"><img src="assets/bille_8_killer.png" alt="Killer" class="icon-title"> KILLER</h1>
     <div class="history-bar">
       <button class="btn-undo" id="btnUndo" onclick="undoAction()">↩ Annuler</button>
     </div>
@@ -261,7 +262,7 @@
   <!-- ===== CHICAGO GAME ===== -->
   <div id="gameChicago" class="hidden">
     <h1>
-      <img src="assets/3_billes_americain.png" alt="" class="icon-title">
+      <img src="assets/3_billes_americain.png" alt="Chicago" class="icon-title">
       CHICAGO
     </h1>
 
