@@ -2,6 +2,7 @@ function showLauncher() {
   document.getElementById('launcher').classList.remove('hidden');
   document.getElementById('game').classList.add('hidden');
   document.getElementById('gameChicago').classList.add('hidden');
+  document.getElementById('spGame').classList.add('hidden');
   document.getElementById('casinGame').classList.add('hidden');
   document.getElementById('ctGame').classList.add('hidden');
   document.getElementById('gameSnooker').classList.add('hidden');
@@ -30,6 +31,8 @@ function launchGame(game) {
     ctLaunchGame();
   } else if (game === 'snooker') {
     snookerLaunchGame();
+  } else if (game === 'straightpool') {
+    spShowSetup();
   } else {
     showToast('🚧 Bientôt disponible !');
   }
