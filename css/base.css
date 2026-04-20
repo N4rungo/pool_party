@@ -66,8 +66,8 @@ h1 {
 
 /* ── Icônes assets (remplacement emoji) ─────────────── */
 .icon-img {
-  width:  1em;
-  height: 1em;
+  width:  1.25em;
+  height: 1.25em;
   object-fit: contain;
   vertical-align: middle;
   display: inline-block;
