@@ -142,7 +142,6 @@ function spEndGame(winner) {
     const isWin  = p === winner;
     return `
       <div class="sp-ranking-row ${isWin ? 'sp-ranking-winner' : ''}">
-        <span class="sp-rank">${i + 1}.</span>
         <span class="sp-rank-emoji">${EMOJIS[idx % EMOJIS.length]}</span>
         <span class="sp-rank-name">${p.name}</span>
         <span class="sp-rank-score">${p.score} pts</span>

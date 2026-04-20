@@ -134,6 +134,6 @@
 
 .sp-rank       { font-weight: 700; min-width: 18px; }
 .sp-rank-emoji { font-size: 18px; }
-.sp-rank-name  { flex: 1; }
+/* .sp-rank-name  { flex: 1; } */
 .sp-rank-score { font-weight: 700; }
 .sp-rank-break { font-size: 12px; color: rgba(255,255,255,0.45); margin-left: 6px; }
