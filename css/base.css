@@ -62,3 +62,19 @@ h1 {
     transform: translateX(-50%) translateY(0);
   }
 }
+
+
+/* ── Icônes assets (remplacement emoji) ─────────────── */
+.icon-img {
+  width:  1em;
+  height: 1em;
+  object-fit: contain;
+  vertical-align: middle;
+  display: inline-block;
+}
+
+/* Variantes de taille */
+.icon-img.sm  { width: 0.85em; height: 0.85em; }
+.icon-img.md  { width: 1.25em; height: 1.25em; }
+.icon-img.lg  { width: 1.5em;  height: 1.5em;  }
+.icon-img.xl  { width: 2em;    height: 2em;    }

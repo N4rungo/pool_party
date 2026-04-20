@@ -105,7 +105,7 @@ function renderActions() {
   document.getElementById('actionButtons').innerHTML = `
     <button class="btn-action btn-hit"   onclick="doAction('hit')">✅ Tir réussi</button>
     <button class="btn-action btn-miss"  onclick="doAction('miss')">⚪❌ Tir raté</button>
-    <button class="btn-action btn-black" onclick="doAction('black')"><img src="assets/bille_8_killer.png" alt="Killer"> Bille noire</button>
+    <button class="btn-action btn-black" onclick="doAction('black')"><img src="assets/bille_8_killer.png" alt="Killer" class="icon-img"> Bille noire</button>
     <button class="btn-action btn-joker" onclick="openJokerMenu()"
       ${!hasJoker ? 'disabled' : ''}>
       🃏 Joker${isForced ? ' (bloqué)' : player.jokersUsed >= MAX_JOKERS ? ' (épuisé)' : ''}
