@@ -1,6 +1,8 @@
 function closeOverlay(id) {
-  document.getElementById(id).classList.add('hidden');
+  const el = document.getElementById(id);
+  if (el) el.classList.add('hidden');
 }
+
 
 function shuffleArray(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
