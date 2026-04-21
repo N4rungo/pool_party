@@ -7,12 +7,6 @@
 #casinGame.hidden { display: none; }
 
 /* ===== HEADER ===== */
-.casin-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
 
 .casin-current-label {
   font-size: 12px;
@@ -27,18 +21,6 @@
   color: #FFD700;
   text-shadow: 0 0 12px rgba(255,215,0,0.4);
 }
-
-.casin-undo-btn {
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.25);
-  color: rgba(255,255,255,0.7);
-  border-radius: 50px;
-  padding: 7px 16px;
-  font-family: inherit;
-  font-size: 13px;
-  cursor: pointer;
-}
-.casin-undo-btn:disabled { opacity: 0.3; cursor: default; }
 
 /* ===== SCOREBOARD ===== */
 .casin-scoreboard {
@@ -168,24 +150,6 @@
   color: rgba(244,67,54,0.8);
   margin-top: 2px;
 }
-
-/* ===== NEXT BTN ===== */
-.casin-next-btn {
-  width: 100%;
-  padding: 16px;
-  border-radius: 50px;
-  border: none;
-  font-family: inherit;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  background: linear-gradient(145deg, #1976D2, #0D47A1);
-  color: white;
-  box-shadow: 0 4px 0 #0a2f6b;
-  transition: transform .1s;
-  margin-bottom: 10px;
-}
-.casin-next-btn:active { transform: translateY(2px); box-shadow: none; }
 
 /* ===== RECAP X ===== */
 .casin-recap-x {

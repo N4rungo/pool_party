@@ -165,7 +165,8 @@
       <h2>📋 Récapitulatif</h2>
       <div style="font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:4px;" id="recapMode"></div>
       <div class="recap-list" id="recapList"></div>
-      <button class="btn-main btn-gold" onclick="startGame()"><img src="assets/bille_8_killer.png" alt="Killer" class="icon-img"> Lancer
+      <button class="btn-main btn-gold" onclick="startGame()"><img src="assets/bille_8_killer.png" alt="Killer"
+          class="icon-img"> Lancer
         la partie !</button>
       <button class="btn-main btn-gray" onclick="goToStep2FromRecap()">← Modifier</button>
     </div>
@@ -215,9 +216,13 @@
 
   <!-- ===== GAME SCREEN ===== -->
   <div id="game" class="hidden">
-    <h1 id="killerTitle"><img src="assets/bille_8_killer.png" alt="Killer" class="icon-title"> KILLER</h1>
-    <div class="history-bar">
-      <button class="btn-undo" id="btnUndo" onclick="undoAction()">↩ Annuler</button>
+    <h1 id="killerTitle">
+      <img src="assets/bille_8_killer.png" alt="Killer" class="icon-title"> KILLER
+    </h1>
+    <div class="game-topbar">
+      <button class="btn-home" onclick="confirmGoHome()"><img src="assets/home.png" alt="Home" class="icon-img">
+        Accueil</button>
+      <button class="btn-undo" id="btnUndo" onclick="undoAction()" disabled>↩ Annuler</button>
     </div>
     <div id="poolZone"></div>
     <div class="players-list" id="playersList"></div>
@@ -226,6 +231,7 @@
       <div class="action-buttons" id="actionButtons"></div>
     </div>
   </div>
+
 
   <!-- ===== CHICAGO SETUP ===== -->
   <div class="overlay hidden" id="overlayChicagoSetup">
@@ -262,11 +268,14 @@
   <!-- ===== CHICAGO GAME ===== -->
   <div id="gameChicago" class="hidden">
     <h1>
-      <img src="assets/3_billes_americain.png" alt="Chicago" class="icon-title">
-      CHICAGO
+      <img src="assets/3_billes_americain.png" alt="Chicago" class="icon-title"> CHICAGO
     </h1>
+    <div class="game-topbar">
+      <button class="btn-home" onclick="confirmGoHome()"><img src="assets/home.png" alt="Home" class="icon-img">
+        Accueil</button>
+      <button class="btn-undo" id="btnChicagoUndo" onclick="undoChicagoAction()" disabled>↩ Annuler</button>
+    </div>
 
-    <!-- Scores -->
     <div class="chicago-scores">
       <div class="chicago-score-card" id="chicagoScoreCard0">
         <div id="chicagoScore0"></div>
@@ -284,22 +293,16 @@
       </div>
     </div>
 
-    <!-- Triangle -->
     <div class="chicago-triangle-wrap">
       <div id="chicagoTriangle"></div>
     </div>
 
-    <!-- Actions -->
-    <div class="chicago-action-bar">
-      <div class="chicago-action-title" id="chicagoActionTitle">Tour de —</div>
-      <button class="btn-action btn-chicago-end" onclick="chicagoEndTurn()">
-        ➡️ Au suivant
-      </button>
-      <button class="btn-action btn-black btn-undo" id="btnChicagoUndo" onclick="undoChicagoAction()" disabled>
-        ↩ Annuler
-      </button>
+    <!-- "Tour de X" supprimé, "Au suivant" → "Suivant →" seul en bas -->
+    <div class="game-bottombar">
+      <button class="btn-next full" onclick="chicagoEndTurn()">Suivant →</button>
     </div>
   </div>
+
 
 
   <!-- 14-1 Continu -->
@@ -361,11 +364,10 @@
 
   <div id="spGame" class="hidden">
     <h1>
-      <img src="assets/triangle_14-1.png" alt="" class="icon-title">
-      14-1 CONTINU
+      <img src="assets/triangle_14-1.png" alt="" class="icon-title"> 14-1 CONTINU
     </h1>
-
-    <div class="history-bar">
+    <div class="game-topbar">
+      <button class="btn-home" onclick="confirmGoHome()">🏠 Accueil</button>
       <button class="btn-undo" id="btnSpUndo" onclick="spUndo()" disabled>↩ Annuler</button>
     </div>
 
@@ -378,12 +380,14 @@
         <span id="spBreakDisplay" class="sp-break-value">0</span>
         <button class="btn-round btn-large" onclick="spChangeBreak(+1)">+</button>
       </div>
-      <div class="action-buttons" style="margin-top:12px;">
-        <button class="btn-action btn-gray" onclick="spPass()">➡️ Passer</button>
-        <button class="btn-action btn-red" onclick="spFault()">⚠️ Faute</button>
-      </div>
+    </div>
+
+    <div class="game-bottombar">
+      <button class="btn-fault" onclick="spFault()">⚠️ Faute</button>
+      <button class="btn-next" onclick="spPass()">Suivant →</button>
     </div>
   </div>
+
 
   <div class="overlay hidden" id="overlaySPWin">
     <div class="popup-box" style="position:relative;">
@@ -481,21 +485,21 @@
   <!-- ===== CASIN GAME ===== -->
   <div id="casinGame" class="hidden">
     <h1><img src="assets/3_billes.png" alt="" class="icon-title"> CASIN</h1>
-    <div class="casin-header">
-      <div>
-        <div class="casin-current-label">Au tour de</div>
-        <div class="casin-current-name" id="casinCurrentPlayer"></div>
-      </div>
-      <button class="casin-undo-btn" id="casinBtnUndo" onclick="casinUndo()">↩ Annuler</button>
+    <div class="game-topbar">
+      <button class="btn-home" onclick="confirmGoHome()"><img src="assets/home.png" alt="Home" class="icon-img">
+        Accueil</button>
+      <button class="btn-undo" id="casinBtnUndo" onclick="casinUndo()" disabled>↩ Annuler</button>
     </div>
 
     <div class="casin-scoreboard" id="casinScoreboard"></div>
-
     <div class="casin-action-grid" id="casinActionGrid"></div>
-
     <button class="casin-neutral-btn" onclick="casinNeutralShot()">↺ Coup libre</button>
-    <button class="casin-next-btn" onclick="casinNextPlayer()">Suivant →</button>
+
+    <div class="game-bottombar">
+      <button class="btn-next full" onclick="casinNextPlayer()">Suivant →</button>
+    </div>
   </div>
+
 
 
   <!-- ===== CUTTHROAT OVERLAYS ===== -->
@@ -584,11 +588,15 @@
   <!-- Écran de jeu Cutthroat (intégré dans #game ou séparé) -->
   <div id="ctGame" class="hidden">
     <h1><img src="assets/bille_1_target.png" alt="" class="icon-title"> CUTTHROAT</h1>
-    <div class="history-bar">
-      <button class="btn-undo" id="btnCtUndo" onclick="ctUndo()">↩ Annuler</button>
-      <button class="btn-fault" onclick="ctOpenFaultMenu()">⚠️ Faute</button>
+    <div class="game-topbar">
+      <button class="btn-home" onclick="confirmGoHome()"><img src="assets/home.png" alt="Home" class="icon-img">
+        Accueil</button>
+      <button class="btn-undo" id="btnCtUndo" onclick="ctUndo()" disabled>↩ Annuler</button>
     </div>
     <div class="players-list" id="ctPlayersList"></div>
+    <div class="game-bottombar">
+      <button class="btn-fault" onclick="ctOpenFaultMenu()">⚠️ Faute</button>
+    </div>
   </div>
 
 
@@ -753,7 +761,9 @@
     </h1>
 
     <!-- Undo seul -->
-    <div class="snooker-undo-bar">
+    <div class="game-topbar">
+      <button class="btn-home" onclick="confirmGoHome()"><img src="assets/home.png" alt="Home" class="icon-img">
+        Accueil</button>
       <button class="btn-undo" id="snookerBtnUndo" onclick="snookerUndo()" disabled>↩ Annuler</button>
     </div>
 
@@ -773,9 +783,9 @@
       <div class="snooker-balls-zone" id="snookerActionZone"></div>
 
       <!-- Zone basse fixe : toujours visible, toujours à la même place -->
-      <div class="snooker-bottom-zone" id="snookerBottomZone">
-        <button class="snooker-bottom-btn btn-pass" onclick="snookerEndTurn()">➡️ Passer la main</button>
-        <button class="snooker-bottom-btn btn-red" onclick="snookerOpenFault()">⚠️ Faute</button>
+      <div class="game-bottombar">
+        <button class="btn-next" onclick="snookerEndTurn()">Suivant →</button>
+        <button class="btn-fault" onclick="snookerOpenFault()">⚠️ Faute</button>
       </div>
     </div>
   </div>

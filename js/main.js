@@ -39,6 +39,13 @@ function launchGame(game) {
   }
 }
 
+function confirmGoHome() {
+  if (confirm('Abandonner la partie et revenir à l\'accueil ?')) {
+    showLauncher();
+  }
+}
+
+
 (function init() {
   setJokerMode('random');
 })();

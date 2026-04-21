@@ -100,13 +100,6 @@
   color: #fff;
 }
 
-/* ── Bouton faute ───────────────────────────────────── */
-.btn-red {
-  background: rgba(220, 50, 50, 0.25);
-  border: 1px solid rgba(220, 50, 50, 0.4);
-  color: #ff6b6b;
-}
-
 /* ── Classement victoire ────────────────────────────── */
 .sp-win-ranking {
   display: flex;
