@@ -15,7 +15,7 @@ function showLauncher() {
     'snookerOverlayStep1', 'snookerOverlayStep2', 'snookerOverlayStep3',
     'snookerOverlayMultiRed', 'snookerOverlayFault', 'snookerOverlayExpertFault',
     'snookerOverlayFreeBall', 'snookerOverlayWin', 'snookerOverlayMultiShot',
-    'spOverlayStep1', 'spOverlayStep2', 'spOverlayStep3', 'overlaySPWin'
+    'spOverlayStep1', 'spOverlayStep2', 'spOverlayStep3', 'overlaySPWin',
   ].forEach(id => closeOverlay(id));
 }
 
