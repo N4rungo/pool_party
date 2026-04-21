@@ -148,16 +148,9 @@ function casinNewGame() {
 // ── Render ───────────────────────────────────────────
 
 function casinRender() {
-    casinRenderHeader();
     casinRenderScoreboard();
     casinRenderActions();
     document.getElementById('casinBtnUndo').disabled = casinState.history.length === 0;
-}
-
-function casinRenderHeader() {
-    const player = casinState.players[casinState.currentIndex];
-    document.getElementById('casinCurrentPlayer').textContent =
-        `${EMOJIS[casinState.currentIndex % EMOJIS.length]} ${player.name}`;
 }
 
 function casinRenderScoreboard() {
