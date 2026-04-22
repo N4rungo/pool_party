@@ -333,34 +333,30 @@
     </div>
   </div>
 
-  <!-- STEP 2 -->
-  <div class="overlay hidden" id="spOverlayStep2">
-    <div class="popup-box">
-      <div class="popup-step">Étape 2 / 3</div>
-      <h2>Noms des joueurs</h2>
-      <div id="spNamesList" style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;"></div>
-      <button class="btn-main btn-gold" onclick="spGoToStep3()">Suivant →</button>
-      <button class="btn-main btn-gray"
-        onclick="closeOverlay('spOverlayStep2'); document.getElementById('spOverlayStep1').classList.remove('hidden')">←
-        Retour</button>
-    </div>
+ <!-- STEP 2 -->
+<div class="overlay hidden" id="spOverlayStep2">
+  <div class="popup-box">
+    <div class="popup-step">Étape 2 / 3</div>
+    <h2>Noms des joueurs</h2>
+    <div id="spNamesList"></div>
+    <button class="btn-main btn-gold" onclick="spGoToStep3()">Suivant →</button>
+    <button class="btn-main btn-gray" onclick="spStep2GoPrev()">← Retour</button>
   </div>
+</div>
 
-  <!-- STEP 3 -->
-  <div class="overlay hidden" id="spOverlayStep3">
-    <div class="popup-box">
-      <div class="popup-step">Étape 3 / 3</div>
-      <h2>Score cible par joueur</h2>
-      <div style="font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:12px;">
-        Ajustez pour équilibrer les niveaux
-      </div>
-      <div id="spTargetsList" style="display:flex;flex-direction:column;gap:12px;margin-bottom:16px;"></div>
-      <button class="btn-main btn-gold" onclick="spStartGame()">🎱 C'est parti !</button>
-      <button class="btn-main btn-gray"
-        onclick="closeOverlay('spOverlayStep3'); document.getElementById('spOverlayStep2').classList.remove('hidden')">←
-        Retour</button>
+<!-- STEP 3 -->
+<div class="overlay hidden" id="spOverlayStep3">
+  <div class="popup-box">
+    <div class="popup-step">Étape 3 / 3</div>
+    <h2>Score cible par joueur</h2>
+    <div style="font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:12px;">
+      Ajustez pour équilibrer les niveaux
     </div>
+    <div id="spTargetsList"></div>
+    <button class="btn-main btn-gold" onclick="spStartGame()">🎱 C'est parti !</button>
+    <button class="btn-main btn-gray" onclick="spStep3GoPrev()">← Retour</button>
   </div>
+</div>
 
   <div id="spGame" class="hidden">
     <h1>
@@ -409,60 +405,60 @@
 
   <!-- ===== CASIN SETUP 1 ===== -->
   <div class="overlay hidden" id="casinOverlayStep1">
-  <div class="popup-box">
-    <div class="popup-step">Étape 1 / 3</div>
-    <h2><img src="assets/3_billes.png" alt="" class="icon-title"> Casin</h2>
+    <div class="popup-box">
+      <div class="popup-step">Étape 1 / 3</div>
+      <h2><img src="assets/3_billes.png" alt="" class="icon-title"> Casin</h2>
 
-    <div class="label-small">Nombre de joueurs</div>
-    <div class="number-selector">
-      <button class="btn-round" onclick="casinChangeCount(-1)">−</button>
-      <span id="casinCountDisplay">2</span>
-      <button class="btn-round" onclick="casinChangeCount(+1)">+</button>
+      <div class="label-small">Nombre de joueurs</div>
+      <div class="number-selector">
+        <button class="btn-round" onclick="casinChangeCount(-1)">−</button>
+        <span id="casinCountDisplay">2</span>
+        <button class="btn-round" onclick="casinChangeCount(+1)">+</button>
+      </div>
+
+      <div class="sep"></div>
+
+      <div class="label-small">Objectif global</div>
+      <div class="number-selector">
+        <button class="btn-round" onclick="casinChangeGlobalX(-1)">−</button>
+        <span id="casinGlobalXDisplay">2</span>
+        <button class="btn-round" onclick="casinChangeGlobalX(+1)">+</button>
+      </div>
+
+      <button class="btn-main btn-gold" onclick="casinGoToStep2()">Suivant →</button>
+      <button class="btn-main btn-gray" onclick="showLauncher()">← Retour</button>
     </div>
-
-    <div class="sep"></div>
-
-    <div class="label-small">Objectif global</div>
-    <div class="number-selector">
-      <button class="btn-round" onclick="casinChangeGlobalX(-1)">−</button>
-      <span id="casinGlobalXDisplay">2</span>
-      <button class="btn-round" onclick="casinChangeGlobalX(+1)">+</button>
-    </div>
-
-    <button class="btn-main btn-gold" onclick="casinGoToStep2()">Suivant →</button>
-    <button class="btn-main btn-gray" onclick="showLauncher()">← Retour</button>
   </div>
-</div>
 
 
   <!-- ===== CASIN SETUP 2 ===== -->
   <div class="overlay hidden" id="casinOverlayStep2">
-  <div class="popup-box">
-    <div class="popup-step">Étape 2 / 3</div>
-    <h2><img src="assets/3_billes.png" alt="" class="icon-title"> Casin</h2>
+    <div class="popup-box">
+      <div class="popup-step">Étape 2 / 3</div>
+      <h2><img src="assets/3_billes.png" alt="" class="icon-title"> Casin</h2>
 
-    <div class="label-small">Noms des joueurs</div>
-    <div id="casinNameInputs"></div>
+      <div class="label-small">Noms des joueurs</div>
+      <div id="casinNameInputs"></div>
 
-    <button class="btn-main btn-gold" onclick="casinGoToStep3()">Suivant →</button>
-    <button class="btn-main btn-gray" onclick="casinBackToStep1()">← Retour</button>
+      <button class="btn-main btn-gold" onclick="casinGoToStep3()">Suivant →</button>
+      <button class="btn-main btn-gray" onclick="casinBackToStep1()">← Retour</button>
+    </div>
   </div>
-</div>
 
 
   <!-- ===== CASIN SETUP 3 : RECAP ===== -->
   <div class="overlay hidden" id="casinOverlayStep3">
-  <div class="popup-box">
-    <div class="popup-step">Étape 3 / 3</div>
-    <h2><img src="assets/3_billes.png" alt="" class="icon-title"> Casin</h2>
+    <div class="popup-box">
+      <div class="popup-step">Étape 3 / 3</div>
+      <h2><img src="assets/3_billes.png" alt="" class="icon-title"> Casin</h2>
 
-    <div class="label-small">Objectifs individuels</div>
-    <div id="casinRecapList"></div>
+      <div class="label-small">Objectifs individuels</div>
+      <div id="casinRecapList"></div>
 
-    <button class="btn-main btn-gold" onclick="casinStartGame()">🎱 Lancer !</button>
-    <button class="btn-main btn-gray" onclick="casinBackToStep2()">← Retour</button>
+      <button class="btn-main btn-gold" onclick="casinStartGame()">🎱 Lancer !</button>
+      <button class="btn-main btn-gray" onclick="casinBackToStep2()">← Retour</button>
+    </div>
   </div>
-</div>
 
 
   <!-- ===== CASIN WIN ===== -->
@@ -626,28 +622,13 @@
 
   <!-- ===== SNOOKER SETUP 2 : NOM JOUEUR ===== -->
   <div class="overlay hidden" id="snookerOverlayStep2">
-  <div class="popup-box">
-    <div class="popup-step">Étape 2 / 2</div>
-    <h2><img src="assets/3_billes_snooker.png" alt="" class="icon-title"> Snooker</h2>
-    <div class="label-small">Noms des joueurs</div>
-    <div id="snookerNameInputs"></div>
-    <button class="btn-main btn-gold" onclick="snookerStartFromStep2()">🎱 Lancer !</button>
-    <button class="btn-main btn-gray" onclick="snookerStep2GoPrev()">← Retour</button>
-  </div>
-</div>
-
-
-  <!-- ===== SNOOKER SETUP 3 : RECAP ===== -->
-  <div class="overlay hidden" id="snookerOverlayStep3">
     <div class="popup-box">
-      <div class="popup-step">Étape 3 / 3</div>
-      <h2>Récapitulatif</h2>
-
-      <div id="snookerRecapMode" style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:12px;"></div>
-      <div id="snookerRecapList" class="recap-list"></div>
-
-      <button class="btn-main btn-gold" onclick="snookerStart()">🎱 Lancer la partie !</button>
-      <button class="btn-main btn-gray" onclick="snookerGoToStep2FromRecap()">← Modifier</button>
+      <div class="popup-step">Étape 2 / 2</div>
+      <h2><img src="assets/3_billes_snooker.png" alt="" class="icon-title"> Snooker</h2>
+      <div class="label-small">Noms des joueurs</div>
+      <div id="snookerNameInputs"></div>
+      <button class="btn-main btn-gold" onclick="snookerStartFromStep2()">🎱 Lancer !</button>
+      <button class="btn-main btn-gray" onclick="snookerStep2GoPrev()">← Retour</button>
     </div>
   </div>
 

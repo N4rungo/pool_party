@@ -38,46 +38,6 @@ function snookerStep2GoPrev() {
   document.getElementById('snookerOverlayStep1').classList.remove('hidden');
 }
 
-function snookerSaveAndNext() {
-  const name = document.getElementById('snookerStep2Name').value.trim();
-  snookerSetup.players[snookerSetup.currentSetup].name =
-    name || `Joueur ${snookerSetup.currentSetup + 1}`;
-
-  if (snookerSetup.currentSetup < snookerSetup.count - 1) {
-    snookerSetup.currentSetup++;
-    snookerShowStep2();
-  } else {
-    closeOverlay('snookerOverlayStep2');
-    snookerShowStep3();
-  }
-}
-
-function snookerGoPrev() {
-  const name = document.getElementById('snookerStep2Name').value.trim();
-  snookerSetup.players[snookerSetup.currentSetup].name = name;
-  if (snookerSetup.currentSetup > 0) {
-    snookerSetup.currentSetup--;
-    snookerShowStep2();
-  }
-}
-
-// ── Step 3 : récap ───────────────────────────────────────────
-function snookerShowStep3() {
-  document.getElementById('snookerRecapMode').textContent = snookerSetup.mode === 'simple'
-    ? '🟢 Mode Simple'
-    : '🔴 Mode Expert';
-
-  document.getElementById('snookerRecapList').innerHTML =
-    snookerSetup.players.map((p, i) => `
-      <div class="recap-row">
-        <span>${EMOJIS[i % EMOJIS.length]}</span>
-        <span>${p.name}</span>
-      </div>
-    `).join('');
-
-  document.getElementById('snookerOverlayStep3').classList.remove('hidden');
-}
-
 function snookerGoToStep2FromRecap() {
   closeOverlay('snookerOverlayStep3');
   snookerSetup.currentSetup = snookerSetup.count - 1;

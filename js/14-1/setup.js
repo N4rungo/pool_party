@@ -28,53 +28,33 @@ function spGoToStep2() {
     name:   '',
     target: spSetup.target,
   }));
-  spSetup.currentPlayerSetup = 0;
   closeOverlay('spOverlayStep1');
+  renderPlayerNameInputs('spNamesList', spSetup.players);
   document.getElementById('spOverlayStep2').classList.remove('hidden');
-  spRenderStep2();
 }
 
-// ── Step 2 : noms des joueurs ────────────────────────
-function spRenderStep2() {
-  const container = document.getElementById('spNamesList');
-  container.innerHTML = spSetup.players.map((p, i) => `
-    <div class="sp-name-row">
-      <span class="player-emoji">${EMOJIS[i % EMOJIS.length]}</span>
-      <input
-        type="text"
-        maxlength="16"
-        placeholder="Joueur ${i + 1}"
-        value="${p.name}"
-        oninput="spSetup.players[${i}].name = this.value.trim()"
-      >
-    </div>
-  `).join('');
+function spStep2GoPrev() {
+  closeOverlay('spOverlayStep2');
+  document.getElementById('spOverlayStep1').classList.remove('hidden');
 }
 
 function spGoToStep3() {
-  // Noms vides → noms par défaut
-  spSetup.players.forEach((p, i) => {
-    if (!p.name) p.name = `Joueur ${i + 1}`;
-  });
+  collectPlayerNames(spSetup.players);
   closeOverlay('spOverlayStep2');
+  renderRecap('spTargetsList', spSetup.players, (p, i) => `
+    <div class="number-selector">
+      <button class="btn-round" onclick="spChangePlayerTarget(${i}, -5)">−</button>
+      <span id="spTarget${i}">${p.target}</span>
+      <button class="btn-round" onclick="spChangePlayerTarget(${i}, +5)">+</button>
+    </div>
+  `);
   document.getElementById('spOverlayStep3').classList.remove('hidden');
-  spRenderStep3();
 }
 
-// ── Step 3 : cibles individuelles ───────────────────
-function spRenderStep3() {
-  const container = document.getElementById('spTargetsList');
-  container.innerHTML = spSetup.players.map((p, i) => `
-    <div class="sp-target-row">
-      <span class="player-emoji">${EMOJIS[i % EMOJIS.length]}</span>
-      <span class="sp-target-name">${p.name}</span>
-      <div class="number-selector">
-        <button class="btn-round" onclick="spChangePlayerTarget(${i}, -5)">−</button>
-        <span id="spTarget${i}">${p.target}</span>
-        <button class="btn-round" onclick="spChangePlayerTarget(${i}, +5)">+</button>
-      </div>
-    </div>
-  `).join('');
+function spStep3GoPrev() {
+  closeOverlay('spOverlayStep3');
+  renderPlayerNameInputs('spNamesList', spSetup.players);
+  document.getElementById('spOverlayStep2').classList.remove('hidden');
 }
 
 function spChangePlayerTarget(i, delta) {
