@@ -39,13 +39,13 @@ function spStep2GoPrev() {
 }
 
 function spGoToStep3() {
-  collectPlayerNames('spNamesList', spSetup.players);
+  collectPlayerNames(spSetup.players);
   closeOverlay('spOverlayStep2');
   renderRecap('spTargetsList', spSetup.players, (p, i) => `
-    <div class="number-selector">
-      <button class="btn-round" onclick="spChangePlayerTarget(${i}, -5)">−</button>
-      <span id="spTarget${i}">${p.target}</span>
-      <button class="btn-round" onclick="spChangePlayerTarget(${i}, +5)">+</button>
+    <div class="recap-x-selector">
+      <button class="btn-round-sm" onclick="spChangePlayerTarget(${i}, -5)">−</button>
+      <span class="recap-x-value" id="spTarget_${i}">${p.target}</span>
+      <button class="btn-round-sm" onclick="spChangePlayerTarget(${i}, +5)">+</button>
     </div>
   `);
   document.getElementById('spOverlayStep3').classList.remove('hidden');
@@ -58,10 +58,8 @@ function spStep3GoPrev() {
 }
 
 function spChangePlayerTarget(i, delta) {
-  spSetup.players[i].target = Math.min(STRAIGHTPOOL_MAX_TARGET,
-                               Math.max(STRAIGHTPOOL_MIN_TARGET,
-                               spSetup.players[i].target + delta));
-  document.getElementById(`spTarget${i}`).textContent = spSetup.players[i].target;
+  spSetup.players[i].target = Math.min(200, Math.max(10, spSetup.players[i].target + delta));
+  document.getElementById(`spTarget_${i}`).textContent = spSetup.players[i].target;
 }
 
 // ── Démarrage ────────────────────────────────────────
