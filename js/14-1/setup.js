@@ -39,7 +39,7 @@ function spStep2GoPrev() {
 }
 
 function spGoToStep3() {
-  collectPlayerNames(spSetup.players);
+  collectPlayerNames('spNamesList', spSetup.players);
   closeOverlay('spOverlayStep2');
   renderRecap('spTargetsList', spSetup.players, (p, i) => `
     <div class="number-selector">
