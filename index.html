@@ -409,67 +409,61 @@
 
   <!-- ===== CASIN SETUP 1 ===== -->
   <div class="overlay hidden" id="casinOverlayStep1">
-    <div class="popup-box">
-      <div class="popup-step">Étape 1 / 3</div>
-      <h2><img src="assets/3_billes.png" alt="" class="icon-title"> Casin</h2>
+  <div class="popup-box">
+    <div class="popup-step">Étape 1 / 3</div>
+    <h2><img src="assets/3_billes.png" alt="" class="icon-title"> Casin</h2>
 
-      <div class="label-small">Nombre de joueurs</div>
-      <div class="number-selector">
-        <button class="btn-round" onclick="casinChangeCount(-1)">−</button>
-        <span id="casinCountDisplay">2</span>
-        <button class="btn-round" onclick="casinChangeCount(+1)">+</button>
-      </div>
-
-      <div class="sep"></div>
-
-      <div class="label-small">Objectif (× par action)</div>
-      <div class="casin-x-selector">
-        <button class="btn-round" onclick="casinChangeGlobalX(-1)">−</button>
-        <span id="casinGlobalXDisplay">2</span>
-        <button class="btn-round" onclick="casinChangeGlobalX(+1)">+</button>
-      </div>
-      <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:8px;">
-        Chaque joueur doit réaliser chaque action ce nombre de fois.
-      </div>
-
-      <button class="btn-main btn-gold" onclick="casinGoToStep2()">Suivant →</button>
-      <button class="btn-main btn-gray" onclick="showLauncher()">← Retour</button>
+    <div class="label-small">Nombre de joueurs</div>
+    <div class="number-selector">
+      <button class="btn-round" onclick="casinChangeCount(-1)">−</button>
+      <span id="casinCountDisplay">2</span>
+      <button class="btn-round" onclick="casinChangeCount(+1)">+</button>
     </div>
+
+    <div class="sep"></div>
+
+    <div class="label-small">Objectif global</div>
+    <div class="number-selector">
+      <button class="btn-round" onclick="casinChangeGlobalX(-1)">−</button>
+      <span id="casinGlobalXDisplay">2</span>
+      <button class="btn-round" onclick="casinChangeGlobalX(+1)">+</button>
+    </div>
+
+    <button class="btn-main btn-gold" onclick="casinGoToStep2()">Suivant →</button>
+    <button class="btn-main btn-gray" onclick="showLauncher()">← Retour</button>
   </div>
+</div>
+
 
   <!-- ===== CASIN SETUP 2 ===== -->
   <div class="overlay hidden" id="casinOverlayStep2">
-    <div class="popup-box">
-      <div class="popup-step" id="casinStep2Progress"></div>
-      <h2 id="casinStep2Title">Joueur</h2>
+  <div class="popup-box">
+    <div class="popup-step">Étape 2 / 3</div>
+    <h2><img src="assets/3_billes.png" alt="" class="icon-title"> Casin</h2>
 
-      <div class="name-input-wrap">
-        <span class="player-emoji" id="casinStep2Emoji"></span>
-        <input type="text" id="casinStep2Name" maxlength="16" placeholder="Pseudo...">
-      </div>
+    <div class="label-small">Noms des joueurs</div>
+    <div id="casinNameInputs"></div>
 
-      <div class="label-small" style="margin-top:8px;">Objectif individuel (handicap)</div>
-      <div class="casin-x-selector">
-        <button class="btn-round" onclick="casinStep2ChangeX(-1)">−</button>
-        <span id="casinStep2XDisplay">2</span>
-        <button class="btn-round" onclick="casinStep2ChangeX(+1)">+</button>
-      </div>
-
-      <button class="btn-main btn-gold" onclick="casinSaveAndNext()">Suivant →</button>
-      <button class="btn-main btn-gray" onclick="casinGoPrev()" id="casinBtnPrev">← Retour</button>
-    </div>
+    <button class="btn-main btn-gold" onclick="casinGoToStep3()">Suivant →</button>
+    <button class="btn-main btn-gray" onclick="casinBackToStep1()">← Retour</button>
   </div>
+</div>
+
 
   <!-- ===== CASIN SETUP 3 : RECAP ===== -->
   <div class="overlay hidden" id="casinOverlayStep3">
-    <div class="popup-box">
-      <div class="popup-step">Étape 3 / 3</div>
-      <h2>✅ Récapitulatif</h2>
-      <div class="recap-list" id="casinRecapList"></div>
-      <button class="btn-main btn-gold" onclick="casinStartGame()">🎱 C'est parti !</button>
-      <button class="btn-main btn-gray" onclick="casinGoToStep2FromRecap()">← Modifier</button>
-    </div>
+  <div class="popup-box">
+    <div class="popup-step">Étape 3 / 3</div>
+    <h2><img src="assets/3_billes.png" alt="" class="icon-title"> Casin</h2>
+
+    <div class="label-small">Objectifs individuels</div>
+    <div id="casinRecapList"></div>
+
+    <button class="btn-main btn-gold" onclick="casinStartGame()">🎱 Lancer !</button>
+    <button class="btn-main btn-gray" onclick="casinBackToStep2()">← Retour</button>
   </div>
+</div>
+
 
   <!-- ===== CASIN WIN ===== -->
   <div class="overlay hidden" id="casinOverlayWin">
@@ -794,7 +788,7 @@
   </div>
 
 
-
+  <script src="js/shared/playerSetup.js"></script>
 
   <script src="js/killer/constants.js"></script>
   <script src="js/killer/state.js"></script>

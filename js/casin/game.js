@@ -1,23 +1,4 @@
-// ── Start ────────────────────────────────────────────
 
-function casinStartGame() {
-    closeOverlay('casinOverlayStep3');
-
-    casinState.players = casinSetup.players.map(p => ({
-        name: p.name,
-        x: p.x,
-        scores: Object.fromEntries(CASIN_ACTIONS.map(a => [a.id, 0])),
-        lastAction: null,
-    }));
-
-    casinState.currentIndex = 0;
-    casinState.history = [];
-    casinState.winner = null;
-
-    document.getElementById('launcher').classList.add('hidden');
-    document.getElementById('casinGame').classList.remove('hidden');
-    casinRender();
-}
 
 // ── History ──────────────────────────────────────────
 

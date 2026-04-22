@@ -1,5 +1,5 @@
 let casinSetup = {
-  count:   2,
+  count:   CASIN_MIN_PLAYERS,
   globalX: CASIN_DEFAULT_X,
   players: [], // { name, x }
   currentPlayerSetup: 0,

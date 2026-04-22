@@ -20,42 +20,69 @@ function casinChangeGlobalX(delta) {
 }
 
 function casinGoToStep2() {
-    // Initialise les joueurs avec le X global
-    casinSetup.players = Array.from({ length: casinSetup.count }, (_, i) => ({
-        name: '',
-        x: casinSetup.globalX,
+  casinSetup.players = Array.from({ length: casinSetup.count }, (_, i) => ({
+    name: '',
+    x: casinSetup.globalX,
+  }));
+  closeOverlay('casinOverlayStep1');
+  renderPlayerNameInputs('casinNameInputs', casinSetup.players);
+  document.getElementById('casinOverlayStep2').classList.remove('hidden');
+}
+
+// ── Step 2 : noms ────────────────────────────────────────
+function casinGoToStep3() {
+  collectPlayerNames('casinNameInputs', casinSetup.players);
+  closeOverlay('casinOverlayStep2');
+  casinRenderRecap();
+  document.getElementById('casinOverlayStep3').classList.remove('hidden');
+}
+
+function casinRenderRecap() {
+  renderRecap('casinRecapList', casinSetup.players, (p, i) => `
+    <div class="recap-x-selector">
+      <button class="btn-round-sm" onclick="casinChangePlayerX(${i}, -1)">−</button>
+      <span class="recap-x-value" id="casinPlayerX_${i}">${p.x}</span>
+      <button class="btn-round-sm" onclick="casinChangePlayerX(${i}, +1)">+</button>
+    </div>
+  `);
+}
+
+function casinChangePlayerX(i, delta) {
+  casinSetup.players[i].x = Math.min(CASIN_MAX_X, Math.max(CASIN_MIN_X, casinSetup.players[i].x + delta));
+  document.getElementById(`casinPlayerX_${i}`).textContent = casinSetup.players[i].x;
+}
+
+// ── Start ────────────────────────────────────────────
+
+function casinStartGame() {
+    closeOverlay('casinOverlayStep3');
+
+    casinState.players = casinSetup.players.map(p => ({
+        name: p.name,
+        x: p.x,
+        scores: Object.fromEntries(CASIN_ACTIONS.map(a => [a.id, 0])),
+        lastAction: null,
     }));
-    casinSetup.currentPlayerSetup = 0;
-    closeOverlay('casinOverlayStep1');
-    casinShowStep2();
+
+    casinState.currentIndex = 0;
+    casinState.history = [];
+    casinState.winner = null;
+
+    document.getElementById('launcher').classList.add('hidden');
+    document.getElementById('casinGame').classList.remove('hidden');
+    casinRender();
 }
 
-// ── Step 2 : nom + x individuel ─────────────────────
-
-function casinShowStep2() {
-    const i = casinSetup.currentPlayerSetup;
-    const player = casinSetup.players[i];
-
-    document.getElementById('casinStep2Progress').textContent =
-        `Joueur ${i + 1} / ${casinSetup.count}`;
-    document.getElementById('casinStep2Title').textContent =
-        `Joueur ${i + 1}`;
-    document.getElementById('casinStep2Emoji').textContent =
-        EMOJIS[i % EMOJIS.length];
-    document.getElementById('casinStep2Name').value = player.name;
-    document.getElementById('casinStep2XDisplay').textContent = player.x;
-
-    // Bouton retour désactivé pour le 1er joueur
-    document.getElementById('casinBtnPrev').disabled = i === 0;
-
-    document.getElementById('casinOverlayStep2').classList.remove('hidden');
-    bindEnterKey('casinStep2Name', casinSaveAndNext);
+function casinBackToStep1() {
+  collectPlayerNames('casinNameInputs', casinSetup.players);
+  closeOverlay('casinOverlayStep2');
+  document.getElementById('casinOverlayStep1').classList.remove('hidden');
 }
 
-function casinStep2ChangeX(delta) {
-    const i = casinSetup.currentPlayerSetup;
-    casinSetup.players[i].x = Math.min(CASIN_MAX_X, Math.max(CASIN_MIN_X, casinSetup.players[i].x + delta));
-    document.getElementById('casinStep2XDisplay').textContent = casinSetup.players[i].x;
+function casinBackToStep2() {
+  closeOverlay('casinOverlayStep3');
+  renderPlayerNameInputs('casinNameInputs', casinSetup.players);
+  document.getElementById('casinOverlayStep2').classList.remove('hidden');
 }
 
 function casinSaveAndNext() {
