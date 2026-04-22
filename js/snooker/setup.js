@@ -23,30 +23,14 @@ function snookerGoToStep2() {
 
 // ── Step 2 : noms ────────────────────────────────────────────
 function snookerShowStep2() {
-  const container = document.getElementById('snookerNameInputs');
-  container.innerHTML = snookerSetup.players.map((p, i) => `
-    <div class="player-name-row">
-      <span class="player-emoji">${EMOJIS[i % EMOJIS.length]}</span>
-      <input
-        type="text"
-        maxlength="16"
-        placeholder="Joueur ${i + 1}"
-        value="${p.name}"
-        oninput="snookerSetup.players[${i}].name = this.value.trim() || 'Joueur ${i + 1}'"
-      >
-    </div>
-  `).join('');
-
+  renderPlayerNameInputs('snookerNameInputs', snookerSetup.players);
   document.getElementById('snookerOverlayStep2').classList.remove('hidden');
 }
 
 function snookerStartFromStep2() {
-  // Normalise les noms vides
-  snookerSetup.players.forEach((p, i) => {
-    if (!p.name) p.name = `Joueur ${i + 1}`;
-  });
+  collectPlayerNames(snookerSetup.players);
   closeOverlay('snookerOverlayStep2');
-  snookerStart();
+  snookerStartGame();
 }
 
 function snookerStep2GoPrev() {
