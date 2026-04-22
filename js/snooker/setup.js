@@ -30,7 +30,7 @@ function snookerShowStep2() {
 function snookerStartFromStep2() {
   collectPlayerNames(snookerSetup.players);
   closeOverlay('snookerOverlayStep2');
-  snookerStartGame();
+  snookerStart();
 }
 
 function snookerStep2GoPrev() {
