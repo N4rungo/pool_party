@@ -78,3 +78,110 @@ h1 {
 .icon-img.md  { width: 1.25em; height: 1.25em; }
 .icon-img.lg  { width: 1.5em;  height: 1.5em;  }
 .icon-img.xl  { width: 2em;    height: 2em;    }
+
+
+/* ── Inputs noms joueurs ─────────────────────────────── */
+.player-name-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.player-name-emoji {
+  font-size: 24px;
+  width: 32px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.player-name-input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  color: #fff;
+  font-family: inherit;
+  font-size: 15px;
+  padding: 10px 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.player-name-input:focus {
+  border-color: rgba(255, 215, 0, 0.6);
+}
+
+.player-name-input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* ── Récap step 3 : sélecteur X par joueur ───────────── */
+/* ===== RECAP ===== */
+.recap-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 12px 0;
+  text-align: left;
+}
+
+.recap-row {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+}
+
+.recap-row .recap-hearts {
+  margin-left: auto;
+  font-size: 16px;
+}
+
+.recap-emoji {
+  font-size: 20px;
+  width: 28px;
+  flex-shrink: 0;
+}
+
+.recap-name {
+  flex: 1;
+  font-size: 15px;
+  color: #fff;
+}
+
+.recap-x-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.recap-x-value {
+  font-size: 20px;
+  font-weight: bold;
+  min-width: 24px;
+  text-align: center;
+}
+
+.btn-round-sm {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(145deg, #FFE44D, #FFD700);
+  color: #1a472a;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 3px 0 #B8960C;
+  transition: transform 0.1s, box-shadow 0.1s;
+  line-height: 1;
+}
+
+.btn-round-sm:active {
+  transform: translateY(2px);
+  box-shadow: none;
+}
