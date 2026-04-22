@@ -626,19 +626,16 @@
 
   <!-- ===== SNOOKER SETUP 2 : NOM JOUEUR ===== -->
   <div class="overlay hidden" id="snookerOverlayStep2">
-    <div class="popup-box">
-      <div class="popup-step" id="snookerStep2Progress"></div>
-      <h2 id="snookerStep2Title">Joueur 1</h2>
-
-      <div class="name-input-wrap">
-        <span class="player-emoji" id="snookerStep2Emoji"></span>
-        <input type="text" id="snookerStep2Name" maxlength="16" placeholder="Pseudo...">
-      </div>
-
-      <button class="btn-main btn-gold" onclick="snookerSaveAndNext()">Suivant →</button>
-      <button class="btn-main btn-gray hidden" id="snookerBtnPrev" onclick="snookerGoPrev()">← Précédent</button>
-    </div>
+  <div class="popup-box">
+    <div class="popup-step">Étape 2 / 2</div>
+    <h2><img src="assets/3_billes_snooker.png" alt="" class="icon-title"> Snooker</h2>
+    <div class="label-small">Noms des joueurs</div>
+    <div id="snookerNameInputs"></div>
+    <button class="btn-main btn-gold" onclick="snookerStartFromStep2()">🎱 Lancer !</button>
+    <button class="btn-main btn-gray" onclick="snookerStep2GoPrev()">← Retour</button>
   </div>
+</div>
+
 
   <!-- ===== SNOOKER SETUP 3 : RECAP ===== -->
   <div class="overlay hidden" id="snookerOverlayStep3">

@@ -23,16 +23,35 @@ function snookerGoToStep2() {
 
 // ── Step 2 : noms ────────────────────────────────────────────
 function snookerShowStep2() {
-  const i   = snookerSetup.currentSetup;
-  const n   = snookerSetup.count;
-  document.getElementById('snookerStep2Progress').textContent = `Joueur ${i + 1} / ${n}`;
-  document.getElementById('snookerStep2Emoji').textContent    = EMOJIS[i % EMOJIS.length];
-  document.getElementById('snookerStep2Title').textContent = `Joueur ${i + 1}`;
-  document.getElementById('snookerStep2Name').value           = snookerSetup.players[i].name || '';
-  document.getElementById('snookerBtnPrev').classList.toggle('hidden', i === 0);
+  const container = document.getElementById('snookerNameInputs');
+  container.innerHTML = snookerSetup.players.map((p, i) => `
+    <div class="player-name-row">
+      <span class="player-emoji">${EMOJIS[i % EMOJIS.length]}</span>
+      <input
+        type="text"
+        maxlength="16"
+        placeholder="Joueur ${i + 1}"
+        value="${p.name}"
+        oninput="snookerSetup.players[${i}].name = this.value.trim() || 'Joueur ${i + 1}'"
+      >
+    </div>
+  `).join('');
+
   document.getElementById('snookerOverlayStep2').classList.remove('hidden');
-  setTimeout(() => document.getElementById('snookerStep2Name').focus(), 100);
-  bindEnterKey('snookerStep2Name', snookerSaveAndNext);
+}
+
+function snookerStartFromStep2() {
+  // Normalise les noms vides
+  snookerSetup.players.forEach((p, i) => {
+    if (!p.name) p.name = `Joueur ${i + 1}`;
+  });
+  closeOverlay('snookerOverlayStep2');
+  snookerStart();
+}
+
+function snookerStep2GoPrev() {
+  closeOverlay('snookerOverlayStep2');
+  document.getElementById('snookerOverlayStep1').classList.remove('hidden');
 }
 
 function snookerSaveAndNext() {
