@@ -28,7 +28,7 @@ function snookerShowStep2() {
 }
 
 function snookerStartFromStep2() {
-  collectPlayerNames(snookerSetup.players);
+  collectPlayerNames('snookerNameInputs', snookerSetup.players);
   closeOverlay('snookerOverlayStep2');
   snookerStart();
 }
