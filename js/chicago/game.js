@@ -103,7 +103,6 @@ function chicagoReplay() {
 function renderChicagoGame() {
   renderChicagoScores();
   renderChicagoTriangle();
-  renderChicagoActions();
   updateChicagoUndoBtn();
 }
 
@@ -152,9 +151,4 @@ function renderChicagoTriangle() {
       }).join('')}
     </div>
   `).join('');
-}
-
-function renderChicagoActions() {
-  const current = chicagoState.players[chicagoState.currentIndex];
-  document.getElementById('chicagoActionTitle').textContent = `Tour de ${current.name}`;
 }
