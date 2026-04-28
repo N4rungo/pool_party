@@ -1,7 +1,5 @@
 /* ===== CUTTHROAT ===== */
 
-#ctGame.hidden { display: none; }
-
 .ct-balls-row {
   display: flex;
   flex-wrap: wrap;
@@ -55,8 +53,8 @@
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  border: 2px solid #FFD700;
-  box-shadow: 0 0 12px rgba(255,215,0,0.4);
+  border: 2px solid var(--color-gold);
+  box-shadow: 0 0 12px rgba(var(--color-gold-rgb), 0.4);
 }
 
 .btn-fault {
@@ -78,7 +76,7 @@
 .win-name {
   font-size: 26px;
   font-weight: bold;
-  color: #FFD700;
+  color: var(--color-gold);
   margin-bottom: 6px;
 }
 

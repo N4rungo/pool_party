@@ -1,7 +1,3 @@
-#gameSnooker.hidden {
-  display: none;
-}
-
 /* ── Largeur de référence unique ── */
 .snooker-layout {
   display: flex;
@@ -32,8 +28,8 @@
 }
 
 .snooker-score-card.active {
-  background: rgba(255, 215, 0, 0.12);
-  border-color: rgba(255, 215, 0, 0.35);
+  background: rgba(var(--color-gold-rgb), 0.12);
+  border-color: rgba(var(--color-gold-rgb), 0.35);
 }
 
 .snooker-score-emoji {
@@ -50,7 +46,7 @@
 .snooker-score-pts {
   font-size: 22px;
   font-weight: 700;
-  color: #ffd700;
+  color: var(--color-gold);
   min-width: 40px;
   text-align: right;
 }
@@ -71,7 +67,7 @@
 .snooker-active-name {
   font-size: 18px;
   font-weight: 700;
-  color: #ffd700;
+  color: var(--color-gold);
 }
 
 .snooker-break-now {
@@ -147,7 +143,7 @@
 
 .snooker-ball-btn:hover:not(:disabled) {
   background: rgba(255, 255, 255, 0.14);
-  border-color: rgba(255, 215, 0, 0.4);
+  border-color: rgba(var(--color-gold-rgb), 0.4);
   transform: translateY(-2px);
 }
 
@@ -174,9 +170,9 @@
 }
 
 .snooker-ball-btn.snooker-btn-next {
-  border-color: rgba(255, 215, 0, 0.6);
-  background: rgba(255, 215, 0, 0.1);
-  box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+  border-color: rgba(var(--color-gold-rgb), 0.6);
+  background: rgba(var(--color-gold-rgb), 0.1);
+  box-shadow: 0 0 10px rgba(var(--color-gold-rgb), 0.2);
 }
 
 /* "Free Ball" si elle apparaît dans la zone bille */
