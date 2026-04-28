@@ -1,11 +1,11 @@
-let setup = {
+let killerSetup = {
   count: 4,
   jokerMode: 'random',
   currentPlayerSetup: 0,
   players: [],
 };
 
-let state = {
+let killerState = {
   players: [],
   currentIndex: 0,
   jokerMode: 'random',
