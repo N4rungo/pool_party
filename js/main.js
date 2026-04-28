@@ -1,22 +1,7 @@
 function showLauncher() {
   document.getElementById('launcher').classList.remove('hidden');
-  document.getElementById('game').classList.add('hidden');
-  document.getElementById('gameChicago').classList.add('hidden');
-  document.getElementById('spGame').classList.add('hidden');
-  document.getElementById('casinGame').classList.add('hidden');
-  document.getElementById('ctGame').classList.add('hidden');
-  document.getElementById('gameSnooker').classList.add('hidden');
-  [
-    'overlayStep1', 'overlayStep2', 'overlayStep3',
-    'casinOverlayStep1', 'casinOverlayStep2', 'casinOverlayStep3',
-    'overlayCtStep1', 'overlayCtStep2', 'overlayCtTriangle',
-    'overlayJoker', 'overlayTarget', 'overlayWin', 'overlayReplay',
-    'overlayCtFault', 'overlayCtFaultResult', 'overlayCtWin',
-    'snookerOverlayStep1', 'snookerOverlayStep2', 'snookerOverlayStep3',
-    'snookerOverlayMultiRed', 'snookerOverlayFault', 'snookerOverlayExpertFault',
-    'snookerOverlayFreeBall', 'snookerOverlayWin', 'snookerOverlayMultiShot',
-    'spOverlayStep1', 'spOverlayStep2', 'spOverlayStep3', 'overlaySPWin',
-  ].forEach(id => closeOverlay(id));
+  document.querySelectorAll('.game-screen').forEach(el => el.classList.add('hidden'));
+  document.querySelectorAll('.overlay').forEach(el => el.classList.add('hidden'));
 }
 
 
