@@ -1,3 +1,9 @@
+// ── Launch ──────────────────────────────────────────
+function killerLaunch() {
+  document.getElementById('launcher').classList.add('hidden');
+  document.getElementById('overlayStep1').classList.remove('hidden');
+}
+
 // ── Step 1 ──────────────────────────────────────────
 function changeCount(delta) {
   killerSetup.count = Math.min(16, Math.max(2, killerSetup.count + delta));

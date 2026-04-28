@@ -49,7 +49,7 @@ function snookerBackToLauncher() {
   showLauncher();
 }
 
-function snookerLaunchGame() {
+function snookerLaunch() {
   document.getElementById('launcher').classList.add('hidden');
   snookerSetup.count   = SNOOKER_DEFAULT_PLAYERS;
   snookerSetup.mode    = 'simple';

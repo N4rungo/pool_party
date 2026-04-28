@@ -1,4 +1,4 @@
-function ctLaunchGame() {
+function cutthroatLaunch() {
     document.getElementById('launcher').classList.add('hidden');
     ctSetup.count = 3;
     document.getElementById('ctCountDisplay').textContent = 3;

@@ -1,4 +1,4 @@
-function showCasinSetup() {
+function casinLaunch() {
     document.getElementById('launcher').classList.add('hidden');
     document.getElementById('casinOverlayStep1').classList.remove('hidden');
     // Reset affichage step1

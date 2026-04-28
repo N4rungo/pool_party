@@ -1,5 +1,5 @@
 // ── Lancement ────────────────────────────────────────
-function spShowSetup() {
+function straightpoolLaunch() {
   document.getElementById('launcher').classList.add('hidden');
   document.getElementById('spOverlayStep1').classList.remove('hidden');
   spRenderStep1();
