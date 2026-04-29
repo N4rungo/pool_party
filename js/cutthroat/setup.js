@@ -25,13 +25,12 @@ function ctShowPlayerSetup() {
   const lvl = i === 0 ? 'Débutant' : i === n - 1 ? 'Expert' : `Niveau ${i + 1}`;
 
   document.getElementById('ctPlayerProgress').textContent =
-    `Joueur ${i + 1} / ${n}`;
+    `Cutthroat — Étape 2 / 3 — Joueur ${i + 1} / ${n}`;
   document.getElementById('ctPlayerTitle').textContent = lvl;
   document.getElementById('ctPlayerEmoji').textContent =
     EMOJIS[i % EMOJIS.length];
   document.getElementById('ctPlayerName').value =
     ctSetup.players[i].name;
-  document.getElementById('ctBtnPrevPlayer').disabled = i === 0;
 
   document.getElementById('overlayCtStep2').classList.remove('hidden');
   bindEnterKey('ctPlayerName', ctSavePlayerAndNext);
@@ -57,7 +56,16 @@ function ctPrevPlayer() {
   if (ctSetup.currentSetup > 0) {
     ctSetup.currentSetup--;
     ctShowPlayerSetup();
+  } else {
+    closeOverlay('overlayCtStep2');
+    document.getElementById('overlayCtStep1').classList.remove('hidden');
   }
+}
+
+function ctBackToStep2FromTriangle() {
+  closeOverlay('overlayCtTriangle');
+  ctSetup.currentSetup = ctSetup.count - 1;
+  ctShowPlayerSetup();
 }
 
 // ── Step 3 : triangle ────────────────────────────────

@@ -38,7 +38,6 @@ function showStep2() {
   document.getElementById('step2Title').textContent = `Joueur ${i + 1}`;
   document.getElementById('step2Emoji').textContent  = EMOJIS[i % EMOJIS.length];
   document.getElementById('step2Name').value         = p.name;
-  document.getElementById('btnPrevPlayer').style.display = i === 0 ? 'none' : 'flex';
   renderHeartsPicker(p.lives);
   document.getElementById('overlayStep2').classList.remove('hidden');
   bindEnterKey('step2Name', savePlayerAndNext);
@@ -83,6 +82,9 @@ function goToPrevPlayer() {
   if (killerSetup.currentPlayerSetup > 0) {
     killerSetup.currentPlayerSetup--;
     showStep2();
+  } else {
+    closeOverlay('overlayStep2');
+    document.getElementById('overlayStep1').classList.remove('hidden');
   }
 }
 
