@@ -96,7 +96,9 @@
       </div>
 
       <div class="game-card available" onclick="launchGame('fiveball')">
-        <div class="game-icon">🎱</div>
+        <div class="game-icon">
+          <img src="assets/5-ball.png" alt="5-Ball">
+        </div>
         <div class="game-info">
           <div class="game-name">5-Ball</div>
           <div class="game-tagline">Atteins 0 pile, comme aux fléchettes</div>
@@ -793,7 +795,7 @@
         <button class="btn-round" onclick="fiveBallChangeTarget(+1)">+</button>
       </div>
       <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:4px;">
-        Le but : descendre à 0 pile (par pas de 10)
+        Le but : descendre à 0 pile !
       </div>
 
       <button class="btn-main btn-gold" onclick="fiveBallGoToStep2()">Suivant →</button>
@@ -818,7 +820,7 @@
       <div class="popup-step">5-Ball — Étape 3 / 3</div>
       <h2>📋 Récapitulatif</h2>
       <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:10px;">
-        Score modifiable par joueur (par pas de 10)
+        Score modifiable par joueur
       </div>
       <div class="recap-list" id="fiveBallRecapList"></div>
       <button class="btn-main btn-gold" onclick="fiveBallStart()">🎱 Lancer la partie !</button>
