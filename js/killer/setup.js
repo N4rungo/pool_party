@@ -1,11 +1,17 @@
+// ── Launch ──────────────────────────────────────────
+function killerLaunch() {
+  document.getElementById('launcher').classList.add('hidden');
+  document.getElementById('overlayStep1').classList.remove('hidden');
+}
+
 // ── Step 1 ──────────────────────────────────────────
 function changeCount(delta) {
-  setup.count = Math.min(16, Math.max(2, setup.count + delta));
-  document.getElementById('countDisplay').textContent = setup.count;
+  killerSetup.count = Math.min(16, Math.max(2, killerSetup.count + delta));
+  document.getElementById('countDisplay').textContent = killerSetup.count;
 }
 
 function setJokerMode(mode) {
-  setup.jokerMode = mode;
+  killerSetup.jokerMode = mode;
   document.getElementById('toggleRandom').classList.toggle('active', mode === 'random');
   document.getElementById('toggleChoice').classList.toggle('active', mode === 'choice');
   document.getElementById('modeDesc').textContent = mode === 'random'
@@ -15,20 +21,20 @@ function setJokerMode(mode) {
 
 function goToStep2() {
   closeOverlay('overlayStep1');
-  setup.players = Array.from({ length: setup.count }, () => ({
+  killerSetup.players = Array.from({ length: killerSetup.count }, () => ({
     name: '',
     lives: DEFAULT_LIVES,
   }));
-  setup.currentPlayerSetup = 0;
+  killerSetup.currentPlayerSetup = 0;
   showStep2();
 }
 
 // ── Step 2 ──────────────────────────────────────────
 function showStep2() {
-  const i = setup.currentPlayerSetup;
-  const p = setup.players[i];
+  const i = killerSetup.currentPlayerSetup;
+  const p = killerSetup.players[i];
   document.getElementById('step2Progress').textContent =
-    `Étape 2 / 3 — Joueur ${i + 1} sur ${setup.count}`;
+    `Étape 2 / 3 — Joueur ${i + 1} sur ${killerSetup.count}`;
   document.getElementById('step2Title').textContent = `Joueur ${i + 1}`;
   document.getElementById('step2Emoji').textContent  = EMOJIS[i % EMOJIS.length];
   document.getElementById('step2Name').value         = p.name;
@@ -53,17 +59,17 @@ function renderHeartsPicker(currentLives) {
 }
 
 function setLivesForCurrentPlayer(lives) {
-  setup.players[setup.currentPlayerSetup].lives = lives;
+  killerSetup.players[killerSetup.currentPlayerSetup].lives = lives;
   renderHeartsPicker(lives);
 }
 
 function savePlayerAndNext() {
   const name = document.getElementById('step2Name').value.trim();
-  setup.players[setup.currentPlayerSetup].name =
-    name || `Joueur ${setup.currentPlayerSetup + 1}`;
+  killerSetup.players[killerSetup.currentPlayerSetup].name =
+    name || `Joueur ${killerSetup.currentPlayerSetup + 1}`;
 
-  if (setup.currentPlayerSetup < setup.count - 1) {
-    setup.currentPlayerSetup++;
+  if (killerSetup.currentPlayerSetup < killerSetup.count - 1) {
+    killerSetup.currentPlayerSetup++;
     showStep2();
   } else {
     closeOverlay('overlayStep2');
@@ -73,20 +79,20 @@ function savePlayerAndNext() {
 
 function goToPrevPlayer() {
   const name = document.getElementById('step2Name').value.trim();
-  setup.players[setup.currentPlayerSetup].name = name;
-  if (setup.currentPlayerSetup > 0) {
-    setup.currentPlayerSetup--;
+  killerSetup.players[killerSetup.currentPlayerSetup].name = name;
+  if (killerSetup.currentPlayerSetup > 0) {
+    killerSetup.currentPlayerSetup--;
     showStep2();
   }
 }
 
 // ── Step 3 ──────────────────────────────────────────
 function showStep3() {
-  document.getElementById('recapMode').textContent = setup.jokerMode === 'random'
+  document.getElementById('recapMode').textContent = killerSetup.jokerMode === 'random'
     ? '🎲 Mode jokers : Aléatoire'
     : '🃏 Mode jokers : Choix libre';
 
-  document.getElementById('recapList').innerHTML = setup.players.map((p, i) => `
+  document.getElementById('recapList').innerHTML = killerSetup.players.map((p, i) => `
     <div class="recap-row">
       <span>${EMOJIS[i % EMOJIS.length]}</span>
       <span>${p.name || `Joueur ${i + 1}`}</span>
@@ -101,6 +107,6 @@ function showStep3() {
 
 function goToStep2FromRecap() {
   closeOverlay('overlayStep3');
-  setup.currentPlayerSetup = setup.count - 1;
+  killerSetup.currentPlayerSetup = killerSetup.count - 1;
   showStep2();
 }

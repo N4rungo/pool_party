@@ -1,61 +1,110 @@
 # 🎱 Pool Party
 
-Application web de jeux de billard en mode soirée, jouable sur mobile.
+Application web de scoring pour différentes variantes de jeu de billard, pensée pour une soirée entre amis avec **un seul téléphone partagé**.
 
 ## 🚀 Lancer l'application
 
-Ouvrir `index.html` dans un navigateur, ou via GitHub Pages :
-👉 [https://ton-pseudo.github.io/pool-party](https://ton-pseudo.github.io/pool-party)
+Aucune dépendance, aucun build : c'est du HTML/CSS/JS vanilla.
 
----
+```bash
+# Méthode 1 : ouvrir directement
+open index.html
 
-## 🗂️ Structure du projet
-pool-party/
-├── index.html          # Structure HTML + point d'entrée
-├── css/
-│   ├── base.css        # Reset, body, toast
-│   └── components.css  # Tous les composants UI
-├── js/
-│   ├── main.js         # Init, launcher, navigation
-│   ├── state.js        # Constantes et état global
-│   ├── setup.js        # Configuration de la partie (étapes 1-3)
-│   ├── game.js         # Déroulement du jeu Killer
-│   └── utils.js        # Fonctions utilitaires (shuffle, toast…)
-└── README.md
-
----
+# Méthode 2 : via un petit serveur local (recommandé)
+python3 -m http.server 8000
+# puis http://localhost:8000
+```
 
 ## 🎮 Jeux disponibles
 
-### Killer Billard
-Chaque joueur commence avec un nombre de vies configurable.  
-À son tour, il doit rentrer une bille. S'il rate, il perd une vie.  
-Le dernier survivant gagne.
+| Jeu | Principe |
+|---|---|
+| **Killer** | Chaque joueur a des vies, perd une vie à chaque manque. Dernier survivant gagne. Mode jokers `random` ou `choice`. |
+| **Cutthroat** | Trois groupes de billes, élimination progressive, dernier groupe avec billes restantes gagne. |
+| **Chicago** | Premier à 61 points. |
+| **14‑1 Continu** | Score cible par joueur, suivi des breaks. |
+| **Casin** | Le français revisité, scoring matriciel par actions. |
+| **Snooker** | Objectif 147 points, modes `simple` et `expert` (avec free ball). |
 
-**Modes joker :**
-- `random` — pioche dans un pool commun
-- `choice` — chaque joueur a 3 jokers prédéfinis
-
----
-
-## ➕ Ajouter un nouveau jeu
-
-1. Ajouter un bouton dans le launcher (`index.html`) :
-```html
-<button onclick="launchGame('mon-jeu')">🎯 Mon Jeu</button>
-```
-
-2. Gérer le cas dans main.js :
+## 🗂️ Structure du projet
 
 ```
-function launchGame(game) {
-  if (game === 'killer') { ... }
-  else if (game === 'mon-jeu') {
-    // afficher le premier overlay de configuration
-  }
+pool_party/
+├── index.html              # Point d'entrée + tous les overlays
+├── assets/                 # Images des billes et icônes
+├── css/
+│   ├── base.css            # Reset, body, design tokens (CSS variables)
+│   ├── components.css      # Overlays, boutons, inputs, recap
+│   └── <jeu>.css           # Styles spécifiques par jeu
+└── js/
+    ├── main.js             # Registre GAMES + showLauncher / launchGame
+    ├── shared/
+    │   ├── utils.js        # closeOverlay, showToast, bindEnterKey, shuffleArray
+    │   └── playerSetup.js  # Helpers réutilisables pour la saisie de joueurs
+    └── <jeu>/
+        ├── constants.js
+        ├── state.js        # <jeu>Setup et <jeu>State
+        ├── setup.js        # <jeu>Launch() + écrans de configuration
+        └── game.js         # Logique de partie
+```
+
+## 🎨 Design tokens
+
+Couleurs centralisées en variables CSS dans `css/base.css` :
+
+```css
+:root {
+  --color-gold:        #FFD700;
+  --color-gold-light:  #FFE44D;
+  --color-gold-dark:   #B8960C;
+  --color-gold-rgb:    255, 215, 0;   /* pour les rgba */
+  --color-pool:        #1a472a;
 }
 ```
 
-3. Créer js/mon-jeu/ avec state.js, setup.js, game.js
+## ➕ Ajouter un nouveau jeu
 
-4. Ajouter les styles dans css/components.css ou un nouveau fichier CSS dédié
+1. Créer le dossier `js/mon-jeu/` avec `constants.js`, `state.js`, `setup.js`, `game.js`.
+2. Dans `state.js`, déclarer les variables d'état préfixées : `monJeuSetup`, `monJeuState`.
+3. Dans `setup.js`, exposer la fonction d'entrée :
+   ```js
+   function monJeuLaunch() {
+     document.getElementById('launcher').classList.add('hidden');
+     // afficher le premier overlay de configuration
+   }
+   ```
+4. Ajouter une carte dans le launcher (`index.html`) :
+   ```html
+   <div class="game-card available" onclick="launchGame('monjeu')">
+     <div class="game-icon">…</div>
+     <div class="game-info">
+       <div class="game-name">Mon Jeu</div>
+       <div class="game-tagline">Tagline accrocheuse</div>
+     </div>
+     <div class="game-arrow">›</div>
+   </div>
+   ```
+5. Ajouter l'écran de jeu (avec la classe `game-screen` !) et les overlays (avec la classe `overlay`) dans `index.html`. Cette classe garantit qu'ils sont masqués au retour à l'accueil sans config supplémentaire.
+6. Charger les scripts dans `index.html` :
+   ```html
+   <script src="js/mon-jeu/constants.js"></script>
+   <script src="js/mon-jeu/state.js"></script>
+   <script src="js/mon-jeu/setup.js"></script>
+   <script src="js/mon-jeu/game.js"></script>
+   ```
+7. Enregistrer le jeu dans `js/main.js` :
+   ```js
+   const GAMES = {
+     // …
+     monjeu: monJeuLaunch,
+   };
+   ```
+8. Ajouter `css/mon-jeu.css` (et le lier dans `index.html`).
+
+## 📐 Conventions
+
+- **Variables d'état globales** : préfixées par l'identifiant du jeu (`killerSetup`, `chicagoState`, …).
+- **Fonction d'entrée** : `<jeu>Launch()` (matche l'id passé à `launchGame`).
+- **Écrans de jeu** : doivent porter la classe `game-screen` pour être masqués automatiquement.
+- **Overlays** : doivent porter la classe `overlay`.
+- **Helpers partagés** : dans `js/shared/`, jamais dans un module de jeu.

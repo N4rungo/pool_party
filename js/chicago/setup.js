@@ -1,4 +1,4 @@
-function showChicagoSetup() {
+function chicagoLaunch() {
   document.getElementById('launcher').classList.add('hidden');
   document.getElementById('overlayChicagoSetup').classList.remove('hidden');
   

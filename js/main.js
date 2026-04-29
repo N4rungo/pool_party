@@ -1,3 +1,14 @@
+// Registre des jeux : id (utilisé par launchGame) -> fonction d'entrée
+const GAMES = {
+  killer:       killerLaunch,
+  cutthroat:    cutthroatLaunch,
+  chicago:      chicagoLaunch,
+  straightpool: straightpoolLaunch,
+  casin:        casinLaunch,
+  snooker:      snookerLaunch,
+};
+
+
 function showLauncher() {
   document.getElementById('launcher').classList.remove('hidden');
   document.querySelectorAll('.game-screen').forEach(el => el.classList.add('hidden'));
@@ -5,24 +16,15 @@ function showLauncher() {
 }
 
 
-function launchGame(game) {
-  if (game === 'killer') {
-    document.getElementById('launcher').classList.add('hidden');
-    document.getElementById('overlayStep1').classList.remove('hidden');
-  } else if (game === 'chicago') {
-    showChicagoSetup();
-  } else if (game === 'casin') {
-    showCasinSetup();
-  } else if (game == 'cutthroat') {
-    ctLaunchGame();
-  } else if (game === 'snooker') {
-    snookerLaunchGame();
-  } else if (game === 'straightpool') {
-    spShowSetup();
-  } else {
+function launchGame(gameId) {
+  const launch = GAMES[gameId];
+  if (typeof launch !== 'function') {
     showToast('🚧 Bientôt disponible !');
+    return;
   }
+  launch();
 }
+
 
 function confirmGoHome() {
   if (confirm('Abandonner la partie et revenir à l\'accueil ?')) {

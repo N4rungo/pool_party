@@ -3,17 +3,17 @@ function startGame() {
   closeOverlay('overlayStep3');
 
   let pool = [];
-  if (setup.jokerMode === 'random') {
+  if (killerSetup.jokerMode === 'random') {
     JOKER_TYPES.forEach(j => {
-      for (let i = 0; i < setup.count; i++) pool.push(j.id);
+      for (let i = 0; i < killerSetup.count; i++) pool.push(j.id);
     });
     shuffleArray(pool);
   }
 
-  let players = setup.players.map(p => ({
+  let players = killerSetup.players.map(p => ({
     name: p.name,
     lives: p.lives,
-    jokers: setup.jokerMode === 'choice'
+    jokers: killerSetup.jokerMode === 'choice'
       ? { pass: 1, hand: 1, target: 1 }
       : { pass: 0, hand: 0, target: 0 },
     jokersUsed: 0,
@@ -21,14 +21,14 @@ function startGame() {
   }));
   shuffleArray(players);
 
-  state.players      = players;
-  state.currentIndex = 0;
-  state.jokerMode    = setup.jokerMode;
-  state.pool         = pool;
-  state.forcedTurnFor  = null;
-  state.forcedTurnBack = null;
-  state.history      = [];
-  state.savedConfig  = players.map(p => ({ name: p.name, lives: p.lives }));
+  killerState.players      = players;
+  killerState.currentIndex = 0;
+  killerState.jokerMode    = killerSetup.jokerMode;
+  killerState.pool         = pool;
+  killerState.forcedTurnFor  = null;
+  killerState.forcedTurnBack = null;
+  killerState.history      = [];
+  killerState.savedConfig  = players.map(p => ({ name: p.name, lives: p.lives }));
 
   document.getElementById('game').classList.remove('hidden');
   renderGame();
@@ -39,7 +39,7 @@ function renderGame() {
   renderPool();
   renderPlayers();
   renderActions();
-  document.getElementById('btnUndo').disabled = state.history.length === 0;
+  document.getElementById('btnUndo').disabled = killerState.history.length === 0;
 }
 
 function renderPool() {
@@ -47,15 +47,15 @@ function renderPool() {
 }
 
 function renderPlayers() {
-  const activeIdx = state.forcedTurnFor !== null ? state.forcedTurnFor : state.currentIndex;
+  const activeIdx = killerState.forcedTurnFor !== null ? killerState.forcedTurnFor : killerState.currentIndex;
 
-  document.getElementById('playersList').innerHTML = state.players.map((p, i) => {
+  document.getElementById('playersList').innerHTML = killerState.players.map((p, i) => {
     const isActive = i === activeIdx;
-    const isForced = state.forcedTurnFor !== null && i === state.forcedTurnFor;
+    const isForced = killerState.forcedTurnFor !== null && i === killerState.forcedTurnFor;
     const hearts   = Array.from({ length: MAX_LIVES }, (_, h) =>
       h < p.lives ? '❤️' : '🖤').join('');
 
-    const jokerBadges = state.jokerMode === 'choice' && !p.eliminated
+    const jokerBadges = killerState.jokerMode === 'choice' && !p.eliminated
       ? `<div class="joker-badges">
            ${JOKER_TYPES.map(j =>
              `<span class="joker-badge ${p.jokers[j.id] === 0 ? 'used' : ''}">
@@ -89,16 +89,16 @@ function renderPlayers() {
 }
 
 function renderActions() {
-  const activeIdx = state.forcedTurnFor !== null ? state.forcedTurnFor : state.currentIndex;
-  const player    = state.players[activeIdx];
-  const isForced  = state.forcedTurnFor !== null;
+  const activeIdx = killerState.forcedTurnFor !== null ? killerState.forcedTurnFor : killerState.currentIndex;
+  const player    = killerState.players[activeIdx];
+  const isForced  = killerState.forcedTurnFor !== null;
 
   document.getElementById('actionTitle').textContent =
     `Tour de ${player.name}${isForced ? ' (forcé)' : ''}`;
 
   const hasJoker = !isForced && player.jokersUsed < MAX_JOKERS && (
-    state.jokerMode === 'random'
-      ? state.pool.length > 0
+    killerState.jokerMode === 'random'
+      ? killerState.pool.length > 0
       : Object.values(player.jokers).some(v => v > 0)
   );
 
@@ -114,48 +114,48 @@ function renderActions() {
 
 // ── Actions ──────────────────────────────────────────
 function saveHistory() {
-  if (state.history.length >= 5) state.history.shift();
-  state.history.push(JSON.stringify({
-    players:       state.players,
-    currentIndex:  state.currentIndex,
-    pool:          state.pool,
-    forcedTurnFor: state.forcedTurnFor,
-    forcedTurnBack: state.forcedTurnBack,
+  if (killerState.history.length >= 5) killerState.history.shift();
+  killerState.history.push(JSON.stringify({
+    players:       killerState.players,
+    currentIndex:  killerState.currentIndex,
+    pool:          killerState.pool,
+    forcedTurnFor: killerState.forcedTurnFor,
+    forcedTurnBack: killerState.forcedTurnBack,
   }));
 }
 
 function undoAction() {
-  if (state.history.length === 0) return;
-  const prev = JSON.parse(state.history.pop());
-  state.players       = prev.players;
-  state.currentIndex  = prev.currentIndex;
-  state.pool          = prev.pool;
-  state.forcedTurnFor  = prev.forcedTurnFor;
-  state.forcedTurnBack = prev.forcedTurnBack;
+  if (killerState.history.length === 0) return;
+  const prev = JSON.parse(killerState.history.pop());
+  killerState.players       = prev.players;
+  killerState.currentIndex  = prev.currentIndex;
+  killerState.pool          = prev.pool;
+  killerState.forcedTurnFor  = prev.forcedTurnFor;
+  killerState.forcedTurnBack = prev.forcedTurnBack;
   renderGame();
   showToast('↩ Action annulée');
 }
 
 function nextTurn() {
-  const total = state.players.length;
-  let next = (state.currentIndex + 1) % total;
-  while (state.players[next].eliminated) {
+  const total = killerState.players.length;
+  let next = (killerState.currentIndex + 1) % total;
+  while (killerState.players[next].eliminated) {
     next = (next + 1) % total;
   }
-  state.currentIndex = next;
+  killerState.currentIndex = next;
 }
 
 function doAction(type) {
   saveHistory();
-  const activeIdx = state.forcedTurnFor !== null ? state.forcedTurnFor : state.currentIndex;
-  const player    = state.players[activeIdx];
-  const isForced  = state.forcedTurnFor !== null;
+  const activeIdx = killerState.forcedTurnFor !== null ? killerState.forcedTurnFor : killerState.currentIndex;
+  const player    = killerState.players[activeIdx];
+  const isForced  = killerState.forcedTurnFor !== null;
 
   function endForcedOrNext() {
     if (isForced) {
-      state.currentIndex   = state.forcedTurnBack;
-      state.forcedTurnFor  = null;
-      state.forcedTurnBack = null;
+      killerState.currentIndex   = killerState.forcedTurnBack;
+      killerState.forcedTurnFor  = null;
+      killerState.forcedTurnBack = null;
     } else {
       nextTurn();
     }
@@ -171,7 +171,7 @@ function doAction(type) {
       player.lives    = 0;
       player.eliminated = true;
       showToast(`💀 ${player.name} est éliminé !`);
-      const alive = state.players.filter(p => !p.eliminated);
+      const alive = killerState.players.filter(p => !p.eliminated);
       if (alive.length === 1) { endGame(alive[0]); return; }
     } else {
       showToast(`⚪ ${player.name} a raté ! −1 vie`);
@@ -193,17 +193,17 @@ function doAction(type) {
 
 // ── Jokers ───────────────────────────────────────────
 function openJokerMenu() {
-  const player = state.players[state.currentIndex];
+  const player = killerState.players[killerState.currentIndex];
   document.getElementById('jokerPlayerName').textContent = `${player.name} utilise un joker`;
   const list = document.getElementById('jokerChoiceList');
 
-  if (state.jokerMode === 'random') {
+  if (killerState.jokerMode === 'random') {
     list.innerHTML = `
       <button class="joker-choice-btn" onclick="drawRandomJoker()">
         <span class="jc-icon">🎲</span>
         <div>
           <div>Tirer un joker aléatoire</div>
-          <div class="jc-desc">${state.pool.length} joker${state.pool.length > 1 ? 's' : ''} restant${state.pool.length > 1 ? 's' : ''} dans le pool</div>
+          <div class="jc-desc">${killerState.pool.length} joker${killerState.pool.length > 1 ? 's' : ''} restant${killerState.pool.length > 1 ? 's' : ''} dans le pool</div>
         </div>
       </button>`;
   } else {
@@ -223,18 +223,18 @@ function openJokerMenu() {
 }
 
 function drawRandomJoker() {
-  if (state.pool.length === 0) { closeOverlay('overlayJoker'); return; }
-  const idx   = Math.floor(Math.random() * state.pool.length);
-  const drawn = state.pool.splice(idx, 1)[0];
+  if (killerState.pool.length === 0) { closeOverlay('overlayJoker'); return; }
+  const idx   = Math.floor(Math.random() * killerState.pool.length);
+  const drawn = killerState.pool.splice(idx, 1)[0];
   closeOverlay('overlayJoker');
   useJoker(drawn);
 }
 
 function useJoker(jokerId) {
   // saveHistory();
-  const player = state.players[state.currentIndex];
+  const player = killerState.players[killerState.currentIndex];
   player.jokersUsed++;
-  if (state.jokerMode === 'choice') player.jokers[jokerId]--;
+  if (killerState.jokerMode === 'choice') player.jokers[jokerId]--;
 
   const joker = JOKER_TYPES.find(j => j.id === jokerId);
   showToast(`${joker.icon} ${player.name} utilise : ${joker.label}`);
@@ -258,12 +258,12 @@ function useJoker(jokerId) {
 }
 
 function openTargetOverlay() {
-  const targets = state.players.filter((p, i) =>
-    !p.eliminated && i !== state.currentIndex
+  const targets = killerState.players.filter((p, i) =>
+    !p.eliminated && i !== killerState.currentIndex
   );
 
   document.getElementById('targetList').innerHTML = targets.map(p => {
-    const i = state.players.indexOf(p);
+    const i = killerState.players.indexOf(p);
     return `
       <button class="target-btn" onclick="applyTarget(${i})">
         <span>${EMOJIS[i % EMOJIS.length]}</span>
@@ -279,10 +279,10 @@ function openTargetOverlay() {
 
 function applyTarget(targetIdx) {
   closeOverlay('overlayTarget');
-  const backIdx = state.currentIndex;
+  const backIdx = killerState.currentIndex;
   // nextTurn();
-  state.forcedTurnFor  = targetIdx;
-  state.forcedTurnBack = backIdx;
+  killerState.forcedTurnFor  = targetIdx;
+  killerState.forcedTurnBack = backIdx;
   renderGame();
 }
 
@@ -294,7 +294,7 @@ function endGame(winner) {
 
 function openReplay() {
   closeOverlay('overlayWin');
-  const replayData = state.savedConfig;
+  const replayData = killerState.savedConfig;
 
   window._replayData = replayData;
 
@@ -329,7 +329,7 @@ function confirmReplay() {
   const replayData = window._replayData;
 
   let pool = [];
-  if (state.jokerMode === 'random') {
+  if (killerState.jokerMode === 'random') {
     const n = replayData.length;
     JOKER_TYPES.forEach(j => { for (let i = 0; i < n; i++) pool.push(j.id); });
     shuffleArray(pool);
@@ -338,7 +338,7 @@ function confirmReplay() {
   let players = replayData.map(p => ({
     name: p.name,
     lives: p.lives,
-    jokers: state.jokerMode === 'choice'
+    jokers: killerState.jokerMode === 'choice'
       ? { pass: 1, hand: 1, target: 1 }
       : { pass: 0, hand: 0, target: 0 },
     jokersUsed: 0,
@@ -346,13 +346,13 @@ function confirmReplay() {
   }));
   shuffleArray(players);
 
-  state.players       = players;
-  state.currentIndex  = 0;
-  state.pool          = pool;
-  state.forcedTurnFor  = null;
-  state.forcedTurnBack = null;
-  state.history       = [];
-  state.savedConfig   = players.map(p => ({ name: p.name, lives: p.lives }));
+  killerState.players       = players;
+  killerState.currentIndex  = 0;
+  killerState.pool          = pool;
+  killerState.forcedTurnFor  = null;
+  killerState.forcedTurnBack = null;
+  killerState.history       = [];
+  killerState.savedConfig   = players.map(p => ({ name: p.name, lives: p.lives }));
 
   document.getElementById('game').classList.remove('hidden');
   renderGame();
