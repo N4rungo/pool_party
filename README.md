@@ -25,6 +25,7 @@ python3 -m http.server 8000
 | **14‑1 Continu** | Score cible par joueur, suivi des breaks. |
 | **Casin** | Le français revisité, scoring matriciel par actions. |
 | **Snooker** | Objectif 147 points, modes `simple` et `expert` (avec free ball). |
+| **5-Ball** | 5 billes, score à atteindre (51 / 101 / 151) à descendre à 0 pile. Logique fléchettes : bust à 1, 2 ou 4. |
 
 ## 🗂️ Structure du projet
 

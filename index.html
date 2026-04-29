@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="css/cutthroat.css">
   <link rel="stylesheet" href="css/snooker.css">
   <link rel="stylesheet" href="css/14-1.css">
+  <link rel="stylesheet" href="css/5-ball.css">
 
 
 </head>
@@ -90,6 +91,15 @@
         <div class="game-info">
           <div class="game-name">Snooker</div>
           <div class="game-tagline">Objectif : 147 points</div>
+        </div>
+        <div class="game-arrow">›</div>
+      </div>
+
+      <div class="game-card available" onclick="launchGame('fiveball')">
+        <div class="game-icon">🎱</div>
+        <div class="game-info">
+          <div class="game-name">5-Ball</div>
+          <div class="game-tagline">Atteins 0 pile, comme aux fléchettes</div>
         </div>
         <div class="game-arrow">›</div>
       </div>
@@ -762,6 +772,93 @@
   </div>
 
 
+  <!-- ===== 5-BALL : SETUP STEP 1 — joueurs + score cible ===== -->
+  <div class="overlay hidden" id="fiveBallOverlayStep1">
+    <div class="popup-box">
+      <div class="popup-step">5-Ball — Étape 1 / 3</div>
+      <h2>👥 Combien de joueurs ?</h2>
+
+      <div class="number-selector">
+        <button class="btn-round" onclick="fiveBallChangeCount(-1)">−</button>
+        <span id="fiveBallCountDisplay">2</span>
+        <button class="btn-round" onclick="fiveBallChangeCount(+1)">+</button>
+      </div>
+
+      <div class="sep"></div>
+
+      <div class="label-small">Score à atteindre</div>
+      <div class="number-selector">
+        <button class="btn-round" onclick="fiveBallChangeTarget(-1)">−</button>
+        <span id="fiveBallTargetDisplay">51</span>
+        <button class="btn-round" onclick="fiveBallChangeTarget(+1)">+</button>
+      </div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:4px;">
+        Le but : descendre à 0 pile (par pas de 10)
+      </div>
+
+      <button class="btn-main btn-gold" onclick="fiveBallGoToStep2()">Suivant →</button>
+      <button class="btn-main btn-gray" onclick="showLauncher()">← Retour</button>
+    </div>
+  </div>
+
+  <!-- ===== 5-BALL : SETUP STEP 2 — noms ===== -->
+  <div class="overlay hidden" id="fiveBallOverlayStep2">
+    <div class="popup-box">
+      <div class="popup-step">5-Ball — Étape 2 / 3</div>
+      <h2>✏️ Noms des joueurs</h2>
+      <div id="fiveBallNameInputs"></div>
+      <button class="btn-main btn-gold" onclick="fiveBallGoToStep3()">Suivant →</button>
+      <button class="btn-main btn-gray" onclick="fiveBallStep2Back()">← Retour</button>
+    </div>
+  </div>
+
+  <!-- ===== 5-BALL : SETUP STEP 3 — recap + score par joueur ===== -->
+  <div class="overlay hidden" id="fiveBallOverlayStep3">
+    <div class="popup-box">
+      <div class="popup-step">5-Ball — Étape 3 / 3</div>
+      <h2>📋 Récapitulatif</h2>
+      <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:10px;">
+        Score modifiable par joueur (par pas de 10)
+      </div>
+      <div class="recap-list" id="fiveBallRecapList"></div>
+      <button class="btn-main btn-gold" onclick="fiveBallStart()">🎱 Lancer la partie !</button>
+      <button class="btn-main btn-gray" onclick="fiveBallStep3Back()">← Retour</button>
+    </div>
+  </div>
+
+  <!-- ===== 5-BALL : VICTOIRE ===== -->
+  <div class="overlay hidden" id="fiveBallOverlayWin">
+    <div class="popup-box" style="text-align:center;">
+      <div class="win-trophy">🏆</div>
+      <div class="win-name" id="fiveBallWinName"></div>
+      <div class="win-sub">Pile à 0 ! Bravo !</div>
+      <button class="btn-main btn-gold" onclick="fiveBallReplay()">🔄 Rejouer</button>
+      <button class="btn-main btn-gray" onclick="fiveBallNewGame()">⚙️ Nouveau jeu</button>
+    </div>
+  </div>
+
+  <!-- ===== 5-BALL : ÉCRAN DE JEU ===== -->
+  <div id="fiveBallGame" class="game-screen hidden">
+    <h1>🎱 5-BALL</h1>
+
+    <div class="game-topbar">
+      <button class="btn-home" onclick="confirmGoHome()"><img src="assets/home.png" alt="Home" class="icon-img">
+        Accueil</button>
+      <button class="btn-undo" id="fiveBallBtnUndo" onclick="fiveBallUndo()" disabled>↩ Annuler</button>
+    </div>
+
+    <div id="fiveBallScoreboard" class="fb-scoreboard"></div>
+
+    <div id="fiveBallBanner" class="fb-banner"></div>
+
+    <div id="fiveBallBoard" class="fb-board"></div>
+
+    <div id="fiveBallPreview" class="fb-action-bar"></div>
+
+    <button class="btn-main btn-gold" onclick="fiveBallValidateTurn()">Valider le tour →</button>
+  </div>
+
+
   </div>
 
 
@@ -798,6 +895,11 @@
   <script src="js/snooker/state.js"></script>
   <script src="js/snooker/setup.js"></script>
   <script src="js/snooker/game.js"></script>
+
+  <script src="js/5-ball/constants.js"></script>
+  <script src="js/5-ball/state.js"></script>
+  <script src="js/5-ball/setup.js"></script>
+  <script src="js/5-ball/game.js"></script>
 
 
   <script src="js/main.js"></script>
