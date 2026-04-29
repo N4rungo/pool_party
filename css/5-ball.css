@@ -1,0 +1,190 @@
+/* ===== 5-BALL GAME SCREEN ===== */
+#fiveBallGame {
+  width: 92%;
+  max-width: 480px;
+  padding-top: 10px;
+}
+
+/* ===== Scoreboard (liste joueurs) ===== */
+.fb-scoreboard {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.fb-player-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 8px 12px;
+  transition: border-color .2s, box-shadow .2s;
+}
+
+.fb-player-row.active {
+  border-color: var(--color-gold);
+  box-shadow: 0 0 16px rgba(var(--color-gold-rgb), 0.2);
+}
+
+.fb-player-emoji {
+  font-size: 18px;
+  width: 26px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.fb-player-name {
+  flex: 1;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.85);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fb-player-row.active .fb-player-name {
+  color: var(--color-gold);
+  font-weight: bold;
+}
+
+.fb-player-score {
+  font-size: 22px;
+  font-weight: bold;
+  color: white;
+  line-height: 1;
+}
+
+.fb-player-row.active .fb-player-score {
+  color: var(--color-gold);
+}
+
+.fb-player-target {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+  font-weight: normal;
+}
+
+/* ===== Bandeau d'info ===== */
+.fb-banner {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+.fb-banner-current {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.fb-banner-cue {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 2px;
+}
+
+.fb-banner-engagement {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(var(--color-gold-rgb), 0.3);
+  font-size: 13px;
+  color: var(--color-gold);
+}
+
+/* ===== Plateau de billes (forme T) ===== */
+.fb-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, auto);
+  gap: 14px;
+  justify-items: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 18px;
+  padding: 18px 10px;
+  margin-bottom: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.fb-ball-red    { grid-column: 2; grid-row: 1; }
+.fb-ball-blue   { grid-column: 2; grid-row: 2; }
+.fb-ball-white  { grid-column: 1; grid-row: 3; }
+.fb-ball-green  { grid-column: 2; grid-row: 3; }
+.fb-ball-yellow { grid-column: 3; grid-row: 3; }
+
+.fb-ball {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  border: none;
+  background: none;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 2px;
+  transition: transform .15s, box-shadow .15s, opacity .2s, filter .2s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.fb-ball img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: block;
+  pointer-events: none;
+}
+
+.fb-ball:active:not(:disabled):not(.fb-ball-cue) {
+  transform: scale(1.15);
+}
+
+.fb-ball.fb-ball-selected {
+  box-shadow: 0 0 16px 3px rgba(var(--color-gold-rgb), 0.7);
+  transform: scale(1.05);
+}
+
+.fb-ball.fb-ball-selected img {
+  filter: drop-shadow(0 0 6px var(--color-gold));
+}
+
+.fb-ball.fb-ball-cue {
+  cursor: not-allowed;
+  opacity: 0.3;
+  filter: grayscale(80%);
+}
+
+.fb-ball-value {
+  position: absolute;
+  bottom: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: bold;
+  pointer-events: none;
+}
+
+/* ===== Action bar (preview + Valider) ===== */
+.fb-action-bar {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  text-align: center;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fb-preview-muted { color: rgba(255, 255, 255, 0.45); font-size: 13px; }
+.fb-preview-bust  { color: #ff7a7a; font-size: 13px; font-weight: bold; }
+.fb-preview-ok    { color: var(--color-gold); font-size: 14px; font-weight: bold; }
+.fb-preview-win   { color: var(--color-gold-light); font-size: 14px; font-weight: bold; }

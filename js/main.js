@@ -6,6 +6,7 @@ const GAMES = {
   straightpool: straightpoolLaunch,
   casin:        casinLaunch,
   snooker:      snookerLaunch,
+  fiveball:     fiveBallLaunch,
 };
 
 
