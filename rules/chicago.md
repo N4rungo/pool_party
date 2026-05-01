@@ -6,11 +6,11 @@ Marquer **61 points avant l'adversaire** en empochant des billes. La valeur de c
 
 ## 🎱 Mise en place
 - **2 joueurs**
-- Triangle classique de 15 billes (boules 1 à 15)
+- Triangle classique de 15 billes (billes 1 à 15)
 - Tirage au sort pour décider qui casse
 
 ## ▶️ Comment jouer
-À ton tour, tu joues comme un break classique.
+À l'instar du jeu de 9-ball, à ton tour, tu dois viser la bille avec la plus petite valeur : n'importe quelle bille peut-être empochée de cette manière.
 - ✅ Tu empoches une bille → son numéro s'ajoute à ton score, tu continues.
 - ❌ Tu rates → tu valides la fin de ton tour dans l'app, la main passe.
 
