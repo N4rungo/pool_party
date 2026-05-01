@@ -100,12 +100,12 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, auto);
-  gap: 8px;
+  gap: 2px;
   justify-items: center;
   align-items: center;
   background: rgba(0, 0, 0, 0.2);
   border-radius: 18px;
-  padding: 10px 8px;
+  padding: 0;
   margin: 0 auto 12px;
   border: 1px solid rgba(255, 255, 255, 0.07);
   max-width: 280px;
@@ -119,14 +119,14 @@
 
 .fb-ball {
   position: relative;
-  width: 52px;
-  height: 52px;
+  width: 62px;
+  height: 62px;
   border: none;
   background: none;
   border-radius: 50%;
   cursor: pointer;
-  padding: 2px;
-  transition: transform .15s, box-shadow .15s, opacity .2s, filter .2s;
+  padding: 0;
+  transition: transform .15s, opacity .2s, filter .2s;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -143,12 +143,13 @@
 }
 
 .fb-ball.fb-ball-selected {
-  box-shadow: 0 0 16px 3px rgba(var(--color-gold-rgb), 0.7);
   transform: scale(1.05);
 }
 
 .fb-ball.fb-ball-selected img {
-  filter: drop-shadow(0 0 6px var(--color-gold));
+  /* Halo doré qui suit la silhouette de la bille (pas de débordement carré) */
+  filter: drop-shadow(0 0 4px var(--color-gold))
+          drop-shadow(0 0 2px var(--color-gold));
 }
 
 .fb-ball.fb-ball-cue {
