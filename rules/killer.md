@@ -2,7 +2,7 @@
 > Sois le dernier survivant.
 
 ## 🎯 But du jeu
-Chaque joueur a un nombre de vies. Tu en perds une à chaque coup raté.
+Chaque joueur a un nombre de vies prédéfini. Tu en perds une à chaque coup raté.
 Le dernier en vie gagne.
 
 ## 🎱 Mise en place
