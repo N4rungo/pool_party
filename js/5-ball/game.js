@@ -67,8 +67,10 @@ function fiveBallRenderBanner() {
   }
 
   document.getElementById('fiveBallBanner').innerHTML = `
-    <div class="fb-banner-current">À ${escapeHtml(player.name)} de jouer</div>
-    <div class="fb-banner-cue">Cue ball : <strong>${cueLabel}</strong></div>
+    <div class="fb-banner-line">
+      À <strong>${escapeHtml(player.name)}</strong> de jouer
+      <span class="fb-banner-cue">— Cue : ${cueLabel}</span>
+    </div>
     ${extra}
   `;
 }
