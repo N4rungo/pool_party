@@ -23,8 +23,8 @@ Le dernier joueur qui a encore au moins une bille sur la table remporte la parti
 - ❌ Tu rates → la main passe.
 - ⚠️ Tu fais une faute (blanche rentrée, bille sortie, etc.) → tu déclares la faute dans l'app, qui **remet en jeu une bille de chaque adversaire** dans l'ordre, en commençant par le joueur suivant.
 
-> ⚡ **Important** : empocher une de tes propres billes, ce n'est pas une faute, mais c'est aussi une bille en moins pour toi. Reste vigilant.
-> ☠️ **Élimination** : il n'y a pas vraiment d'élimination définitive. Il suffit d'attendre patiemment la faute d'un autre joueur pour revenir en jeu !
+> ⚡ **Important** : empocher une de tes propres billes, ce n'est pas une faute, mais c'est aussi une bille en moins pour toi. Reste vigilant.  
+> 💀 **Élimination** : il n'y a pas vraiment d'élimination définitive. Il suffit d'attendre patiemment la faute d'un autre joueur pour revenir en jeu !
 
 ## 🏆 Victoire
 Le **dernier joueur** dont le groupe contient encore au moins une bille sur la table gagne. 🥳
