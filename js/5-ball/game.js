@@ -87,7 +87,6 @@ function fiveBallRenderBalls() {
     return `
       <button class="${classes.join(' ')}" ${onclick} aria-label="${b.label} (${b.value})">
         <img src="assets/${b.asset}" alt="${b.value}">
-        <span class="fb-ball-value">${b.value}</span>
       </button>`;
   }).join('');
   document.getElementById('fiveBallBoard').innerHTML = html;
