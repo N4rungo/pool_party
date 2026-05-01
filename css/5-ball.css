@@ -9,8 +9,8 @@
 .fb-scoreboard {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  margin-bottom: 14px;
+  gap: 4px;
+  margin-bottom: 12px;
 }
 
 .fb-player-row {
@@ -20,7 +20,7 @@
   background: rgba(0, 0, 0, 0.25);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 12px;
-  padding: 8px 12px;
+  padding: 6px 10px;
   transition: border-color .2s, box-shadow .2s;
 }
 
@@ -51,7 +51,7 @@
 }
 
 .fb-player-score {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: bold;
   color: white;
   line-height: 1;
@@ -72,27 +72,26 @@
   background: rgba(0, 0, 0, 0.25);
   border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: 14px;
-  padding: 10px 14px;
-  margin-bottom: 14px;
+  padding: 8px 14px;
+  margin-bottom: 12px;
   text-align: center;
 }
 
-.fb-banner-current {
+.fb-banner-line {
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.75);
 }
 
-.fb-banner-cue {
-  font-size: 12px;
+.fb-banner-line .fb-banner-cue {
   color: rgba(255, 255, 255, 0.5);
-  margin-top: 2px;
+  margin-left: 6px;
 }
 
 .fb-banner-engagement {
-  margin-top: 8px;
-  padding-top: 8px;
+  margin-top: 6px;
+  padding-top: 6px;
   border-top: 1px solid rgba(var(--color-gold-rgb), 0.3);
-  font-size: 13px;
+  font-size: 12px;
   color: var(--color-gold);
 }
 
@@ -101,17 +100,15 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, auto);
-  gap: 14px;
+  gap: 8px;
   justify-items: center;
   align-items: center;
   background: rgba(0, 0, 0, 0.2);
   border-radius: 18px;
-  padding: 18px 10px;
-  margin-bottom: 14px;
+  padding: 10px 8px;
+  margin: 0 auto 12px;
   border: 1px solid rgba(255, 255, 255, 0.07);
-  max-width: 320px;
-  margin-left: auto;
-  margin-right: auto;
+  max-width: 280px;
 }
 
 .fb-ball-red    { grid-column: 2; grid-row: 1; }
@@ -122,8 +119,8 @@
 
 .fb-ball {
   position: relative;
-  width: 64px;
-  height: 64px;
+  width: 52px;
+  height: 52px;
   border: none;
   background: none;
   border-radius: 50%;
@@ -175,10 +172,10 @@
 .fb-action-bar {
   background: rgba(0, 0, 0, 0.2);
   border-radius: 14px;
-  padding: 12px 14px;
-  margin-bottom: 12px;
+  padding: 8px 14px;
+  margin-bottom: 10px;
   text-align: center;
-  min-height: 44px;
+  min-height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
