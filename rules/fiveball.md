@@ -2,7 +2,7 @@
 > Atteins 0 pile, comme aux fléchettes.
 
 ## 🎯 But du jeu
-Partir d'un score (51, 101, 151…) et le **descendre à 0 pile** en marquant des points par carambolage. Le premier à zéro gagne.
+Partir d'un score (51, 101, 151…) et **descendre à 0 pile** en marquant des points par carambolage. Le premier à zéro gagne.
 
 ## 🎱 Mise en place
 - **2 à 6 joueurs**
@@ -18,7 +18,7 @@ Partir d'un score (51, 101, 151…) et le **descendre à 0 pile** en marquant de
 | 🔵 Bleue | 6 |
 
 - Disposition initiale en **T** : la bleue au centre, la rouge en haut, la verte en bas, la blanche à gauche de la verte, la jaune à droite.
-- **Cue ball alternée** strictement à chaque tour (blanche, jaune, blanche…). À 2 joueurs, J1 garde donc la blanche et J2 la jaune.
+- **Cue ball alternée** à chaque tour (blanche, jaune, blanche…). À 2 joueurs, J1 garde donc la blanche et J2 la jaune.
 
 ## ▶️ Comment jouer
 À ton tour, tu joues ta cue ball et dois **caramboler au moins 2 autres billes**.
