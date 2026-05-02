@@ -7,7 +7,7 @@ Partir d'un score (51, 101, 151…) et **descendre à 0 pile** en marquant des p
 ## 🎱 Mise en place
 - **2 à 6 joueurs**
 - Variante du billard français 
-- Score de départ commun (par défaut **51**, par pas de 10, min 21), modifiable par joueur à l'étape 3 (handicap)
+- Score de départ commun (par défaut **51**, par pas de 10, min 21), ajustable individuellement (handicap)
 - **5 billes** sur la table :
 
 | Bille | Valeur |
