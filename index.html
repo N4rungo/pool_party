@@ -28,25 +28,31 @@
     <div class="launcher-subtitle">Choisissez votre jeu</div>
     <div class="games-list">
 
-      <div class="game-card available" onclick="launchGame('killer')">
+      <div class="game-card available">
         <div class="game-icon"><img src="assets/bille_8_killer.png" alt="Killer"></div>
         <div class="game-info">
           <div class="game-name">Killer</div>
           <div class="game-tagline">There can be only one</div>
         </div>
-        <div class="game-arrow">›</div>
+        <div class="game-card-actions">
+          <button class="btn-card-rules" onclick="showRules('killer')" aria-label="Règles">📖</button>
+          <button class="btn-card-play" onclick="launchGame('killer')">▶ Jouer</button>
+        </div>
       </div>
 
-      <div class="game-card available" onclick="launchGame('cutthroat')">
+      <div class="game-card available">
         <div class="game-icon"><img src="assets/bille_1_target.png" alt=""></div>
         <div class="game-info">
           <div class="game-name">Cutthroat</div>
           <div class="game-tagline">Last man standing</div>
         </div>
-        <div class="game-arrow">›</div>
+        <div class="game-card-actions">
+          <button class="btn-card-rules" onclick="showRules('cutthroat')" aria-label="Règles">📖</button>
+          <button class="btn-card-play" onclick="launchGame('cutthroat')">▶ Jouer</button>
+        </div>
       </div>
 
-      <div class="game-card available" onclick="launchGame('chicago')">
+      <div class="game-card available">
         <div class="game-icon">
           <img src="assets/3_billes_americain.png" alt="Chicago">
         </div>
@@ -54,10 +60,13 @@
           <div class="game-name">Chicago</div>
           <div class="game-tagline">Premier à 61 points</div>
         </div>
-        <div class="game-arrow">›</div>
+        <div class="game-card-actions">
+          <button class="btn-card-rules" onclick="showRules('chicago')" aria-label="Règles">📖</button>
+          <button class="btn-card-play" onclick="launchGame('chicago')">▶ Jouer</button>
+        </div>
       </div>
 
-      <div class="game-card available" onclick="launchGame('straightpool')">
+      <div class="game-card available">
         <div class="game-icon">
           <img src="assets/triangle_14-1.png" alt="14-1">
         </div>
@@ -65,37 +74,42 @@
           <div class="game-name">14-1 Continu</div>
           <div class="game-tagline">Compte tes points, pas tes billes</div>
         </div>
-        <div class="game-arrow">›</div>
+        <div class="game-card-actions">
+          <button class="btn-card-rules" onclick="showRules('straightpool')" aria-label="Règles">📖</button>
+          <button class="btn-card-play" onclick="launchGame('straightpool')">▶ Jouer</button>
+        </div>
       </div>
 
 
-      <div class="game-card available" onclick="launchGame('casin')">
-
+      <div class="game-card available">
         <div class="game-icon">
           <img src="assets/3_billes.png" alt="Casin">
         </div>
-
         <div class="game-info">
           <div class="game-name">Casin</div>
           <div class="game-tagline">Le français revisité</div>
         </div>
-        <div class="game-arrow">›</div>
+        <div class="game-card-actions">
+          <button class="btn-card-rules" onclick="showRules('casin')" aria-label="Règles">📖</button>
+          <button class="btn-card-play" onclick="launchGame('casin')">▶ Jouer</button>
+        </div>
       </div>
 
-      <div class="game-card available" onclick="launchGame('snooker')">
-
+      <div class="game-card available">
         <div class="game-icon">
           <img src="assets/3_billes_snooker.png" alt="Snooker">
         </div>
-
         <div class="game-info">
           <div class="game-name">Snooker</div>
           <div class="game-tagline">Objectif : 147 points</div>
         </div>
-        <div class="game-arrow">›</div>
+        <div class="game-card-actions">
+          <button class="btn-card-rules" onclick="showRules('snooker')" aria-label="Règles">📖</button>
+          <button class="btn-card-play" onclick="launchGame('snooker')">▶ Jouer</button>
+        </div>
       </div>
 
-      <div class="game-card available" onclick="launchGame('fiveball')">
+      <div class="game-card available">
         <div class="game-icon">
           <img src="assets/5-ball.png" alt="5-Ball">
         </div>
@@ -103,7 +117,10 @@
           <div class="game-name">5-Ball</div>
           <div class="game-tagline">Atteins 0 pile, comme aux fléchettes</div>
         </div>
-        <div class="game-arrow">›</div>
+        <div class="game-card-actions">
+          <button class="btn-card-rules" onclick="showRules('fiveball')" aria-label="Règles">📖</button>
+          <button class="btn-card-play" onclick="launchGame('fiveball')">▶ Jouer</button>
+        </div>
       </div>
 
       <div class="game-card unavailable" onclick="launchGame('comingsoon')">
@@ -117,6 +134,14 @@
         <div class="game-arrow">Bientôt</div>
       </div>
 
+    </div>
+  </div>
+
+  <!-- ===== OVERLAY RÈGLES (générique) ===== -->
+  <div class="overlay hidden" id="overlayRules">
+    <div class="popup-box rules-box">
+      <button class="rules-close" onclick="closeRules()" aria-label="Fermer">✕</button>
+      <div id="rulesContent"></div>
     </div>
   </div>
 
@@ -228,12 +253,11 @@
 
   <!-- ===== GAME SCREEN ===== -->
   <div id="game" class="game-screen hidden">
-    <h1 id="killerTitle">
-      <img src="assets/bille_8_killer.png" alt="Killer" class="icon-title"> KILLER
-    </h1>
-    <div class="game-topbar">
-      <button class="btn-home" onclick="confirmGoHome()"><img src="assets/home.png" alt="Home" class="icon-img">
-        Accueil</button>
+    <div class="game-header">
+      <button class="btn-home" onclick="confirmGoHome()"><img src="assets/home.png" alt="Home" class="icon-img"></button>
+      <h1 id="killerTitle">
+        <img src="assets/bille_8_killer.png" alt="Killer" class="icon-title"> KILLER<button class="rules-mark" onclick="showRules('killer')" aria-label="Règles">i</button>
+      </h1>
       <button class="btn-undo" id="btnUndo" onclick="undoAction()" disabled>↩ Annuler</button>
     </div>
     <div id="poolZone"></div>
@@ -279,12 +303,11 @@
 
   <!-- ===== CHICAGO GAME ===== -->
   <div id="gameChicago" class="game-screen hidden">
-    <h1>
-      <img src="assets/3_billes_americain.png" alt="Chicago" class="icon-title"> CHICAGO
-    </h1>
-    <div class="game-topbar">
-      <button class="btn-home" onclick="confirmGoHome()"><img src="assets/home.png" alt="Home" class="icon-img">
-        Accueil</button>
+    <div class="game-header">
+      <button class="btn-home" onclick="confirmGoHome()"><img src="assets/home.png" alt="Home" class="icon-img"></button>
+      <h1>
+        <img src="assets/3_billes_americain.png" alt="Chicago" class="icon-title"> CHICAGO<button class="rules-mark" onclick="showRules('chicago')" aria-label="Règles">i</button>
+      </h1>
       <button class="btn-undo" id="btnChicagoUndo" onclick="undoChicagoAction()" disabled>↩ Annuler</button>
     </div>
 
@@ -371,11 +394,11 @@
 </div>
 
   <div id="spGame" class="game-screen hidden">
-    <h1>
-      <img src="assets/triangle_14-1.png" alt="" class="icon-title"> 14-1 CONTINU
-    </h1>
-    <div class="game-topbar">
-      <button class="btn-home" onclick="confirmGoHome()">🏠 Accueil</button>
+    <div class="game-header">
+      <button class="btn-home" onclick="confirmGoHome()"><img src="assets/home.png" alt="Home" class="icon-img"></button>
+      <h1>
+        <img src="assets/triangle_14-1.png" alt="" class="icon-title"> 14-1 CONTINU<button class="rules-mark" onclick="showRules('straightpool')" aria-label="Règles">i</button>
+      </h1>
       <button class="btn-undo" id="btnSpUndo" onclick="spUndo()" disabled>↩ Annuler</button>
     </div>
 
@@ -486,10 +509,9 @@
 
   <!-- ===== CASIN GAME ===== -->
   <div id="casinGame" class="game-screen hidden">
-    <h1><img src="assets/3_billes.png" alt="" class="icon-title"> CASIN</h1>
-    <div class="game-topbar">
-      <button class="btn-home" onclick="confirmGoHome()"><img src="assets/home.png" alt="Home" class="icon-img">
-        Accueil</button>
+    <div class="game-header">
+      <button class="btn-home" onclick="confirmGoHome()"><img src="assets/home.png" alt="Home" class="icon-img"></button>
+      <h1><img src="assets/3_billes.png" alt="" class="icon-title"> CASIN<button class="rules-mark" onclick="showRules('casin')" aria-label="Règles">i</button></h1>
       <button class="btn-undo" id="casinBtnUndo" onclick="casinUndo()" disabled>↩ Annuler</button>
     </div>
 
@@ -588,10 +610,9 @@
 
   <!-- Écran de jeu Cutthroat (intégré dans #game ou séparé) -->
   <div id="ctGame" class="game-screen hidden">
-    <h1><img src="assets/bille_1_target.png" alt="" class="icon-title"> CUTTHROAT</h1>
-    <div class="game-topbar">
-      <button class="btn-home" onclick="confirmGoHome()"><img src="assets/home.png" alt="Home" class="icon-img">
-        Accueil</button>
+    <div class="game-header">
+      <button class="btn-home" onclick="confirmGoHome()"><img src="assets/home.png" alt="Home" class="icon-img"></button>
+      <h1><img src="assets/bille_1_target.png" alt="" class="icon-title"> CUTTHROAT<button class="rules-mark" onclick="showRules('cutthroat')" aria-label="Règles">i</button></h1>
       <button class="btn-undo" id="btnCtUndo" onclick="ctUndo()" disabled>↩ Annuler</button>
     </div>
     <div class="players-list" id="ctPlayersList"></div>
@@ -738,15 +759,12 @@
 
   <!-- ===== SNOOKER GAME ===== -->
   <div id="gameSnooker" class="game-screen hidden">
-    <h1>
-      <img src="assets/3_billes_snooker.png" alt="" class="icon-title">
-      SNOOKER
-    </h1>
-
-    <!-- Undo seul -->
-    <div class="game-topbar">
-      <button class="btn-home" onclick="confirmGoHome()"><img src="assets/home.png" alt="Home" class="icon-img">
-        Accueil</button>
+    <div class="game-header">
+      <button class="btn-home" onclick="confirmGoHome()"><img src="assets/home.png" alt="Home" class="icon-img"></button>
+      <h1>
+        <img src="assets/3_billes_snooker.png" alt="" class="icon-title">
+        SNOOKER<button class="rules-mark" onclick="showRules('snooker')" aria-label="Règles">i</button>
+      </h1>
       <button class="btn-undo" id="snookerBtnUndo" onclick="snookerUndo()" disabled>↩ Annuler</button>
     </div>
 
@@ -841,11 +859,9 @@
 
   <!-- ===== 5-BALL : ÉCRAN DE JEU ===== -->
   <div id="fiveBallGame" class="game-screen hidden">
-    <h1><img src="assets/5-ball.png" alt="" class="icon-title"> 5-BALL</h1>
-
-    <div class="game-topbar">
-      <button class="btn-home" onclick="confirmGoHome()"><img src="assets/home.png" alt="Home" class="icon-img">
-        Accueil</button>
+    <div class="game-header">
+      <button class="btn-home" onclick="confirmGoHome()"><img src="assets/home.png" alt="Home" class="icon-img"></button>
+      <h1><img src="assets/5-ball.png" alt="" class="icon-title"> 5-BALL<button class="rules-mark" onclick="showRules('fiveball')" aria-label="Règles">i</button></h1>
       <button class="btn-undo" id="fiveBallBtnUndo" onclick="fiveBallUndo()" disabled>↩ Annuler</button>
     </div>
 
@@ -864,8 +880,10 @@
   </div>
 
 
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
   <script src="js/shared/utils.js"></script>
   <script src="js/shared/playerSetup.js"></script>
+  <script src="js/shared/rulesOverlay.js"></script>
 
   <script src="js/killer/constants.js"></script>
   <script src="js/killer/state.js"></script>

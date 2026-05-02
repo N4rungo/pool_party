@@ -377,3 +377,248 @@
 
 /* Quand "Suivant" est seul (pas de faute), il prend toute la largeur */
 .btn-next.full { flex: unset; width: 100%; }
+
+
+/* ===== GAME HEADER (3 colonnes : home / titre+ⓘ / undo) ===== */
+.game-header {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.game-header h1 {
+  text-align: center;
+  margin: 0;
+  padding: 6px 0;
+  font-size: 24px;
+  letter-spacing: 2px;
+  line-height: 1.1;
+}
+
+.game-header .btn-home,
+.game-header .btn-undo {
+  margin: 0;
+  white-space: nowrap;
+}
+
+/* Bouton Home compact (icône seule en jeu) */
+.game-header .btn-home {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  color: white;
+  padding: 8px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.game-header .btn-home img.icon-img {
+  height: 18px;
+  width: 18px;
+}
+
+/* ===== Marque "trademark" cliquable pour ouvrir les règles ===== */
+.rules-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: super;
+
+  font-size: 0.42em;
+  width: 1.7em;
+  height: 1.7em;
+
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+
+  font-family: 'Times New Roman', Georgia, serif;
+  font-style: italic;
+  font-weight: 700;
+  line-height: 1;
+
+  background: none;
+  cursor: pointer;
+  color: inherit;
+  padding: 0;
+  margin-left: 0.25em;
+
+  opacity: 0.65;
+  transition: opacity .2s, transform .15s;
+}
+.rules-mark:hover,
+.rules-mark:focus-visible {
+  opacity: 1;
+  transform: scale(1.12);
+  outline: none;
+}
+
+/* ===== Cartes du launcher : 2 boutons explicites (Règles + Jouer) ===== */
+.game-card-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.btn-card-rules,
+.btn-card-play {
+  border: none;
+  border-radius: 12px;
+  font-family: inherit;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform .1s, box-shadow .1s, opacity .15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-card-rules {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.85);
+  padding: 10px 12px;
+  font-size: 16px;
+  line-height: 1;
+}
+.btn-card-rules:hover { background: rgba(255, 255, 255, 0.14); }
+
+.btn-card-play {
+  background: linear-gradient(145deg, var(--color-gold-light), var(--color-gold));
+  color: var(--color-pool);
+  box-shadow: 0 3px 0 var(--color-gold-dark);
+  padding: 10px 14px;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+.btn-card-play:active {
+  transform: translateY(2px);
+  box-shadow: none;
+}
+
+/* Sur les cartes "unavailable", on garde le clic global, pas de boutons */
+.game-card.unavailable .game-card-actions {
+  display: none;
+}
+
+/* Cartes "available" : plus cliquables comme un tout, l'action passe
+   par les 2 boutons. On retire pointer + effet :active. Le hover doré reste. */
+.game-card.available {
+  cursor: default;
+}
+.game-card.available:active {
+  transform: none;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* ===== Overlay des règles : popup-box scrollable + bouton fermer ===== */
+.rules-box {
+  max-height: 88vh;
+  width: min(92vw, 560px);
+  overflow-y: auto;
+  position: relative;
+  text-align: left;
+  padding: 18px 22px;
+}
+
+.rules-close {
+  position: sticky;
+  top: 0;
+  margin-left: auto;
+  display: block;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 16px;
+  cursor: pointer;
+  line-height: 1;
+  z-index: 1;
+}
+.rules-close:hover { background: rgba(0, 0, 0, 0.6); }
+
+.rules-loading,
+.rules-error {
+  text-align: center;
+  padding: 40px 12px;
+  color: rgba(255, 255, 255, 0.6);
+}
+.rules-error { color: #ff8a8a; }
+
+/* ===== Mise en forme du markdown rendu ===== */
+#rulesContent h1 {
+  text-align: left;
+  font-size: 24px;
+  letter-spacing: 1px;
+  padding: 0;
+  margin: 0 0 4px;
+  color: var(--color-gold);
+}
+#rulesContent blockquote {
+  border-left: 3px solid var(--color-gold);
+  padding: 4px 0 4px 12px;
+  margin: 8px 0 16px;
+  color: rgba(255, 255, 255, 0.7);
+  font-style: italic;
+}
+#rulesContent h2 {
+  font-size: 17px;
+  margin: 18px 0 8px;
+  color: var(--color-gold-light);
+  letter-spacing: 0.5px;
+}
+#rulesContent h3 {
+  font-size: 15px;
+  margin: 14px 0 6px;
+  color: rgba(255, 255, 255, 0.95);
+}
+#rulesContent p {
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 6px 0;
+  color: rgba(255, 255, 255, 0.85);
+}
+#rulesContent ul,
+#rulesContent ol {
+  padding-left: 22px;
+  margin: 6px 0;
+}
+#rulesContent li {
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 4px 0;
+  color: rgba(255, 255, 255, 0.85);
+}
+#rulesContent strong { color: white; }
+#rulesContent em     { color: rgba(255, 255, 255, 0.7); }
+#rulesContent code {
+  background: rgba(0, 0, 0, 0.35);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+}
+#rulesContent table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0;
+  font-size: 13px;
+}
+#rulesContent th,
+#rulesContent td {
+  padding: 6px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  text-align: left;
+  vertical-align: top;
+}
+#rulesContent th {
+  color: var(--color-gold);
+  font-weight: bold;
+  background: rgba(0, 0, 0, 0.2);
+}
+#rulesContent tr:last-child td {
+  border-bottom: none;
+}
