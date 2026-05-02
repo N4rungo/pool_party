@@ -6,15 +6,15 @@ Marquer **61 points avant l'adversaire** en empochant des billes. La valeur de c
 
 ## 🎱 Mise en place
 - **2 joueurs**
-- Triangle classique de 15 billes (billes 1 à 15)
+- Triangle classique de 15 billes rackées aléatoirement.
 - Tirage au sort pour décider qui casse
 
 ## ▶️ Comment jouer
-À l'instar du jeu de 9-ball, à ton tour, tu dois viser la bille avec la plus petite valeur : n'importe quelle bille peut-être empochée de cette manière.
+À l'instar du jeu de 9-ball, à ton tour, tu dois viser la bille avec la plus petite valeur : n'importe quelle bille peut être empochée de cette manière.
 - ✅ Tu empoches une bille → son numéro s'ajoute à ton score, tu continues.
 - ❌ Tu rates → tu valides la fin de ton tour dans l'app, la main passe.
 
-> ✏️ **Note** : pas de gestion de faute dans l'app, c'est aux joueurs de s'arranger entre eux (par exemple : faute = main passe sans rien d'autre).
+> ✏️ **Note** : en cas de faute, l'adversaire peux, si il le souhaite, placer la bille blanche derrière la ligne. Si la plus petite bille se trouve dans la zone, elle est déplacée sur la mouche (ou le plus proche possible).
 
 ## 🏆 Victoire
 Le premier joueur à atteindre **61 points** ou plus gagne immédiatement. 🥳
