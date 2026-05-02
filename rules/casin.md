@@ -8,7 +8,7 @@ Le premier qui complète sa checklist gagne.
 ## 🎱 Mise en place
 - **2 à 6 joueurs**
 - Variante du **billard français** (3 billes : 2 blanches/jaunes + 1 rouge)
-- Nombre de répétitions par action **Y** (par défaut **2**, configurable globalement de 1 à 5, et modifiable individuellement à l'étape 3)
+- Nombre de répétitions par action **Y** (par défaut **2**, configurable globalement de 1 à 5, et ajustable individuellemente)
 - La cue ball alterne (blanche / jaune) à chaque tour entre les joueurs.
 
 ## 📋 Les 9 actions
