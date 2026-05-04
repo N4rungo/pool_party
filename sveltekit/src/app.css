@@ -1,0 +1,94 @@
+/* ===== DESIGN TOKENS — partagés par toute l'app ===== */
+:root {
+  /* Or (couleur d'accent principale) */
+  --color-gold:        #FFD700;
+  --color-gold-light:  #FFE44D;
+  --color-gold-dark:   #B8960C;
+  --color-gold-rgb:    255, 215, 0;
+
+  /* Vert tapis de billard (fond) */
+  --color-pool:        #1a472a;
+}
+
+
+/* ===== RESET & BODY ===== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--color-pool);
+  background-image:
+    repeating-linear-gradient(45deg,
+      rgba(0, 0, 0, 0.03) 0px, rgba(0, 0, 0, 0.03) 2px,
+      transparent 2px, transparent 8px);
+  color: white;
+  font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 40px;
+}
+
+h1 {
+  text-align: center;
+  padding: 24px 20px 10px;
+  font-size: 28px;
+  letter-spacing: 3px;
+  color: var(--color-gold);
+  text-shadow: 0 0 20px rgba(var(--color-gold-rgb), 0.5),
+               2px 2px 0 rgba(0, 0, 0, 0.5);
+}
+
+
+/* ===== Icônes (titres + emoji) ===== */
+.icon-title {
+  height: 48px;
+  width: 48px;
+  vertical-align: middle;
+  margin-right: 8px;
+  object-fit: contain;
+}
+
+.icon-img {
+  width:  1.25em;
+  height: 1.25em;
+  object-fit: contain;
+  vertical-align: middle;
+  display: inline-block;
+}
+
+
+/* ===== Boutons génériques ===== */
+.btn-main {
+  width: 100%;
+  padding: 15px;
+  border-radius: 50px;
+  border: none;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: transform .1s, box-shadow .1s;
+}
+
+.btn-main:active {
+  transform: translateY(3px);
+  box-shadow: none !important;
+}
+
+.btn-gold {
+  background: linear-gradient(145deg, var(--color-gold-light), var(--color-gold));
+  color: var(--color-pool);
+  box-shadow: 0 5px 0 var(--color-gold-dark), 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.btn-gray {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
