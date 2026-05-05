@@ -3,7 +3,8 @@
 
   - 'setup' → écran de saisie des 2 noms
   - 'game'  → plateau avec triangle de billes + score
-  - 'win'   → overlay de victoire (ou égalité)
+  - 'win'   → overlay de victoire (ou égalité), avec bouton Annuler
+              pour revenir en jeu si le coup décisif était une erreur.
 
   Toute la logique métier vit dans $lib/games/chicago.js (testable, pure).
   Ce composant n'est que de l'orchestration UI + état réactif local.
@@ -13,7 +14,9 @@
   import { base } from '$app/paths';
   import GameHeader from '$lib/components/GameHeader.svelte';
   import RulesViewer from '$lib/components/RulesViewer.svelte';
-  import Overlay from '$lib/components/Overlay.svelte';
+  import WinOverlay from '$lib/components/WinOverlay.svelte';
+  import BallButton from '$lib/components/BallButton.svelte';
+  import { showToast } from '$lib/stores/toast.js';
   import {
     CHICAGO_TARGET_SCORE,
     CHICAGO_TRIANGLE,
@@ -38,26 +41,43 @@
   function startGame() {
     state = createInitialState(name1.trim(), name2.trim());
     phase = 'game';
+    showToast(`🎲 ${state.players[state.currentIndex].name} commence !`);
   }
 
   // ── Empocher une bille ────────────────────────────────
   function onPocketBall(n) {
+    const playerName = state.players[state.currentIndex].name;
     const { newState, outcome } = pocketBall(state, n);
     state = newState;
+
     if (outcome.kind === 'win' || outcome.kind === 'draw') {
       winOutcome = outcome;
       phase = 'win';
+    } else if (outcome.kind === 'continue') {
+      showToast(`🎱 +${n} pts pour ${playerName}`);
     }
   }
 
   // ── Passer la main ────────────────────────────────────
   function onEndTurn() {
     state = endTurn(state);
+    showToast(`👤 Tour de ${state.players[state.currentIndex].name}`);
   }
 
-  // ── Annuler ───────────────────────────────────────────
+  // ── Annuler (en jeu) ──────────────────────────────────
   function onUndo() {
     state = undo(state);
+    showToast('↩ Action annulée');
+  }
+
+  // ── Annuler depuis l'overlay de victoire ──────────────
+  // Cas : on a cliqué sur la bille du coup décisif par erreur.
+  // On annule la dernière action et on retourne en jeu.
+  function onUndoFromWin() {
+    state = undo(state);
+    winOutcome = null;
+    phase = 'game';
+    showToast('↩ Coup décisif annulé — on continue !');
   }
 
   // ── Rejouer (mêmes joueurs, scores reset, nouveau tirage) ──
@@ -65,6 +85,7 @@
     state = createInitialState(state.players[0].name, state.players[1].name);
     winOutcome = null;
     phase = 'game';
+    showToast(`🎲 ${state.players[state.currentIndex].name} commence !`);
   }
 
   // ── Nouveau jeu (retour launcher) ─────────────────────
@@ -87,6 +108,13 @@
     if (!state) return 0;
     return Math.min(100, Math.round(state.players[i].score / CHICAGO_TARGET_SCORE * 100));
   };
+
+  // Pré-calcul des props du WinOverlay (lisibilité)
+  $: winTrophy = winOutcome?.kind === 'draw' ? '🤝' : '🏆';
+  $: winName   = winOutcome?.kind === 'draw' ? 'Égalité !' : winOutcome?.winner?.name ?? '';
+  $: winSub    = winOutcome?.kind === 'draw'
+                   ? `Les deux joueurs finissent à ${winOutcome.score} points`
+                   : 'Félicitations !';
 </script>
 
 <!-- ===== PHASE SETUP ===== -->
@@ -156,20 +184,17 @@
       {/each}
     </div>
 
-    <!-- Triangle de billes -->
+    <!-- Triangle de billes : utilise le composant BallButton partagé -->
     <div class="chicago-triangle-wrap">
       <div class="chicago-triangle">
         {#each CHICAGO_TRIANGLE as row}
           <div class="chicago-row">
             {#each row as n}
-              {@const pocketed = state.pocketedBalls.has(n)}
-              <button
-                class="chicago-ball"
-                class:pocketed
-                disabled={pocketed}
-                on:click={() => onPocketBall(n)}>
-                <img src="/assets/bille_{n}.png" alt="Bille {n}" />
-              </button>
+              <BallButton
+                src={`/assets/bille_${n}.png`}
+                alt={`Bille ${n}`}
+                pocketed={state.pocketedBalls.has(n)}
+                on:click={() => onPocketBall(n)} />
             {/each}
           </div>
         {/each}
@@ -183,24 +208,15 @@
 {/if}
 
 <!-- ===== OVERLAY VICTOIRE / ÉGALITÉ ===== -->
-{#if phase === 'win' && winOutcome}
-  <Overlay open={true} dismissOnBackdrop={false} on:close={replay}>
-    <div class="win-content">
-      {#if winOutcome.kind === 'win'}
-        <div class="win-trophy">🏆</div>
-        <div class="win-name">{winOutcome.winner.name}</div>
-        <div class="win-sub">Félicitations !</div>
-      {:else}
-        <div class="win-trophy">🤝</div>
-        <div class="win-name">Égalité !</div>
-        <div class="win-sub">Les deux joueurs finissent à {winOutcome.score} points</div>
-      {/if}
-
-      <button class="btn-main btn-gold" on:click={replay}>🔄 Rejouer</button>
-      <button class="btn-main btn-gray" on:click={newGame}>⚙️ Nouveau jeu</button>
-    </div>
-  </Overlay>
-{/if}
+<WinOverlay
+  open={phase === 'win' && winOutcome !== null}
+  trophy={winTrophy}
+  name={winName}
+  sub={winSub}
+  canUndo={state?.history?.length > 0}
+  on:undo={onUndoFromWin}
+  on:replay={replay}
+  on:newGame={newGame} />
 
 <!-- ===== OVERLAY RÈGLES ===== -->
 <RulesViewer gameId="chicago" open={rulesOpen} on:close={() => rulesOpen = false} />
@@ -356,33 +372,6 @@
     margin-bottom: 6px;
   }
 
-  .chicago-ball {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 2px;
-    border-radius: 50%;
-    transition: transform .15s, opacity .3s;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  .chicago-ball img {
-    width: 52px;
-    height: 52px;
-    display: block;
-    pointer-events: none;
-  }
-
-  .chicago-ball:active:not(:disabled) {
-    transform: scale(1.2);
-  }
-
-  .chicago-ball.pocketed {
-    opacity: 0.2;
-    cursor: default;
-    filter: grayscale(100%);
-  }
-
   /* ===== Barre du bas ===== */
   .game-bottombar {
     display: flex;
@@ -407,27 +396,5 @@
   .btn-next:active {
     transform: translateY(2px);
     box-shadow: none;
-  }
-
-  /* ===== Win overlay ===== */
-  .win-content {
-    text-align: center;
-    padding: 8px 0;
-  }
-  .win-trophy {
-    font-size: 64px;
-    line-height: 1;
-    margin-bottom: 12px;
-  }
-  .win-name {
-    font-size: 28px;
-    font-weight: bold;
-    color: var(--color-gold);
-    margin-bottom: 4px;
-  }
-  .win-sub {
-    font-size: 14px;
-    color: rgba(255, 255, 255, 0.7);
-    margin-bottom: 20px;
   }
 </style>
