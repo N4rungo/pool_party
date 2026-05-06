@@ -23,15 +23,23 @@ export const confirmState = writable(null);
 /**
  * Affiche un dialog de confirmation et renvoie une Promise<boolean>.
  * Résout `true` si l'utilisateur confirme, `false` sinon.
+ *
+ * Options :
+ *   - confirmLabel : texte du bouton de confirmation (défaut 'Confirmer')
+ *   - cancelLabel  : texte du bouton d'annulation  (défaut 'Annuler')
+ *   - icon         : emoji ou caractère affiché en haut du dialog (défaut '⚠️')
+ *   - iconImage    : chemin d'image (ex. '/assets/home.png') ; override `icon`
  */
 export function askConfirm(message, options = {}) {
   const {
     confirmLabel = 'Confirmer',
     cancelLabel  = 'Annuler',
+    icon         = '⚠️',
+    iconImage    = null,
   } = options;
 
   return new Promise((resolve) => {
-    confirmState.set({ message, confirmLabel, cancelLabel, resolve });
+    confirmState.set({ message, confirmLabel, cancelLabel, icon, iconImage, resolve });
   });
 }
 
