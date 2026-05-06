@@ -39,12 +39,29 @@ export const FIVE_BALL_BALLS = {
 export const FIVE_BALL_BOARD_LAYOUT = ['red', 'blue', 'white', 'green', 'yellow'];
 
 /**
+ * Mélange un tableau (Fisher-Yates), renvoie une copie.
+ */
+function shuffle(arr) {
+  const result = [...arr];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
+/**
  * Crée l'état initial à partir de la liste des joueurs configurés.
  * `setupPlayers` est un tableau [{ name, target }].
+ *
+ * L'ordre de jeu est **aléatoire** : on shuffle les joueurs avant de
+ * démarrer (sans le signaler explicitement à l'UI). Conséquence en
+ * 5-Ball : la cue ball alternant blanche/jaune par tour, le shuffle
+ * détermine aussi qui joue avec quelle bille.
  */
 export function createInitialState(setupPlayers) {
   return {
-    players: setupPlayers.map(p => ({
+    players: shuffle(setupPlayers).map(p => ({
       name:   p.name || 'Joueur',
       target: p.target,
       score:  p.target,

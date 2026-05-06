@@ -150,8 +150,6 @@
           on:keydown={(e) => e.key === 'Enter' && startGame()} />
       </div>
 
-      <div class="setup-tip">🎲 Le joueur qui commence sera tiré au sort.</div>
-
       <button class="btn-main btn-gold" on:click={startGame}>🎱 Lancer la partie !</button>
       <button class="btn-main btn-gray" on:click={() => goto(base || '/')}>← Retour</button>
     </div>
