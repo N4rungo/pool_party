@@ -17,6 +17,7 @@
   import WinOverlay from '$lib/components/WinOverlay.svelte';
   import BallButton from '$lib/components/BallButton.svelte';
   import { showToast } from '$lib/stores/toast.js';
+  import { askConfirm } from '$lib/stores/confirm.js';
   import {
     CHICAGO_TARGET_SCORE,
     CHICAGO_TRIANGLE,
@@ -94,10 +95,12 @@
   }
 
   // ── Confirmation retour accueil pendant la partie ─────
-  function confirmGoHome() {
-    if (confirm("Abandonner la partie et revenir à l'accueil ?")) {
-      goto(base || '/');
-    }
+  async function confirmGoHome() {
+    const ok = await askConfirm("Abandonner la partie et revenir à l'accueil ?", {
+      confirmLabel: 'Abandonner',
+      cancelLabel:  'Continuer'
+    });
+    if (ok) goto(base || '/');
   }
 
   // ── Overlay règles ────────────────────────────────────
