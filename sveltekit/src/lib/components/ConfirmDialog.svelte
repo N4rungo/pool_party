@@ -24,7 +24,13 @@
 <Overlay open={$confirmState !== null} on:close={cancel}>
   {#if $confirmState}
     <div class="confirm-content">
-      <div class="confirm-icon">⚠️</div>
+      <div class="confirm-icon">
+        {#if $confirmState.iconImage}
+          <img src={$confirmState.iconImage} alt="" />
+        {:else}
+          {$confirmState.icon}
+        {/if}
+      </div>
       <div class="confirm-message">{$confirmState.message}</div>
       <button class="btn-main btn-gold" on:click={confirm}>
         {$confirmState.confirmLabel}
@@ -46,6 +52,12 @@
     font-size: 48px;
     margin-bottom: 12px;
     line-height: 1;
+  }
+  .confirm-icon img {
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+    display: inline-block;
   }
 
   .confirm-message {

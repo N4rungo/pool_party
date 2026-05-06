@@ -98,7 +98,8 @@
   async function confirmGoHome() {
     const ok = await askConfirm("Abandonner la partie et revenir à l'accueil ?", {
       confirmLabel: 'Abandonner',
-      cancelLabel:  'Continuer'
+      cancelLabel:  'Continuer',
+      iconImage:    '/assets/home.png'
     });
     if (ok) goto(base || '/');
   }
