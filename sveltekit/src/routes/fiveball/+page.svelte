@@ -75,6 +75,15 @@
     phase = 'setup3';
   }
 
+  // Mise à jour explicite du target d'un joueur dans le récap.
+  // On réassigne le tableau pour forcer la réactivité Svelte (mutation
+  // d'une propriété profonde n'est pas détectée automatiquement).
+  function updatePlayerTarget(i, newTarget) {
+    setupPlayers = setupPlayers.map((p, idx) =>
+      idx === i ? { ...p, target: newTarget } : p
+    );
+  }
+
   // ── État de partie ────────────────────────────────────
   let state = null;
   let winnerName = null;
@@ -221,11 +230,12 @@
         Score modifiable par joueur (par pas de 10)
       </div>
 
-      <RecapList players={setupPlayers} let:player>
+      <RecapList players={setupPlayers} let:player let:i>
         <NumberSelector
-          bind:value={player.target}
+          value={player.target}
           min={FIVE_BALL_MIN_TARGET}
-          step={FIVE_BALL_TARGET_STEP} />
+          step={FIVE_BALL_TARGET_STEP}
+          on:change={(e) => updatePlayerTarget(i, e.detail)} />
       </RecapList>
 
       <button class="btn-main btn-gold" on:click={startGame}>🎱 Lancer la partie !</button>
