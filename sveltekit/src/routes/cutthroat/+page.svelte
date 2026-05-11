@@ -165,10 +165,6 @@
         max={CT_MAX_PLAYERS}
         label="Nombre de joueurs" />
 
-      <div class="setup-tip">
-        Du moins au plus expérimenté : l'expert recevra le dernier groupe de billes.
-      </div>
-
       <button class="btn-main btn-gold" on:click={gotoSetup2}>Suivant →</button>
       <button class="btn-main btn-gray" on:click={() => goto(base || '/')}>← Retour</button>
     </div>
@@ -211,7 +207,7 @@
         <div class="ct-section-label">🔺 Aux 3 coins du triangle</div>
         <div class="ct-corners">
           {#each previewCorners as b}
-            <img src="/assets/bille_{b}.png" alt="Bille {b}" class="ball-mini" />
+            <img src="/assets/bille_{b}.png" alt="Bille {b}" class="ball-corner" />
           {/each}
         </div>
       </div>
@@ -219,14 +215,16 @@
       <div class="ct-section-label" style="margin-top:14px;">Billes par joueur</div>
       <div class="recap-list">
         {#each setupPlayers as player, i (i)}
-          <div class="recap-row">
-            <span class="recap-emoji">{EMOJIS[i % EMOJIS.length]}</span>
-            <span class="recap-name">{player.name || `Joueur ${i + 1}`}</span>
-            <span class="ct-balls-mini">
+          <div class="recap-row recap-row-wrap">
+            <div class="recap-row-top">
+              <span class="recap-emoji">{EMOJIS[i % EMOJIS.length]}</span>
+              <span class="recap-name">{player.name || `Joueur ${i + 1}`}</span>
+            </div>
+            <div class="ct-balls-row-recap">
               {#each previewDistribution.groups[i] as b}
-                <img src="/assets/bille_{b}.png" class="ball-mini" alt="{b}" />
+                <img src="/assets/bille_{b}.png" class="ball-player" alt="{b}" />
               {/each}
-            </span>
+            </div>
           </div>
         {/each}
       </div>
@@ -440,6 +438,43 @@
     width: 22px;
     height: 22px;
     object-fit: contain;
+  }
+
+  /* ===== Récap setup3 — billes plus visibles ===== */
+  /* Billes des coins du triangle : grosses, bien visibles */
+  .ball-corner {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+  }
+
+  /* Billes par joueur : taille moyenne, wrap multi-lignes si nécessaire */
+  .ball-player {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+  }
+
+  /* Recap-row en variante "wrap" : nom au-dessus, billes en-dessous */
+  .recap-row-wrap {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .recap-row-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .ct-balls-row-recap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    width: 100%;
+    justify-content: center;
   }
 
   /* ===== Game : cartes joueurs ===== */
