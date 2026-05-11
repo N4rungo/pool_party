@@ -204,7 +204,8 @@
 
     <div class="popup-box setup-box">
       <div class="ct-corners-section">
-        <div class="ct-section-label">🔺 Aux 3 coins du triangle</div>
+        <div class="ct-triangle-title">Formation du triangle</div>
+        <div class="ct-section-label" style="text-align:center;">Dans les 3 coins</div>
         <div class="ct-corners">
           {#each previewCorners as b}
             <img src="/assets/bille_{b}.png" alt="Bille {b}" class="ball-corner" />
@@ -371,6 +372,14 @@
   }
 
   /* ===== Setup3 : récap ===== */
+  .ct-triangle-title {
+    font-size: 22px;
+    color: var(--color-gold);
+    text-shadow: 0 0 10px rgba(var(--color-gold-rgb), 0.4);
+    text-align: center;
+    margin-bottom: 4px;
+  }
+
   .ct-section-label {
     font-size: 12px;
     color: rgba(255, 255, 255, 0.5);
