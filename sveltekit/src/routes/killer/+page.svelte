@@ -89,7 +89,10 @@
   }
 
   // ── Actions de tir ────────────────────────────────────
+  let handActive = false;
+
   function onAction(type) {
+    handActive = false;
     const { newState, outcome } = doAction(state, type);
     state = newState;
 
@@ -154,8 +157,9 @@
 
     if (action === 'target') {
       targetOpen = true;
+    } else if (action === 'hand') {
+      handActive = true;
     }
-    // 'pass' et 'hand' : pas d'overlay supplémentaire
   }
 
   function onSelectTarget(targetIdx) {
@@ -166,11 +170,13 @@
 
   // ── Annuler ───────────────────────────────────────────
   function onUndo() {
+    handActive = false;
     state = undo(state);
     showToast('↩ Action annulée');
   }
 
   function onUndoFromWin() {
+    handActive = false;
     state = undo(state);
     winnerName = null;
     phase = 'game';
@@ -271,9 +277,11 @@
     <div class="setup-sub">Étape 3 / 3 — Récapitulatif</div>
 
     <div class="popup-box setup-box">
+      <div class="setup-tip" style="margin-bottom:2px;">
+        Mode {jokerMode === 'random' ? '🎲 Aléatoire' : '🃏 Choix libre'}
+      </div>
       <div class="setup-tip" style="margin-bottom:8px;">
-        Mode {jokerMode === 'random' ? '🎲 Aléatoire' : '🃏 Choix libre'} —
-        ajuste les vies par joueur si besoin.
+        Ajuste les vies par joueur si besoin.
       </div>
 
       <RecapList players={setupPlayers} let:player let:i>
@@ -320,7 +328,11 @@
               {#if i === activeIdx && isForcedTurn}
                 <span class="kp-badge kp-badge-forced">TOUR FORCÉ</span>
               {:else if i === activeIdx && !player.eliminated}
-                <span class="kp-badge kp-badge-active">EN JEU</span>
+                {#if handActive}
+                  <span class="kp-badge kp-badge-hand">BILLE EN MAIN</span>
+                {:else}
+                  <span class="kp-badge kp-badge-active">EN JEU</span>
+                {/if}
               {/if}
             </div>
             <div class="kp-hearts">
@@ -344,7 +356,7 @@
             </div>
           {/if}
 
-          {#if !player.eliminated}
+          {#if !player.eliminated && state.jokerMode === 'random'}
             <div class="kp-joker-counter" class:maxed={player.jokersUsed >= KILLER_MAX_JOKERS}>
               🃏 Jokers : {player.jokersUsed} / {KILLER_MAX_JOKERS}
               {#if player.jokersUsed >= KILLER_MAX_JOKERS} — épuisé{/if}
@@ -600,6 +612,11 @@
     background: rgba(255, 100, 100, 0.25);
     color: #ffb3b3;
     border: 1px solid #ff8080;
+  }
+  .kp-badge-hand {
+    background: rgba(100, 180, 255, 0.2);
+    color: #90caff;
+    border: 1px solid #64b4ff;
   }
 
   .kp-hearts {
