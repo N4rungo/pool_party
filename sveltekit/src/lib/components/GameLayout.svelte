@@ -67,6 +67,5 @@
 
     /* Léger fondu au-dessus du footer pour adoucir l'apparition du contenu
        qui passe en dessous au scroll. */
-    box-shadow: 0 -12px 16px -8px rgba(0, 0, 0, 0.5);
   }
 </style>
