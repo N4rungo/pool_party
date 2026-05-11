@@ -198,9 +198,8 @@
     <div class="setup-sub">Étape 3 / 3 — Récapitulatif</div>
 
     <div class="popup-box setup-box">
-      <div class="setup-tip" style="margin-bottom:8px;">
-        Score modifiable par joueur (par pas de 10)
-      </div>
+      <div class="sp-target-title">Score cible par joueur</div>
+      <div class="sp-target-sub">Ajustez pour équilibrer les niveaux</div>
 
       <RecapList players={setupPlayers} let:player let:i>
         <NumberSelector
@@ -324,6 +323,23 @@
     border-radius: 20px;
     padding: 22px;
     text-align: center;
+  }
+
+  .sp-target-title {
+    font-size: 22px;
+    color: var(--color-gold);
+    text-shadow: 0 0 10px rgba(var(--color-gold-rgb), 0.4);
+    text-align: center;
+    margin-bottom: 4px;
+  }
+
+  .sp-target-sub {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+    margin-bottom: 12px;
   }
 
   .setup-tip {
