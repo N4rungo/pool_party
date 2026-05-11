@@ -494,10 +494,7 @@
 
   /* ===== Action bar (preview) ===== */
   .fb-action-bar {
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 14px;
-    padding: 8px 14px;
-    margin-bottom: 10px;
+    padding: 0 4px 6px;
     text-align: center;
     min-height: 32px;
     display: flex;
