@@ -12,7 +12,7 @@
 <script>
   import { goto } from '$app/navigation';
   import { base } from '$app/paths';
-  import GameHeader from '$lib/components/GameHeader.svelte';
+  import GameLayout from '$lib/components/GameLayout.svelte';
   import RulesViewer from '$lib/components/RulesViewer.svelte';
   import WinOverlay from '$lib/components/WinOverlay.svelte';
   import BallButton from '$lib/components/BallButton.svelte';
@@ -159,53 +159,56 @@
 <!-- ===== PHASE GAME ===== -->
 {#if phase === 'game' && state}
   <div class="game">
-    <GameHeader
+    <GameLayout
       title="CHICAGO"
       icon="/assets/3_billes_americain.png"
       gameId="chicago"
       canUndo={state.history.length > 0}
       on:home={confirmGoHome}
       on:undo={onUndo}
-      on:rules={() => rulesOpen = true} />
+      on:rules={() => rulesOpen = true}>
 
-    <!-- Cartes de score -->
-    <div class="chicago-scores">
-      {#each state.players as player, i}
-        <div class="chicago-score-card" class:active-card={state.currentIndex === i}>
-          <div class="chicago-player-name" class:chicago-active={state.currentIndex === i}>
-            {player.name}
-          </div>
-          <div class="chicago-score" class:chicago-active={state.currentIndex === i}>
-            {player.score}
-          </div>
-          <div class="chicago-progress-bar">
-            <div class="chicago-progress-fill" style="width: {progressPct(i)}%"></div>
-          </div>
-          <div class="chicago-target">/ 61</div>
-        </div>
-      {/each}
-    </div>
-
-    <!-- Triangle de billes : utilise le composant BallButton partagé -->
-    <div class="chicago-triangle-wrap">
-      <div class="chicago-triangle">
-        {#each CHICAGO_TRIANGLE as row}
-          <div class="chicago-row">
-            {#each row as n}
-              <BallButton
-                src={`/assets/bille_${n}.png`}
-                alt={`Bille ${n}`}
-                pocketed={state.pocketedBalls.has(n)}
-                on:click={() => onPocketBall(n)} />
-            {/each}
+      <!-- Cartes de score -->
+      <div class="chicago-scores">
+        {#each state.players as player, i}
+          <div class="chicago-score-card" class:active-card={state.currentIndex === i}>
+            <div class="chicago-player-name" class:chicago-active={state.currentIndex === i}>
+              {player.name}
+            </div>
+            <div class="chicago-score" class:chicago-active={state.currentIndex === i}>
+              {player.score}
+            </div>
+            <div class="chicago-progress-bar">
+              <div class="chicago-progress-fill" style="width: {progressPct(i)}%"></div>
+            </div>
+            <div class="chicago-target">/ 61</div>
           </div>
         {/each}
       </div>
-    </div>
 
-    <div class="game-bottombar">
-      <button class="btn-next" on:click={onEndTurn}>Suivant →</button>
-    </div>
+      <!-- Triangle de billes : utilise le composant BallButton partagé -->
+      <div class="chicago-triangle-wrap">
+        <div class="chicago-triangle">
+          {#each CHICAGO_TRIANGLE as row}
+            <div class="chicago-row">
+              {#each row as n}
+                <BallButton
+                  src={`/assets/bille_${n}.png`}
+                  alt={`Bille ${n}`}
+                  pocketed={state.pocketedBalls.has(n)}
+                  on:click={() => onPocketBall(n)} />
+              {/each}
+            </div>
+          {/each}
+        </div>
+      </div>
+
+      <svelte:fragment slot="footer">
+        <div class="game-bottombar">
+          <button class="btn-next" on:click={onEndTurn}>Suivant →</button>
+        </div>
+      </svelte:fragment>
+    </GameLayout>
   </div>
 {/if}
 

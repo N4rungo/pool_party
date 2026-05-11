@@ -21,7 +21,7 @@
 <script>
   import { goto } from '$app/navigation';
   import { base } from '$app/paths';
-  import GameHeader from '$lib/components/GameHeader.svelte';
+  import GameLayout from '$lib/components/GameLayout.svelte';
   import RulesViewer from '$lib/components/RulesViewer.svelte';
   import WinOverlay from '$lib/components/WinOverlay.svelte';
   import BallButton from '$lib/components/BallButton.svelte';
@@ -247,78 +247,81 @@
 <!-- ============== GAME ============== -->
 {#if phase === 'game' && state}
   <div class="game">
-    <GameHeader
+    <GameLayout
       title="5-BALL"
       icon="/assets/5-ball.png"
       gameId="fiveball"
       canUndo={state.history.length > 0}
       on:home={confirmGoHome}
       on:undo={onUndo}
-      on:rules={() => rulesOpen = true} />
+      on:rules={() => rulesOpen = true}>
 
-    <!-- Scoreboard -->
-    <div class="fb-scoreboard">
-      {#each state.players as player, i (i)}
-        <div class="fb-player-row" class:active={i === state.currentIndex}>
-          <span class="fb-player-emoji">
-            {['🟡','🔵','🔴','⚪','🟠','🟣'][i % 6]}
-          </span>
-          <span class="fb-player-name">{player.name}</span>
-          <span class="fb-player-score">
-            {player.score}<span class="fb-player-target"> / {player.target}</span>
-          </span>
-        </div>
-      {/each}
-    </div>
-
-    <!-- Bandeau d'info -->
-    <div class="fb-banner">
-      <div class="fb-banner-line">
-        À <strong>{activePlayer.name}</strong> de jouer
-        <span class="fb-banner-cue">— Cue : {cueLabel}</span>
+      <!-- Scoreboard -->
+      <div class="fb-scoreboard">
+        {#each state.players as player, i (i)}
+          <div class="fb-player-row" class:active={i === state.currentIndex}>
+            <span class="fb-player-emoji">
+              {['🟡','🔵','🔴','⚪','🟠','🟣'][i % 6]}
+            </span>
+            <span class="fb-player-name">{player.name}</span>
+            <span class="fb-player-score">
+              {player.score}<span class="fb-player-target"> / {player.target}</span>
+            </span>
+          </div>
+        {/each}
       </div>
-      {#if state.isFirstTurn}
-        <div class="fb-banner-engagement">
-          🎯 Engagement — la rouge doit être touchée en premier !
+
+      <!-- Bandeau d'info -->
+      <div class="fb-banner">
+        <div class="fb-banner-line">
+          À <strong>{activePlayer.name}</strong> de jouer
+          <span class="fb-banner-cue">— Cue : {cueLabel}</span>
         </div>
-      {/if}
-    </div>
+        {#if state.isFirstTurn}
+          <div class="fb-banner-engagement">
+            🎯 Engagement — la rouge doit être touchée en premier !
+          </div>
+        {/if}
+      </div>
 
-    <!-- Plateau en T -->
-    <div class="fb-board">
-      {#each FIVE_BALL_BOARD_LAYOUT as ballId}
-        {@const ball = FIVE_BALL_BALLS[ballId]}
-        {@const isCue = ballId === cue}
-        <div class="fb-cell fb-cell-{ballId}">
-          <BallButton
-            src={`/assets/${ball.asset}`}
-            alt={`${ball.label} (${ball.value})`}
-            size={62}
-            disabled={isCue}
-            selected={state.selected.includes(ballId)}
-            on:click={() => onToggleBall(ballId)} />
+      <!-- Plateau en T -->
+      <div class="fb-board">
+        {#each FIVE_BALL_BOARD_LAYOUT as ballId}
+          {@const ball = FIVE_BALL_BALLS[ballId]}
+          {@const isCue = ballId === cue}
+          <div class="fb-cell fb-cell-{ballId}">
+            <BallButton
+              src={`/assets/${ball.asset}`}
+              alt={`${ball.label} (${ball.value})`}
+              size={62}
+              disabled={isCue}
+              selected={state.selected.includes(ballId)}
+              on:click={() => onToggleBall(ballId)} />
+          </div>
+        {/each}
+      </div>
+
+      <svelte:fragment slot="footer">
+        <!-- Preview du score + bouton Valider, fixés en bas -->
+        <div class="fb-action-bar">
+          {#if previewKind === 'muted-zero'}
+            <span class="fb-preview-muted">Aucune bille sélectionnée — tour passé sans points.</span>
+          {:else if previewKind === 'muted-one'}
+            <span class="fb-preview-muted">1 seule bille — il en faut au moins 2 pour scorer.</span>
+          {:else if previewKind === 'engagement'}
+            <span class="fb-preview-bust">Engagement raté : la rouge doit être touchée.</span>
+          {:else if previewKind === 'bust'}
+            <span class="fb-preview-bust">−{total} → resterait {remaining} : tour annulé.</span>
+          {:else if previewKind === 'win'}
+            <span class="fb-preview-win">−{total} → 0 pile, partie gagnée ! 🏆</span>
+          {:else if previewKind === 'ok'}
+            <span class="fb-preview-ok">−{total} → reste {remaining} pts</span>
+          {/if}
         </div>
-      {/each}
-    </div>
 
-    <!-- Preview du score -->
-    <div class="fb-action-bar">
-      {#if previewKind === 'muted-zero'}
-        <span class="fb-preview-muted">Aucune bille sélectionnée — tour passé sans points.</span>
-      {:else if previewKind === 'muted-one'}
-        <span class="fb-preview-muted">1 seule bille — il en faut au moins 2 pour scorer.</span>
-      {:else if previewKind === 'engagement'}
-        <span class="fb-preview-bust">Engagement raté : la rouge doit être touchée.</span>
-      {:else if previewKind === 'bust'}
-        <span class="fb-preview-bust">−{total} → resterait {remaining} : tour annulé.</span>
-      {:else if previewKind === 'win'}
-        <span class="fb-preview-win">−{total} → 0 pile, partie gagnée ! 🏆</span>
-      {:else if previewKind === 'ok'}
-        <span class="fb-preview-ok">−{total} → reste {remaining} pts</span>
-      {/if}
-    </div>
-
-    <button class="btn-main btn-gold" on:click={onValidateTurn}>Valider le tour →</button>
+        <button class="btn-main btn-gold" on:click={onValidateTurn}>Valider le tour →</button>
+      </svelte:fragment>
+    </GameLayout>
   </div>
 {/if}
 
