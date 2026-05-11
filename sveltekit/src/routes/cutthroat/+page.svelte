@@ -474,7 +474,8 @@
     flex-wrap: wrap;
     gap: 4px;
     width: 100%;
-    justify-content: center;
+    justify-content: flex-start;
+    padding-left: 32px; /* 24px emoji + 8px gap → aligne les billes sous le nom */
   }
 
   /* ===== Game : cartes joueurs ===== */
