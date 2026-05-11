@@ -200,9 +200,8 @@
     <div class="setup-sub">Étape 3 / 3 — Récapitulatif</div>
 
     <div class="popup-box setup-box">
-      <div class="setup-tip" style="margin-bottom:8px;">
-        X modifiable par joueur (handicap)
-      </div>
+      <div class="casin-target-title">Score cible par joueur</div>
+      <div class="casin-target-sub">Ajustez pour équilibrer les niveaux</div>
 
       <RecapList players={setupPlayers} let:player let:i>
         <NumberSelector
@@ -233,24 +232,20 @@
     <!-- Scoreboard compact -->
     <div class="casin-scoreboard">
       {#each state.players as player, i (i)}
-        <div class="casin-score-card" class:active={i === state.currentIndex}>
+        {@const isActive = i === state.currentIndex}
+        {@const blockedAction = isActive && player.lastAction && player.scores[player.lastAction] < player.x
+          ? CASIN_ACTIONS.find(a => a.id === player.lastAction)
+          : null}
+        <div class="casin-score-card" class:active={isActive}>
           <span class="casin-score-emoji">{EMOJIS[i % EMOJIS.length]}</span>
           <span class="casin-score-name">{player.name}</span>
+          {#if blockedAction}
+            <span class="casin-blocked-badge">Pas {blockedAction.label}</span>
+          {/if}
           <span class="casin-score-progress">{doneCount(player)} / {CASIN_ACTIONS.length}</span>
           <span class="casin-score-x">×{player.x}</span>
         </div>
       {/each}
-    </div>
-
-    <!-- Bandeau joueur actif -->
-    <div class="casin-active-banner">
-      <span class="casin-active-emoji">{EMOJIS[state.currentIndex % EMOJIS.length]}</span>
-      <span>À <strong>{activePlayer.name}</strong> de jouer</span>
-      {#if activePlayer.lastAction}
-        <span class="casin-blocked-hint">
-          🚫 Pas {CASIN_ACTIONS.find(a => a.id === activePlayer.lastAction)?.label}
-        </span>
-      {/if}
     </div>
 
     <!-- Grille des actions -->
@@ -326,11 +321,21 @@
     text-align: center;
   }
 
-  .setup-tip {
+  .casin-target-title {
+    font-size: 22px;
+    color: var(--color-gold);
+    text-shadow: 0 0 10px rgba(var(--color-gold-rgb), 0.4);
+    text-align: center;
+    margin-bottom: 4px;
+  }
+
+  .casin-target-sub {
     font-size: 12px;
-    color: rgba(var(--color-gold-rgb), 0.85);
-    margin: 6px 0 4px;
-    font-style: italic;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+    margin-bottom: 12px;
   }
 
   .sep {
@@ -394,32 +399,14 @@
     color: rgba(255, 255, 255, 0.4);
   }
 
-  /* ===== Bandeau joueur actif ===== */
-  .casin-active-banner {
-    background: rgba(var(--color-gold-rgb), 0.1);
-    border: 1px solid rgba(var(--color-gold-rgb), 0.35);
-    border-radius: 12px;
-    padding: 8px 12px;
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 13px;
-    color: rgba(255, 255, 255, 0.85);
-    flex-wrap: wrap;
-  }
-
-  .casin-active-emoji {
-    font-size: 18px;
-  }
-
-  .casin-blocked-hint {
-    margin-left: auto;
+  .casin-blocked-badge {
     font-size: 11px;
     color: #ff8a8a;
-    background: rgba(255, 100, 100, 0.1);
+    background: rgba(255, 100, 100, 0.12);
     border-radius: 6px;
     padding: 2px 6px;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 
   /* ===== Grille 9 actions ===== */
