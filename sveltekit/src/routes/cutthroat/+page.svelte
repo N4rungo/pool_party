@@ -215,11 +215,9 @@
       <div class="ct-section-label" style="margin-top:14px;">Billes par joueur</div>
       <div class="recap-list">
         {#each setupPlayers as player, i (i)}
-          <div class="recap-row recap-row-wrap">
-            <div class="recap-row-top">
-              <span class="recap-emoji">{EMOJIS[i % EMOJIS.length]}</span>
-              <span class="recap-name">{player.name || `Joueur ${i + 1}`}</span>
-            </div>
+          <div class="recap-row">
+            <span class="recap-emoji">{EMOJIS[i % EMOJIS.length]}</span>
+            <span class="recap-name">{player.name || `Joueur ${i + 1}`}</span>
             <div class="ct-balls-row-recap">
               {#each previewDistribution.groups[i] as b}
                 <img src="/assets/bille_{b}.png" class="ball-player" alt="{b}" />
@@ -448,34 +446,18 @@
     object-fit: contain;
   }
 
-  /* Billes par joueur : taille moyenne, wrap multi-lignes si nécessaire */
   .ball-player {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     object-fit: contain;
-  }
-
-  /* Recap-row en variante "wrap" : nom au-dessus, billes en-dessous */
-  .recap-row-wrap {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
-  }
-
-  .recap-row-top {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    width: 100%;
   }
 
   .ct-balls-row-recap {
     display: flex;
     flex-wrap: wrap;
     gap: 4px;
-    width: 100%;
-    justify-content: flex-start;
-    padding-left: 32px; /* 24px emoji + 8px gap → aligne les billes sous le nom */
+    flex-shrink: 0;
+    justify-content: flex-end;
   }
 
   /* ===== Game : cartes joueurs ===== */
