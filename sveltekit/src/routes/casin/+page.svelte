@@ -321,6 +321,13 @@
     text-align: center;
   }
 
+  .setup-tip {
+    font-size: 12px;
+    color: rgba(var(--color-gold-rgb), 0.85);
+    margin: 6px 0 4px;
+    font-style: italic;
+  }
+
   .casin-target-title {
     font-size: 22px;
     color: var(--color-gold);
