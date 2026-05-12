@@ -147,6 +147,10 @@
 
   // ── Overlay règles ────────────────────────────────────
   let rulesOpen = false;
+
+  // ── Layout adaptatif ──────────────────────────────────
+  $: perPlayer = state?.distribution?.perPlayer ?? 0;
+  $: ballSize  = perPlayer >= 5 ? 42 : perPlayer === 3 ? 36 : perPlayer === 2 ? 32 : 28;
 </script>
 
 <!-- ============== SETUP 1 : nb joueurs ============== -->
@@ -247,11 +251,13 @@
       on:rules={() => rulesOpen = true}>
 
       <!-- Liste des joueurs avec leurs billes -->
-      <div class="ct-players">
+      <div class="ct-players"
+           class:compact={perPlayer <= 3}
+           class:two-col={perPlayer <= 2}>
         {#each state.players as player, i (i)}
           <div class="ct-player-card" class:eliminated={player.eliminated}>
             <div class="ct-player-name">
-              {EMOJIS[i % EMOJIS.length]} {player.name}
+              <span class="ct-name-text">{EMOJIS[i % EMOJIS.length]} {player.name}</span>
               {#if player.eliminated}
                 <span class="ct-badge-eliminated">ÉLIMINÉ</span>
               {/if}
@@ -262,7 +268,7 @@
                   <BallButton
                     src={`/assets/bille_${b}.png`}
                     alt={`Bille ${b}`}
-                    size={42}
+                    size={ballSize}
                     pocketed={state.balls[b] === 'out'}
                     on:click={() => onPocketBall(b)} />
                 {/if}
@@ -480,6 +486,55 @@
     margin-bottom: 14px;
   }
 
+  /* 4-5 joueurs (3 billes) : 1 col, nom + billes sur la même ligne */
+  .ct-players.compact .ct-player-card {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+  }
+  .ct-players.compact .ct-player-name {
+    flex: 1;
+    font-size: 14px;
+    margin-bottom: 0;
+    min-width: 0;
+  }
+  .ct-players.compact .ct-balls-row {
+    flex-shrink: 0;
+  }
+
+  /* 6-15 joueurs (1-2 billes) : 2 colonnes, tout sur une ligne */
+  .ct-players.two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .ct-players.two-col .ct-player-card {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 10px;
+  }
+  .ct-players.two-col .ct-player-name {
+    flex: 1;
+    font-size: 13px;
+    margin-bottom: 0;
+    min-width: 0;
+  }
+  .ct-players.two-col .ct-name-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+  }
+  .ct-players.two-col .ct-badge-eliminated {
+    display: none; /* opacity suffit en 2-col */
+  }
+  .ct-players.two-col .ct-balls-row {
+    flex-shrink: 0;
+    gap: 3px;
+  }
+
   .ct-player-card {
     background: rgba(0, 0, 0, 0.25);
     border: 1px solid rgba(255, 255, 255, 0.07);
@@ -499,11 +554,19 @@
     margin-bottom: 8px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
+  }
+
+  .ct-name-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+    flex: 1;
   }
 
   .ct-badge-eliminated {
-    margin-left: auto;
+    flex-shrink: 0;
     font-size: 11px;
     background: rgba(255, 100, 100, 0.2);
     color: #ff8080;
