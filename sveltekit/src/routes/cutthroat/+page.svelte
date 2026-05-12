@@ -15,7 +15,7 @@
 <script>
   import { goto } from '$app/navigation';
   import { base } from '$app/paths';
-  import GameHeader from '$lib/components/GameHeader.svelte';
+  import GameLayout from '$lib/components/GameLayout.svelte';
   import RulesViewer from '$lib/components/RulesViewer.svelte';
   import WinOverlay from '$lib/components/WinOverlay.svelte';
   import Overlay from '$lib/components/Overlay.svelte';
@@ -237,44 +237,47 @@
 <!-- ============== GAME ============== -->
 {#if phase === 'game' && state}
   <div class="game">
-    <GameHeader
+    <GameLayout
       title="CUTTHROAT"
       icon="/assets/bille_1_target.png"
       gameId="cutthroat"
       canUndo={state.history.length > 0}
       on:home={confirmGoHome}
       on:undo={onUndo}
-      on:rules={() => rulesOpen = true} />
+      on:rules={() => rulesOpen = true}>
 
-    <!-- Liste des joueurs avec leurs billes -->
-    <div class="ct-players">
-      {#each state.players as player, i (i)}
-        <div class="ct-player-card" class:eliminated={player.eliminated}>
-          <div class="ct-player-name">
-            {EMOJIS[i % EMOJIS.length]} {player.name}
-            {#if player.eliminated}
-              <span class="ct-badge-eliminated">ÉLIMINÉ</span>
-            {/if}
-          </div>
-          <div class="ct-balls-row">
-            {#each state.distribution.groups[i] as b}
-              {#if state.balls[b] !== undefined}
-                <BallButton
-                  src={`/assets/bille_${b}.png`}
-                  alt={`Bille ${b}`}
-                  size={42}
-                  pocketed={state.balls[b] === 'out'}
-                  on:click={() => onPocketBall(b)} />
+      <!-- Liste des joueurs avec leurs billes -->
+      <div class="ct-players">
+        {#each state.players as player, i (i)}
+          <div class="ct-player-card" class:eliminated={player.eliminated}>
+            <div class="ct-player-name">
+              {EMOJIS[i % EMOJIS.length]} {player.name}
+              {#if player.eliminated}
+                <span class="ct-badge-eliminated">ÉLIMINÉ</span>
               {/if}
-            {/each}
+            </div>
+            <div class="ct-balls-row">
+              {#each state.distribution.groups[i] as b}
+                {#if state.balls[b] !== undefined}
+                  <BallButton
+                    src={`/assets/bille_${b}.png`}
+                    alt={`Bille ${b}`}
+                    size={42}
+                    pocketed={state.balls[b] === 'out'}
+                    on:click={() => onPocketBall(b)} />
+                {/if}
+              {/each}
+            </div>
           </div>
-        </div>
-      {/each}
-    </div>
+        {/each}
+      </div>
 
-    <div class="game-bottombar">
-      <button class="btn-fault" on:click={openFaultMenu}>⚠️ Faute</button>
-    </div>
+      <svelte:fragment slot="footer">
+        <div class="game-bottombar">
+          <button class="btn-fault" on:click={openFaultMenu}>⚠️ Faute</button>
+        </div>
+      </svelte:fragment>
+    </GameLayout>
   </div>
 {/if}
 

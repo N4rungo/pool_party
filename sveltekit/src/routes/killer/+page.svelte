@@ -15,7 +15,7 @@
 <script>
   import { goto } from '$app/navigation';
   import { base } from '$app/paths';
-  import GameHeader from '$lib/components/GameHeader.svelte';
+  import GameLayout from '$lib/components/GameLayout.svelte';
   import RulesViewer from '$lib/components/RulesViewer.svelte';
   import WinOverlay from '$lib/components/WinOverlay.svelte';
   import Overlay from '$lib/components/Overlay.svelte';
@@ -307,17 +307,17 @@
 <!-- ============== GAME ============== -->
 {#if phase === 'game' && state}
   <div class="game">
-    <GameHeader
+    <GameLayout
       title="KILLER"
       icon="/assets/bille_8_killer.png"
       gameId="killer"
       canUndo={state.history.length > 0}
       on:home={confirmGoHome}
       on:undo={onUndo}
-      on:rules={() => rulesOpen = true} />
+      on:rules={() => rulesOpen = true}>
 
-    <!-- Liste des joueurs -->
-    <div class="killer-players">
+      <!-- Liste des joueurs -->
+      <div class="killer-players">
       {#each state.players as player, i (i)}
         <div class="killer-player-card"
              class:active={i === activeIdx && !player.eliminated}
@@ -366,28 +366,30 @@
       {/each}
     </div>
 
-    <!-- Section actions -->
-    <div class="killer-action-section">
-      <div class="killer-action-title">
-        Tour de <strong>{activePlayer.name}</strong>
-        {#if isForcedTurn}<span class="kp-mini-badge">forcé</span>{/if}
-      </div>
-      <div class="killer-actions">
-        <button class="btn-action btn-hit"   on:click={() => onAction('hit')}>✅ Tir réussi</button>
-        <button class="btn-action btn-miss"  on:click={() => onAction('miss')}>❌ Tir raté</button>
-        <button class="btn-action btn-black" on:click={() => onAction('black')}>
-          <img src="/assets/bille_8_killer.png" alt="" class="icon-img" /> Bille noire
-        </button>
-        <button class="btn-action btn-joker"
-                on:click={openJokerMenu}
-                disabled={!jokerEnabled}>
-          🃏 Joker
-          {#if isForcedTurn} (bloqué)
-          {:else if activePlayer.jokersUsed >= KILLER_MAX_JOKERS} (épuisés)
-          {/if}
-        </button>
-      </div>
-    </div>
+      <svelte:fragment slot="footer">
+        <div class="killer-action-section">
+          <div class="killer-action-title">
+            Tour de <strong>{activePlayer.name}</strong>
+            {#if isForcedTurn}<span class="kp-mini-badge">forcé</span>{/if}
+          </div>
+          <div class="killer-actions">
+            <button class="btn-action btn-hit"   on:click={() => onAction('hit')}>✅ Tir réussi</button>
+            <button class="btn-action btn-miss"  on:click={() => onAction('miss')}>❌ Tir raté</button>
+            <button class="btn-action btn-black" on:click={() => onAction('black')}>
+              <img src="/assets/bille_8_killer.png" alt="" class="icon-img" /> Bille noire
+            </button>
+            <button class="btn-action btn-joker"
+                    on:click={openJokerMenu}
+                    disabled={!jokerEnabled}>
+              🃏 Joker
+              {#if isForcedTurn} (bloqué)
+              {:else if activePlayer.jokersUsed >= KILLER_MAX_JOKERS} (épuisés)
+              {/if}
+            </button>
+          </div>
+        </div>
+      </svelte:fragment>
+    </GameLayout>
   </div>
 {/if}
 

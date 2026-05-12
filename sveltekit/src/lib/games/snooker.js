@@ -33,7 +33,7 @@ export const SNOOKER_COLORS_ORDER = ['yellow', 'green', 'brown', 'blue', 'pink',
 
 export const SNOOKER_TOTAL_REDS    = 15;
 export const SNOOKER_MIN_PLAYERS   = 2;
-export const SNOOKER_MAX_PLAYERS   = 4;
+export const SNOOKER_MAX_PLAYERS   = 6;
 export const SNOOKER_DEFAULT_PLAYERS = 2;
 
 export const SNOOKER_MIN_FAULT     = 4;

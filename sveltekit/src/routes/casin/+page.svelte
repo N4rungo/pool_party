@@ -11,7 +11,7 @@
 <script>
   import { goto } from '$app/navigation';
   import { base } from '$app/paths';
-  import GameHeader from '$lib/components/GameHeader.svelte';
+  import GameLayout from '$lib/components/GameLayout.svelte';
   import RulesViewer from '$lib/components/RulesViewer.svelte';
   import WinOverlay from '$lib/components/WinOverlay.svelte';
   import NumberSelector from '$lib/components/NumberSelector.svelte';
@@ -220,17 +220,17 @@
 <!-- ============== GAME ============== -->
 {#if phase === 'game' && state}
   <div class="game">
-    <GameHeader
+    <GameLayout
       title="CASIN"
       icon="/assets/3_billes.png"
       gameId="casin"
       canUndo={state.history.length > 0}
       on:home={confirmGoHome}
       on:undo={onUndo}
-      on:rules={() => rulesOpen = true} />
+      on:rules={() => rulesOpen = true}>
 
-    <!-- Scoreboard compact -->
-    <div class="casin-scoreboard">
+      <!-- Scoreboard compact -->
+      <div class="casin-scoreboard">
       {#each state.players as player, i (i)}
         {@const isActive = i === state.currentIndex}
         {@const blockedAction = isActive && player.lastAction && player.scores[player.lastAction] < player.x
@@ -273,11 +273,13 @@
       {/each}
     </div>
 
-    <!-- Boutons d'action -->
-    <div class="game-bottombar">
-      <button class="btn-neutral" on:click={onNeutralShot}>↺ Coup libre</button>
-      <button class="btn-next" on:click={onNextPlayer}>Suivant →</button>
-    </div>
+      <svelte:fragment slot="footer">
+        <div class="game-bottombar">
+          <button class="btn-neutral" on:click={onNeutralShot}>↺ Coup libre</button>
+          <button class="btn-next" on:click={onNextPlayer}>Suivant →</button>
+        </div>
+      </svelte:fragment>
+    </GameLayout>
   </div>
 {/if}
 

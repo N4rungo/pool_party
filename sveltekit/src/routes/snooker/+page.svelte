@@ -17,7 +17,7 @@
 <script>
   import { goto } from '$app/navigation';
   import { base } from '$app/paths';
-  import GameHeader from '$lib/components/GameHeader.svelte';
+  import GameLayout from '$lib/components/GameLayout.svelte';
   import RulesViewer from '$lib/components/RulesViewer.svelte';
   import WinOverlay from '$lib/components/WinOverlay.svelte';
   import Overlay from '$lib/components/Overlay.svelte';
@@ -330,17 +330,17 @@
 <!-- ============== GAME ============== -->
 {#if phase === 'game' && state}
   <div class="game">
-    <GameHeader
+    <GameLayout
       title="SNOOKER"
       icon="/assets/3_billes_snooker.png"
       gameId="snooker"
       canUndo={state.history.length > 0}
       on:home={confirmGoHome}
       on:undo={onUndo}
-      on:rules={() => rulesOpen = true} />
+      on:rules={() => rulesOpen = true}>
 
-    <!-- Scoreboard -->
-    <div class="snk-scoreboard">
+      <!-- Scoreboard -->
+      <div class="snk-scoreboard">
       {#each state.players as player, i (i)}
         <div class="snk-score-card" class:active={i === state.currentIndex}>
           <span class="snk-score-emoji">{EMOJIS[i % EMOJIS.length]}</span>
@@ -414,11 +414,13 @@
       {/if}
     </div>
 
-    <!-- Boutons d'action en bas -->
-    <div class="game-bottombar">
-      <button class="btn-fault" on:click={openFault}>⚠️ Faute</button>
-      <button class="btn-next" on:click={onEndTurn}>Suivant →</button>
-    </div>
+      <svelte:fragment slot="footer">
+        <div class="game-bottombar">
+          <button class="btn-fault" on:click={openFault}>⚠️ Faute</button>
+          <button class="btn-next" on:click={onEndTurn}>Suivant →</button>
+        </div>
+      </svelte:fragment>
+    </GameLayout>
   </div>
 {/if}
 
