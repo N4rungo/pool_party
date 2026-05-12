@@ -486,13 +486,21 @@
     margin-bottom: 14px;
   }
 
-  /* 4-5 joueurs (3 billes) : 1 col, cards plus compactes */
+  /* 4-5 joueurs (3 billes) : 1 col, nom + billes sur la même ligne */
   .ct-players.compact .ct-player-card {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     padding: 8px 12px;
   }
   .ct-players.compact .ct-player-name {
+    flex: 1;
     font-size: 14px;
-    margin-bottom: 6px;
+    margin-bottom: 0;
+    min-width: 0;
+  }
+  .ct-players.compact .ct-balls-row {
+    flex-shrink: 0;
   }
 
   /* 6-15 joueurs (1-2 billes) : 2 colonnes, tout sur une ligne */
