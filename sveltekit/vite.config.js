@@ -16,7 +16,7 @@ const config = {
         background_color: '#1a472a',
         display: 'standalone',
         orientation: 'portrait',
-        start_url: '/',
+        start_url: '/pool_party/',
         icons: [
           {
             src: '/assets/icons/icon-192.png',
