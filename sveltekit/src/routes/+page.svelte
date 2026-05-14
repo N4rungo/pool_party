@@ -27,7 +27,7 @@
       <img src="{base}/assets/pool_party.png" alt="" class="icon-title" />
       POOL PARTY
     </h1>
-    <button class="btn-info" on:click={() => infoOpen = true} aria-label="Infos & installation">ℹ</button>
+    <button class="rules-mark" on:click={() => infoOpen = true} aria-label="Infos & installation">i</button>
   </div>
   <div class="launcher-subtitle">Choisissez votre jeu</div>
 
@@ -88,30 +88,36 @@
     position: relative;
   }
 
-  .btn-info {
+  .rules-mark {
     position: absolute;
     right: 0;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 50%;
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 16px;
-    width: 32px;
-    height: 32px;
-    cursor: pointer;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    transition: background 0.15s, color 0.15s;
+    font-size: 0.42em;
+    width: 1.7em;
+    height: 1.7em;
+    border: 1.5px solid currentColor;
+    border-radius: 50%;
+    font-family: 'Times New Roman', Georgia, serif;
+    font-style: italic;
+    font-weight: 700;
+    line-height: 1;
+    background: none;
+    cursor: pointer;
+    color: var(--color-gold);
+    padding: 0;
+    opacity: 0.65;
+    transition: opacity .2s, transform .15s;
     -webkit-tap-highlight-color: transparent;
   }
 
-  .btn-info:hover,
-  .btn-info:active {
-    background: rgba(255, 255, 255, 0.15);
-    color: rgba(255, 255, 255, 0.85);
+  .rules-mark:hover,
+  .rules-mark:active {
+    opacity: 1;
+    transform: translateY(-50%) scale(1.12);
   }
 
   .launcher-subtitle {
