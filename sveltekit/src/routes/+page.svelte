@@ -22,13 +22,10 @@
 </script>
 
 <div id="launcher">
-  <div class="launcher-header">
-    <h1>
-      <img src="{base}/assets/pool_party.png" alt="" class="icon-title" />
-      POOL PARTY
-    </h1>
-    <button class="rules-mark" on:click={() => infoOpen = true} aria-label="Infos & installation">i</button>
-  </div>
+  <h1>
+    <img src="{base}/assets/pool_party.png" alt="" class="icon-title" />
+    POOL PARTY<button class="rules-mark" on:click={() => infoOpen = true} aria-label="Infos & installation">i</button>
+  </h1>
   <div class="launcher-subtitle">Choisissez votre jeu</div>
 
   <div class="games-list">
@@ -81,21 +78,11 @@
     padding-top: 10px;
   }
 
-  .launcher-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-  }
-
   .rules-mark {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    vertical-align: super;
     font-size: 0.42em;
     width: 1.7em;
     height: 1.7em;
@@ -107,8 +94,9 @@
     line-height: 1;
     background: none;
     cursor: pointer;
-    color: var(--color-gold);
+    color: inherit;
     padding: 0;
+    margin-left: 0.25em;
     opacity: 0.65;
     transition: opacity .2s, transform .15s;
     -webkit-tap-highlight-color: transparent;
@@ -117,7 +105,7 @@
   .rules-mark:hover,
   .rules-mark:active {
     opacity: 1;
-    transform: translateY(-50%) scale(1.12);
+    transform: scale(1.12);
   }
 
   .launcher-subtitle {
