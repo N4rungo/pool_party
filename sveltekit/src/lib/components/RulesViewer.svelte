@@ -8,6 +8,7 @@
 <script>
   import { onMount } from 'svelte';
   import { marked } from 'marked';
+  import { base } from '$app/paths';
   import Overlay from './Overlay.svelte';
 
   export let gameId = null;
@@ -26,7 +27,7 @@
     error = null;
     html = '';
     try {
-      const r = await fetch(`/rules/${id}.md`);
+      const r = await fetch(`${base}/rules/${id}.md`);
       if (!r.ok) throw new Error(`Règles ${id} non trouvées (${r.status})`);
       const md = await r.text();
       html = marked.parse(md);
