@@ -16,20 +16,21 @@ const config = {
         background_color: '#1a472a',
         display: 'standalone',
         orientation: 'portrait',
+        scope: '/pool_party/',
         start_url: '/pool_party/',
         icons: [
           {
-            src: '/assets/icons/icon-192.png',
+            src: '/pool_party/assets/icons/icon-192.png',
             sizes: '192x192',
             type: 'image/png'
           },
           {
-            src: '/assets/icons/icon-512.png',
+            src: '/pool_party/assets/icons/icon-512.png',
             sizes: '512x512',
             type: 'image/png'
           },
           {
-            src: '/assets/icons/icon-512-maskable.png',
+            src: '/pool_party/assets/icons/icon-512-maskable.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'maskable'
