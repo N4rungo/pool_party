@@ -157,7 +157,7 @@
 {#if phase === 'setup1'}
   <div class="setup">
     <h1>
-      <img src="/assets/bille_1_target.png" alt="" class="icon-title" />
+      <img src="{base}/assets/bille_1_target.png" alt="" class="icon-title" />
       Cutthroat
     </h1>
     <div class="setup-sub">Étape 1 / 3</div>
@@ -179,7 +179,7 @@
 {#if phase === 'setup2'}
   <div class="setup">
     <h1>
-      <img src="/assets/bille_1_target.png" alt="" class="icon-title" />
+      <img src="{base}/assets/bille_1_target.png" alt="" class="icon-title" />
       Cutthroat
     </h1>
     <div class="setup-sub">Étape 2 / 3 — Noms des joueurs</div>
@@ -201,7 +201,7 @@
 {#if phase === 'setup3'}
   <div class="setup">
     <h1>
-      <img src="/assets/bille_1_target.png" alt="" class="icon-title" />
+      <img src="{base}/assets/bille_1_target.png" alt="" class="icon-title" />
       Cutthroat
     </h1>
     <div class="setup-sub">Étape 3 / 3 — Récapitulatif</div>
@@ -212,7 +212,7 @@
         <div class="ct-section-label" style="text-align:center;">Dans les 3 coins</div>
         <div class="ct-corners">
           {#each previewCorners as b}
-            <img src="/assets/bille_{b}.png" alt="Bille {b}" class="ball-corner" />
+            <img src="{base}/assets/bille_{b}.png" alt="Bille {b}" class="ball-corner" />
           {/each}
         </div>
       </div>
@@ -225,7 +225,7 @@
             <span class="recap-name">{player.name || `Joueur ${i + 1}`}</span>
             <div class="ct-balls-row-recap">
               {#each previewDistribution.groups[i] as b}
-                <img src="/assets/bille_{b}.png" class="ball-player" alt="{b}" />
+                <img src="{base}/assets/bille_{b}.png" class="ball-player" alt="{b}" />
               {/each}
             </div>
           </div>
@@ -243,7 +243,7 @@
   <div class="game">
     <GameLayout
       title="CUTTHROAT"
-      icon="/assets/bille_1_target.png"
+      icon="{base}/assets/bille_1_target.png"
       gameId="cutthroat"
       canUndo={state.history.length > 0}
       on:home={confirmGoHome}
@@ -318,7 +318,7 @@
             <span class="recap-emoji">{EMOJIS[r.playerIdx % EMOJIS.length]}</span>
             <span class="recap-name">{state.players[r.playerIdx].name}</span>
             <span style="font-size:13px;color:rgba(255,255,255,0.5);">remet la</span>
-            <img src="/assets/bille_{r.ball}.png" class="ball-mini" alt={String(r.ball)} />
+            <img src="{base}/assets/bille_{r.ball}.png" class="ball-mini" alt={String(r.ball)} />
           </div>
         {/each}
       </div>

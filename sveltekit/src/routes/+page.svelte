@@ -5,6 +5,7 @@
   et gère l'overlay des règles (un seul, partagé entre toutes les cartes).
 -->
 <script>
+  import { base } from '$app/paths';
   import { onMount } from 'svelte';
   import GameCard from '$lib/components/GameCard.svelte';
   import RulesViewer from '$lib/components/RulesViewer.svelte';
@@ -43,7 +44,7 @@
 
 <div id="launcher">
   <h1>
-    <img src="/assets/pool_party.png" alt="" class="icon-title" />
+    <img src="{base}/assets/pool_party.png" alt="" class="icon-title" />
     POOL PARTY
   </h1>
   <div class="launcher-subtitle">Choisissez votre jeu</div>

@@ -142,7 +142,7 @@
 {#if phase === 'setup1'}
   <div class="setup">
     <h1>
-      <img src="/assets/triangle_14-1.png" alt="" class="icon-title" />
+      <img src="{base}/assets/triangle_14-1.png" alt="" class="icon-title" />
       14-1 Continu
     </h1>
     <div class="setup-sub">Étape 1 / 3</div>
@@ -174,7 +174,7 @@
 {#if phase === 'setup2'}
   <div class="setup">
     <h1>
-      <img src="/assets/triangle_14-1.png" alt="" class="icon-title" />
+      <img src="{base}/assets/triangle_14-1.png" alt="" class="icon-title" />
       14-1 Continu
     </h1>
     <div class="setup-sub">Étape 2 / 3 — Noms des joueurs</div>
@@ -192,7 +192,7 @@
 {#if phase === 'setup3'}
   <div class="setup">
     <h1>
-      <img src="/assets/triangle_14-1.png" alt="" class="icon-title" />
+      <img src="{base}/assets/triangle_14-1.png" alt="" class="icon-title" />
       14-1 Continu
     </h1>
     <div class="setup-sub">Étape 3 / 3 — Récapitulatif</div>
@@ -221,7 +221,7 @@
   <div class="game">
     <GameLayout
       title="14-1 CONTINU"
-      icon="/assets/triangle_14-1.png"
+      icon="{base}/assets/triangle_14-1.png"
       gameId="straightpool"
       canUndo={state.history.length > 0}
       on:home={confirmGoHome}

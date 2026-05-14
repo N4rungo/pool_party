@@ -17,6 +17,7 @@
    - home  : émis quand on clique sur 🏠 (le parent gère la confirmation)
 -->
 <script>
+  import { base } from '$app/paths';
   import { createEventDispatcher } from 'svelte';
 
   export let title;
@@ -29,7 +30,7 @@
 
 <div class="game-header">
   <button class="btn-home" on:click={() => dispatch('home')} aria-label="Accueil">
-    <img src="/assets/home.png" alt="" class="icon-img" />
+    <img src="{base}/assets/home.png" alt="" class="icon-img" />
   </button>
   <h1>
     {#if icon}<img src={icon} alt="" class="icon-title" />{/if}
