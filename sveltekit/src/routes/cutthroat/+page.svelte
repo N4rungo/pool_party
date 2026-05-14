@@ -140,7 +140,7 @@
     const ok = await askConfirm("Abandonner la partie et revenir à l'accueil ?", {
       confirmLabel: 'Abandonner',
       cancelLabel:  'Continuer',
-      iconImage:    '/assets/home.png'
+      iconImage:    `${base}/assets/home.png`
     });
     if (ok) goto(base || '/');
   }
@@ -266,7 +266,7 @@
               {#each state.distribution.groups[i] as b}
                 {#if state.balls[b] !== undefined}
                   <BallButton
-                    src={`/assets/bille_${b}.png`}
+                    src={`${base}/assets/bille_${b}.png`}
                     alt={`Bille ${b}`}
                     size={ballSize}
                     pocketed={state.balls[b] === 'out'}

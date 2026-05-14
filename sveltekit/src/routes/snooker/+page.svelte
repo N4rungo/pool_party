@@ -226,7 +226,7 @@
     const ok = await askConfirm("Abandonner la partie et revenir à l'accueil ?", {
       confirmLabel: 'Abandonner',
       cancelLabel:  'Continuer',
-      iconImage:    '/assets/home.png'
+      iconImage:    `${base}/assets/home.png`
     });
     if (ok) goto(base || '/');
   }
@@ -371,7 +371,7 @@
       {#if state.phase === 'red'}
         <div class="snk-red-wrap">
           <button class="snk-ball-btn" on:click={() => onPocketBall('red')}>
-            <img src={SNOOKER_BALLS.red.icon} alt="Rouge" />
+            <img src="{base}{SNOOKER_BALLS.red.icon}" alt="Rouge" />
             <span>1 pt</span>
           </button>
           <button class="btn-multired" on:click={openMultiShot}
@@ -384,7 +384,7 @@
           {#each SNOOKER_COLORS_ORDER as colorId (colorId)}
             {@const b = SNOOKER_BALLS[colorId]}
             <button class="snk-ball-btn" on:click={() => onPocketBall(colorId)}>
-              <img src={b.icon} alt={b.label} />
+              <img src="{base}{b.icon}" alt={b.label} />
               <span>{b.points} pts</span>
             </button>
           {/each}
@@ -400,7 +400,7 @@
               class:snk-btn-next={isNext}
               disabled={!isNext}
               on:click={() => onPocketBall(colorId)}>
-              <img src={b.icon} alt={b.label} />
+              <img src="{base}{b.icon}" alt={b.label} />
               <span>{b.points} pts</span>
             </button>
           {/each}
@@ -452,7 +452,7 @@
             class="snk-ball-btn"
             class:selected={multiShot.colors[colorId]}
             on:click={() => multiShotToggleColor(colorId)}>
-            <img src={b.icon} alt={b.label} />
+            <img src="{base}{b.icon}" alt={b.label} />
             <span>{b.points} pts</span>
           </button>
         {/each}

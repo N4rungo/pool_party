@@ -139,7 +139,7 @@
     const ok = await askConfirm("Abandonner la partie et revenir à l'accueil ?", {
       confirmLabel: 'Abandonner',
       cancelLabel:  'Continuer',
-      iconImage:    '/assets/home.png'
+      iconImage:    `${base}/assets/home.png`
     });
     if (ok) goto(base || '/');
   }
@@ -291,7 +291,7 @@
           {@const isCue = ballId === cue}
           <div class="fb-cell fb-cell-{ballId}">
             <BallButton
-              src={`/assets/${ball.asset}`}
+              src={`${base}/assets/${ball.asset}`}
               alt={`${ball.label} (${ball.value})`}
               size={62}
               disabled={isCue}

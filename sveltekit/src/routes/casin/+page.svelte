@@ -128,7 +128,7 @@
     const ok = await askConfirm("Abandonner la partie et revenir à l'accueil ?", {
       confirmLabel: 'Abandonner',
       cancelLabel:  'Continuer',
-      iconImage:    '/assets/home.png'
+      iconImage:    `${base}/assets/home.png`
     });
     if (ok) goto(base || '/');
   }

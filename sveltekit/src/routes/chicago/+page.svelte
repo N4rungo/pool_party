@@ -99,7 +99,7 @@
     const ok = await askConfirm("Abandonner la partie et revenir à l'accueil ?", {
       confirmLabel: 'Abandonner',
       cancelLabel:  'Continuer',
-      iconImage:    '/assets/home.png'
+      iconImage:    `${base}/assets/home.png`
     });
     if (ok) goto(base || '/');
   }
@@ -193,7 +193,7 @@
             <div class="chicago-row">
               {#each row as n}
                 <BallButton
-                  src={`/assets/bille_${n}.png`}
+                  src={`${base}/assets/bille_${n}.png`}
                   alt={`Bille ${n}`}
                   pocketed={state.pocketedBalls.has(n)}
                   on:click={() => onPocketBall(n)} />
