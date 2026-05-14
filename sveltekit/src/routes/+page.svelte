@@ -6,7 +6,6 @@
 -->
 <script>
   import { base } from '$app/paths';
-  import { onMount } from 'svelte';
   import GameCard from '$lib/components/GameCard.svelte';
   import RulesViewer from '$lib/components/RulesViewer.svelte';
   import { GAMES } from '$lib/games.js';
@@ -24,15 +23,6 @@
   function closeRules() {
     rulesOpen = false;
   }
-
-  onMount(() => {
-    const handler = (e) => {
-      e.preventDefault();
-      installPrompt.set(e);
-    };
-    window.addEventListener('beforeinstallprompt', handler);
-    return () => window.removeEventListener('beforeinstallprompt', handler);
-  });
 
   async function install() {
     if (!$installPrompt) return;
