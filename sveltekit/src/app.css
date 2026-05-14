@@ -30,7 +30,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 40px;
+  /* safe-area-inset-bottom pour iPhone en mode standalone PWA */
+  padding-bottom: max(40px, env(safe-area-inset-bottom));
 }
 
 h1 {

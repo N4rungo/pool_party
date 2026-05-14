@@ -16,11 +16,9 @@ const config = {
       strict: true
     }),
 
-    // Si on déploie sur GitHub Pages sous https://<user>.github.io/pool_party/,
-    // décommenter et ajuster le `base`. En dev (npm run dev), laisser vide.
-    // paths: {
-    //   base: process.env.NODE_ENV === 'production' ? '/pool_party' : ''
-    // }
+    paths: {
+      base: process.env.NODE_ENV === 'production' ? '/pool_party' : ''
+    }
   }
 };
 

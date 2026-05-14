@@ -5,9 +5,11 @@
   et gère l'overlay des règles (un seul, partagé entre toutes les cartes).
 -->
 <script>
+  import { onMount } from 'svelte';
   import GameCard from '$lib/components/GameCard.svelte';
   import RulesViewer from '$lib/components/RulesViewer.svelte';
   import { GAMES } from '$lib/games.js';
+  import { installPrompt, isStandalone } from '$lib/stores/pwa.js';
 
   // État local : règles ouvertes ou non, et pour quel jeu
   let rulesOpen = false;
@@ -20,6 +22,22 @@
 
   function closeRules() {
     rulesOpen = false;
+  }
+
+  onMount(() => {
+    const handler = (e) => {
+      e.preventDefault();
+      installPrompt.set(e);
+    };
+    window.addEventListener('beforeinstallprompt', handler);
+    return () => window.removeEventListener('beforeinstallprompt', handler);
+  });
+
+  async function install() {
+    if (!$installPrompt) return;
+    $installPrompt.prompt();
+    const { outcome } = await $installPrompt.userChoice;
+    if (outcome === 'accepted') installPrompt.set(null);
   }
 </script>
 
@@ -44,6 +62,12 @@
       <div class="game-arrow">Bientôt</div>
     </div>
   </div>
+
+  {#if $installPrompt && !$isStandalone}
+    <button class="install-btn" on:click={install}>
+      📲 Installer l'app
+    </button>
+  {/if}
 </div>
 
 <RulesViewer gameId={rulesGameId} open={rulesOpen} on:close={closeRules} />
@@ -68,6 +92,27 @@
     display: flex;
     flex-direction: column;
     gap: 14px;
+  }
+
+  .install-btn {
+    display: block;
+    width: 100%;
+    margin-top: 24px;
+    padding: 14px;
+    background: rgba(255, 215, 0, 0.12);
+    border: 1px solid rgba(255, 215, 0, 0.35);
+    border-radius: 14px;
+    color: var(--color-gold);
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .install-btn:active {
+    background: rgba(255, 215, 0, 0.22);
   }
 
   /* Carte "Soon" — non cliquable, simple visuel */
