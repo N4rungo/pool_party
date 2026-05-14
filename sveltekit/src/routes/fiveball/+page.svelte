@@ -171,7 +171,7 @@
 {#if phase === 'setup1'}
   <div class="setup">
     <h1>
-      <img src="/assets/5-ball.png" alt="" class="icon-title" />
+      <img src="{base}/assets/5-ball.png" alt="" class="icon-title" />
       5-Ball
     </h1>
     <div class="setup-sub">Étape 1 / 3</div>
@@ -202,7 +202,7 @@
 {#if phase === 'setup2'}
   <div class="setup">
     <h1>
-      <img src="/assets/5-ball.png" alt="" class="icon-title" />
+      <img src="{base}/assets/5-ball.png" alt="" class="icon-title" />
       5-Ball
     </h1>
     <div class="setup-sub">Étape 2 / 3 — Noms des joueurs</div>
@@ -220,7 +220,7 @@
 {#if phase === 'setup3'}
   <div class="setup">
     <h1>
-      <img src="/assets/5-ball.png" alt="" class="icon-title" />
+      <img src="{base}/assets/5-ball.png" alt="" class="icon-title" />
       5-Ball
     </h1>
     <div class="setup-sub">Étape 3 / 3 — Récapitulatif</div>
@@ -249,7 +249,7 @@
   <div class="game">
     <GameLayout
       title="5-BALL"
-      icon="/assets/5-ball.png"
+      icon="{base}/assets/5-ball.png"
       gameId="fiveball"
       canUndo={state.history.length > 0}
       on:home={confirmGoHome}

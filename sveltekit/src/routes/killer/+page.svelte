@@ -212,7 +212,7 @@
 {#if phase === 'setup1'}
   <div class="setup">
     <h1>
-      <img src="/assets/bille_8_killer.png" alt="" class="icon-title" />
+      <img src="{base}/assets/bille_8_killer.png" alt="" class="icon-title" />
       Killer
     </h1>
     <div class="setup-sub">Étape 1 / 3</div>
@@ -253,7 +253,7 @@
 {#if phase === 'setup2'}
   <div class="setup">
     <h1>
-      <img src="/assets/bille_8_killer.png" alt="" class="icon-title" />
+      <img src="{base}/assets/bille_8_killer.png" alt="" class="icon-title" />
       Killer
     </h1>
     <div class="setup-sub">Étape 2 / 3 — Noms des joueurs</div>
@@ -271,7 +271,7 @@
 {#if phase === 'setup3'}
   <div class="setup">
     <h1>
-      <img src="/assets/bille_8_killer.png" alt="" class="icon-title" />
+      <img src="{base}/assets/bille_8_killer.png" alt="" class="icon-title" />
       Killer
     </h1>
     <div class="setup-sub">Étape 3 / 3 — Récapitulatif</div>
@@ -309,7 +309,7 @@
   <div class="game">
     <GameLayout
       title="KILLER"
-      icon="/assets/bille_8_killer.png"
+      icon="{base}/assets/bille_8_killer.png"
       gameId="killer"
       canUndo={state.history.length > 0}
       on:home={confirmGoHome}
@@ -376,7 +376,7 @@
             <button class="btn-action btn-hit"   on:click={() => onAction('hit')}>✅ Tir réussi</button>
             <button class="btn-action btn-miss"  on:click={() => onAction('miss')}>❌ Tir raté</button>
             <button class="btn-action btn-black" on:click={() => onAction('black')}>
-              <img src="/assets/bille_8_killer.png" alt="" class="icon-img" /> Bille noire
+              <img src="{base}/assets/bille_8_killer.png" alt="" class="icon-img" /> Bille noire
             </button>
             <button class="btn-action btn-joker"
                     on:click={openJokerMenu}

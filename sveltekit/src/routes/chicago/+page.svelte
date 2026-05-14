@@ -125,7 +125,7 @@
 {#if phase === 'setup'}
   <div class="setup">
     <h1>
-      <img src="/assets/3_billes_americain.png" alt="" class="icon-title" />
+      <img src="{base}/assets/3_billes_americain.png" alt="" class="icon-title" />
       Chicago
     </h1>
     <div class="setup-sub">Premier à 61 points</div>
@@ -161,7 +161,7 @@
   <div class="game">
     <GameLayout
       title="CHICAGO"
-      icon="/assets/3_billes_americain.png"
+      icon="{base}/assets/3_billes_americain.png"
       gameId="chicago"
       canUndo={state.history.length > 0}
       on:home={confirmGoHome}

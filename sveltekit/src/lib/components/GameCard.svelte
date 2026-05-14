@@ -28,7 +28,7 @@
 
 <div class="game-card available">
   <div class="game-icon">
-    <img src={game.icon} alt={game.name} />
+    <img src="{base}{game.icon}" alt={game.name} />
   </div>
   <div class="game-info">
     <div class="game-name">{game.name}</div>
