@@ -11,7 +11,7 @@ const config = {
     adapter: adapter({
       pages: 'build',
       assets: 'build',
-      fallback: 'index.html', // SPA-like : toute route inconnue retombe sur index.html
+      fallback: '404.html', // GitHub Pages sert 404.html pour toute route inconnue → SvelteKit prend la main
       precompress: false,
       strict: true
     }),
