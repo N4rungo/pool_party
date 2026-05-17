@@ -14,7 +14,7 @@ export const GAMES = [
   {
     id: 'killer',
     name: 'Killer',
-    tagline: "Ile ne peut en rester qu'un",
+    tagline: "Il ne peut en rester qu'un",
     icon: '/assets/bille_8_killer.png'
   },
   {
