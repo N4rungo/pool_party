@@ -12,45 +12,45 @@
  */
 export const GAMES = [
   {
-    id:      'killer',
-    name:    'Killer',
-    tagline: 'There can be only one',
-    icon:    '/assets/bille_8_killer.png'
+    id: 'killer',
+    name: 'Killer',
+    tagline: "Ile ne peut en rester qu'un",
+    icon: '/assets/bille_8_killer.png'
   },
   {
-    id:      'cutthroat',
-    name:    'Cutthroat',
-    tagline: 'Last man standing',
-    icon:    '/assets/bille_1_target.png'
+    id: 'cutthroat',
+    name: 'Cutthroat',
+    tagline: 'Eliminez les tous',
+    icon: '/assets/bille_1_target.png'
   },
   {
-    id:      'chicago',
-    name:    'Chicago',
+    id: 'chicago',
+    name: 'Chicago',
     tagline: 'Premier à 61 points',
-    icon:    '/assets/3_billes_americain.png'
+    icon: '/assets/3_billes_americain.png'
   },
   {
-    id:      'straightpool',
-    name:    '14-1 Continu',
+    id: 'straightpool',
+    name: '14-1 Continu',
     tagline: 'Compte tes points, pas tes billes',
-    icon:    '/assets/triangle_14-1.png'
+    icon: '/assets/triangle_14-1.png'
   },
   {
-    id:      'casin',
-    name:    'Casin',
-    tagline: 'Le français revisité',
-    icon:    '/assets/3_billes.png'
-  },
-  {
-    id:      'snooker',
-    name:    'Snooker',
+    id: 'snooker',
+    name: 'Snooker',
     tagline: 'Objectif : 147 points',
-    icon:    '/assets/3_billes_snooker.png'
+    icon: '/assets/3_billes_snooker.png'
   },
   {
-    id:      'fiveball',
-    name:    '5-Ball',
-    tagline: 'Atteins 0 pile, comme aux fléchettes',
-    icon:    '/assets/5-ball.png'
+    id: 'casin',
+    name: 'Casin',
+    tagline: 'Le français revisité',
+    icon: '/assets/3_billes.png'
+  },
+  {
+    id: 'fiveball',
+    name: '5-Ball',
+    tagline: 'Atteignez 0 pile, comme aux fléchettes',
+    icon: '/assets/5-ball.png'
   }
 ];
