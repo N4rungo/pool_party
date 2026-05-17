@@ -36,8 +36,8 @@
     <div class="game-card unavailable">
       <div class="game-icon">🚧</div>
       <div class="game-info">
-        <div class="game-name">Soon</div>
-        <div class="game-tagline">Please wait...</div>
+        <div class="game-name">Bientôt</div>
+        <div class="game-tagline">Soyez patient...</div>
       </div>
       <div class="game-arrow">Bientôt</div>
     </div>
