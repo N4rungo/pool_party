@@ -20,7 +20,7 @@ export const GAMES = [
   {
     id: 'cutthroat',
     name: 'Cutthroat',
-    tagline: 'Eliminez les tous',
+    tagline: 'Éliminez-les tous',
     icon: '/assets/bille_1_target.png'
   },
   {
