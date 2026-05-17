@@ -24,7 +24,7 @@
 
   export let players = [];
   export let maxLength = 16;
-  export let placeholder = 'Pseudo...';
+  export let placeholder = null;
 </script>
 
 <div class="player-name-inputs">
@@ -36,7 +36,7 @@
         class="player-name-input"
         bind:value={player.name}
         {maxLength}
-        {placeholder} />
+        placeholder={placeholder ?? `Joueur ${i + 1}...`} />
     </div>
   {/each}
 </div>
