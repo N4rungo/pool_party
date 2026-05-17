@@ -44,9 +44,9 @@ const config = {
         navigateFallback: 'index.html'
       },
 
-      // En dev, on active le SW pour pouvoir tester
       devOptions: {
-        enabled: false
+        enabled: true,
+        type: 'module'
       }
     })
   ]
