@@ -1,5 +1,5 @@
 # 🎱 5-Ball
-> Atteins 0 pile, comme aux fléchettes.
+> Atteignez 0 pile, comme aux fléchettes.
 
 ## 🎯 But du jeu
 Partir d'un score (51, 101, 151…) et **descendre à 0 pile** en marquant des points par carambolage. Le premier à zéro gagne.
@@ -22,14 +22,14 @@ Partir d'un score (51, 101, 151…) et **descendre à 0 pile** en marquant des p
 - **Cue ball alternée** à chaque tour (blanche, jaune, blanche…). À 2 joueurs, J1 garde donc la blanche et J2 la jaune.
 
 ## ▶️ Comment jouer
-À ton tour, tu joues ta cue ball et dois **caramboler au moins 2 autres billes**.
-- ✅ **2 billes ou plus touchées** → tu marques la **somme de leurs valeurs**, qui est retirée à ton score.
-- ❌ **1 ou 0 bille** → faute, tu ne marques rien, la main passe.
-- 🎯 **Tout premier coup de la partie (l'engagement)** : tu **dois** toucher la rouge en premier, sinon faute.
+À votre tour, vous jouez votre cue ball et devez **caramboler au moins 2 autres billes**.
+- ✅ **2 billes ou plus touchées** → vous marquez la **somme de leurs valeurs**, qui est retirée à votre score.
+- ❌ **1 ou 0 bille** → faute, vous ne marquez rien, la main passe.
+- 🎯 **Tout premier coup de la partie (l'engagement)** : vous **devez** toucher la rouge en premier, sinon faute.
 
 ### 🚫 Bust : les scores impossibles à clore
-Si après ton coup, le score qu'il te resterait est **1, 2 ou 4**, ton tour est **annulé** : tu ne marques pas et ton score reste celui d'avant.
-Pareil si tu **passes en négatif**.
+Si après votre coup, le score qu'il vous resterait est **1, 2 ou 4**, votre tour est **annulé** : vous ne marquez pas et votre score reste celui d'avant.
+Pareil si vous **passez en négatif**.
 
 > 🤔 **Pourquoi ?** Parce qu'il faut au moins 2 billes pour scorer (donc minimum 1+2 = 3 points par coup), et toute combinaison touche au moins une bille à 1 ou 2 points. Du coup, il est impossible de clore un score restant de 1, 2 ou 4 en un seul coup légal.
 

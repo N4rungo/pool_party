@@ -8,7 +8,7 @@ Le premier qui complète sa checklist gagne.
 ## 🎱 Mise en place
 - **2 à 6 joueurs**
 - Variante du **billard français** (3 billes : 2 blanches/jaunes + 1 rouge)
-- Nombre de répétitions par action **Y** (par défaut **2**, configurable globalement de 1 à 5, et ajustable individuellemente)
+- Nombre de répétitions par action **Y** (par défaut **2**, configurable globalement de 1 à 5, et ajustable individuellement)
 - La cue ball alterne (blanche / jaune) à chaque tour entre les joueurs.
 
 ## 📋 Les 9 actions
@@ -26,10 +26,10 @@ Le premier qui complète sa checklist gagne.
 | 🌀 | **Casin** | Toucher la rouge qui touche elle-même la 2ᵉ bille via au moins 1 bande. |
 
 ## ▶️ Comment jouer
-À ton tour, tu joues comme au billard français.
-- 🗣️ **Avant ton coup** : annonce l'action que tu veux réaliser.
-- ✅ **Action réussie** → tu coches une case sur cette action, tu rejoues. **Tu ne peux pas annoncer la même action au tour suivant** : il faut en choisir une autre.
-- 🎱 **Action ratée mais carambolage légal** (tu touches bien les 2 billes) → tu ne coches rien, mais tu **rejoues** et tu peux ré-annoncer ce que tu veux.
+À votre tour, vous jouez comme au billard français.
+- 🗣️ **Avant votre coup** : annoncez l'action que vous voulez réaliser.
+- ✅ **Action réussie** → vous cochez une case sur cette action, vous rejouez. **Vous ne pouvez pas annoncer la même action au tour suivant** : il faut en choisir une autre.
+- 🎱 **Action ratée mais carambolage légal** (vous touchez bien les 2 billes) → vous ne cochez rien, mais vous **rejouez** et vous pouvez ré-annoncer ce que vous voulez.
 - ❌ **Pas de carambolage** → la main passe.
 
 ## 🏆 Victoire

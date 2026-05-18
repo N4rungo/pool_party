@@ -2,7 +2,7 @@
 > Objectif 147 points, le grand classique anglais.
 
 ## 🎯 But du jeu
-Marquer **plus de points** que tes adversaires en empochant des billes dans un ordre précis : alternance rouge / couleur, puis les couleurs dans l'ordre.
+Marquer **plus de points** que vos adversaires en empochant des billes dans un ordre précis : alternance rouge / couleur, puis les couleurs dans l'ordre.
 
 ## 🎱 Mise en place
 - **2 à 4 joueurs**
@@ -28,7 +28,7 @@ Tant qu'il reste des rouges sur la table :
 2. **Couleur** ensuite (+ ses points). La couleur est **remise sur sa case** après chaque coup.
 3. **Rouge** à nouveau, et on recommence.
 
-Tu continues à jouer tant que tu empoches dans le bon ordre. Dès que tu rates ou empoches dans le mauvais ordre, la main passe.
+Vous continuez à jouer tant que vous empochez dans le bon ordre. Dès que vous ratez ou empochez dans le mauvais ordre, la main passe.
 
 ### Phase 2 — Les couleurs dans l'ordre
 Quand toutes les rouges sont empochées, on attaque les couleurs **dans l'ordre croissant de points** : jaune → verte → marron → bleue → rose → noire. Cette fois, **les couleurs ne sont plus remises** : une couleur empochée disparaît.

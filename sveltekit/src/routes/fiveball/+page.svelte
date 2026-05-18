@@ -345,8 +345,8 @@
   /* ===== Layout général ===== */
   .setup,
   .game {
-    width: 92%;
-    max-width: 480px;
+    width: var(--content-w, 92%);
+    max-width: var(--content-max, 480px);
     padding-top: 10px;
   }
 

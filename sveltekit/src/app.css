@@ -8,6 +8,25 @@
 
   /* Vert tapis de billard (fond) */
   --color-pool:        #1a472a;
+
+  /* Largeur du contenu principal (mobile par défaut) */
+  --content-w:   92%;
+  --content-max: 480px;
+}
+
+/* Tablette */
+@media (min-width: 700px) {
+  :root {
+    --content-w:   88%;
+    --content-max: 640px;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1100px) {
+  :root {
+    --content-max: 720px;
+  }
 }
 
 

@@ -282,7 +282,7 @@
         Mode {jokerMode === 'random' ? '🎲 Aléatoire' : '🃏 Choix libre'}
       </div>
       <div class="setup-tip" style="margin-bottom:8px;">
-        Ajuste les vies par joueur si besoin.
+        Ajustez les vies par joueur si besoin.
       </div>
 
       <RecapList players={setupPlayers} let:player let:i>
@@ -468,8 +468,8 @@
 <style>
   .setup,
   .game {
-    width: 92%;
-    max-width: 480px;
+    width: var(--content-w, 92%);
+    max-width: var(--content-max, 480px);
     padding-top: 10px;
   }
 

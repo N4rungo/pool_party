@@ -24,15 +24,15 @@
   <div class="stub-msg">
     🚧 Ce jeu n'est pas encore migré vers SvelteKit.
     <br />
-    Reviens bientôt — il sera porté dans une prochaine phase.
+    Revenez bientôt — il sera porté dans une prochaine phase.
   </div>
   <button class="btn-main btn-gold" on:click={goHome}>← Retour à l'accueil</button>
 </div>
 
 <style>
   .game-stub {
-    width: 92%;
-    max-width: 480px;
+    width: var(--content-w, 92%);
+    max-width: var(--content-max, 480px);
     text-align: center;
     padding-top: 10px;
   }
