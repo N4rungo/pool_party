@@ -61,9 +61,10 @@
     text-align: center;
     margin: 0;
     padding: 6px 0;
-    font-size: 24px;
-    letter-spacing: 2px;
+    font-size: clamp(16px, 5.5vw, 24px);
+    letter-spacing: clamp(0px, 0.4vw, 2px);
     line-height: 1.1;
+    white-space: nowrap;
   }
 
   .btn-home {

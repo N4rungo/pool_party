@@ -61,14 +61,15 @@
 
   .game-icon {
     font-size: 42px;
-    min-width: 52px;
+    min-width: clamp(38px, 11vw, 52px);
     text-align: center;
     filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
+    flex-shrink: 0;
   }
 
   .game-icon img {
-    width: 54px;
-    height: 54px;
+    width: clamp(40px, 12vw, 54px);
+    height: clamp(40px, 12vw, 54px);
     object-fit: contain;
   }
 
@@ -78,7 +79,7 @@
   }
 
   .game-name {
-    font-size: 20px;
+    font-size: clamp(14px, 4.8vw, 20px);
     font-weight: bold;
     color: var(--color-gold);
     text-shadow: 0 0 10px rgba(var(--color-gold-rgb), 0.3);

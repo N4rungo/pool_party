@@ -545,6 +545,16 @@
     border-radius: 14px;
     padding: 10px 14px;
     transition: opacity .3s, border-color .2s;
+    /* Permet aux @container queries enfants de réagir à la largeur de la carte */
+    container-type: inline-size;
+  }
+
+  /* Quand la carte est trop étroite, l'emoji cède la place au nom
+     plutôt que de forcer la troncature du texte. */
+  @container (max-width: 165px) {
+    .ct-player-emoji {
+      display: none;
+    }
   }
 
   .ct-player-card.eliminated {
