@@ -37,6 +37,7 @@
   const EMOJIS = ['🟡', '🔵', '🔴', '⚪', '🟠', '🟣', '🟤', '🟢'];
 
   let phase = 'setup1';
+  $: phase, typeof window !== 'undefined' && window.scrollTo({ top: 0, behavior: 'instant' });
 
   // Setup
   let count = CASIN_MIN_PLAYERS;

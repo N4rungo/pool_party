@@ -29,6 +29,7 @@
 
   // ── Phase courante ────────────────────────────────────
   let phase = 'setup';   // 'setup' | 'game' | 'win'
+  $: phase, typeof window !== 'undefined' && window.scrollTo({ top: 0, behavior: 'instant' });
 
   // ── État du setup ─────────────────────────────────────
   let name1 = '';

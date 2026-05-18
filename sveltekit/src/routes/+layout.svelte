@@ -9,8 +9,12 @@
 -->
 <script>
   import '../app.css';
+  import { afterNavigate } from '$app/navigation';
   import Toast from '$lib/components/Toast.svelte';
   import ConfirmDialog from '$lib/components/ConfirmDialog.svelte';
+
+  // Remet la vue en haut à chaque navigation entre pages
+  afterNavigate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
 </script>
 
 <slot />
