@@ -31,7 +31,7 @@ export const GAMES = [
   },
   {
     id: 'straightpool',
-    name: '14-1 Continu',
+    name: '14-1',
     tagline: 'Compte tes points, pas tes billes',
     icon: '/assets/triangle_14-1.png'
   },
