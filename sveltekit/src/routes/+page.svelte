@@ -85,6 +85,15 @@
     font-size: clamp(20px, 7vw, 28px);
     letter-spacing: clamp(1px, 0.5vw, 3px);
     white-space: nowrap;
+    padding: 16px 20px 4px;
+  }
+
+  /* Icône launcher plus grande que l'icon-title globale (48px),
+     adaptative avec l'écran. margin-right réduit pour rester serré. */
+  h1 .icon-title {
+    width: clamp(52px, 17vw, 72px);
+    height: clamp(52px, 17vw, 72px);
+    margin-right: 4px;
   }
 
   .rules-mark {
@@ -123,7 +132,8 @@
     color: rgba(255, 255, 255, 0.4);
     letter-spacing: 2px;
     text-transform: uppercase;
-    margin-bottom: 28px;
+    margin-top: 2px;
+    margin-bottom: 20px;
   }
 
   .games-list {
