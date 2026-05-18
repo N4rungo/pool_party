@@ -83,12 +83,19 @@
     color: var(--color-gold);
     text-shadow: 0 0 10px rgba(var(--color-gold-rgb), 0.3);
     margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .game-tagline {
     font-size: 13px;
     color: rgba(255, 255, 255, 0.5);
     font-style: italic;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .game-card-actions {

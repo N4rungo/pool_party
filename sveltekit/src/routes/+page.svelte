@@ -78,6 +78,15 @@
     padding-top: 10px;
   }
 
+  /* Titre principal : taille et espacement s'adaptent en deçà de ~380px,
+     inchangés au-dessus. white-space: nowrap évite le retour à la ligne
+     entre le texte et le bouton info. */
+  h1 {
+    font-size: clamp(20px, 7vw, 28px);
+    letter-spacing: clamp(1px, 0.5vw, 3px);
+    white-space: nowrap;
+  }
+
   .rules-mark {
     display: inline-flex;
     align-items: center;

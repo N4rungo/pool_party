@@ -257,7 +257,8 @@
         {#each state.players as player, i (i)}
           <div class="ct-player-card" class:eliminated={player.eliminated}>
             <div class="ct-player-name">
-              <span class="ct-name-text">{EMOJIS[i % EMOJIS.length]} {player.name}</span>
+              <span class="ct-player-emoji">{EMOJIS[i % EMOJIS.length]}</span>
+              <span class="ct-name-text">{player.name}</span>
               {#if player.eliminated}
                 <span class="ct-badge-eliminated">ÉLIMINÉ</span>
               {/if}
@@ -484,6 +485,9 @@
     flex-direction: column;
     gap: 10px;
     margin-bottom: 14px;
+    /* Espace sous les cartes pour que le footer sticky ne masque pas
+       la dernière carte quand la liste dépasse la hauteur du viewport. */
+    padding-bottom: 80px;
   }
 
   /* 4-5 joueurs (3 billes) : 1 col, nom + billes sur la même ligne */
@@ -555,6 +559,10 @@
     display: flex;
     align-items: center;
     gap: 6px;
+  }
+
+  .ct-player-emoji {
+    flex-shrink: 0;
   }
 
   .ct-name-text {
