@@ -38,6 +38,7 @@
   const EMOJIS = ['🟡', '🔵', '🔴', '⚪', '🟠', '🟣', '🟤', '🟢'];
 
   let phase = 'setup1';
+  $: phase, typeof window !== 'undefined' && window.scrollTo({ top: 0, behavior: 'instant' });
 
   let count = 2;
   let defaultTarget = STRAIGHTPOOL_DEFAULT_TARGET;

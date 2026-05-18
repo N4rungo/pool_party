@@ -41,6 +41,7 @@
 
   // ── Phase courante ────────────────────────────────────
   let phase = 'setup1';
+  $: phase, typeof window !== 'undefined' && window.scrollTo({ top: 0, behavior: 'instant' });
 
   // ── Setup ─────────────────────────────────────────────
   let count = CT_DEFAULT_PLAYERS;
