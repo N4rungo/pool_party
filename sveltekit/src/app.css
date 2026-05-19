@@ -18,14 +18,14 @@
 @media (min-width: 700px) {
   :root {
     --content-w:   88%;
-    --content-max: 640px;
+    --content-max: 900px;
   }
 }
 
 /* Desktop */
 @media (min-width: 1100px) {
   :root {
-    --content-max: 720px;
+    --content-max: 1200px;
   }
 }
 

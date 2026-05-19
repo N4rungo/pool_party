@@ -105,41 +105,26 @@
     flex-shrink: 0;
   }
 
-  /* ── Tablette (colonnes étroites ~310px) ── */
-  @media (min-width: 700px) and (max-width: 1099px) {
+  /* ── Tablette / Desktop : les cartes s'élargissent avec le launcher ── */
+  @media (min-width: 700px) {
     .game-card {
-      flex-wrap: wrap;
-      column-gap: 12px;
-      row-gap: 8px;
-      padding: 14px 16px;
-      align-items: flex-start;
-    }
-    .game-icon {
-      min-width: 36px;
+      padding: 22px 26px;
+      gap: 20px;
     }
     .game-icon img {
-      width: 36px;
-      height: 36px;
-    }
-    .game-info {
-      /* Prend toute la largeur restante de la première ligne */
-      flex: 1;
+      width: clamp(50px, 5vw, 64px);
+      height: clamp(50px, 5vw, 64px);
     }
     .game-name {
-      white-space: normal;
+      font-size: clamp(16px, 1.8vw, 22px);
+    }
+    .btn-card-rules {
+      padding: 12px 14px;
+      font-size: 17px;
+    }
+    .btn-card-play {
+      padding: 12px 18px;
       font-size: 15px;
-      line-height: 1.25;
-      overflow: visible;
-      text-overflow: unset;
-    }
-    .game-tagline {
-      font-size: 12px;
-      -webkit-line-clamp: 1;
-    }
-    .game-card-actions {
-      /* Passe sur une nouvelle ligne, aligné à droite */
-      flex-basis: 100%;
-      justify-content: flex-end;
     }
   }
 

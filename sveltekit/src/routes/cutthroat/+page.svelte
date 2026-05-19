@@ -15,6 +15,7 @@
 <script>
   import { goto } from '$app/navigation';
   import { base } from '$app/paths';
+  import { onMount } from 'svelte';
   import GameLayout from '$lib/components/GameLayout.svelte';
   import RulesViewer from '$lib/components/RulesViewer.svelte';
   import WinOverlay from '$lib/components/WinOverlay.svelte';
@@ -150,8 +151,12 @@
   let rulesOpen = false;
 
   // ── Layout adaptatif ──────────────────────────────────
+  let innerWidth = 480;
+  onMount(() => { innerWidth = window.innerWidth; });
+
   $: perPlayer = state?.distribution?.perPlayer ?? 0;
-  $: ballSize  = perPlayer >= 5 ? 42 : perPlayer === 3 ? 36 : perPlayer === 2 ? 32 : 28;
+  $: tabletMult = innerWidth >= 700 ? 1.5 : 1;
+  $: ballSize  = Math.round((perPlayer >= 5 ? 42 : perPlayer === 3 ? 36 : perPlayer === 2 ? 32 : 28) * tabletMult);
 </script>
 
 <!-- ============== SETUP 1 : nb joueurs ============== -->
@@ -538,6 +543,34 @@
   .ct-players.two-col .ct-balls-row {
     flex-shrink: 0;
     gap: 3px;
+  }
+
+  /* ── Tablette : tuiles 2 colonnes pour tous les effectifs ── */
+  @media (min-width: 700px) {
+    .ct-players {
+      display: grid !important;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    /* Tuile : mise en page colonne (nom au-dessus, billes en dessous) */
+    .ct-players .ct-player-card {
+      display: block !important;
+      padding: 16px !important;
+    }
+    .ct-players .ct-player-name {
+      flex: unset !important;
+      font-size: 15px !important;
+      margin-bottom: 10px !important;
+      min-width: unset !important;
+    }
+    .ct-players .ct-balls-row {
+      flex-shrink: unset !important;
+      justify-content: center;
+      gap: 6px !important;
+    }
+    .ct-players .ct-badge-eliminated {
+      display: inline !important;
+    }
   }
 
   .ct-player-card {

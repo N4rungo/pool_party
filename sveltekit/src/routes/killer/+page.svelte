@@ -563,11 +563,46 @@
     margin-bottom: 14px;
   }
 
-  /* Tablette : 2 colonnes dès 5 joueurs */
+  /* Mobile : 2 colonnes dès 5 joueurs */
+  .killer-players.two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Tablette : tuiles 2 colonnes pour tous les effectifs */
   @media (min-width: 700px) {
-    .killer-players.two-col {
+    .killer-players {
       display: grid;
       grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .killer-player-card {
+      padding: 18px 18px;
+    }
+    .kp-top {
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    .kp-name {
+      font-size: 16px;
+      justify-content: center;
+    }
+    .kp-hearts {
+      font-size: 22px;
+    }
+    .kp-joker-badges {
+      justify-content: center;
+      margin-top: 6px;
+    }
+    .kp-joker-badge {
+      font-size: 18px;
+    }
+    .kp-joker-counter {
+      text-align: center;
+      font-size: 12px;
+      margin-top: 4px;
     }
   }
 

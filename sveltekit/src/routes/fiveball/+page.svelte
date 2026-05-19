@@ -21,6 +21,7 @@
 <script>
   import { goto } from '$app/navigation';
   import { base } from '$app/paths';
+  import { onMount } from 'svelte';
   import GameLayout from '$lib/components/GameLayout.svelte';
   import RulesViewer from '$lib/components/RulesViewer.svelte';
   import WinOverlay from '$lib/components/WinOverlay.svelte';
@@ -147,6 +148,11 @@
 
   // ── Overlay règles ────────────────────────────────────
   let rulesOpen = false;
+
+  // ── Taille des billes selon la largeur du viewport ───
+  let innerWidth = 480;
+  onMount(() => { innerWidth = window.innerWidth; });
+  $: boardBallSize = innerWidth >= 700 ? 82 : 62;
 
   // ── Helpers réactifs ──────────────────────────────────
   $: cue = state ? activeCueBall(state) : null;
@@ -294,7 +300,7 @@
             <BallButton
               src={`${base}/assets/${ball.asset}`}
               alt={`${ball.label} (${ball.value})`}
-              size={62}
+              size={boardBallSize}
               disabled={isCue}
               selected={state.selected.includes(ballId)}
               on:click={() => onToggleBall(ballId)} />
@@ -441,6 +447,39 @@
     font-size: 12px;
     color: rgba(255, 255, 255, 0.4);
     font-weight: normal;
+  }
+
+  /* ── Tablette : tuiles 2 colonnes ── */
+  @media (min-width: 700px) {
+    .fb-scoreboard {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .fb-player-row {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 16px 12px;
+      gap: 4px;
+    }
+    .fb-player-emoji {
+      font-size: 26px;
+      width: auto;
+    }
+    .fb-player-name {
+      font-size: 15px;
+    }
+    .fb-player-score {
+      font-size: 28px;
+    }
+    .fb-player-target {
+      font-size: 13px;
+    }
+    /* Plateau centré, plus grand */
+    .fb-board {
+      max-width: 380px;
+    }
   }
 
   /* ===== Bandeau info ===== */
