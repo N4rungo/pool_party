@@ -341,7 +341,7 @@
       on:rules={() => rulesOpen = true}>
 
       <!-- Scoreboard -->
-      <div class="snk-scoreboard">
+      <div class="snk-scoreboard" class:two-col={state.players.length >= 3}>
       {#each state.players as player, i (i)}
         <div class="snk-score-card" class:active={i === state.currentIndex}>
           <span class="snk-score-emoji">{EMOJIS[i % EMOJIS.length]}</span>
@@ -646,6 +646,14 @@
     flex-direction: column;
     gap: 4px;
     margin-bottom: 10px;
+  }
+
+  /* Tablette : 2 colonnes dès 3 joueurs */
+  @media (min-width: 700px) {
+    .snk-scoreboard.two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
   }
 
   .snk-score-card {

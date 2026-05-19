@@ -231,7 +231,7 @@
       on:rules={() => rulesOpen = true}>
 
       <!-- Scoreboard compact -->
-      <div class="casin-scoreboard">
+      <div class="casin-scoreboard" class:two-col={state.players.length >= 4}>
       {#each state.players as player, i (i)}
         {@const isActive = i === state.currentIndex}
         {@const blockedAction = isActive && player.lastAction && player.scores[player.lastAction] < player.x
@@ -360,6 +360,14 @@
     flex-direction: column;
     gap: 4px;
     margin-bottom: 10px;
+  }
+
+  /* Tablette : 2 colonnes dès 4 joueurs */
+  @media (min-width: 700px) {
+    .casin-scoreboard.two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
   }
 
   .casin-score-card {
