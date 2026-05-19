@@ -155,8 +155,10 @@
   onMount(() => { innerWidth = window.innerWidth; });
 
   $: perPlayer = state?.distribution?.perPlayer ?? 0;
-  $: tabletMult = innerWidth >= 700 ? 1.5 : 1;
-  $: ballSize  = Math.round((perPlayer >= 5 ? 42 : perPlayer === 3 ? 36 : perPlayer === 2 ? 32 : 28) * tabletMult);
+  $: tabCols   = state ? (state.players.length >= 5 ? 3 : 2) : 2;
+  $: ballSize  = innerWidth >= 700
+    ? (perPlayer >= 5 ? 54 : perPlayer >= 3 ? 50 : perPlayer === 2 ? 44 : 64)
+    : (perPlayer >= 5 ? 42 : perPlayer === 3 ? 36 : perPlayer === 2 ? 32 : 28);
 </script>
 
 <!-- ============== SETUP 1 : nb joueurs ============== -->
@@ -259,7 +261,8 @@
       <!-- Liste des joueurs avec leurs billes -->
       <div class="ct-players"
            class:compact={perPlayer <= 3}
-           class:two-col={perPlayer <= 2}>
+           class:two-col={perPlayer <= 2}
+           style="--tab-cols: {tabCols}">
         {#each state.players as player, i (i)}
           <div class="ct-player-card" class:eliminated={player.eliminated}>
             <div class="ct-player-name">
@@ -545,26 +548,26 @@
     gap: 3px;
   }
 
-  /* ── Tablette : tuiles 2 colonnes pour tous les effectifs ── */
+  /* ── Tablette : tuiles 2 ou 3 colonnes ── */
   @media (min-width: 700px) {
     .ct-players {
       display: grid !important;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
+      grid-template-columns: repeat(var(--tab-cols, 2), 1fr);
+      gap: 12px;
     }
-    /* Tuile : mise en page colonne (nom au-dessus, billes en dessous) */
     .ct-players .ct-player-card {
       display: block !important;
-      padding: 16px !important;
+      padding: 14px 14px !important;
     }
     .ct-players .ct-player-name {
       flex: unset !important;
-      font-size: 15px !important;
-      margin-bottom: 10px !important;
+      font-size: 14px !important;
+      margin-bottom: 8px !important;
       min-width: unset !important;
     }
     .ct-players .ct-balls-row {
       flex-shrink: unset !important;
+      flex-wrap: nowrap !important;
       justify-content: center;
       gap: 6px !important;
     }

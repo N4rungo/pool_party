@@ -153,6 +153,7 @@
   let innerWidth = 480;
   onMount(() => { innerWidth = window.innerWidth; });
   $: boardBallSize = innerWidth >= 700 ? 82 : 62;
+  $: tabCols = state ? (state.players.length >= 5 ? 3 : 2) : 2;
 
   // ── Helpers réactifs ──────────────────────────────────
   $: cue = state ? activeCueBall(state) : null;
@@ -264,7 +265,7 @@
       on:rules={() => rulesOpen = true}>
 
       <!-- Scoreboard -->
-      <div class="fb-scoreboard">
+      <div class="fb-scoreboard" style="--tab-cols: {tabCols}">
         {#each state.players as player, i (i)}
           <div class="fb-player-row" class:active={i === state.currentIndex}>
             <span class="fb-player-emoji">
@@ -291,24 +292,23 @@
         {/if}
       </div>
 
-      <!-- Plateau en T -->
-      <div class="fb-board">
-        {#each FIVE_BALL_BOARD_LAYOUT as ballId}
-          {@const ball = FIVE_BALL_BALLS[ballId]}
-          {@const isCue = ballId === cue}
-          <div class="fb-cell fb-cell-{ballId}">
-            <BallButton
-              src={`${base}/assets/${ball.asset}`}
-              alt={`${ball.label} (${ball.value})`}
-              size={boardBallSize}
-              disabled={isCue}
-              selected={state.selected.includes(ballId)}
-              on:click={() => onToggleBall(ballId)} />
-          </div>
-        {/each}
-      </div>
-
       <svelte:fragment slot="footer">
+        <!-- Plateau en T — toujours visible -->
+        <div class="fb-board">
+          {#each FIVE_BALL_BOARD_LAYOUT as ballId}
+            {@const ball = FIVE_BALL_BALLS[ballId]}
+            {@const isCue = ballId === cue}
+            <div class="fb-cell fb-cell-{ballId}">
+              <BallButton
+                src={`${base}/assets/${ball.asset}`}
+                alt={`${ball.label} (${ball.value})`}
+                size={boardBallSize}
+                disabled={isCue}
+                selected={state.selected.includes(ballId)}
+                on:click={() => onToggleBall(ballId)} />
+            </div>
+          {/each}
+        </div>
         <!-- Preview du score + bouton Valider, fixés en bas -->
         <div class="fb-action-bar">
           {#if previewKind === 'muted-zero'}
@@ -449,36 +449,41 @@
     font-weight: normal;
   }
 
-  /* ── Tablette : tuiles 2 colonnes ── */
+  /* ── Tablette : tuiles 2 ou 3 colonnes ── */
   @media (min-width: 700px) {
     .fb-scoreboard {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(var(--tab-cols, 2), 1fr);
       gap: 8px;
     }
     .fb-player-row {
       flex-direction: column;
       align-items: center;
       text-align: center;
-      padding: 16px 12px;
+      padding: 14px 10px;
       gap: 4px;
     }
     .fb-player-emoji {
-      font-size: 26px;
+      font-size: 24px;
       width: auto;
     }
     .fb-player-name {
-      font-size: 15px;
+      font-size: 14px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
     }
     .fb-player-score {
-      font-size: 28px;
+      font-size: 26px;
     }
     .fb-player-target {
       font-size: 13px;
     }
-    /* Plateau centré, plus grand */
+    /* Plateau centré dans le footer, plus grand */
     .fb-board {
-      max-width: 380px;
+      max-width: 440px;
+      margin-bottom: 8px;
     }
   }
 

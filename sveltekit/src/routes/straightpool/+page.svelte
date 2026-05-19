@@ -137,6 +137,7 @@
     const p = state.players[i];
     return Math.min(100, Math.max(0, (p.score / p.target) * 100));
   };
+  $: tabCols = state ? (state.players.length >= 5 ? 3 : 2) : 1;
 </script>
 
 <!-- ============== SETUP 1 ============== -->
@@ -230,7 +231,7 @@
       on:rules={() => rulesOpen = true}>
 
       <!-- Liste des joueurs -->
-      <div class="sp-players" class:two-col={state.players.length >= 3}>
+      <div class="sp-players" style="--tab-cols: {tabCols}">
       {#each state.players as player, i (i)}
         <div class="sp-player-card" class:active={i === state.currentIndex}>
           <div class="sp-card-top">
@@ -366,11 +367,16 @@
     margin-bottom: 16px;
   }
 
-  /* Tablette : 2 colonnes dès 3 joueurs */
   @media (min-width: 700px) {
-    .sp-players.two-col {
+    .sp-players {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(var(--tab-cols, 1), 1fr);
+      gap: 10px;
+    }
+    .sp-player-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
 

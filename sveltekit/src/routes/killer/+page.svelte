@@ -207,6 +207,7 @@
   $: activePlayer  = state ? state.players[activeIdx] : null;
   $: isForcedTurn  = state ? state.forcedTurnFor !== null : false;
   $: jokerEnabled  = state ? canUseJoker(state) : false;
+  $: tabCols = state ? (state.players.length >= 5 ? 3 : 2) : 2;
 </script>
 
 <!-- ============== SETUP 1 ============== -->
@@ -318,14 +319,15 @@
       on:rules={() => rulesOpen = true}>
 
       <!-- Liste des joueurs -->
-      <div class="killer-players" class:two-col={state.players.length >= 5}>
+      <div class="killer-players" class:two-col={state.players.length >= 5} style="--tab-cols: {tabCols}">
       {#each state.players as player, i (i)}
         <div class="killer-player-card"
              class:active={i === activeIdx && !player.eliminated}
              class:eliminated={player.eliminated}>
           <div class="kp-top">
             <div class="kp-name">
-              {EMOJIS[i % EMOJIS.length]} {player.name}
+              <span class="kp-emoji">{EMOJIS[i % EMOJIS.length]}</span>
+              <span class="kp-name-text">{player.name}</span>
               {#if i === activeIdx && isForcedTurn}
                 <span class="kp-badge kp-badge-forced">TOUR FORCÉ</span>
               {:else if i === activeIdx && !player.eliminated}
@@ -569,28 +571,38 @@
     grid-template-columns: 1fr 1fr;
   }
 
-  /* Tablette : tuiles 2 colonnes pour tous les effectifs */
+  /* Tablette : tuiles 2 ou 3 colonnes */
   @media (min-width: 700px) {
     .killer-players {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(var(--tab-cols, 2), 1fr);
       gap: 12px;
     }
     .killer-player-card {
-      padding: 18px 18px;
+      padding: 16px 16px;
+      container-type: inline-size;
     }
     .kp-top {
       flex-direction: column;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       margin-bottom: 4px;
     }
     .kp-name {
-      font-size: 16px;
+      font-size: 15px;
       justify-content: center;
+      overflow: hidden;
+      white-space: nowrap;
+      max-width: 100%;
+    }
+    .kp-name-text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      min-width: 0;
     }
     .kp-hearts {
-      font-size: 22px;
+      font-size: 20px;
     }
     .kp-joker-badges {
       justify-content: center;
@@ -603,6 +615,10 @@
       text-align: center;
       font-size: 12px;
       margin-top: 4px;
+    }
+    /* Masque l'emoji quand la tuile est trop étroite */
+    @container (max-width: 175px) {
+      .kp-emoji { display: none; }
     }
   }
 

@@ -238,6 +238,7 @@
   $: activePlayer = state ? state.players[state.currentIndex] : null;
   $: phaseLabelText = state ? phaseLabel(state) : '';
   $: msPoints = multiShot ? multiShotPoints(multiShot) : null;
+  $: tabCols = state ? (state.players.length >= 5 ? 3 : 2) : 1;
 </script>
 
 <!-- ============== SETUP 1 ============== -->
@@ -341,7 +342,7 @@
       on:rules={() => rulesOpen = true}>
 
       <!-- Scoreboard -->
-      <div class="snk-scoreboard" class:two-col={state.players.length >= 3}>
+      <div class="snk-scoreboard" style="--tab-cols: {tabCols}">
       {#each state.players as player, i (i)}
         <div class="snk-score-card" class:active={i === state.currentIndex}>
           <span class="snk-score-emoji">{EMOJIS[i % EMOJIS.length]}</span>
@@ -648,11 +649,11 @@
     margin-bottom: 10px;
   }
 
-  /* Tablette : 2 colonnes dès 3 joueurs */
   @media (min-width: 700px) {
-    .snk-scoreboard.two-col {
+    .snk-scoreboard {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(var(--tab-cols, 1), 1fr);
+      gap: 6px;
     }
   }
 
