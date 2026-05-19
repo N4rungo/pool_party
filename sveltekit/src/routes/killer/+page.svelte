@@ -282,7 +282,7 @@
         Mode {jokerMode === 'random' ? '🎲 Aléatoire' : '🃏 Choix libre'}
       </div>
       <div class="setup-tip" style="margin-bottom:8px;">
-        Ajuste les vies par joueur si besoin.
+        Ajustez les vies par joueur si besoin.
       </div>
 
       <RecapList players={setupPlayers} let:player let:i>
@@ -318,7 +318,7 @@
       on:rules={() => rulesOpen = true}>
 
       <!-- Liste des joueurs -->
-      <div class="killer-players">
+      <div class="killer-players" class:two-col={state.players.length >= 5}>
       {#each state.players as player, i (i)}
         <div class="killer-player-card"
              class:active={i === activeIdx && !player.eliminated}
@@ -468,8 +468,8 @@
 <style>
   .setup,
   .game {
-    width: 92%;
-    max-width: 480px;
+    width: var(--content-w, 92%);
+    max-width: var(--content-max, 480px);
     padding-top: 10px;
   }
 
@@ -561,6 +561,14 @@
     flex-direction: column;
     gap: 8px;
     margin-bottom: 14px;
+  }
+
+  /* Tablette : 2 colonnes dès 5 joueurs */
+  @media (min-width: 700px) {
+    .killer-players.two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
   }
 
   .killer-player-card {

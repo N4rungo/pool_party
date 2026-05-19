@@ -15,8 +15,8 @@
  */
 
 export const JOKER_TYPES = [
-  { id: 'pass',   icon: '⏭️', label: 'Passe ton tour',    desc: 'La main passe directement au joueur suivant' },
-  { id: 'hand',   icon: '✋',  label: 'Bille en main',      desc: 'Pose la blanche où tu veux avant de jouer' },
+  { id: 'pass',   icon: '⏭️', label: 'Passez votre tour',   desc: 'La main passe directement au joueur suivant' },
+  { id: 'hand',   icon: '✋',  label: 'Bille en main',      desc: 'Posez la blanche où vous voulez avant de jouer' },
   { id: 'target', icon: '🎯', label: 'Choisir un joueur', desc: 'Ce joueur joue immédiatement un tour forcé' },
 ];
 

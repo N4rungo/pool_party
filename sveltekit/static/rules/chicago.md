@@ -10,11 +10,11 @@ Marquer **61 points avant l'adversaire** en empochant des billes. La valeur de c
 - Tirage au sort pour décider qui casse
 
 ## ▶️ Comment jouer
-À l'instar du jeu de 9-ball, à ton tour, tu dois viser la bille avec la plus petite valeur : n'importe quelle bille peut être empochée de cette manière.
-- ✅ Tu empoches une bille → son numéro s'ajoute à ton score, tu continues.
-- ❌ Tu rates → tu valides la fin de ton tour dans l'app, la main passe.
+À l'instar du jeu de 9-ball, à votre tour, vous devez viser la bille avec la plus petite valeur : n'importe quelle bille peut être empochée de cette manière.
+- ✅ Vous empochez une bille → son numéro s'ajoute à votre score, vous continuez.
+- ❌ Vous ratez → vous validez la fin de votre tour dans l'app, la main passe.
 
-> ✏️ **Note** : en cas de faute, l'adversaire peux, si il le souhaite, placer la bille blanche derrière la ligne. Si la plus petite bille se trouve dans la zone, elle est déplacée sur la mouche (ou le plus proche possible).
+> ✏️ **Note** : en cas de faute, l'adversaire peut, s'il le souhaite, placer la bille blanche derrière la ligne. Si la plus petite bille se trouve dans la zone, elle est déplacée sur la mouche (ou le plus proche possible).
 
 ## 🏆 Victoire
 Le premier joueur à atteindre **61 points** ou plus gagne immédiatement. 🥳

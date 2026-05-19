@@ -230,7 +230,7 @@
       on:rules={() => rulesOpen = true}>
 
       <!-- Liste des joueurs -->
-      <div class="sp-players">
+      <div class="sp-players" class:two-col={state.players.length >= 3}>
       {#each state.players as player, i (i)}
         <div class="sp-player-card" class:active={i === state.currentIndex}>
           <div class="sp-card-top">
@@ -306,8 +306,8 @@
 <style>
   .setup,
   .game {
-    width: 92%;
-    max-width: 480px;
+    width: var(--content-w, 92%);
+    max-width: var(--content-max, 480px);
     padding-top: 10px;
   }
 
@@ -364,6 +364,14 @@
     flex-direction: column;
     gap: 10px;
     margin-bottom: 16px;
+  }
+
+  /* Tablette : 2 colonnes dès 3 joueurs */
+  @media (min-width: 700px) {
+    .sp-players.two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
   }
 
   .sp-player-card {

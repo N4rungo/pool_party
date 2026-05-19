@@ -341,7 +341,7 @@
       on:rules={() => rulesOpen = true}>
 
       <!-- Scoreboard -->
-      <div class="snk-scoreboard">
+      <div class="snk-scoreboard" class:two-col={state.players.length >= 3}>
       {#each state.players as player, i (i)}
         <div class="snk-score-card" class:active={i === state.currentIndex}>
           <span class="snk-score-emoji">{EMOJIS[i % EMOJIS.length]}</span>
@@ -494,7 +494,7 @@
     <h2 style="text-align:center;margin-bottom:6px;">⚖️ Faute — choix expert</h2>
     <div style="text-align:center;font-size:13px;color:rgba(255,255,255,0.65);margin-bottom:14px;">
       +{pendingFaultValue} pts attribués au lésé.
-      <br>Que veux-tu faire ?
+      <br>Que voulez-vous faire ?
     </div>
     <button class="btn-main btn-gold" on:click={() => expertChoice(false)}>
       Prendre les points et jouer
@@ -553,8 +553,8 @@
 
 <style>
   .setup, .game {
-    width: 92%;
-    max-width: 480px;
+    width: var(--content-w, 92%);
+    max-width: var(--content-max, 480px);
     padding-top: 10px;
   }
 
@@ -646,6 +646,14 @@
     flex-direction: column;
     gap: 4px;
     margin-bottom: 10px;
+  }
+
+  /* Tablette : 2 colonnes dès 3 joueurs */
+  @media (min-width: 700px) {
+    .snk-scoreboard.two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
   }
 
   .snk-score-card {

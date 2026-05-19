@@ -1,5 +1,5 @@
 # 🔺 Cutthroat
-> Élimine les billes des autres pour rester le seul debout.
+> Éliminez les billes des autres pour rester le seul debout.
 
 ## 🎯 But du jeu
 Chaque joueur reçoit un groupe de billes. Il faut empocher **toutes les billes des autres** tout en protégeant les siennes : soit par soi-même , soit grâce à "l'aide" des autres.
@@ -18,12 +18,12 @@ Le dernier joueur qui a encore au moins une bille sur la table remporte la parti
 - Après la casse, on retire les billes inutiles.
 
 ## ▶️ Comment jouer
-À ton tour, tu dois **empocher une bille** (de préférence, une bille adverse).
-- ✅ Tu empoches une bille → tu rejoues.
-- ❌ Tu rates → la main passe.
-- ⚠️ Tu fais une faute (blanche rentrée, bille sortie, etc.) → tu déclares la faute dans l'app, qui **remet en jeu une bille de chaque adversaire** dans l'ordre, en commençant par le joueur suivant, en partant de la mouche puis vers le bas de la table.
+À votre tour, vous devez **empocher une bille** (de préférence, une bille adverse).
+- ✅ Vous empochez une bille → vous rejouez.
+- ❌ Vous ratez → la main passe.
+- ⚠️ Vous faites une faute (blanche rentrée, bille sortie, etc.) → vous déclarez la faute dans l'app, qui **remet en jeu une bille de chaque adversaire** dans l'ordre, en commençant par le joueur suivant, en partant de la mouche puis vers le bas de la table.
 
-> ⚡ **Important** : empocher une de tes propres billes, ce n'est pas une faute, mais c'est aussi une bille en moins pour toi. Reste vigilant.  
+> ⚡ **Important** : empocher une de vos propres billes, ce n'est pas une faute, mais c'est aussi une bille en moins pour vous. Restez vigilant.  
 > 💀 **Élimination** : il n'y a pas vraiment d'élimination définitive. Il suffit d'attendre patiemment la faute d'un autre joueur pour revenir en jeu !
 
 ## 🏆 Victoire

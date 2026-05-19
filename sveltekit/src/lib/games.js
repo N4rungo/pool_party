@@ -32,7 +32,7 @@ export const GAMES = [
   {
     id: 'straightpool',
     name: '14-1',
-    tagline: 'Compte tes points, pas tes billes',
+    tagline: 'Comptez vos points, pas vos billes',
     icon: '/assets/triangle_14-1.png'
   },
   {

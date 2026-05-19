@@ -1,5 +1,5 @@
 # 📏 14-1 Continu
-> Compte tes points, pas tes billes.
+> Comptez vos points, pas vos billes.
 
 ## 🎯 But du jeu
 Atteindre un **score cible** avant les autres en empochant des billes en continu.
@@ -12,10 +12,10 @@ Chaque bille empochée = **1 point**, peu importe son numéro.
 - Triangle classique de 15 billes
 
 ## ▶️ Comment jouer
-Le 14-1 se joue par **breaks** : à ton tour, tu empoches autant de billes que tu peux d'affilée.
-- ✅ Tu empoches une bille → +1 dans ton break en cours, tu continues.
-- ❌ Tu rates → tu valides la fin de ton break dans l'app : ton score grimpe d'autant, la main passe.
-- ⚠️ Faute → tu peux déclarer une faute dans l'app (la main passe et la pénalité éventuelle reste à votre convention).
+Le 14-1 se joue par **breaks** : à votre tour, vous empochez autant de billes que vous pouvez d'affilée.
+- ✅ Vous empochez une bille → +1 dans votre break en cours, vous continuez.
+- ❌ Vous ratez → vous validez la fin de votre break dans l'app : votre score grimpe d'autant, la main passe.
+- ⚠️ Faute → vous pouvez déclarer une faute dans l'app (la main passe et la pénalité éventuelle reste à votre convention).
 
 ### 🔁 La règle "continu"
 Quand il ne reste **plus qu'1 bille** sur la table : on **refait le triangle avec les 14 autres**, on laisse la dernière à sa place, on casse à travers le triangle, et on continue. C'est ce qui permet de scorer indéfiniment, jusqu'à atteindre la cible.

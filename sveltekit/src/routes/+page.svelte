@@ -73,8 +73,8 @@
 
 <style>
   #launcher {
-    width: 92%;
-    max-width: 480px;
+    width: var(--content-w, 92%);
+    max-width: var(--content-max, 480px);
     padding-top: 10px;
   }
 
@@ -140,6 +140,13 @@
     display: flex;
     flex-direction: column;
     gap: 14px;
+  }
+
+  @media (min-width: 700px) {
+    .games-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
   }
 
   /* Carte "Soon" */
