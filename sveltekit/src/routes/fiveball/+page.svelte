@@ -279,20 +279,20 @@
         {/each}
       </div>
 
-      <!-- Bandeau d'info -->
-      <div class="fb-banner">
-        <div class="fb-banner-line">
-          À <strong>{activePlayer.name}</strong> de jouer
-          <span class="fb-banner-cue">— Cue : {cueLabel}</span>
-        </div>
-        {#if state.isFirstTurn}
-          <div class="fb-banner-engagement">
-            🎯 Engagement — la rouge doit être touchée en premier !
-          </div>
-        {/if}
-      </div>
-
       <svelte:fragment slot="footer">
+        <!-- Bandeau d'info — toujours visible avec le plateau -->
+        <div class="fb-banner">
+          <div class="fb-banner-line">
+            Tour de <strong>{activePlayer.name}</strong>
+            <span class="fb-banner-cue">— Cue : {cueLabel}</span>
+          </div>
+          {#if state.isFirstTurn}
+            <div class="fb-banner-engagement">
+              🎯 Engagement — la rouge doit être touchée en premier !
+            </div>
+          {/if}
+        </div>
+
         <!-- Plateau en T — toujours visible -->
         <div class="fb-board">
           {#each FIVE_BALL_BOARD_LAYOUT as ballId}
