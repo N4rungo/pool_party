@@ -255,7 +255,7 @@
 
     <!-- Sélecteur de break courant -->
     <div class="sp-break-section">
-      <div class="sp-break-label">Break courant</div>
+      <div class="sp-break-label">Break en cours</div>
       <div class="sp-break-selector">
         <button class="sp-break-btn" on:click={onDecBreak} disabled={state.currentBreak === 0}>−</button>
         <span class="sp-break-value">{state.currentBreak}</span>
