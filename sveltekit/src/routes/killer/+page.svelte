@@ -565,10 +565,55 @@
     margin-bottom: 14px;
   }
 
-  /* Mobile : 2 colonnes dès 5 joueurs */
+  /* Mobile : 2 colonnes dès 5 joueurs — disposition tuile */
   .killer-players.two-col {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .killer-players.two-col .killer-player-card {
+    padding: 10px 12px;
+  }
+
+  .killer-players.two-col .kp-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    margin-bottom: 2px;
+  }
+
+  .killer-players.two-col .kp-name {
+    flex-wrap: nowrap;
+    overflow: hidden;
+    gap: 4px;
+    font-size: 13px;
+    width: 100%;
+  }
+
+  .killer-players.two-col .kp-name-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+
+  .killer-players.two-col .kp-hearts {
+    font-size: 14px;
+  }
+
+  .killer-players.two-col .kp-joker-badges {
+    gap: 3px;
+    margin-top: 2px;
+  }
+
+  .killer-players.two-col .kp-joker-badge {
+    font-size: 13px;
+  }
+
+  .killer-players.two-col .kp-joker-counter {
+    font-size: 10px;
+    margin-top: 1px;
   }
 
   /* Tablette : tuiles 2 ou 3 colonnes */
@@ -579,8 +624,7 @@
       gap: 12px;
     }
     .killer-player-card {
-      padding: 16px 16px;
-      container-type: inline-size;
+      padding: 16px;
     }
     .kp-top {
       flex-direction: column;
@@ -589,11 +633,11 @@
       margin-bottom: 4px;
     }
     .kp-name {
+      flex-wrap: nowrap;
+      overflow: hidden;
       font-size: 15px;
       justify-content: center;
-      overflow: hidden;
-      white-space: nowrap;
-      max-width: 100%;
+      width: 100%;
     }
     .kp-name-text {
       overflow: hidden;
@@ -616,10 +660,6 @@
       font-size: 12px;
       margin-top: 4px;
     }
-    /* Masque l'emoji quand la tuile est trop étroite */
-    @container (max-width: 175px) {
-      .kp-emoji { display: none; }
-    }
   }
 
   .killer-player-card {
@@ -628,6 +668,12 @@
     border-radius: 14px;
     padding: 10px 14px;
     transition: border-color .2s, opacity .3s, box-shadow .2s;
+    container-type: inline-size;
+  }
+
+  /* Masque l'emoji quand la tuile est trop étroite (mobile 2-col ou tablette 3-col) */
+  @container (max-width: 175px) {
+    .kp-emoji { display: none; }
   }
 
   .killer-player-card.active {
