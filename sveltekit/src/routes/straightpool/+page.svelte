@@ -253,18 +253,17 @@
       {/each}
     </div>
 
-    <!-- Sélecteur de break courant -->
-    <div class="sp-break-section">
-      <div class="sp-break-label">Break en cours</div>
-      <div class="sp-break-selector">
-        <button class="sp-break-btn" on:click={onDecBreak} disabled={state.currentBreak === 0}>−</button>
-        <span class="sp-break-value">{state.currentBreak}</span>
-        <button class="sp-break-btn" on:click={onIncBreak}>+</button>
-      </div>
-      <div class="sp-break-hint">+ à chaque bille empochée. − pour corriger.</div>
-    </div>
-
       <svelte:fragment slot="footer">
+        <!-- Sélecteur de break courant — toujours visible -->
+        <div class="sp-break-section">
+          <div class="sp-break-label">Break en cours</div>
+          <div class="sp-break-selector">
+            <button class="sp-break-btn" on:click={onDecBreak} disabled={state.currentBreak === 0}>−</button>
+            <span class="sp-break-value">{state.currentBreak}</span>
+            <button class="sp-break-btn" on:click={onIncBreak}>+</button>
+          </div>
+          <div class="sp-break-hint">+ à chaque bille empochée. − pour corriger.</div>
+        </div>
         <div class="game-bottombar">
           <button class="btn-fault" on:click={onFault}>⚠️ Faute</button>
           <button class="btn-next" on:click={onPassTurn}>Suivant →</button>
