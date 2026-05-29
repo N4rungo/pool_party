@@ -375,7 +375,11 @@
         <div class="killer-action-section">
           <div class="killer-action-title">
             Tour de <strong>{activePlayer.name}</strong>
-            {#if isForcedTurn}<span class="kp-mini-badge">forcé</span>{/if}
+            {#if isForcedTurn}
+              <span class="kp-mini-badge kp-mini-badge-forced">Forcé</span>
+            {:else if handActive}
+              <span class="kp-mini-badge kp-mini-badge-hand">Bille en main</span>
+            {/if}
           </div>
           <div class="killer-actions">
             <button class="btn-action btn-hit"   on:click={() => onAction('hit')}>✅ Tir réussi</button>
@@ -805,14 +809,21 @@
   }
 
   .kp-mini-badge {
-    background: rgba(255, 100, 100, 0.25);
-    color: #ffb3b3;
-    border: 1px solid #ff8080;
     font-size: 10px;
     padding: 2px 6px;
     border-radius: 6px;
     margin-left: 6px;
     letter-spacing: 1px;
+  }
+  .kp-mini-badge-forced {
+    background: rgba(255, 100, 100, 0.25);
+    color: #ffb3b3;
+    border: 1px solid #ff8080;
+  }
+  .kp-mini-badge-hand {
+    background: rgba(100, 180, 255, 0.2);
+    color: #90caff;
+    border: 1px solid #64b4ff;
   }
 
   .killer-actions {
