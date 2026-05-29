@@ -138,6 +138,7 @@
     return Math.min(100, Math.max(0, (p.score / p.target) * 100));
   };
   $: tabCols = state ? (state.players.length >= 5 ? 3 : 2) : 1;
+  $: activePlayer = state ? state.players[state.currentIndex] : null;
 </script>
 
 <!-- ============== SETUP 1 ============== -->
@@ -254,6 +255,7 @@
     </div>
 
       <svelte:fragment slot="footer">
+        <div class="sp-action-title">Tour de <strong>{activePlayer.name}</strong></div>
         <!-- Sélecteur de break courant — toujours visible -->
         <div class="sp-break-section">
           <div class="sp-break-label">Break en cours</div>
@@ -459,6 +461,13 @@
   }
 
   /* ===== Section break courant ===== */
+  .sp-action-title {
+    text-align: center;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 8px;
+  }
+
   .sp-break-section {
     background: rgba(0, 0, 0, 0.25);
     border: 1px solid rgba(255, 255, 255, 0.08);
