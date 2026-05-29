@@ -43,11 +43,11 @@ function shuffle(arr) {
 
 /**
  * Crée l'état initial à partir de la liste setup.
- *  - shuffle l'ordre des joueurs (l'ordre de jeu est tiré au sort)
- *  - en mode 'random', construit le pool : count × 3 jokers, mélangé
+ * L'ordre des joueurs est déterminé par l'appelant (UI).
+ * En mode 'random', construit et mélange le pool de jokers.
  */
 export function createInitialState(setupPlayers, jokerMode) {
-  const shuffled = shuffle(setupPlayers).map(p => ({
+  const players = setupPlayers.map(p => ({
     name:       p.name || 'Joueur',
     lives:      p.lives,
     jokers:     jokerMode === 'choice'
@@ -60,13 +60,13 @@ export function createInitialState(setupPlayers, jokerMode) {
   let pool = [];
   if (jokerMode === 'random') {
     JOKER_TYPES.forEach(j => {
-      for (let i = 0; i < shuffled.length; i++) pool.push(j.id);
+      for (let i = 0; i < players.length; i++) pool.push(j.id);
     });
     pool = shuffle(pool);
   }
 
   return {
-    players:        shuffled,
+    players,
     currentIndex:   0,
     jokerMode,
     pool,

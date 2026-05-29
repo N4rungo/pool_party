@@ -17,6 +17,7 @@
   import NumberSelector from '$lib/components/NumberSelector.svelte';
   import PlayerNameInputs from '$lib/components/PlayerNameInputs.svelte';
   import RecapList from '$lib/components/RecapList.svelte';
+  import { shuffle } from '$lib/utils.js';
   import { showToast } from '$lib/stores/toast.js';
   import { askConfirm } from '$lib/stores/confirm.js';
   import {
@@ -42,6 +43,7 @@
 
   let count = 2;
   let defaultTarget = STRAIGHTPOOL_DEFAULT_TARGET;
+  let randomizeOrder = true;
   let setupPlayers = [];
 
   function gotoSetup2() {
@@ -71,7 +73,8 @@
   let winnerRanking = [];
 
   function startGame() {
-    state = createInitialState(setupPlayers);
+    const players = randomizeOrder ? shuffle(setupPlayers) : setupPlayers;
+    state = createInitialState(players);
     winnerName = null;
     winnerRanking = [];
     phase = 'game';
@@ -203,6 +206,11 @@
     <div class="popup-box setup-box">
       <div class="sp-target-title">Score cible par joueur</div>
       <div class="sp-target-sub">Ajustez pour équilibrer les niveaux</div>
+
+      <label class="setup-toggle">
+        <span>🔀 Ordre aléatoire</span>
+        <input type="checkbox" bind:checked={randomizeOrder} />
+      </label>
 
       <RecapList players={setupPlayers} let:player let:i>
         <NumberSelector
