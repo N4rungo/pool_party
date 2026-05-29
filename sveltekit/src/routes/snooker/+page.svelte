@@ -355,10 +355,10 @@
 
     <!-- Bandeau actif -->
     <div class="snk-active-info">
-      <div class="snk-active-name">{activePlayer.name}</div>
+      <div class="snk-active-name">Tour de {activePlayer.name}</div>
       <div class="snk-break-now">
         {#if state.mustReplay}
-          {activePlayer.name} rejoue (suite à une faute)
+          Rejoue (suite à une faute)
         {:else}
           Break : {activePlayer.currentBreak}
         {/if}

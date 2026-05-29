@@ -138,6 +138,7 @@
     return Math.min(100, Math.max(0, (p.score / p.target) * 100));
   };
   $: tabCols = state ? (state.players.length >= 5 ? 3 : 2) : 1;
+  $: activePlayer = state ? state.players[state.currentIndex] : null;
 </script>
 
 <!-- ============== SETUP 1 ============== -->
@@ -253,18 +254,18 @@
       {/each}
     </div>
 
-    <!-- Sélecteur de break courant -->
-    <div class="sp-break-section">
-      <div class="sp-break-label">Break courant</div>
-      <div class="sp-break-selector">
-        <button class="sp-break-btn" on:click={onDecBreak} disabled={state.currentBreak === 0}>−</button>
-        <span class="sp-break-value">{state.currentBreak}</span>
-        <button class="sp-break-btn" on:click={onIncBreak}>+</button>
-      </div>
-      <div class="sp-break-hint">+ à chaque bille empochée. − pour corriger.</div>
-    </div>
-
       <svelte:fragment slot="footer">
+        <div class="sp-action-title">Tour de <strong>{activePlayer.name}</strong></div>
+        <!-- Sélecteur de break courant — toujours visible -->
+        <div class="sp-break-section">
+          <div class="sp-break-label">Break en cours</div>
+          <div class="sp-break-selector">
+            <button class="sp-break-btn" on:click={onDecBreak} disabled={state.currentBreak === 0}>−</button>
+            <span class="sp-break-value">{state.currentBreak}</span>
+            <button class="sp-break-btn" on:click={onIncBreak}>+</button>
+          </div>
+          <div class="sp-break-hint">+ à chaque bille empochée. − pour corriger.</div>
+        </div>
         <div class="game-bottombar">
           <button class="btn-fault" on:click={onFault}>⚠️ Faute</button>
           <button class="btn-next" on:click={onPassTurn}>Suivant →</button>
@@ -460,6 +461,13 @@
   }
 
   /* ===== Section break courant ===== */
+  .sp-action-title {
+    text-align: center;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 8px;
+  }
+
   .sp-break-section {
     background: rgba(0, 0, 0, 0.25);
     border: 1px solid rgba(255, 255, 255, 0.08);
