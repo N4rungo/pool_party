@@ -324,19 +324,11 @@
         <div class="killer-player-card"
              class:active={i === activeIdx && !player.eliminated}
              class:eliminated={player.eliminated}>
+
           <div class="kp-top">
             <div class="kp-name">
               <span class="kp-emoji">{EMOJIS[i % EMOJIS.length]}</span>
               <span class="kp-name-text">{player.name}</span>
-              {#if i === activeIdx && isForcedTurn}
-                <span class="kp-badge kp-badge-forced">TOUR FORCÉ</span>
-              {:else if i === activeIdx && !player.eliminated}
-                {#if handActive}
-                  <span class="kp-badge kp-badge-hand">BILLE EN MAIN</span>
-                {:else}
-                  <span class="kp-badge kp-badge-active">EN JEU</span>
-                {/if}
-              {/if}
             </div>
             <div class="kp-hearts">
               {#if player.eliminated}
@@ -349,22 +341,32 @@
             </div>
           </div>
 
-          {#if state.jokerMode === 'choice' && !player.eliminated}
-            <div class="kp-joker-badges">
-              {#each JOKER_TYPES as j (j.id)}
-                <span class="kp-joker-badge" class:used={player.jokers[j.id] === 0}>
-                  {j.icon}
-                </span>
-              {/each}
-            </div>
-          {/if}
+          <div class="kp-bottom">
+            {#if state.jokerMode === 'choice' && !player.eliminated}
+              <div class="kp-joker-badges">
+                {#each JOKER_TYPES as j (j.id)}
+                  <span class="kp-joker-badge" class:used={player.jokers[j.id] === 0}>
+                    {j.icon}
+                  </span>
+                {/each}
+              </div>
+            {:else if !player.eliminated && state.jokerMode === 'random'}
+              <div class="kp-joker-counter" class:maxed={player.jokersUsed >= KILLER_MAX_JOKERS}>
+                🃏 Jokers : {player.jokersUsed}/{KILLER_MAX_JOKERS}
+                {#if player.jokersUsed >= KILLER_MAX_JOKERS} — épuisé{/if}
+              </div>
+            {/if}
+            {#if i === activeIdx && isForcedTurn}
+              <span class="kp-badge kp-badge-forced">TOUR FORCÉ</span>
+            {:else if i === activeIdx && !player.eliminated}
+              {#if handActive}
+                <span class="kp-badge kp-badge-hand">BILLE EN MAIN</span>
+              {:else}
+                <span class="kp-badge kp-badge-active">EN JEU</span>
+              {/if}
+            {/if}
+          </div>
 
-          {#if !player.eliminated && state.jokerMode === 'random'}
-            <div class="kp-joker-counter" class:maxed={player.jokersUsed >= KILLER_MAX_JOKERS}>
-              🃏 Jokers : {player.jokersUsed} / {KILLER_MAX_JOKERS}
-              {#if player.jokersUsed >= KILLER_MAX_JOKERS} — épuisé{/if}
-            </div>
-          {/if}
         </div>
       {/each}
     </div>
@@ -573,14 +575,14 @@
   }
 
   .killer-players.two-col .killer-player-card {
-    padding: 10px 12px;
+    padding: 10px 10px;
   }
 
   .killer-players.two-col .kp-top {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-    margin-bottom: 2px;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 2px;
   }
 
   .killer-players.two-col .kp-name {
@@ -589,6 +591,7 @@
     gap: 4px;
     font-size: 13px;
     width: 100%;
+    justify-content: center;
   }
 
   .killer-players.two-col .kp-name-text {
@@ -600,11 +603,15 @@
 
   .killer-players.two-col .kp-hearts {
     font-size: 14px;
+    text-align: center;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: nowrap;
   }
 
-  .killer-players.two-col .kp-joker-badges {
-    gap: 3px;
-    margin-top: 2px;
+  .killer-players.two-col .kp-bottom {
+    width: 100%;
   }
 
   .killer-players.two-col .kp-joker-badge {
@@ -613,7 +620,6 @@
 
   .killer-players.two-col .kp-joker-counter {
     font-size: 10px;
-    margin-top: 1px;
   }
 
   /* Tablette : tuiles 2 ou 3 colonnes */
@@ -647,18 +653,23 @@
     }
     .kp-hearts {
       font-size: 20px;
+      text-align: center;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      flex-wrap: nowrap;
+    }
+    .kp-bottom {
+      width: 100%;
     }
     .kp-joker-badges {
-      justify-content: center;
-      margin-top: 6px;
+      justify-content: flex-start;
     }
     .kp-joker-badge {
       font-size: 18px;
     }
     .kp-joker-counter {
-      text-align: center;
       font-size: 12px;
-      margin-top: 4px;
     }
   }
 
@@ -669,6 +680,9 @@
     padding: 10px 14px;
     transition: border-color .2s, opacity .3s, box-shadow .2s;
     container-type: inline-size;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
   }
 
   /* Masque l'emoji quand la tuile est trop étroite (mobile 2-col ou tablette 3-col) */
@@ -733,10 +747,18 @@
     white-space: nowrap;
   }
 
+  /* ── Ligne 3 : jokers + pastille ── */
+  .kp-bottom {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 0;
+  }
+
   .kp-joker-badges {
     display: flex;
     gap: 4px;
-    margin-top: 4px;
+    flex-shrink: 0;
   }
   .kp-joker-badge {
     font-size: 14px;
@@ -751,10 +773,20 @@
   .kp-joker-counter {
     font-size: 11px;
     color: rgba(255, 255, 255, 0.5);
-    margin-top: 2px;
+    flex-shrink: 0;
   }
   .kp-joker-counter.maxed {
     color: #ff8080;
+  }
+
+  /* Badge dans kp-bottom : poussé à droite, se réduit en premier */
+  .kp-bottom .kp-badge {
+    margin-left: auto;
+    flex-shrink: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
   }
 
   /* ===== Section actions ===== */
