@@ -67,27 +67,27 @@
   .number-selector {
     display: inline-flex;
     align-items: center;
-    gap: clamp(10px, 4vw, 16px);
+    gap: clamp(8px, 3vw, 16px);
     margin: 4px 0;
   }
 
   .ns-value {
-    font-size: clamp(24px, 8vw, 32px);
+    font-size: clamp(26px, 8vw, 32px);
     font-weight: bold;
     color: var(--color-gold);
     text-shadow: 0 0 16px rgba(var(--color-gold-rgb), 0.4);
-    min-width: clamp(44px, 14vw, 56px);
+    min-width: clamp(40px, 12vw, 56px);
     text-align: center;
   }
 
   .btn-round {
-    width: clamp(36px, 11vw, 44px);
-    height: clamp(36px, 11vw, 44px);
+    width: clamp(30px, 9vw, 44px);
+    height: clamp(30px, 9vw, 44px);
     border-radius: 50%;
     border: none;
     background: linear-gradient(145deg, var(--color-gold-light), var(--color-gold));
     color: var(--color-pool);
-    font-size: clamp(18px, 5.5vw, 22px);
+    font-size: clamp(15px, 4.5vw, 22px);
     font-weight: bold;
     cursor: pointer;
     box-shadow: 0 3px 0 var(--color-gold-dark);
