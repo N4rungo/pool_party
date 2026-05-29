@@ -1,6 +1,9 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
+const isProd = process.env.NODE_ENV === 'production';
+const base = isProd ? '/pool_party' : '';
+
 /** @type {import('vite').UserConfig} */
 const config = {
   plugins: [
@@ -39,9 +42,12 @@ const config = {
       },
 
       workbox: {
-        globPatterns: ['**/*.{js,css,html,png,webmanifest,svg,ico}'],
-        // Ne pas mettre en cache les routes de dev
-        navigateFallback: 'index.html'
+        // Inclut les .md (règles des jeux) en plus des assets habituels
+        globPatterns: ['**/*.{js,css,html,png,webmanifest,svg,ico,md}'],
+        // Chemin absolu avec le base path correct pour que le SW sache quoi servir offline
+        navigateFallback: `${base}/index.html`,
+        // Limite le fallback aux routes de l'app (évite les faux positifs)
+        navigateFallbackAllowlist: [new RegExp(`^${base}/`)],
       },
 
       devOptions: {
