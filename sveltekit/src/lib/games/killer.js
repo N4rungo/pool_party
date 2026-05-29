@@ -212,8 +212,39 @@ export function doAction(state, type) {
 
 // ── Jokers ──────────────────────────────────────────────
 /**
+ * En mode 'random' : tire ET applique un joker en une seule étape atomique
+ * (un seul snapshot d'historique). Renvoie { newState, jokerId }.
+ */
+export function drawAndApplyRandomJoker(state) {
+  if (state.pool.length === 0) return { newState: state, jokerId: null };
+
+  const newHistory = pushHistory(state.history, snapshot(state));
+
+  // Tirer du pool
+  const poolIdx = Math.floor(Math.random() * state.pool.length);
+  const newPool = [...state.pool];
+  const drawn = newPool.splice(poolIdx, 1)[0];
+
+  // Incrémenter jokersUsed
+  const idx = state.currentIndex;
+  const players = state.players.map((p, i) =>
+    i !== idx ? p : { ...p, jokersUsed: p.jokersUsed + 1 }
+  );
+
+  let newState = { ...state, pool: newPool, players, history: newHistory };
+
+  // Effet immédiat pour 'pass'
+  if (drawn === 'pass') {
+    newState = { ...newState, currentIndex: nextAlive(newState) };
+  }
+
+  return { newState, jokerId: drawn };
+}
+
+/**
  * En mode 'random' : tire un joker au hasard du pool. Renvoie
  * { newState, jokerId } (snapshote l'historique).
+ * @deprecated Utiliser drawAndApplyRandomJoker à la place.
  */
 export function drawRandomJoker(state) {
   if (state.pool.length === 0) return { newState: state, jokerId: null };

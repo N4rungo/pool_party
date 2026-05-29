@@ -37,7 +37,7 @@
     activeIndex,
     canUseJoker,
     doAction,
-    drawRandomJoker,
+    drawAndApplyRandomJoker,
     useJoker,
     applyTarget,
     targetCandidates,
@@ -134,15 +134,16 @@
   }
 
   function onDrawRandom() {
-    const { newState, jokerId } = drawRandomJoker(state);
+    const { newState, jokerId } = drawAndApplyRandomJoker(state);
     state = newState;
-    if (jokerId === null) {
-      jokerOpen = false;
-      return;
-    }
-    // On ferme l'overlay tirage et on enchaîne sur l'usage
     jokerOpen = false;
-    applyJokerEffect(jokerId);
+    if (jokerId === null) return;
+
+    handActive = false;
+    const j = JOKER_TYPES.find(j => j.id === jokerId);
+    showToast(`${j.icon} ${state.players[state.currentIndex].name} : ${j.label}`);
+    if (jokerId === 'target') targetOpen = true;
+    else if (jokerId === 'hand') handActive = true;
   }
 
   function onUseJoker(jokerId) {
@@ -151,6 +152,7 @@
   }
 
   function applyJokerEffect(jokerId) {
+    handActive = false;
     const { newState, action } = useJoker(state, jokerId);
     state = newState;
     const j = JOKER_TYPES.find(j => j.id === jokerId);
