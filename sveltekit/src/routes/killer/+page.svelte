@@ -24,6 +24,7 @@
   import RecapList from '$lib/components/RecapList.svelte';
   import { showToast } from '$lib/stores/toast.js';
   import { askConfirm } from '$lib/stores/confirm.js';
+  import { shuffle } from '$lib/utils.js';
   import {
     JOKER_TYPES,
     KILLER_MIN_PLAYERS,
@@ -54,6 +55,7 @@
   // ── Setup ─────────────────────────────────────────────
   let count = KILLER_DEFAULT_PLAYERS;
   let jokerMode = 'random';
+  let randomizeOrder = true;
   let setupPlayers = [];
 
   function gotoSetup2() {
@@ -83,7 +85,8 @@
   let winnerName = null;
 
   function startGame() {
-    state = createInitialState(setupPlayers, jokerMode);
+    const players = randomizeOrder ? shuffle(setupPlayers) : setupPlayers;
+    state = createInitialState(players, jokerMode);
     winnerName = null;
     phase = 'game';
     showToast(`🎯 ${state.players[0].name} commence !`);
@@ -287,6 +290,11 @@
       <div class="setup-tip" style="margin-bottom:8px;">
         Ajustez les vies par joueur si besoin.
       </div>
+
+      <label class="setup-toggle">
+        <span>🔀 Ordre aléatoire</span>
+        <input type="checkbox" bind:checked={randomizeOrder} />
+      </label>
 
       <RecapList players={setupPlayers} let:player let:i>
         <div class="hearts-row">

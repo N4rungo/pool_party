@@ -17,6 +17,7 @@
 <script>
   import { goto } from '$app/navigation';
   import { base } from '$app/paths';
+  import { shuffle } from '$lib/utils.js';
   import GameLayout from '$lib/components/GameLayout.svelte';
   import RulesViewer from '$lib/components/RulesViewer.svelte';
   import WinOverlay from '$lib/components/WinOverlay.svelte';
@@ -56,6 +57,7 @@
   // Setup
   let count = SNOOKER_DEFAULT_PLAYERS;
   let mode = 'simple';
+  let randomizeOrder = true;
   let setupPlayers = [];
 
   function gotoSetup2() {
@@ -81,7 +83,8 @@
   let finalRanking = [];
 
   function startGame() {
-    state = createInitialState(setupPlayers, mode);
+    const players = randomizeOrder ? shuffle(setupPlayers) : setupPlayers;
+    state = createInitialState(players, mode);
     winnerName = null;
     finalRanking = [];
     phase = 'game';
@@ -314,6 +317,12 @@
       <div class="setup-tip" style="margin-bottom:10px;">
         Mode : {mode === 'simple' ? '🟢 Simple' : '🔴 Expert'}
       </div>
+
+      <label class="setup-toggle">
+        <span>🔀 Ordre aléatoire</span>
+        <input type="checkbox" bind:checked={randomizeOrder} />
+      </label>
+
       <div class="recap-list">
         {#each setupPlayers as p, i (i)}
           <div class="recap-row">

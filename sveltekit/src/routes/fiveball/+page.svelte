@@ -22,6 +22,7 @@
   import { goto } from '$app/navigation';
   import { base } from '$app/paths';
   import { onMount } from 'svelte';
+  import { shuffle } from '$lib/utils.js';
   import GameLayout from '$lib/components/GameLayout.svelte';
   import RulesViewer from '$lib/components/RulesViewer.svelte';
   import WinOverlay from '$lib/components/WinOverlay.svelte';
@@ -56,6 +57,7 @@
   // ── Setup ─────────────────────────────────────────────
   let count = FIVE_BALL_DEFAULT_PLAYERS;
   let defaultTarget = FIVE_BALL_DEFAULT_TARGET;
+  let randomizeOrder = true;
   let setupPlayers = [];
 
   function gotoSetup2() {
@@ -91,7 +93,8 @@
   let winnerName = null;
 
   function startGame() {
-    state = createInitialState(setupPlayers);
+    const players = randomizeOrder ? shuffle(setupPlayers) : setupPlayers;
+    state = createInitialState(players);
     winnerName = null;
     phase = 'game';
     showToast(`🎯 Engagement : ${state.players[0].name} doit toucher la rouge !`);
@@ -237,6 +240,11 @@
       <div class="setup-tip" style="margin-bottom:8px;">
         Score modifiable par joueur (par pas de 10)
       </div>
+
+      <label class="setup-toggle">
+        <span>🔀 Ordre aléatoire</span>
+        <input type="checkbox" bind:checked={randomizeOrder} />
+      </label>
 
       <RecapList players={setupPlayers} let:player let:i>
         <NumberSelector
