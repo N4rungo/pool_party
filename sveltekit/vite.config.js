@@ -1,5 +1,5 @@
 import { sveltekit } from '@sveltejs/kit/vite';
-import { VitePWA } from 'vite-plugin-pwa';
+import { SvelteKitPWA } from '@vite-pwa/sveltekit';
 
 const isProd = process.env.NODE_ENV === 'production';
 const base = isProd ? '/pool_party' : '';
@@ -8,7 +8,7 @@ const base = isProd ? '/pool_party' : '';
 const config = {
   plugins: [
     sveltekit(),
-    VitePWA({
+    SvelteKitPWA({
       registerType: 'autoUpdate',
 
       manifest: {
@@ -41,18 +41,19 @@ const config = {
         ]
       },
 
+      // SvelteKitPWA s'exécute APRÈS adapter-static, donc globDirectory pointe
+      // sur le bon dossier final (build/) qui contient tout : HTML prérendus,
+      // assets statiques (PNG, MD...) et bundles JS/CSS.
       workbox: {
-        // Inclut les .md (règles des jeux) en plus des assets habituels
         globPatterns: ['**/*.{js,css,html,png,webmanifest,svg,ico,md}'],
-        // Chemin absolu avec le base path correct pour que le SW sache quoi servir offline
         navigateFallback: `${base}/index.html`,
-        // Limite le fallback aux routes de l'app (évite les faux positifs)
         navigateFallbackAllowlist: [new RegExp(`^${base}/`)],
       },
 
       devOptions: {
         enabled: true,
-        type: 'module'
+        type: 'module',
+        navigateTo: '/'
       }
     })
   ]
