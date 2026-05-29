@@ -138,6 +138,7 @@
 
   // Helpers réactifs
   $: activePlayer = state ? state.players[state.currentIndex] : null;
+  $: tabCols = state ? (state.players.length >= 5 ? 3 : 2) : 1;
 </script>
 
 <!-- ============== SETUP 1 ============== -->
@@ -231,7 +232,7 @@
       on:rules={() => rulesOpen = true}>
 
       <!-- Scoreboard compact -->
-      <div class="casin-scoreboard" class:two-col={state.players.length >= 4}>
+      <div class="casin-scoreboard" style="--tab-cols: {tabCols}">
       {#each state.players as player, i (i)}
         {@const isActive = i === state.currentIndex}
         {@const blockedAction = isActive && player.lastAction && player.scores[player.lastAction] < player.x
@@ -362,11 +363,11 @@
     margin-bottom: 10px;
   }
 
-  /* Tablette : 2 colonnes dès 4 joueurs */
   @media (min-width: 700px) {
-    .casin-scoreboard.two-col {
+    .casin-scoreboard {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(var(--tab-cols, 1), 1fr);
+      gap: 6px;
     }
   }
 

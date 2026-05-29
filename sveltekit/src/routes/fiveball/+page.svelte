@@ -21,6 +21,7 @@
 <script>
   import { goto } from '$app/navigation';
   import { base } from '$app/paths';
+  import { onMount } from 'svelte';
   import GameLayout from '$lib/components/GameLayout.svelte';
   import RulesViewer from '$lib/components/RulesViewer.svelte';
   import WinOverlay from '$lib/components/WinOverlay.svelte';
@@ -148,6 +149,12 @@
   // ── Overlay règles ────────────────────────────────────
   let rulesOpen = false;
 
+  // ── Taille des billes selon la largeur du viewport ───
+  let innerWidth = 480;
+  onMount(() => { innerWidth = window.innerWidth; });
+  $: boardBallSize = innerWidth >= 700 ? 82 : 62;
+  $: tabCols = state ? (state.players.length >= 5 ? 3 : 2) : 2;
+
   // ── Helpers réactifs ──────────────────────────────────
   $: cue = state ? activeCueBall(state) : null;
   $: cueLabel = cue ? FIVE_BALL_BALLS[cue].label : '';
@@ -258,7 +265,7 @@
       on:rules={() => rulesOpen = true}>
 
       <!-- Scoreboard -->
-      <div class="fb-scoreboard">
+      <div class="fb-scoreboard" style="--tab-cols: {tabCols}">
         {#each state.players as player, i (i)}
           <div class="fb-player-row" class:active={i === state.currentIndex}>
             <span class="fb-player-emoji">
@@ -285,24 +292,23 @@
         {/if}
       </div>
 
-      <!-- Plateau en T -->
-      <div class="fb-board">
-        {#each FIVE_BALL_BOARD_LAYOUT as ballId}
-          {@const ball = FIVE_BALL_BALLS[ballId]}
-          {@const isCue = ballId === cue}
-          <div class="fb-cell fb-cell-{ballId}">
-            <BallButton
-              src={`${base}/assets/${ball.asset}`}
-              alt={`${ball.label} (${ball.value})`}
-              size={62}
-              disabled={isCue}
-              selected={state.selected.includes(ballId)}
-              on:click={() => onToggleBall(ballId)} />
-          </div>
-        {/each}
-      </div>
-
       <svelte:fragment slot="footer">
+        <!-- Plateau en T — toujours visible -->
+        <div class="fb-board">
+          {#each FIVE_BALL_BOARD_LAYOUT as ballId}
+            {@const ball = FIVE_BALL_BALLS[ballId]}
+            {@const isCue = ballId === cue}
+            <div class="fb-cell fb-cell-{ballId}">
+              <BallButton
+                src={`${base}/assets/${ball.asset}`}
+                alt={`${ball.label} (${ball.value})`}
+                size={boardBallSize}
+                disabled={isCue}
+                selected={state.selected.includes(ballId)}
+                on:click={() => onToggleBall(ballId)} />
+            </div>
+          {/each}
+        </div>
         <!-- Preview du score + bouton Valider, fixés en bas -->
         <div class="fb-action-bar">
           {#if previewKind === 'muted-zero'}
@@ -441,6 +447,44 @@
     font-size: 12px;
     color: rgba(255, 255, 255, 0.4);
     font-weight: normal;
+  }
+
+  /* ── Tablette : tuiles 2 ou 3 colonnes ── */
+  @media (min-width: 700px) {
+    .fb-scoreboard {
+      display: grid;
+      grid-template-columns: repeat(var(--tab-cols, 2), 1fr);
+      gap: 8px;
+    }
+    .fb-player-row {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 14px 10px;
+      gap: 4px;
+    }
+    .fb-player-emoji {
+      font-size: 24px;
+      width: auto;
+    }
+    .fb-player-name {
+      font-size: 14px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+    .fb-player-score {
+      font-size: 26px;
+    }
+    .fb-player-target {
+      font-size: 13px;
+    }
+    /* Plateau centré dans le footer, plus grand */
+    .fb-board {
+      max-width: 440px;
+      margin-bottom: 8px;
+    }
   }
 
   /* ===== Bandeau info ===== */

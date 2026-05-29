@@ -37,7 +37,7 @@
     activeIndex,
     canUseJoker,
     doAction,
-    drawRandomJoker,
+    drawAndApplyRandomJoker,
     useJoker,
     applyTarget,
     targetCandidates,
@@ -134,15 +134,16 @@
   }
 
   function onDrawRandom() {
-    const { newState, jokerId } = drawRandomJoker(state);
+    const { newState, jokerId } = drawAndApplyRandomJoker(state);
     state = newState;
-    if (jokerId === null) {
-      jokerOpen = false;
-      return;
-    }
-    // On ferme l'overlay tirage et on enchaîne sur l'usage
     jokerOpen = false;
-    applyJokerEffect(jokerId);
+    if (jokerId === null) return;
+
+    handActive = false;
+    const j = JOKER_TYPES.find(j => j.id === jokerId);
+    showToast(`${j.icon} ${state.players[state.currentIndex].name} : ${j.label}`);
+    if (jokerId === 'target') targetOpen = true;
+    else if (jokerId === 'hand') handActive = true;
   }
 
   function onUseJoker(jokerId) {
@@ -151,6 +152,7 @@
   }
 
   function applyJokerEffect(jokerId) {
+    handActive = false;
     const { newState, action } = useJoker(state, jokerId);
     state = newState;
     const j = JOKER_TYPES.find(j => j.id === jokerId);
@@ -207,6 +209,7 @@
   $: activePlayer  = state ? state.players[activeIdx] : null;
   $: isForcedTurn  = state ? state.forcedTurnFor !== null : false;
   $: jokerEnabled  = state ? canUseJoker(state) : false;
+  $: tabCols = state ? (state.players.length >= 5 ? 3 : 2) : 2;
 </script>
 
 <!-- ============== SETUP 1 ============== -->
@@ -318,23 +321,16 @@
       on:rules={() => rulesOpen = true}>
 
       <!-- Liste des joueurs -->
-      <div class="killer-players" class:two-col={state.players.length >= 5}>
+      <div class="killer-players" class:two-col={state.players.length >= 5} style="--tab-cols: {tabCols}">
       {#each state.players as player, i (i)}
         <div class="killer-player-card"
              class:active={i === activeIdx && !player.eliminated}
              class:eliminated={player.eliminated}>
+
           <div class="kp-top">
             <div class="kp-name">
-              {EMOJIS[i % EMOJIS.length]} {player.name}
-              {#if i === activeIdx && isForcedTurn}
-                <span class="kp-badge kp-badge-forced">TOUR FORCÉ</span>
-              {:else if i === activeIdx && !player.eliminated}
-                {#if handActive}
-                  <span class="kp-badge kp-badge-hand">BILLE EN MAIN</span>
-                {:else}
-                  <span class="kp-badge kp-badge-active">EN JEU</span>
-                {/if}
-              {/if}
+              <span class="kp-emoji">{EMOJIS[i % EMOJIS.length]}</span>
+              <span class="kp-name-text">{player.name}</span>
             </div>
             <div class="kp-hearts">
               {#if player.eliminated}
@@ -347,22 +343,32 @@
             </div>
           </div>
 
-          {#if state.jokerMode === 'choice' && !player.eliminated}
-            <div class="kp-joker-badges">
-              {#each JOKER_TYPES as j (j.id)}
-                <span class="kp-joker-badge" class:used={player.jokers[j.id] === 0}>
-                  {j.icon}
-                </span>
-              {/each}
-            </div>
-          {/if}
+          <div class="kp-bottom">
+            {#if state.jokerMode === 'choice' && !player.eliminated}
+              <div class="kp-joker-badges">
+                {#each JOKER_TYPES as j (j.id)}
+                  <span class="kp-joker-badge" class:used={player.jokers[j.id] === 0}>
+                    {j.icon}
+                  </span>
+                {/each}
+              </div>
+            {:else if !player.eliminated && state.jokerMode === 'random'}
+              <div class="kp-joker-counter" class:maxed={player.jokersUsed >= KILLER_MAX_JOKERS}>
+                🃏 Jokers : {player.jokersUsed}/{KILLER_MAX_JOKERS}
+                {#if player.jokersUsed >= KILLER_MAX_JOKERS} — épuisé{/if}
+              </div>
+            {/if}
+            {#if i === activeIdx && isForcedTurn}
+              <span class="kp-badge kp-badge-forced">TOUR FORCÉ</span>
+            {:else if i === activeIdx && !player.eliminated}
+              {#if handActive}
+                <span class="kp-badge kp-badge-hand">BILLE EN MAIN</span>
+              {:else}
+                <span class="kp-badge kp-badge-active">EN JEU</span>
+              {/if}
+            {/if}
+          </div>
 
-          {#if !player.eliminated && state.jokerMode === 'random'}
-            <div class="kp-joker-counter" class:maxed={player.jokersUsed >= KILLER_MAX_JOKERS}>
-              🃏 Jokers : {player.jokersUsed} / {KILLER_MAX_JOKERS}
-              {#if player.jokersUsed >= KILLER_MAX_JOKERS} — épuisé{/if}
-            </div>
-          {/if}
         </div>
       {/each}
     </div>
@@ -371,7 +377,11 @@
         <div class="killer-action-section">
           <div class="killer-action-title">
             Tour de <strong>{activePlayer.name}</strong>
-            {#if isForcedTurn}<span class="kp-mini-badge">forcé</span>{/if}
+            {#if isForcedTurn}
+              <span class="kp-mini-badge kp-mini-badge-forced">Forcé</span>
+            {:else if handActive}
+              <span class="kp-mini-badge kp-mini-badge-hand">Bille en main</span>
+            {/if}
           </div>
           <div class="killer-actions">
             <button class="btn-action btn-hit"   on:click={() => onAction('hit')}>✅ Tir réussi</button>
@@ -563,11 +573,109 @@
     margin-bottom: 14px;
   }
 
-  /* Tablette : 2 colonnes dès 5 joueurs */
+  /* Mobile : 2 colonnes dès 5 joueurs — disposition tuile */
+  .killer-players.two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .killer-players.two-col .killer-player-card {
+    padding: 10px 10px;
+  }
+
+  .killer-players.two-col .kp-top {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 2px;
+  }
+
+  .killer-players.two-col .kp-name {
+    flex-wrap: nowrap;
+    overflow: hidden;
+    gap: 4px;
+    font-size: 13px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .killer-players.two-col .kp-name-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+
+  .killer-players.two-col .kp-hearts {
+    font-size: 14px;
+    text-align: center;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: nowrap;
+  }
+
+  .killer-players.two-col .kp-bottom {
+    width: 100%;
+  }
+
+  .killer-players.two-col .kp-joker-badge {
+    font-size: 13px;
+  }
+
+  .killer-players.two-col .kp-joker-counter {
+    font-size: 10px;
+  }
+
+  /* Tablette : tuiles 2 ou 3 colonnes */
   @media (min-width: 700px) {
-    .killer-players.two-col {
+    .killer-players {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(var(--tab-cols, 2), 1fr);
+      gap: 12px;
+    }
+    .killer-player-card {
+      padding: 16px;
+    }
+    .kp-top {
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+    .kp-name {
+      flex-wrap: nowrap;
+      overflow: hidden;
+      font-size: 15px;
+      justify-content: center;
+      width: 100%;
+    }
+    .kp-name-text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      min-width: 0;
+    }
+    .kp-hearts {
+      font-size: 20px;
+      text-align: center;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      flex-wrap: nowrap;
+    }
+    .kp-bottom {
+      width: 100%;
+    }
+    .kp-joker-badges {
+      justify-content: flex-start;
+    }
+    .kp-joker-badge {
+      font-size: 18px;
+    }
+    .kp-joker-counter {
+      font-size: 12px;
     }
   }
 
@@ -577,6 +685,15 @@
     border-radius: 14px;
     padding: 10px 14px;
     transition: border-color .2s, opacity .3s, box-shadow .2s;
+    container-type: inline-size;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  /* Masque l'emoji quand la tuile est trop étroite (mobile 2-col ou tablette 3-col) */
+  @container (max-width: 175px) {
+    .kp-emoji { display: none; }
   }
 
   .killer-player-card.active {
@@ -636,10 +753,18 @@
     white-space: nowrap;
   }
 
+  /* ── Ligne 3 : jokers + pastille ── */
+  .kp-bottom {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 0;
+  }
+
   .kp-joker-badges {
     display: flex;
     gap: 4px;
-    margin-top: 4px;
+    flex-shrink: 0;
   }
   .kp-joker-badge {
     font-size: 14px;
@@ -654,10 +779,20 @@
   .kp-joker-counter {
     font-size: 11px;
     color: rgba(255, 255, 255, 0.5);
-    margin-top: 2px;
+    flex-shrink: 0;
   }
   .kp-joker-counter.maxed {
     color: #ff8080;
+  }
+
+  /* Badge dans kp-bottom : poussé à droite, se réduit en premier */
+  .kp-bottom .kp-badge {
+    margin-left: auto;
+    flex-shrink: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
   }
 
   /* ===== Section actions ===== */
@@ -676,14 +811,21 @@
   }
 
   .kp-mini-badge {
-    background: rgba(255, 100, 100, 0.25);
-    color: #ffb3b3;
-    border: 1px solid #ff8080;
     font-size: 10px;
     padding: 2px 6px;
     border-radius: 6px;
     margin-left: 6px;
     letter-spacing: 1px;
+  }
+  .kp-mini-badge-forced {
+    background: rgba(255, 100, 100, 0.25);
+    color: #ffb3b3;
+    border: 1px solid #ff8080;
+  }
+  .kp-mini-badge-hand {
+    background: rgba(100, 180, 255, 0.2);
+    color: #90caff;
+    border: 1px solid #64b4ff;
   }
 
   .killer-actions {
