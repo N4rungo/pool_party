@@ -145,7 +145,8 @@
   // ── Handlers match recap ──────────────────────────────
   function onMatchNext() {
     showMatchRecap = false;
-    goto(`${base}/chicago/`);
+    winOutcome = null;
+    startGame();
   }
   function onMatchViewFinal() {
     showMatchRecap = false;
@@ -160,9 +161,12 @@
     const savedPlayers = $matchStore.players;
     const savedTotal = $matchStore.totalGames;
     endMatch();
+    name1 = savedPlayers[0] ?? '';
+    name2 = savedPlayers[1] ?? '';
     startMatch('chicago', savedPlayers, savedTotal);
     showMatchSummary = false;
-    goto(`${base}/chicago/`);
+    winOutcome = null;
+    startGame();
   }
   function onMatchNewGame() {
     endMatch();

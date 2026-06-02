@@ -268,7 +268,10 @@
   // ── Handlers match recap ──────────────────────────────
   function onMatchNext() {
     showMatchRecap = false;
-    goto(`${base}/snooker/`);
+    winnerName = null;
+    winnerScore = 0;
+    winnerBreak = 0;
+    startGame();
   }
   function onMatchViewFinal() {
     showMatchRecap = false;
@@ -283,9 +286,13 @@
     const savedPlayers = $matchStore.players;
     const savedTotal = $matchStore.totalGames;
     endMatch();
+    setupPlayers = savedPlayers.map(name => ({ name }));
     startMatch('snooker', savedPlayers, savedTotal);
     showMatchSummary = false;
-    goto(`${base}/snooker/`);
+    winnerName = null;
+    winnerScore = 0;
+    winnerBreak = 0;
+    startGame();
   }
   function onMatchNewGame() {
     endMatch();
@@ -376,11 +383,6 @@
         Mode : {mode === 'simple' ? '🟢 Simple' : '🔴 Expert'}
       </div>
 
-      <label class="setup-toggle">
-        <span>🔀 Ordre aléatoire</span>
-        <input type="checkbox" bind:checked={randomizeOrder} />
-      </label>
-
       <div class="recap-list">
         {#each setupPlayers as p, i (i)}
           <div class="recap-row">
@@ -390,7 +392,7 @@
         {/each}
       </div>
 
-      <MatchSetup bind:matchMode bind:totalGames={matchTotalGames} />
+      <MatchSetup bind:randomizeOrder bind:matchMode bind:totalGames={matchTotalGames} />
 
       <button class="btn-main btn-gold" on:click={() => { if (matchMode) startMatch('snooker', setupPlayers.map(p => p.name), matchTotalGames); startGame(); }}>
         {matchMode ? '🏆 Lancer le match !' : '🎱 Lancer la partie !'}

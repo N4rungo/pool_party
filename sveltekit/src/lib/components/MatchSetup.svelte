@@ -1,23 +1,20 @@
 <!--
-  MatchSetup — section de configuration du mode match, intégrée dans l'écran
-  de setup d'un jeu.
+  MatchSetup — section d'options de partie (ordre aléatoire + mode match).
+  À placer entre la liste des joueurs et le bouton "Lancer la partie".
 
   Props bindables :
-    - matchMode   (boolean) : activer ou non le mode match
-    - totalGames  (number)  : nombre de parties (2-10, défaut 3)
-
-  Cette section s'affiche en bas du formulaire de setup.
-  Quand matchMode est false : le bouton affiché est "Lancer la partie !".
-  Quand matchMode est true  : on affiche le sélecteur de parties + "Lancer le match !".
-
-  Le parent gère l'action au clic (startGame / startMatch) via la prop onLaunch.
+    - randomizeOrder (boolean|undefined) : si défini, affiche le toggle "Ordre aléatoire"
+    - matchMode      (boolean)           : activer ou non le mode match
+    - totalGames     (number)            : nombre de parties (2-10, défaut 3)
 
   Usage :
-    <MatchSetup bind:matchMode bind:totalGames onLaunch={handleLaunch} />
+    <MatchSetup bind:randomizeOrder bind:matchMode bind:totalGames />
+    <MatchSetup bind:matchMode bind:totalGames />   ← sans ordre aléatoire
 -->
 <script>
   import NumberSelector from './NumberSelector.svelte';
 
+  export let randomizeOrder = undefined;
   export let matchMode = false;
   export let totalGames = 3;
 </script>
@@ -25,9 +22,34 @@
 <div class="match-setup-section">
   <div class="sep"></div>
 
-  <label class="match-toggle-row">
-    <span class="match-toggle-label">🏆 Mode match</span>
-    <div class="toggle-track" class:on={matchMode} on:click={() => matchMode = !matchMode} role="switch" aria-checked={matchMode} tabindex="0" on:keydown={(e) => e.key === 'Enter' || e.key === ' ' ? matchMode = !matchMode : null}>
+  {#if randomizeOrder !== undefined}
+    <label class="option-row">
+      <span class="option-label">🔀 Ordre aléatoire</span>
+      <div
+        class="toggle-track"
+        class:on={randomizeOrder}
+        on:click={() => randomizeOrder = !randomizeOrder}
+        role="switch"
+        aria-checked={randomizeOrder}
+        tabindex="0"
+        on:keydown={(e) => (e.key === 'Enter' || e.key === ' ') && (randomizeOrder = !randomizeOrder)}
+      >
+        <div class="toggle-thumb"></div>
+      </div>
+    </label>
+  {/if}
+
+  <label class="option-row">
+    <span class="option-label">🏆 Mode match</span>
+    <div
+      class="toggle-track"
+      class:on={matchMode}
+      on:click={() => matchMode = !matchMode}
+      role="switch"
+      aria-checked={matchMode}
+      tabindex="0"
+      on:keydown={(e) => (e.key === 'Enter' || e.key === ' ') && (matchMode = !matchMode)}
+    >
       <div class="toggle-thumb"></div>
     </div>
   </label>
@@ -55,16 +77,16 @@
     margin: 16px 0;
   }
 
-  .match-toggle-row {
+  .option-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
     cursor: pointer;
-    padding: 4px 0;
+    padding: 6px 0;
   }
 
-  .match-toggle-label {
+  .option-label {
     font-size: 14px;
     font-weight: bold;
     color: rgba(255, 255, 255, 0.85);

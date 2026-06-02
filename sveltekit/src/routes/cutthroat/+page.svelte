@@ -184,7 +184,8 @@
   // ── Handlers match recap ──────────────────────────────
   function onMatchNext() {
     showMatchRecap = false;
-    goto(`${base}/cutthroat/`);
+    winnerName = null;
+    startGame();
   }
   function onMatchViewFinal() {
     showMatchRecap = false;
@@ -199,9 +200,11 @@
     const savedPlayers = $matchStore.players;
     const savedTotal = $matchStore.totalGames;
     endMatch();
+    setupPlayers = savedPlayers.map(name => ({ name }));
     startMatch('cutthroat', savedPlayers, savedTotal);
     showMatchSummary = false;
-    goto(`${base}/cutthroat/`);
+    winnerName = null;
+    startGame();
   }
   function onMatchNewGame() {
     endMatch();

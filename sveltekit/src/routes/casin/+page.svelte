@@ -170,7 +170,8 @@
   // ── Handlers match recap ──────────────────────────────
   function onMatchNext() {
     showMatchRecap = false;
-    goto(`${base}/casin/`);
+    winnerName = null;
+    startGame();
   }
   function onMatchViewFinal() {
     showMatchRecap = false;
@@ -185,9 +186,11 @@
     const savedPlayers = $matchStore.players;
     const savedTotal = $matchStore.totalGames;
     endMatch();
+    setupPlayers = savedPlayers.map(name => ({ name, x: CASIN_DEFAULT_X }));
     startMatch('casin', savedPlayers, savedTotal);
     showMatchSummary = false;
-    goto(`${base}/casin/`);
+    winnerName = null;
+    startGame();
   }
   function onMatchNewGame() {
     endMatch();
@@ -266,11 +269,6 @@
       <div class="casin-target-title">Score cible par joueur</div>
       <div class="casin-target-sub">Ajustez pour équilibrer les niveaux</div>
 
-      <label class="setup-toggle">
-        <span>🔀 Ordre aléatoire</span>
-        <input type="checkbox" bind:checked={randomizeOrder} />
-      </label>
-
       <RecapList players={setupPlayers} let:player let:i>
         <NumberSelector
           value={player.x}
@@ -279,7 +277,7 @@
           on:change={(e) => updatePlayerX(i, e.detail)} />
       </RecapList>
 
-      <MatchSetup bind:matchMode bind:totalGames={matchTotalGames} />
+      <MatchSetup bind:randomizeOrder bind:matchMode bind:totalGames={matchTotalGames} />
 
       <button class="btn-main btn-gold" on:click={() => { if (matchMode) startMatch('casin', setupPlayers.map(p => p.name), matchTotalGames); startGame(); }}>
         {matchMode ? '🏆 Lancer le match !' : '🎱 Lancer la partie !'}

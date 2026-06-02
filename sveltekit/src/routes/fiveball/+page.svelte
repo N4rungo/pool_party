@@ -188,7 +188,8 @@
   // ── Handlers match recap ──────────────────────────────
   function onMatchNext() {
     showMatchRecap = false;
-    goto(`${base}/fiveball/`);
+    winnerName = null;
+    startGame();
   }
   function onMatchViewFinal() {
     showMatchRecap = false;
@@ -203,9 +204,11 @@
     const savedPlayers = $matchStore.players;
     const savedTotal = $matchStore.totalGames;
     endMatch();
+    setupPlayers = savedPlayers.map(name => ({ name, target: FIVE_BALL_DEFAULT_TARGET }));
     startMatch('fiveball', savedPlayers, savedTotal);
     showMatchSummary = false;
-    goto(`${base}/fiveball/`);
+    winnerName = null;
+    startGame();
   }
   function onMatchNewGame() {
     endMatch();
@@ -298,11 +301,6 @@
         Score modifiable par joueur (par pas de 10)
       </div>
 
-      <label class="setup-toggle">
-        <span>🔀 Ordre aléatoire</span>
-        <input type="checkbox" bind:checked={randomizeOrder} />
-      </label>
-
       <RecapList players={setupPlayers} let:player let:i>
         <NumberSelector
           value={player.target}
@@ -311,7 +309,7 @@
           on:change={(e) => updatePlayerTarget(i, e.detail)} />
       </RecapList>
 
-      <MatchSetup bind:matchMode bind:totalGames={matchTotalGames} />
+      <MatchSetup bind:randomizeOrder bind:matchMode bind:totalGames={matchTotalGames} />
 
       <button class="btn-main btn-gold" on:click={() => { if (matchMode) startMatch('fiveball', setupPlayers.map(p => p.name), matchTotalGames); startGame(); }}>
         {matchMode ? '🏆 Lancer le match !' : '🎱 Lancer la partie !'}

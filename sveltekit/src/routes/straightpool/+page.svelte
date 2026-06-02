@@ -166,7 +166,9 @@
   // ── Handlers match recap ──────────────────────────────
   function onMatchNext() {
     showMatchRecap = false;
-    goto(`${base}/straightpool/`);
+    winnerName = null;
+    winnerRanking = [];
+    startGame();
   }
   function onMatchViewFinal() {
     showMatchRecap = false;
@@ -181,9 +183,12 @@
     const savedPlayers = $matchStore.players;
     const savedTotal = $matchStore.totalGames;
     endMatch();
+    setupPlayers = savedPlayers.map(name => ({ name, target: STRAIGHTPOOL_DEFAULT_TARGET }));
     startMatch('straightpool', savedPlayers, savedTotal);
     showMatchSummary = false;
-    goto(`${base}/straightpool/`);
+    winnerName = null;
+    winnerRanking = [];
+    startGame();
   }
   function onMatchNewGame() {
     endMatch();
@@ -265,11 +270,6 @@
       <div class="sp-target-title">Score cible par joueur</div>
       <div class="sp-target-sub">Ajustez pour équilibrer les niveaux</div>
 
-      <label class="setup-toggle">
-        <span>🔀 Ordre aléatoire</span>
-        <input type="checkbox" bind:checked={randomizeOrder} />
-      </label>
-
       <RecapList players={setupPlayers} let:player let:i>
         <NumberSelector
           value={player.target}
@@ -279,7 +279,7 @@
           on:change={(e) => updatePlayerTarget(i, e.detail)} />
       </RecapList>
 
-      <MatchSetup bind:matchMode bind:totalGames={matchTotalGames} />
+      <MatchSetup bind:randomizeOrder bind:matchMode bind:totalGames={matchTotalGames} />
 
       <button class="btn-main btn-gold" on:click={() => { if (matchMode) startMatch('straightpool', setupPlayers.map(p => p.name), matchTotalGames); startGame(); }}>
         {matchMode ? '🏆 Lancer le match !' : '🎱 Lancer la partie !'}
