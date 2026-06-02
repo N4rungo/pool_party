@@ -218,7 +218,6 @@
   $: ballSize  = innerWidth >= 700
     ? (perPlayer >= 5 ? 54 : perPlayer >= 3 ? 50 : perPlayer === 2 ? 44 : 64)
     : (perPlayer >= 5 ? 42 : perPlayer === 3 ? 36 : perPlayer === 2 ? 32 : 28);
-  $: ballSize  = perPlayer >= 5 ? 42 : perPlayer === 3 ? 36 : perPlayer === 2 ? 32 : 28;
   $: matchRecapGameNumber = $matchStore.currentGame - 1;
   $: matchRecapWinners = $matchStore.results?.[$matchStore.results.length - 1]?.winners ?? [];
 </script>
