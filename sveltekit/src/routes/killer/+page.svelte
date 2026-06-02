@@ -237,6 +237,9 @@
 
   // ── Handlers match recap ──────────────────────────────
   function onMatchNext() {
+    handActive = false;
+    jokerOpen = false;
+    targetOpen = false;
     showMatchRecap = false;
     startGame();
   }

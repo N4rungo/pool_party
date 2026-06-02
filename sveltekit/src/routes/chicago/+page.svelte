@@ -318,7 +318,7 @@
     totalGames={$matchStore.totalGames}
     winners={matchRecapWinners}
     matchScores={$matchStore.matchScores}
-    isLastGame={$isLastGame || matchRecapGameNumber === $matchStore.totalGames}
+    isLastGame={matchRecapGameNumber === $matchStore.totalGames}
     canUndo={state?.history?.length > 0}
     onUndo={onMatchUndo}
     onNext={onMatchNext}
