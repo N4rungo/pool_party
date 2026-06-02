@@ -9,17 +9,12 @@
   - le bouton ▶ Jouer fait directement la navigation via SvelteKit
 -->
 <script>
-  import { goto } from '$app/navigation';
   import { base } from '$app/paths';
   import { createEventDispatcher } from 'svelte';
 
   export let game;
 
   const dispatch = createEventDispatcher();
-
-  function play() {
-    goto(`${base}/${game.id}`);
-  }
 
   function openRules() {
     dispatch('rules', game.id);
@@ -36,7 +31,7 @@
   </div>
   <div class="game-card-actions">
     <button class="btn-card-rules" on:click={openRules} aria-label="Règles">📖</button>
-    <button class="btn-card-play" on:click={play}>▶ Jouer</button>
+    <a class="btn-card-play" href="{base}/{game.id}">▶ Jouer</a>
   </div>
 </div>
 

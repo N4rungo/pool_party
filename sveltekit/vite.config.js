@@ -1,5 +1,5 @@
 import { sveltekit } from '@sveltejs/kit/vite';
-import { SvelteKitPWA } from '@vite-pwa/sveltekit';
+import { VitePWA } from 'vite-plugin-pwa';
 
 const isProd = process.env.NODE_ENV === 'production';
 const base = isProd ? '/pool_party' : '';
@@ -8,7 +8,7 @@ const base = isProd ? '/pool_party' : '';
 const config = {
   plugins: [
     sveltekit(),
-    SvelteKitPWA({
+    VitePWA({
       registerType: 'autoUpdate',
 
       manifest: {
@@ -41,19 +41,25 @@ const config = {
         ]
       },
 
-      // SvelteKitPWA s'exécute APRÈS adapter-static, donc globDirectory pointe
-      // sur le bon dossier final (build/) qui contient tout : HTML prérendus,
-      // assets statiques (PNG, MD...) et bundles JS/CSS.
       workbox: {
+        // Tous les assets statiques (copiés par Vite depuis static/ vers .svelte-kit/output/client/)
         globPatterns: ['**/*.{js,css,html,png,webmanifest,svg,ico,md}'],
+
+        // index.html est généré par adapter-static APRÈS que Vite ait tourné,
+        // donc il n'est pas dans .svelte-kit/output/client/ et ne matche pas le glob.
+        // On l'ajoute manuellement : c'est le point d'entrée SPA indispensable au hors-ligne.
+        additionalManifestEntries: [
+          { url: `${base}/index.html`, revision: null }
+        ],
+
+        // Sert index.html pour toute navigation vers une route inconnue du cache
         navigateFallback: `${base}/index.html`,
         navigateFallbackAllowlist: [new RegExp(`^${base}/`)],
       },
 
       devOptions: {
         enabled: true,
-        type: 'module',
-        navigateTo: '/'
+        type: 'module'
       }
     })
   ]
