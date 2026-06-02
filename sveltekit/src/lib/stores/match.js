@@ -113,6 +113,28 @@ export function recordResult(winners, allScores) {
 }
 
 /**
+ * Annule le dernier résultat enregistré (pour l'undo du coup décisif).
+ */
+export function undoResult() {
+  _store.update(s => {
+    if (s.results.length === 0) return s;
+    const last = s.results[s.results.length - 1];
+    const newMatchScores = { ...s.matchScores };
+    for (const name of last.winners) {
+      if (name in newMatchScores) {
+        newMatchScores[name] = Math.max(0, (newMatchScores[name] || 0) - 1);
+      }
+    }
+    return {
+      ...s,
+      matchScores: newMatchScores,
+      results: s.results.slice(0, -1),
+      currentGame: s.currentGame - 1,
+    };
+  });
+}
+
+/**
  * Termine le match et remet l'état par défaut.
  */
 export function endMatch() {

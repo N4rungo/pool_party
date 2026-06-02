@@ -35,7 +35,7 @@
   import MatchSummaryOverlay from '$lib/components/MatchSummaryOverlay.svelte';
   import { showToast } from '$lib/stores/toast.js';
   import { askConfirm } from '$lib/stores/confirm.js';
-  import { matchStore, startMatch, recordResult, endMatch, isLastGame } from '$lib/stores/match.js';
+  import { matchStore, startMatch, recordResult, endMatch, undoResult, isLastGame } from '$lib/stores/match.js';
   import {
     FIVE_BALL_MIN_PLAYERS,
     FIVE_BALL_MAX_PLAYERS,
@@ -195,7 +195,19 @@
     showMatchRecap = false;
     showMatchSummary = true;
   }
-  function onMatchAbandon() {
+  function onMatchUndo() {
+    undoResult();
+    state = undo(state);
+    winnerName = null;
+    showMatchRecap = false;
+    showToast('↩ Coup décisif annulé — on continue !');
+  }
+  async function onMatchAbandon() {
+    const ok = await askConfirm('Abandonner le match en cours ?', {
+      confirmLabel: 'Abandonner',
+      cancelLabel:  'Continuer',
+    });
+    if (!ok) return;
     endMatch();
     showMatchRecap = false;
     goto(base || '/');
@@ -204,7 +216,6 @@
     const savedPlayers = $matchStore.players;
     const savedTotal = $matchStore.totalGames;
     endMatch();
-    setupPlayers = savedPlayers.map(name => ({ name, target: FIVE_BALL_DEFAULT_TARGET }));
     startMatch('fiveball', savedPlayers, savedTotal);
     showMatchSummary = false;
     winnerName = null;
@@ -418,6 +429,8 @@
     winners={matchRecapWinners}
     matchScores={$matchStore.matchScores}
     isLastGame={matchRecapGameNumber === $matchStore.totalGames}
+    canUndo={state?.history?.length > 0}
+    onUndo={onMatchUndo}
     onNext={onMatchNext}
     onViewFinal={onMatchViewFinal}
     onAbandon={onMatchAbandon} />

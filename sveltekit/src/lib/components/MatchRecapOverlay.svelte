@@ -22,6 +22,8 @@
   export let onNext = () => {};
   export let onViewFinal = () => {};
   export let onAbandon = () => {};
+  export let onUndo = null;
+  export let canUndo = false;
 
   // Classement trié par score de match décroissant
   $: sortedPlayers = Object.entries(matchScores)
@@ -58,6 +60,12 @@
     </div>
 
     <!-- Actions -->
+    {#if onUndo && canUndo}
+      <button class="btn-undo" on:click={onUndo}>
+        ↩ Annuler le dernier coup
+      </button>
+    {/if}
+
     {#if isLastGame}
       <button class="btn-main btn-gold" on:click={onViewFinal}>
         Voir le récap final →
@@ -176,6 +184,26 @@
   .standings-row.leader .standings-pts {
     color: var(--color-gold);
     font-weight: bold;
+  }
+
+  .btn-undo {
+    display: block;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    color: rgba(255, 255, 255, 0.65);
+    font-family: inherit;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 10px;
+    margin-bottom: 10px;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .btn-undo:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: white;
   }
 
   .btn-abandon {

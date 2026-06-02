@@ -29,7 +29,7 @@
   import { showToast } from '$lib/stores/toast.js';
   import { askConfirm } from '$lib/stores/confirm.js';
   import { shuffle } from '$lib/utils.js';
-  import { matchStore, startMatch, recordResult, endMatch, isLastGame } from '$lib/stores/match.js';
+  import { matchStore, startMatch, recordResult, endMatch, undoResult, isLastGame } from '$lib/stores/match.js';
   import {
     JOKER_TYPES,
     KILLER_MIN_PLAYERS,
@@ -244,7 +244,20 @@
     showMatchRecap = false;
     showMatchSummary = true;
   }
-  function onMatchAbandon() {
+  function onMatchUndo() {
+    handActive = false;
+    undoResult();
+    state = undo(state);
+    winnerName = null;
+    showMatchRecap = false;
+    showToast('↩ Coup décisif annulé — on continue !');
+  }
+  async function onMatchAbandon() {
+    const ok = await askConfirm('Abandonner le match en cours ?', {
+      confirmLabel: 'Abandonner',
+      cancelLabel:  'Continuer',
+    });
+    if (!ok) return;
     endMatch();
     showMatchRecap = false;
     goto(base || '/');
@@ -253,7 +266,6 @@
     const savedPlayers = $matchStore.players;
     const savedTotal = $matchStore.totalGames;
     endMatch();
-    setupPlayers = savedPlayers.map(name => ({ name, lives: KILLER_DEFAULT_LIVES }));
     startMatch('killer', savedPlayers, savedTotal);
     showMatchSummary = false;
     startGame();
@@ -545,6 +557,8 @@
     winners={matchRecapWinners}
     matchScores={$matchStore.matchScores}
     isLastGame={matchRecapGameNumber === $matchStore.totalGames}
+    canUndo={state?.history?.length > 0}
+    onUndo={onMatchUndo}
     onNext={onMatchNext}
     onViewFinal={onMatchViewFinal}
     onAbandon={onMatchAbandon} />

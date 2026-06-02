@@ -22,7 +22,7 @@
   import MatchSummaryOverlay from '$lib/components/MatchSummaryOverlay.svelte';
   import { showToast } from '$lib/stores/toast.js';
   import { askConfirm } from '$lib/stores/confirm.js';
-  import { matchStore, startMatch, recordResult, endMatch, isLastGame } from '$lib/stores/match.js';
+  import { matchStore, startMatch, recordResult, endMatch, undoResult, isLastGame } from '$lib/stores/match.js';
   import {
     CHICAGO_TARGET_SCORE,
     CHICAGO_TRIANGLE,
@@ -152,7 +152,19 @@
     showMatchRecap = false;
     showMatchSummary = true;
   }
-  function onMatchAbandon() {
+  function onMatchUndo() {
+    undoResult();
+    state = undo(state);
+    winOutcome = null;
+    showMatchRecap = false;
+    showToast('↩ Coup décisif annulé — on continue !');
+  }
+  async function onMatchAbandon() {
+    const ok = await askConfirm('Abandonner le match en cours ?', {
+      confirmLabel: 'Abandonner',
+      cancelLabel:  'Continuer',
+    });
+    if (!ok) return;
     endMatch();
     showMatchRecap = false;
     goto(base || '/');
@@ -161,8 +173,6 @@
     const savedPlayers = $matchStore.players;
     const savedTotal = $matchStore.totalGames;
     endMatch();
-    name1 = savedPlayers[0] ?? '';
-    name2 = savedPlayers[1] ?? '';
     startMatch('chicago', savedPlayers, savedTotal);
     showMatchSummary = false;
     winOutcome = null;
@@ -309,6 +319,8 @@
     winners={matchRecapWinners}
     matchScores={$matchStore.matchScores}
     isLastGame={$isLastGame || matchRecapGameNumber === $matchStore.totalGames}
+    canUndo={state?.history?.length > 0}
+    onUndo={onMatchUndo}
     onNext={onMatchNext}
     onViewFinal={onMatchViewFinal}
     onAbandon={onMatchAbandon} />
