@@ -31,7 +31,7 @@
   </div>
   <div class="game-card-actions">
     <button class="btn-card-rules" on:click={openRules} aria-label="Règles">📖</button>
-    <a class="btn-card-play" href="{base}/{game.id}">▶ Jouer</a>
+    <a class="btn-card-play" href="{base}/{game.id}">▶</a>
   </div>
 </div>
 
@@ -148,12 +148,18 @@
     background: linear-gradient(145deg, var(--color-gold-light), var(--color-gold));
     color: var(--color-pool);
     box-shadow: 0 3px 0 var(--color-gold-dark);
-    padding: 10px 14px;
-    font-size: 14px;
-    letter-spacing: 0.5px;
+    padding: 10px 16px;
+    font-size: 16px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
   .btn-card-play:active {
     transform: translateY(2px);
     box-shadow: none;
+  }
+  .btn-card-play:visited {
+    color: var(--color-pool);
   }
 </style>
