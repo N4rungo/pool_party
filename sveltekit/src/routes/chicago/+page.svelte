@@ -12,12 +12,17 @@
 <script>
   import { goto } from '$app/navigation';
   import { base } from '$app/paths';
+  import { onMount } from 'svelte';
   import GameLayout from '$lib/components/GameLayout.svelte';
   import RulesViewer from '$lib/components/RulesViewer.svelte';
   import WinOverlay from '$lib/components/WinOverlay.svelte';
   import BallButton from '$lib/components/BallButton.svelte';
+  import MatchSetup from '$lib/components/MatchSetup.svelte';
+  import MatchRecapOverlay from '$lib/components/MatchRecapOverlay.svelte';
+  import MatchSummaryOverlay from '$lib/components/MatchSummaryOverlay.svelte';
   import { showToast } from '$lib/stores/toast.js';
   import { askConfirm } from '$lib/stores/confirm.js';
+  import { matchStore, startMatch, recordResult, endMatch, isLastGame } from '$lib/stores/match.js';
   import {
     CHICAGO_TARGET_SCORE,
     CHICAGO_TRIANGLE,
@@ -35,15 +40,40 @@
   let name1 = '';
   let name2 = '';
 
+  // ── Mode match ────────────────────────────────────────
+  let matchMode = false;
+  let matchTotalGames = 3;
+  let showMatchRecap = false;
+  let showMatchSummary = false;
+
+  onMount(() => {
+    if ($matchStore.isActive && $matchStore.gameId === 'chicago') {
+      const p = $matchStore.players;
+      name1 = p[0] ?? '';
+      name2 = p[1] ?? '';
+      matchMode = true;
+      matchTotalGames = $matchStore.totalGames;
+      startGame();
+    }
+  });
+
   // ── État de la partie (créé par startGame) ────────────
   let state = null;
   let winOutcome = null; // { kind: 'win', winner } | { kind: 'draw', score }
 
   // ── Démarrage (random sur qui commence) ───────────────
   function startGame() {
-    state = createInitialState(name1.trim(), name2.trim());
+    state = createInitialState(name1.trim() || 'Joueur 1', name2.trim() || 'Joueur 2');
     phase = 'game';
     showToast(`🎲 ${state.players[state.currentIndex].name} commence !`);
+  }
+
+  function handleLaunch() {
+    if (matchMode) {
+      const players = [name1.trim() || 'Joueur 1', name2.trim() || 'Joueur 2'];
+      startMatch('chicago', players, matchTotalGames);
+    }
+    startGame();
   }
 
   // ── Empocher une bille ────────────────────────────────
@@ -54,7 +84,16 @@
 
     if (outcome.kind === 'win' || outcome.kind === 'draw') {
       winOutcome = outcome;
-      phase = 'win';
+      if ($matchStore.isActive) {
+        const winners = outcome.kind === 'draw'
+          ? state.players.map(p => p.name)
+          : [outcome.winner.name];
+        const allScores = state.players.map(p => ({ name: p.name, score: p.score }));
+        recordResult(winners, allScores);
+        showMatchRecap = true;
+      } else {
+        phase = 'win';
+      }
     } else if (outcome.kind === 'continue') {
       showToast(`🎱 +${n} pts pour ${playerName}`);
     }
@@ -73,8 +112,6 @@
   }
 
   // ── Annuler depuis l'overlay de victoire ──────────────
-  // Cas : on a cliqué sur la bille du coup décisif par erreur.
-  // On annule la dernière action et on retourne en jeu.
   function onUndoFromWin() {
     state = undo(state);
     winOutcome = null;
@@ -105,6 +142,34 @@
     if (ok) goto(base || '/');
   }
 
+  // ── Handlers match recap ──────────────────────────────
+  function onMatchNext() {
+    showMatchRecap = false;
+    goto(`${base}/chicago/`);
+  }
+  function onMatchViewFinal() {
+    showMatchRecap = false;
+    showMatchSummary = true;
+  }
+  function onMatchAbandon() {
+    endMatch();
+    showMatchRecap = false;
+    goto(base || '/');
+  }
+  function onMatchPlayAgain() {
+    const savedPlayers = $matchStore.players;
+    const savedTotal = $matchStore.totalGames;
+    endMatch();
+    startMatch('chicago', savedPlayers, savedTotal);
+    showMatchSummary = false;
+    goto(`${base}/chicago/`);
+  }
+  function onMatchNewGame() {
+    endMatch();
+    showMatchSummary = false;
+    goto(base || '/');
+  }
+
   // ── Overlay règles ────────────────────────────────────
   let rulesOpen = false;
 
@@ -120,6 +185,10 @@
   $: winSub    = winOutcome?.kind === 'draw'
                    ? `Les deux joueurs finissent à ${winOutcome.score} points`
                    : 'Félicitations !';
+
+  // Pour les overlays match : on lit le store APRÈS recordResult
+  $: matchRecapGameNumber = $matchStore.currentGame - 1;
+  $: matchRecapWinners = $matchStore.results?.[$matchStore.results.length - 1]?.winners ?? [];
 </script>
 
 <!-- ===== PHASE SETUP ===== -->
@@ -139,7 +208,7 @@
           maxlength="16"
           placeholder="Joueur 1..."
           bind:value={name1}
-          on:keydown={(e) => e.key === 'Enter' && startGame()} />
+          on:keydown={(e) => e.key === 'Enter' && handleLaunch()} />
       </div>
       <div class="name-input-wrap">
         <span class="player-emoji">🔵</span>
@@ -148,10 +217,14 @@
           maxlength="16"
           placeholder="Joueur 2..."
           bind:value={name2}
-          on:keydown={(e) => e.key === 'Enter' && startGame()} />
+          on:keydown={(e) => e.key === 'Enter' && handleLaunch()} />
       </div>
 
-      <button class="btn-main btn-gold" on:click={startGame}>🎱 Lancer la partie !</button>
+      <MatchSetup bind:matchMode bind:totalGames={matchTotalGames} />
+
+      <button class="btn-main btn-gold" on:click={handleLaunch}>
+        {matchMode ? '🏆 Lancer le match !' : '🎱 Lancer la partie !'}
+      </button>
       <button class="btn-main btn-gray" on:click={() => goto(base || '/')}>← Retour</button>
     </div>
   </div>
@@ -223,6 +296,30 @@
   on:undo={onUndoFromWin}
   on:replay={replay}
   on:newGame={newGame} />
+
+<!-- ===== OVERLAY RÉCAP MATCH ===== -->
+{#if showMatchRecap}
+  <MatchRecapOverlay
+    gameNumber={matchRecapGameNumber}
+    totalGames={$matchStore.totalGames}
+    winners={matchRecapWinners}
+    matchScores={$matchStore.matchScores}
+    isLastGame={$isLastGame || matchRecapGameNumber === $matchStore.totalGames}
+    onNext={onMatchNext}
+    onViewFinal={onMatchViewFinal}
+    onAbandon={onMatchAbandon} />
+{/if}
+
+<!-- ===== OVERLAY RÉCAP FINAL MATCH ===== -->
+{#if showMatchSummary}
+  <MatchSummaryOverlay
+    matchScores={$matchStore.matchScores}
+    results={$matchStore.results}
+    gameId="chicago"
+    totalGames={$matchStore.totalGames}
+    onPlayAgain={onMatchPlayAgain}
+    onNewGame={onMatchNewGame} />
+{/if}
 
 <!-- ===== OVERLAY RÈGLES ===== -->
 <RulesViewer gameId="chicago" open={rulesOpen} on:close={() => rulesOpen = false} />

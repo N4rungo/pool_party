@@ -11,6 +11,7 @@
 <script>
   import { goto } from '$app/navigation';
   import { base } from '$app/paths';
+  import { onMount } from 'svelte';
   import GameLayout from '$lib/components/GameLayout.svelte';
   import RulesViewer from '$lib/components/RulesViewer.svelte';
   import WinOverlay from '$lib/components/WinOverlay.svelte';
@@ -18,8 +19,12 @@
   import PlayerNameInputs from '$lib/components/PlayerNameInputs.svelte';
   import RecapList from '$lib/components/RecapList.svelte';
   import { shuffle } from '$lib/utils.js';
+  import MatchSetup from '$lib/components/MatchSetup.svelte';
+  import MatchRecapOverlay from '$lib/components/MatchRecapOverlay.svelte';
+  import MatchSummaryOverlay from '$lib/components/MatchSummaryOverlay.svelte';
   import { showToast } from '$lib/stores/toast.js';
   import { askConfirm } from '$lib/stores/confirm.js';
+  import { matchStore, startMatch, recordResult, endMatch, isLastGame } from '$lib/stores/match.js';
   import {
     STRAIGHTPOOL_MIN_PLAYERS,
     STRAIGHTPOOL_MAX_PLAYERS,
@@ -40,6 +45,23 @@
 
   let phase = 'setup1';
   $: phase, typeof window !== 'undefined' && window.scrollTo({ top: 0, behavior: 'instant' });
+
+  // ── Mode match ────────────────────────────────────────
+  let matchMode = false;
+  let matchTotalGames = 3;
+  let showMatchRecap = false;
+  let showMatchSummary = false;
+
+  onMount(() => {
+    if ($matchStore.isActive && $matchStore.gameId === 'straightpool') {
+      const p = $matchStore.players;
+      count = p.length;
+      setupPlayers = p.map(name => ({ name, target: STRAIGHTPOOL_DEFAULT_TARGET }));
+      matchMode = true;
+      matchTotalGames = $matchStore.totalGames;
+      startGame();
+    }
+  });
 
   let count = 2;
   let defaultTarget = STRAIGHTPOOL_DEFAULT_TARGET;
@@ -87,7 +109,13 @@
     if (outcome.kind === 'win') {
       winnerName = outcome.winner.name;
       winnerRanking = rankedPlayers(state);
-      phase = 'win';
+      if ($matchStore.isActive) {
+        const allScores = state.players.map(p => ({ name: p.name, score: p.score }));
+        recordResult([outcome.winner.name], allScores);
+        showMatchRecap = true;
+      } else {
+        phase = 'win';
+      }
     }
   }
 
@@ -135,6 +163,34 @@
 
   let rulesOpen = false;
 
+  // ── Handlers match recap ──────────────────────────────
+  function onMatchNext() {
+    showMatchRecap = false;
+    goto(`${base}/straightpool/`);
+  }
+  function onMatchViewFinal() {
+    showMatchRecap = false;
+    showMatchSummary = true;
+  }
+  function onMatchAbandon() {
+    endMatch();
+    showMatchRecap = false;
+    goto(base || '/');
+  }
+  function onMatchPlayAgain() {
+    const savedPlayers = $matchStore.players;
+    const savedTotal = $matchStore.totalGames;
+    endMatch();
+    startMatch('straightpool', savedPlayers, savedTotal);
+    showMatchSummary = false;
+    goto(`${base}/straightpool/`);
+  }
+  function onMatchNewGame() {
+    endMatch();
+    showMatchSummary = false;
+    goto(base || '/');
+  }
+
   $: progressPct = (i) => {
     if (!state) return 0;
     const p = state.players[i];
@@ -142,6 +198,8 @@
   };
   $: tabCols = state ? (state.players.length >= 5 ? 3 : 2) : 1;
   $: activePlayer = state ? state.players[state.currentIndex] : null;
+  $: matchRecapGameNumber = $matchStore.currentGame - 1;
+  $: matchRecapWinners = $matchStore.results?.[$matchStore.results.length - 1]?.winners ?? [];
 </script>
 
 <!-- ============== SETUP 1 ============== -->
@@ -221,7 +279,11 @@
           on:change={(e) => updatePlayerTarget(i, e.detail)} />
       </RecapList>
 
-      <button class="btn-main btn-gold" on:click={startGame}>🎱 Lancer la partie !</button>
+      <MatchSetup bind:matchMode bind:totalGames={matchTotalGames} />
+
+      <button class="btn-main btn-gold" on:click={() => { if (matchMode) startMatch('straightpool', setupPlayers.map(p => p.name), matchTotalGames); startGame(); }}>
+        {matchMode ? '🏆 Lancer le match !' : '🎱 Lancer la partie !'}
+      </button>
       <button class="btn-main btn-gray" on:click={() => phase = 'setup2'}>← Retour</button>
     </div>
   </div>
@@ -308,6 +370,30 @@
     </div>
   {/if}
 </WinOverlay>
+
+<!-- ============== OVERLAY RÉCAP MATCH ============== -->
+{#if showMatchRecap}
+  <MatchRecapOverlay
+    gameNumber={matchRecapGameNumber}
+    totalGames={$matchStore.totalGames}
+    winners={matchRecapWinners}
+    matchScores={$matchStore.matchScores}
+    isLastGame={matchRecapGameNumber === $matchStore.totalGames}
+    onNext={onMatchNext}
+    onViewFinal={onMatchViewFinal}
+    onAbandon={onMatchAbandon} />
+{/if}
+
+<!-- ============== OVERLAY RÉCAP FINAL MATCH ============== -->
+{#if showMatchSummary}
+  <MatchSummaryOverlay
+    matchScores={$matchStore.matchScores}
+    results={$matchStore.results}
+    gameId="straightpool"
+    totalGames={$matchStore.totalGames}
+    onPlayAgain={onMatchPlayAgain}
+    onNewGame={onMatchNewGame} />
+{/if}
 
 <!-- ============== RULES ============== -->
 <RulesViewer gameId="straightpool" open={rulesOpen} on:close={() => rulesOpen = false} />

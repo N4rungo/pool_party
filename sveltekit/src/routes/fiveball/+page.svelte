@@ -30,8 +30,12 @@
   import NumberSelector from '$lib/components/NumberSelector.svelte';
   import PlayerNameInputs from '$lib/components/PlayerNameInputs.svelte';
   import RecapList from '$lib/components/RecapList.svelte';
+  import MatchSetup from '$lib/components/MatchSetup.svelte';
+  import MatchRecapOverlay from '$lib/components/MatchRecapOverlay.svelte';
+  import MatchSummaryOverlay from '$lib/components/MatchSummaryOverlay.svelte';
   import { showToast } from '$lib/stores/toast.js';
   import { askConfirm } from '$lib/stores/confirm.js';
+  import { matchStore, startMatch, recordResult, endMatch, isLastGame } from '$lib/stores/match.js';
   import {
     FIVE_BALL_MIN_PLAYERS,
     FIVE_BALL_MAX_PLAYERS,
@@ -53,6 +57,23 @@
   // ── Phase courante ────────────────────────────────────
   let phase = 'setup1';
   $: phase, typeof window !== 'undefined' && window.scrollTo({ top: 0, behavior: 'instant' });
+
+  // ── Mode match ────────────────────────────────────────
+  let matchMode = false;
+  let matchTotalGames = 3;
+  let showMatchRecap = false;
+  let showMatchSummary = false;
+
+  onMount(() => {
+    if ($matchStore.isActive && $matchStore.gameId === 'fiveball') {
+      const p = $matchStore.players;
+      count = p.length;
+      setupPlayers = p.map(name => ({ name, target: FIVE_BALL_DEFAULT_TARGET }));
+      matchMode = true;
+      matchTotalGames = $matchStore.totalGames;
+      startGame();
+    }
+  });
 
   // ── Setup ─────────────────────────────────────────────
   let count = FIVE_BALL_DEFAULT_PLAYERS;
@@ -111,7 +132,14 @@
 
     if (outcome.kind === 'win') {
       winnerName = outcome.winner.name;
-      phase = 'win';
+      if ($matchStore.isActive) {
+        // Lower score = better in fiveball (winner reached 0). Use negative for ranking.
+        const allScores = state.players.map(p => ({ name: p.name, score: -p.score }));
+        recordResult([outcome.winner.name], allScores);
+        showMatchRecap = true;
+      } else {
+        phase = 'win';
+      }
     } else if (outcome.kind === 'scored') {
       showToast(`🎱 −${outcome.delta} pts`);
     } else if (outcome.kind === 'fault') {
@@ -157,6 +185,33 @@
   onMount(() => { innerWidth = window.innerWidth; });
   $: boardBallSize = innerWidth >= 700 ? 82 : 62;
   $: tabCols = state ? (state.players.length >= 5 ? 3 : 2) : 2;
+  // ── Handlers match recap ──────────────────────────────
+  function onMatchNext() {
+    showMatchRecap = false;
+    goto(`${base}/fiveball/`);
+  }
+  function onMatchViewFinal() {
+    showMatchRecap = false;
+    showMatchSummary = true;
+  }
+  function onMatchAbandon() {
+    endMatch();
+    showMatchRecap = false;
+    goto(base || '/');
+  }
+  function onMatchPlayAgain() {
+    const savedPlayers = $matchStore.players;
+    const savedTotal = $matchStore.totalGames;
+    endMatch();
+    startMatch('fiveball', savedPlayers, savedTotal);
+    showMatchSummary = false;
+    goto(`${base}/fiveball/`);
+  }
+  function onMatchNewGame() {
+    endMatch();
+    showMatchSummary = false;
+    goto(base || '/');
+  }
 
   // ── Helpers réactifs ──────────────────────────────────
   $: cue = state ? activeCueBall(state) : null;
@@ -165,6 +220,8 @@
   $: activePlayer = state ? state.players[state.currentIndex] : null;
   $: remaining = activePlayer ? activePlayer.score - total : 0;
   $: previewKind = computePreviewKind(state, total, remaining);
+  $: matchRecapGameNumber = $matchStore.currentGame - 1;
+  $: matchRecapWinners = $matchStore.results?.[$matchStore.results.length - 1]?.winners ?? [];
 
   function computePreviewKind(s, t, rem) {
     if (!s) return 'muted';
@@ -254,7 +311,11 @@
           on:change={(e) => updatePlayerTarget(i, e.detail)} />
       </RecapList>
 
-      <button class="btn-main btn-gold" on:click={startGame}>🎱 Lancer la partie !</button>
+      <MatchSetup bind:matchMode bind:totalGames={matchTotalGames} />
+
+      <button class="btn-main btn-gold" on:click={() => { if (matchMode) startMatch('fiveball', setupPlayers.map(p => p.name), matchTotalGames); startGame(); }}>
+        {matchMode ? '🏆 Lancer le match !' : '🎱 Lancer la partie !'}
+      </button>
       <button class="btn-main btn-gray" on:click={() => phase = 'setup2'}>← Retour</button>
     </div>
   </div>
@@ -350,6 +411,30 @@
   on:undo={onUndoFromWin}
   on:replay={replay}
   on:newGame={newGame} />
+
+<!-- ============== OVERLAY RÉCAP MATCH ============== -->
+{#if showMatchRecap}
+  <MatchRecapOverlay
+    gameNumber={matchRecapGameNumber}
+    totalGames={$matchStore.totalGames}
+    winners={matchRecapWinners}
+    matchScores={$matchStore.matchScores}
+    isLastGame={matchRecapGameNumber === $matchStore.totalGames}
+    onNext={onMatchNext}
+    onViewFinal={onMatchViewFinal}
+    onAbandon={onMatchAbandon} />
+{/if}
+
+<!-- ============== OVERLAY RÉCAP FINAL MATCH ============== -->
+{#if showMatchSummary}
+  <MatchSummaryOverlay
+    matchScores={$matchStore.matchScores}
+    results={$matchStore.results}
+    gameId="fiveball"
+    totalGames={$matchStore.totalGames}
+    onPlayAgain={onMatchPlayAgain}
+    onNewGame={onMatchNewGame} />
+{/if}
 
 <!-- ============== RULES ============== -->
 <RulesViewer gameId="fiveball" open={rulesOpen} on:close={() => rulesOpen = false} />
