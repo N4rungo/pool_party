@@ -18,14 +18,19 @@
   import { goto } from '$app/navigation';
   import { base } from '$app/paths';
   import { shuffle } from '$lib/utils.js';
+  import { onMount } from 'svelte';
   import GameLayout from '$lib/components/GameLayout.svelte';
   import RulesViewer from '$lib/components/RulesViewer.svelte';
   import WinOverlay from '$lib/components/WinOverlay.svelte';
   import Overlay from '$lib/components/Overlay.svelte';
   import NumberSelector from '$lib/components/NumberSelector.svelte';
   import PlayerNameInputs from '$lib/components/PlayerNameInputs.svelte';
+  import MatchSetup from '$lib/components/MatchSetup.svelte';
+  import MatchRecapOverlay from '$lib/components/MatchRecapOverlay.svelte';
+  import MatchSummaryOverlay from '$lib/components/MatchSummaryOverlay.svelte';
   import { showToast } from '$lib/stores/toast.js';
   import { askConfirm } from '$lib/stores/confirm.js';
+  import { matchStore, startMatch, recordResult, endMatch, undoResult, isLastGame } from '$lib/stores/match.js';
   import {
     SNOOKER_BALLS,
     SNOOKER_COLORS_ORDER,
@@ -53,6 +58,23 @@
 
   let phase = 'setup1';
   $: phase, typeof window !== 'undefined' && window.scrollTo({ top: 0, behavior: 'instant' });
+
+  // ── Mode match ────────────────────────────────────────
+  let matchMode = false;
+  let matchTotalGames = 3;
+  let showMatchRecap = false;
+  let showMatchSummary = false;
+
+  onMount(() => {
+    if ($matchStore.isActive && $matchStore.gameId === 'snooker') {
+      const p = $matchStore.players;
+      count = p.length;
+      setupPlayers = p.map(name => ({ name }));
+      matchMode = true;
+      matchTotalGames = $matchStore.totalGames;
+      startGame();
+    }
+  });
 
   // Setup
   let count = SNOOKER_DEFAULT_PLAYERS;
@@ -108,7 +130,13 @@
     winnerScore = winner.score;
     winnerBreak = winner.bestBreak;
     finalRanking = rankedPlayers(state);
-    phase = 'win';
+    if ($matchStore.isActive) {
+      const allScores = state.players.map(p => ({ name: p.name, score: p.score }));
+      recordResult([winner.name], allScores);
+      showMatchRecap = true;
+    } else {
+      phase = 'win';
+    }
   }
 
   // ── Multi-shot overlay ────────────────────────────────
@@ -237,11 +265,63 @@
 
   let rulesOpen = false;
 
+  // ── Handlers match recap ──────────────────────────────
+  function onMatchNext() {
+    showMatchRecap = false;
+    winnerName = null;
+    winnerScore = 0;
+    winnerBreak = 0;
+    startGame();
+  }
+  function onMatchViewFinal() {
+    showMatchRecap = false;
+    showMatchSummary = true;
+  }
+  function onMatchUndo() {
+    undoResult();
+    state = undo(state);
+    winnerName = null;
+    winnerScore = 0;
+    winnerBreak = 0;
+    finalRanking = [];
+    showMatchRecap = false;
+    showToast('↩ Coup décisif annulé — on continue !');
+  }
+  async function onMatchAbandon() {
+    const ok = await askConfirm('Abandonner le match en cours ?', {
+      confirmLabel: 'Abandonner',
+      cancelLabel:  'Continuer',
+    });
+    if (!ok) return;
+    endMatch();
+    showMatchRecap = false;
+    goto(base || '/');
+  }
+  function onMatchPlayAgain() {
+    const savedPlayers = $matchStore.players;
+    const savedTotal = $matchStore.totalGames;
+    endMatch();
+    startMatch('snooker', savedPlayers, savedTotal);
+    showMatchSummary = false;
+    winnerName = null;
+    winnerScore = 0;
+    winnerBreak = 0;
+    finalRanking = [];
+    startGame();
+  }
+  function onMatchNewGame() {
+    endMatch();
+    showMatchSummary = false;
+    goto(base || '/');
+  }
+
   // Helpers réactifs
   $: activePlayer = state ? state.players[state.currentIndex] : null;
   $: phaseLabelText = state ? phaseLabel(state) : '';
   $: msPoints = multiShot ? multiShotPoints(multiShot) : null;
   $: tabCols = state ? (state.players.length >= 5 ? 3 : 2) : 1;
+  $: matchRecapGameNumber = $matchStore.currentGame - 1;
+  $: matchRecapWinners = $matchStore.results?.[$matchStore.results.length - 1]?.winners ?? [];
 </script>
 
 <!-- ============== SETUP 1 ============== -->
@@ -318,11 +398,6 @@
         Mode : {mode === 'simple' ? '🟢 Simple' : '🔴 Expert'}
       </div>
 
-      <label class="setup-toggle">
-        <span>🔀 Ordre aléatoire</span>
-        <input type="checkbox" bind:checked={randomizeOrder} />
-      </label>
-
       <div class="recap-list">
         {#each setupPlayers as p, i (i)}
           <div class="recap-row">
@@ -332,7 +407,11 @@
         {/each}
       </div>
 
-      <button class="btn-main btn-gold" on:click={startGame}>🎱 Lancer la partie !</button>
+      <MatchSetup bind:randomizeOrder bind:matchMode bind:totalGames={matchTotalGames} />
+
+      <button class="btn-main btn-gold" on:click={() => { if (matchMode) startMatch('snooker', setupPlayers.map(p => p.name), matchTotalGames); startGame(); }}>
+        {matchMode ? '🏆 Lancer le match !' : '🎱 Lancer la partie !'}
+      </button>
       <button class="btn-main btn-gray" on:click={() => phase = 'setup2'}>← Retour</button>
     </div>
   </div>
@@ -556,6 +635,32 @@
     </div>
   {/if}
 </WinOverlay>
+
+<!-- ============== OVERLAY RÉCAP MATCH ============== -->
+{#if showMatchRecap}
+  <MatchRecapOverlay
+    gameNumber={matchRecapGameNumber}
+    totalGames={$matchStore.totalGames}
+    winners={matchRecapWinners}
+    matchScores={$matchStore.matchScores}
+    isLastGame={matchRecapGameNumber === $matchStore.totalGames}
+    canUndo={state?.history?.length > 0}
+    onUndo={onMatchUndo}
+    onNext={onMatchNext}
+    onViewFinal={onMatchViewFinal}
+    onAbandon={onMatchAbandon} />
+{/if}
+
+<!-- ============== OVERLAY RÉCAP FINAL MATCH ============== -->
+{#if showMatchSummary}
+  <MatchSummaryOverlay
+    matchScores={$matchStore.matchScores}
+    results={$matchStore.results}
+    gameId="snooker"
+    totalGames={$matchStore.totalGames}
+    onPlayAgain={onMatchPlayAgain}
+    onNewGame={onMatchNewGame} />
+{/if}
 
 <!-- ============== RULES ============== -->
 <RulesViewer gameId="snooker" open={rulesOpen} on:close={() => rulesOpen = false} />

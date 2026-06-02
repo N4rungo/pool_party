@@ -23,8 +23,12 @@
   import BallButton from '$lib/components/BallButton.svelte';
   import NumberSelector from '$lib/components/NumberSelector.svelte';
   import PlayerNameInputs from '$lib/components/PlayerNameInputs.svelte';
+  import MatchSetup from '$lib/components/MatchSetup.svelte';
+  import MatchRecapOverlay from '$lib/components/MatchRecapOverlay.svelte';
+  import MatchSummaryOverlay from '$lib/components/MatchSummaryOverlay.svelte';
   import { showToast } from '$lib/stores/toast.js';
   import { askConfirm } from '$lib/stores/confirm.js';
+  import { matchStore, startMatch, recordResult, endMatch, undoResult, isLastGame } from '$lib/stores/match.js';
   import {
     CT_MIN_PLAYERS,
     CT_MAX_PLAYERS,
@@ -43,6 +47,23 @@
   // ── Phase courante ────────────────────────────────────
   let phase = 'setup1';
   $: phase, typeof window !== 'undefined' && window.scrollTo({ top: 0, behavior: 'instant' });
+
+  // ── Mode match ────────────────────────────────────────
+  let matchMode = false;
+  let matchTotalGames = 3;
+  let showMatchRecap = false;
+  let showMatchSummary = false;
+
+  onMount(() => {
+    if ($matchStore.isActive && $matchStore.gameId === 'cutthroat') {
+      const p = $matchStore.players;
+      count = p.length;
+      setupPlayers = p.map(name => ({ name }));
+      matchMode = true;
+      matchTotalGames = $matchStore.totalGames;
+      startGame();
+    }
+  });
 
   // ── Setup ─────────────────────────────────────────────
   let count = CT_DEFAULT_PLAYERS;
@@ -84,7 +105,17 @@
     state = newState;
     if (outcome.kind === 'win') {
       winnerName = outcome.winner.name;
-      phase = 'win';
+      if ($matchStore.isActive) {
+        const allScores = state.players.map(p => ({
+          name: p.name,
+          score: state.distribution.groups[state.players.indexOf(p)]
+            .filter(b => state.balls[b] !== 'out').length
+        }));
+        recordResult([outcome.winner.name], allScores);
+        showMatchRecap = true;
+      } else {
+        phase = 'win';
+      }
     } else if (outcome.kind === 'continue') {
       // Vérifier si on vient d'éliminer quelqu'un (toast d'info)
       // (sinon le bruit de toast à chaque bille est inutile)
@@ -150,6 +181,48 @@
   // ── Overlay règles ────────────────────────────────────
   let rulesOpen = false;
 
+  // ── Handlers match recap ──────────────────────────────
+  function onMatchNext() {
+    showMatchRecap = false;
+    winnerName = null;
+    startGame();
+  }
+  function onMatchViewFinal() {
+    showMatchRecap = false;
+    showMatchSummary = true;
+  }
+  function onMatchUndo() {
+    undoResult();
+    state = undo(state);
+    winnerName = null;
+    showMatchRecap = false;
+    showToast('↩ Coup décisif annulé — on continue !');
+  }
+  async function onMatchAbandon() {
+    const ok = await askConfirm('Abandonner le match en cours ?', {
+      confirmLabel: 'Abandonner',
+      cancelLabel:  'Continuer',
+    });
+    if (!ok) return;
+    endMatch();
+    showMatchRecap = false;
+    goto(base || '/');
+  }
+  function onMatchPlayAgain() {
+    const savedPlayers = $matchStore.players;
+    const savedTotal = $matchStore.totalGames;
+    endMatch();
+    startMatch('cutthroat', savedPlayers, savedTotal);
+    showMatchSummary = false;
+    winnerName = null;
+    startGame();
+  }
+  function onMatchNewGame() {
+    endMatch();
+    showMatchSummary = false;
+    goto(base || '/');
+  }
+
   // ── Layout adaptatif ──────────────────────────────────
   let innerWidth = 480;
   onMount(() => { innerWidth = window.innerWidth; });
@@ -159,6 +232,8 @@
   $: ballSize  = innerWidth >= 700
     ? (perPlayer >= 5 ? 54 : perPlayer >= 3 ? 50 : perPlayer === 2 ? 44 : 64)
     : (perPlayer >= 5 ? 42 : perPlayer === 3 ? 36 : perPlayer === 2 ? 32 : 28);
+  $: matchRecapGameNumber = $matchStore.currentGame - 1;
+  $: matchRecapWinners = $matchStore.results?.[$matchStore.results.length - 1]?.winners ?? [];
 </script>
 
 <!-- ============== SETUP 1 : nb joueurs ============== -->
@@ -240,7 +315,11 @@
         {/each}
       </div>
 
-      <button class="btn-main btn-gold" on:click={startGame}>🎱 Lancer la partie !</button>
+      <MatchSetup bind:matchMode bind:totalGames={matchTotalGames} />
+
+      <button class="btn-main btn-gold" on:click={() => { if (matchMode) startMatch('cutthroat', setupPlayers.map(p => p.name), matchTotalGames); startGame(); }}>
+        {matchMode ? '🏆 Lancer le match !' : '🎱 Lancer la partie !'}
+      </button>
       <button class="btn-main btn-gray" on:click={() => phase = 'setup2'}>← Retour</button>
     </div>
   </div>
@@ -351,6 +430,32 @@
   on:undo={onUndoFromWin}
   on:replay={replay}
   on:newGame={newGame} />
+
+<!-- ============== OVERLAY RÉCAP MATCH ============== -->
+{#if showMatchRecap}
+  <MatchRecapOverlay
+    gameNumber={matchRecapGameNumber}
+    totalGames={$matchStore.totalGames}
+    winners={matchRecapWinners}
+    matchScores={$matchStore.matchScores}
+    isLastGame={matchRecapGameNumber === $matchStore.totalGames}
+    canUndo={state?.history?.length > 0}
+    onUndo={onMatchUndo}
+    onNext={onMatchNext}
+    onViewFinal={onMatchViewFinal}
+    onAbandon={onMatchAbandon} />
+{/if}
+
+<!-- ============== OVERLAY RÉCAP FINAL MATCH ============== -->
+{#if showMatchSummary}
+  <MatchSummaryOverlay
+    matchScores={$matchStore.matchScores}
+    results={$matchStore.results}
+    gameId="cutthroat"
+    totalGames={$matchStore.totalGames}
+    onPlayAgain={onMatchPlayAgain}
+    onNewGame={onMatchNewGame} />
+{/if}
 
 <!-- ============== RULES ============== -->
 <RulesViewer gameId="cutthroat" open={rulesOpen} on:close={() => rulesOpen = false} />
