@@ -51,6 +51,7 @@
   let matchTotalGames = 3;
   let showMatchRecap = false;
   let showMatchSummary = false;
+  let matchAbandoned = false;
 
   onMount(() => {
     if ($matchStore.isActive && $matchStore.gameId === 'straightpool') {
@@ -188,15 +189,16 @@
       cancelLabel:  'Continuer',
     });
     if (!ok) return;
-    endMatch();
     showMatchRecap = false;
-    goto(base || '/');
+    matchAbandoned = true;
+    showMatchSummary = true;
   }
   function onMatchPlayAgain() {
     const savedPlayers = $matchStore.players;
     const savedTotal = $matchStore.totalGames;
     endMatch();
     startMatch('straightpool', savedPlayers, savedTotal);
+    matchAbandoned = false;
     showMatchSummary = false;
     winnerName = null;
     winnerRanking = [];
@@ -204,6 +206,7 @@
   }
   function onMatchNewGame() {
     endMatch();
+    matchAbandoned = false;
     showMatchSummary = false;
     goto(base || '/');
   }
@@ -405,6 +408,7 @@
     results={$matchStore.results}
     gameId="straightpool"
     totalGames={$matchStore.totalGames}
+    abandoned={matchAbandoned}
     onPlayAgain={onMatchPlayAgain}
     onNewGame={onMatchNewGame} />
 {/if}

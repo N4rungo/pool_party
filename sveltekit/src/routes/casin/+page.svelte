@@ -50,6 +50,7 @@
   let matchTotalGames = 3;
   let showMatchRecap = false;
   let showMatchSummary = false;
+  let matchAbandoned = false;
 
   onMount(() => {
     if ($matchStore.isActive && $matchStore.gameId === 'casin') {
@@ -190,21 +191,23 @@
       cancelLabel:  'Continuer',
     });
     if (!ok) return;
-    endMatch();
     showMatchRecap = false;
-    goto(base || '/');
+    matchAbandoned = true;
+    showMatchSummary = true;
   }
   function onMatchPlayAgain() {
     const savedPlayers = $matchStore.players;
     const savedTotal = $matchStore.totalGames;
     endMatch();
     startMatch('casin', savedPlayers, savedTotal);
+    matchAbandoned = false;
     showMatchSummary = false;
     winnerName = null;
     startGame();
   }
   function onMatchNewGame() {
     endMatch();
+    matchAbandoned = false;
     showMatchSummary = false;
     goto(base || '/');
   }
@@ -397,6 +400,7 @@
     results={$matchStore.results}
     gameId="casin"
     totalGames={$matchStore.totalGames}
+    abandoned={matchAbandoned}
     onPlayAgain={onMatchPlayAgain}
     onNewGame={onMatchNewGame} />
 {/if}

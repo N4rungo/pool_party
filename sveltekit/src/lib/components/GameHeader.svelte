@@ -24,6 +24,7 @@
   export let icon = null;
   export let gameId;
   export let canUndo = false;
+  export let showMatchInfo = false;
 
   const dispatch = createEventDispatcher();
 </script>
@@ -39,7 +40,13 @@
       on:click={() => dispatch('rules')}
       aria-label="Règles">i</button>
   </h1>
-  <span></span>
+  {#if showMatchInfo}
+    <button class="btn-match" on:click={() => dispatch('matchInfo')} aria-label="Infos match">
+      🏆
+    </button>
+  {:else}
+    <span></span>
+  {/if}
 </div>
 
 <div class="game-actionbar">
@@ -85,6 +92,24 @@
   .btn-home img {
     height: 18px;
     width: 18px;
+  }
+
+  .btn-match {
+    justify-self: end;
+    background: rgba(var(--color-gold-rgb), 0.12);
+    border: 1px solid rgba(var(--color-gold-rgb), 0.35);
+    border-radius: 12px;
+    color: var(--color-gold);
+    padding: 8px 10px;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    transition: background 0.15s;
+  }
+  .btn-match:hover {
+    background: rgba(var(--color-gold-rgb), 0.22);
   }
 
   .rules-mark {

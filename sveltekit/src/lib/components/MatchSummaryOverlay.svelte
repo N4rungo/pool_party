@@ -16,6 +16,7 @@
   export let results = [];
   export let gameId = '';
   export let totalGames = 3;
+  export let abandoned = false;
   export let onPlayAgain = () => {};
   export let onNewGame = () => {};
 
@@ -46,9 +47,9 @@
 
 <Overlay open={true} dismissOnBackdrop={false}>
   <div class="summary-content">
-    <div class="summary-header">Match terminé !</div>
+    <div class="summary-header">{abandoned ? 'Match abandonné' : 'Match terminé !'}</div>
 
-    <div class="summary-trophy">🏆</div>
+    <div class="summary-trophy">{abandoned ? '🚪' : '🏆'}</div>
     <div class="summary-winner-label">
       {#if isTie}Égalité :{:else}Vainqueur du match :{/if}
     </div>
@@ -94,11 +95,13 @@
       </div>
     {/if}
 
-    <button class="btn-main btn-gold" on:click={onPlayAgain}>
-      🔄 Rejouer un match
-    </button>
+    {#if !abandoned}
+      <button class="btn-main btn-gold" on:click={onPlayAgain}>
+        🔄 Rejouer un match
+      </button>
+    {/if}
     <button class="btn-main btn-gray" on:click={onNewGame}>
-      ⚙️ Nouvelle partie
+      {abandoned ? '🏠 Quitter' : '⚙️ Nouvelle partie'}
     </button>
   </div>
 </Overlay>
