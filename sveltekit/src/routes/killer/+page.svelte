@@ -231,7 +231,10 @@
       cancelLabel:  'Continuer',
       iconImage:    `${base}/assets/home.png`
     });
-    if (ok) goto(base || '/');
+    if (ok) {
+      if (matchMode) endMatch();
+      goto(base || '/');
+    }
   }
 
   let rulesOpen = false;
