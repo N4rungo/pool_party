@@ -460,7 +460,7 @@
       <svelte:fragment slot="footer">
         <div class="killer-action-section">
           <div class="killer-action-title">
-            Tour de <strong>{activePlayer.name}</strong>
+            Tour de <strong>{activePlayer?.name}</strong>
             {#if isForcedTurn}
               <span class="kp-mini-badge kp-mini-badge-forced">Forcé</span>
             {:else if handActive}
@@ -478,7 +478,7 @@
                     disabled={!jokerEnabled}>
               🃏 Joker
               {#if isForcedTurn} (bloqué)
-              {:else if activePlayer.jokersUsed >= KILLER_MAX_JOKERS} (épuisés)
+              {:else if (activePlayer?.jokersUsed ?? 0) >= KILLER_MAX_JOKERS} (épuisés)
               {/if}
             </button>
           </div>
