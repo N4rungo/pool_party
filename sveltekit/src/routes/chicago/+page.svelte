@@ -23,6 +23,8 @@
   import { showToast } from '$lib/stores/toast.js';
   import { askConfirm } from '$lib/stores/confirm.js';
   import { matchStore, startMatch, recordResult, endMatch, undoResult, isLastGame } from '$lib/stores/match.js';
+  import { recordHistory } from '$lib/stores/history.js';
+  import PlayerPicker from '$lib/components/PlayerPicker.svelte';
   import {
     CHICAGO_TARGET_SCORE,
     CHICAGO_TRIANGLE,
@@ -37,8 +39,10 @@
   $: phase, typeof window !== 'undefined' && window.scrollTo({ top: 0, behavior: 'instant' });
 
   // ── État du setup ─────────────────────────────────────
-  let name1 = '';
-  let name2 = '';
+  let pick1 = { name: '', profileId: null };
+  let pick2 = { name: '', profileId: null };
+  $: name1 = pick1.name;
+  $: name2 = pick2.name;
 
   // ── Mode match ────────────────────────────────────────
   let matchMode = false;
@@ -46,12 +50,13 @@
   let showMatchRecap = false;
   let showMatchSummary = false;
   let matchAbandoned = false;
+  let picksMap = {};
 
   onMount(() => {
     if ($matchStore.isActive && $matchStore.gameId === 'chicago') {
       const p = $matchStore.players;
-      name1 = p[0] ?? '';
-      name2 = p[1] ?? '';
+      pick1 = { name: p[0] ?? '', profileId: null };
+      pick2 = { name: p[1] ?? '', profileId: null };
       matchMode = true;
       matchTotalGames = $matchStore.totalGames;
       startGame();
@@ -64,6 +69,7 @@
 
   // ── Démarrage (random sur qui commence) ───────────────
   function startGame() {
+    picksMap = { [pick1.name.trim() || 'Joueur 1']: pick1.profileId, [pick2.name.trim() || 'Joueur 2']: pick2.profileId };
     state = createInitialState(name1.trim() || 'Joueur 1', name2.trim() || 'Joueur 2');
     phase = 'game';
     showToast(`🎲 ${state.players[state.currentIndex].name} commence !`);
@@ -85,6 +91,17 @@
 
     if (outcome.kind === 'win' || outcome.kind === 'draw') {
       winOutcome = outcome;
+      {
+        const winners = outcome.kind === 'draw'
+          ? state.players.map(p => p.name)
+          : [outcome.winner.name];
+        recordHistory({
+          gameId: 'chicago',
+          players: state.players.map(p => ({ name: p.name, profileId: picksMap[p.name] ?? null })),
+          winners,
+          scores: Object.fromEntries(state.players.map(p => [p.name, p.score])),
+        });
+      }
       if ($matchStore.isActive) {
         const winners = outcome.kind === 'draw'
           ? state.players.map(p => p.name)
@@ -218,24 +235,8 @@
     <div class="setup-sub">Premier à 61 points</div>
 
     <div class="popup-box setup-box">
-      <div class="name-input-wrap">
-        <span class="player-emoji">🟡</span>
-        <input
-          type="text"
-          maxlength="16"
-          placeholder="Joueur 1..."
-          bind:value={name1}
-          on:keydown={(e) => e.key === 'Enter' && handleLaunch()} />
-      </div>
-      <div class="name-input-wrap">
-        <span class="player-emoji">🔵</span>
-        <input
-          type="text"
-          maxlength="16"
-          placeholder="Joueur 2..."
-          bind:value={name2}
-          on:keydown={(e) => e.key === 'Enter' && handleLaunch()} />
-      </div>
+      <PlayerPicker bind:value={pick1} index={0} exclude={pick2.profileId ? [pick2.profileId] : []} />
+      <PlayerPicker bind:value={pick2} index={1} exclude={pick1.profileId ? [pick1.profileId] : []} />
 
       <MatchSetup bind:matchMode bind:totalGames={matchTotalGames} />
 
