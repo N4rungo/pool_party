@@ -17,7 +17,7 @@
   import RulesViewer from '$lib/components/RulesViewer.svelte';
   import WinOverlay from '$lib/components/WinOverlay.svelte';
   import NumberSelector from '$lib/components/NumberSelector.svelte';
-  import PlayerNameInputs from '$lib/components/PlayerNameInputs.svelte';
+  import PlayerSetupList from '$lib/components/PlayerSetupList.svelte';
   import RecapList from '$lib/components/RecapList.svelte';
   import MatchSetup from '$lib/components/MatchSetup.svelte';
   import MatchRecapOverlay from '$lib/components/MatchRecapOverlay.svelte';
@@ -25,6 +25,7 @@
   import { showToast } from '$lib/stores/toast.js';
   import { askConfirm } from '$lib/stores/confirm.js';
   import { matchStore, startMatch, recordResult, endMatch, undoResult, isLastGame } from '$lib/stores/match.js';
+  import { recordHistory } from '$lib/stores/history.js';
   import {
     CASIN_ACTIONS,
     CASIN_MIN_PLAYERS,
@@ -51,6 +52,8 @@
   let showMatchRecap = false;
   let showMatchSummary = false;
   let matchAbandoned = false;
+  let picks = [];
+  let picksMap = {};
 
   onMount(() => {
     if ($matchStore.isActive && $matchStore.gameId === 'casin') {
@@ -59,6 +62,7 @@
       setupPlayers = p.map(name => ({ name, x: CASIN_DEFAULT_X }));
       matchMode = true;
       matchTotalGames = $matchStore.totalGames;
+      picks = p.map(name => ({ name, profileId: null }));
       startGame();
     }
   });
@@ -74,13 +78,17 @@
       name: setupPlayers[i]?.name ?? '',
       x:    setupPlayers[i]?.x ?? globalX,
     }));
+    picks = Array.from({ length: count }, (_, i) => ({
+      name:      picks[i]?.name      ?? setupPlayers[i]?.name ?? '',
+      profileId: picks[i]?.profileId ?? null,
+    }));
     phase = 'setup2';
   }
 
   function gotoSetup3() {
     setupPlayers = setupPlayers.map((p, i) => ({
       ...p,
-      name: p.name?.trim() || `Joueur ${i + 1}`,
+      name: picks[i]?.name?.trim() || `Joueur ${i + 1}`,
     }));
     phase = 'setup3';
   }
@@ -96,6 +104,7 @@
   let winnerName = null;
 
   function startGame() {
+    picksMap = Object.fromEntries(picks.map(p => [p.name.trim() || p.name, p.profileId]));
     const players = randomizeOrder ? shuffle(setupPlayers) : setupPlayers;
     state = createInitialState(players);
     winnerName = null;
@@ -111,6 +120,12 @@
       showToast('✅ Action déjà complétée !');
     } else if (outcome.kind === 'win') {
       winnerName = outcome.winner.name;
+      recordHistory({
+        gameId: 'casin',
+        players: state.players.map(p => ({ name: p.name, profileId: picksMap[p.name] ?? null })),
+        winners: [outcome.winner.name],
+        scores: Object.fromEntries(state.players.map(p => [p.name, doneCount(p)])),
+      });
       if ($matchStore.isActive) {
         const allScores = state.players.map(p => ({ name: p.name, score: doneCount(p) }));
         recordResult([outcome.winner.name], allScores);
@@ -265,7 +280,7 @@
     <div class="setup-sub">Étape 2 / 3 — Noms des joueurs</div>
 
     <div class="popup-box setup-box">
-      <PlayerNameInputs bind:players={setupPlayers} />
+      <PlayerSetupList bind:picks count={setupPlayers.length} />
 
       <button class="btn-main btn-gold" on:click={gotoSetup3}>Suivant →</button>
       <button class="btn-main btn-gray" on:click={() => phase = 'setup1'}>← Retour</button>
