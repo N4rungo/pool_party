@@ -53,6 +53,7 @@
   let matchTotalGames = 3;
   let showMatchRecap = false;
   let showMatchSummary = false;
+  let matchAbandoned = false;
 
   onMount(() => {
     if ($matchStore.isActive && $matchStore.gameId === 'cutthroat') {
@@ -204,21 +205,23 @@
       cancelLabel:  'Continuer',
     });
     if (!ok) return;
-    endMatch();
     showMatchRecap = false;
-    goto(base || '/');
+    matchAbandoned = true;
+    showMatchSummary = true;
   }
   function onMatchPlayAgain() {
     const savedPlayers = $matchStore.players;
     const savedTotal = $matchStore.totalGames;
     endMatch();
     startMatch('cutthroat', savedPlayers, savedTotal);
+    matchAbandoned = false;
     showMatchSummary = false;
     winnerName = null;
     startGame();
   }
   function onMatchNewGame() {
     endMatch();
+    matchAbandoned = false;
     showMatchSummary = false;
     goto(base || '/');
   }
@@ -453,6 +456,7 @@
     results={$matchStore.results}
     gameId="cutthroat"
     totalGames={$matchStore.totalGames}
+    abandoned={matchAbandoned}
     onPlayAgain={onMatchPlayAgain}
     onNewGame={onMatchNewGame} />
 {/if}

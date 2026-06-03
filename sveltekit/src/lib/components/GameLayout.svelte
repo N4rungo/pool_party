@@ -8,26 +8,36 @@
 
   Le footer utilise `position: sticky; bottom: 0`. Il reste collé au bas
   du viewport tant qu'il y a du contenu à scroller au-dessus ; sinon il
-  est simplement à la fin de la page (comportement normal).
+  est simplement à la fin de la page (comportement naturel).
 
   Usage : passer le contenu principal dans le slot par défaut, et les
   actions à fixer en bas dans le slot nommé `footer`.
 
   Le slot 'footer' est optionnel : sans lui, le layout se comporte
   comme un simple wrapper avec GameHeader.
+
+  Le bouton 🏆 (infos match) apparaît automatiquement dans l'en-tête
+  lorsqu'un match est actif, sans nécessiter de props supplémentaires
+  dans les pages de jeu.
 -->
 <script>
   import GameHeader from './GameHeader.svelte';
+  import MatchInfoOverlay from './MatchInfoOverlay.svelte';
+  import { matchStore } from '$lib/stores/match.js';
 
   export let title;
   export let icon = null;
   export let gameId;
   export let canUndo = false;
+
+  let matchInfoOpen = false;
 </script>
 
 <div class="game-layout">
   <GameHeader {title} {icon} {gameId} {canUndo}
-              on:home on:undo on:rules />
+              showMatchInfo={$matchStore.isActive}
+              on:home on:undo on:rules
+              on:matchInfo={() => (matchInfoOpen = true)} />
 
   <div class="game-layout-body">
     <slot />
@@ -39,6 +49,17 @@
     </div>
   {/if}
 </div>
+
+{#if $matchStore.isActive}
+  <MatchInfoOverlay
+    open={matchInfoOpen}
+    {gameId}
+    currentGame={$matchStore.currentGame}
+    totalGames={$matchStore.totalGames}
+    matchScores={$matchStore.matchScores}
+    results={$matchStore.results}
+    on:close={() => (matchInfoOpen = false)} />
+{/if}
 
 <style>
   .game-layout {
