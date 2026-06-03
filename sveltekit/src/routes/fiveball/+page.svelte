@@ -364,7 +364,7 @@
         <!-- Bandeau d'info — toujours visible avec le plateau -->
         <div class="fb-banner">
           <div class="fb-banner-line">
-            Tour de <strong>{activePlayer?.name}</strong>
+            Tour de <strong>{activePlayer.name}</strong>
             <span class="fb-banner-cue">— Cue : {cueLabel}</span>
           </div>
           {#if state.isFirstTurn}
