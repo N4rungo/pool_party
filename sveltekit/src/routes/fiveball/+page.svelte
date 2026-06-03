@@ -175,7 +175,10 @@
       cancelLabel:  'Continuer',
       iconImage:    `${base}/assets/home.png`
     });
-    if (ok) goto(base || '/');
+    if (ok) {
+      if (matchMode) endMatch();
+      goto(base || '/');
+    }
   }
 
   // ── Overlay règles ────────────────────────────────────
@@ -364,7 +367,7 @@
         <!-- Bandeau d'info — toujours visible avec le plateau -->
         <div class="fb-banner">
           <div class="fb-banner-line">
-            Tour de <strong>{activePlayer?.name}</strong>
+            Tour de <strong>{activePlayer.name}</strong>
             <span class="fb-banner-cue">— Cue : {cueLabel}</span>
           </div>
           {#if state.isFirstTurn}

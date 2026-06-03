@@ -261,7 +261,10 @@
       cancelLabel:  'Continuer',
       iconImage:    `${base}/assets/home.png`
     });
-    if (ok) goto(base || '/');
+    if (ok) {
+      if (matchMode) endMatch();
+      goto(base || '/');
+    }
   }
 
   let rulesOpen = false;
@@ -446,7 +449,7 @@
 
     <!-- Bandeau actif -->
     <div class="snk-active-info">
-      <div class="snk-active-name">Tour de {activePlayer?.name}</div>
+      <div class="snk-active-name">Tour de {activePlayer.name}</div>
       <div class="snk-break-now">
         {#if state.mustReplay}
           Rejoue (suite à une faute)

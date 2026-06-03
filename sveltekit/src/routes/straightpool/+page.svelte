@@ -159,7 +159,10 @@
       cancelLabel:  'Continuer',
       iconImage:    `${base}/assets/home.png`
     });
-    if (ok) goto(base || '/');
+    if (ok) {
+      if (matchMode) endMatch();
+      goto(base || '/');
+    }
   }
 
   let rulesOpen = false;
@@ -340,7 +343,7 @@
     </div>
 
       <svelte:fragment slot="footer">
-        <div class="sp-action-title">Tour de <strong>{activePlayer?.name}</strong></div>
+        <div class="sp-action-title">Tour de <strong>{activePlayer.name}</strong></div>
         <!-- Sélecteur de break courant — toujours visible -->
         <div class="sp-break-section">
           <div class="sp-break-label">Break en cours</div>
