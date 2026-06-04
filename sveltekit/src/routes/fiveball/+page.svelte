@@ -245,7 +245,7 @@
 {/if}
 
 <!-- ============== GAME ============== -->
-{#if phase === 'game' && state}
+{#if phase === 'game' && state && activePlayer}
   <div class="game">
     <GameLayout
       title="5-BALL"
