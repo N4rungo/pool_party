@@ -13,6 +13,7 @@
   import { GAMES } from '$lib/games.js';
   import { profilesStore } from '$lib/stores/profiles.js';
   import { historyStore } from '$lib/stores/history.js';
+  import { version } from '../../package.json';
 
   let rulesOpen = false;
   let rulesGameId = null;
@@ -67,6 +68,7 @@
     <h2>
       <img src="{base}/assets/pool_party.png" alt="" class="info-logo" />
       Pool Party
+      <span class="info-version">v{version}</span>
     </h2>
     <p class="info-tagline">Scores de billard pour soirées — fonctionne sans connexion, même au fond d'un bar.</p>
 
@@ -277,6 +279,16 @@
     width: 36px;
     height: 36px;
     object-fit: contain;
+  }
+
+  .info-version {
+    margin-left: auto;
+    font-size: 12px;
+    font-weight: normal;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 0.5px;
+    font-family: monospace;
+    align-self: center;
   }
 
   .info-tagline {
