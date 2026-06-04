@@ -6,10 +6,13 @@
 -->
 <script>
   import { base } from '$app/paths';
+  import { goto } from '$app/navigation';
   import GameCard from '$lib/components/GameCard.svelte';
   import RulesViewer from '$lib/components/RulesViewer.svelte';
   import Overlay from '$lib/components/Overlay.svelte';
   import { GAMES } from '$lib/games.js';
+  import { profilesStore } from '$lib/stores/profiles.js';
+  import { historyStore } from '$lib/stores/history.js';
 
   let rulesOpen = false;
   let rulesGameId = null;
@@ -42,6 +45,19 @@
       <div class="game-arrow">Bientôt</div>
     </div>
   </div>
+
+  <!-- Players zone -->
+  <button class="players-btn" on:click={() => goto(`${base}/players`)}>
+    <span class="players-icon">👤</span>
+    <span class="players-info">
+      <span class="players-title">Joueurs & Statistiques</span>
+      <span class="players-sub">
+        {$profilesStore.length} profil{$profilesStore.length !== 1 ? 's' : ''}
+        · {$historyStore.length} partie{$historyStore.length !== 1 ? 's' : ''} enregistrée{$historyStore.length !== 1 ? 's' : ''}
+      </span>
+    </span>
+    <span class="players-arrow">›</span>
+  </button>
 </div>
 
 <RulesViewer gameId={rulesGameId} open={rulesOpen} on:close={() => rulesOpen = false} />
@@ -147,6 +163,60 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
     }
+  }
+
+  /* Players zone */
+  .players-btn {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    margin-top: 20px;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 16px 20px;
+    cursor: pointer;
+    font-family: inherit;
+    color: white;
+    text-align: left;
+    transition: background 0.15s, border-color 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .players-btn:hover,
+  .players-btn:active {
+    background: rgba(var(--color-gold-rgb), 0.07);
+    border-color: rgba(var(--color-gold-rgb), 0.3);
+  }
+
+  .players-icon {
+    font-size: 32px;
+    flex-shrink: 0;
+  }
+
+  .players-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .players-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .players-sub {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  .players-arrow {
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.25);
+    flex-shrink: 0;
   }
 
   /* Carte "Soon" */
