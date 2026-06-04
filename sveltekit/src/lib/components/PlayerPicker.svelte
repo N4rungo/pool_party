@@ -1,72 +1,99 @@
 <!--
   PlayerPicker — sélection d'un joueur pour le setup d'une partie.
 
-  Pour chaque slot joueur, on propose :
-  • Choisir un profil existant (liste filtrée par recherche)
-  • Créer un nouveau profil (nom → profil créé + sélectionné)
-  • Jouer en invité (nom libre, pas de stats sauvegardées)
+  • Profil existant : liste déroulante sur focus de la recherche
+  • Créer un profil : nom → profil créé + sélectionné
+  • Invité           : nom libre, stats non sauvegardées
 
   Props :
-    value     : { name: string, profileId: string|null }  (bind:value)
-    index     : number  (numéro du slot, pour l'affichage)
-    exclude   : string[]  (profileIds déjà sélectionnés dans d'autres slots)
+    value        : { name: string, profileId: string|null }  (bind:value)
+    index        : number  (numéro du slot)
+    exclude      : string[]  (profileIds déjà pris dans d'autres slots)
+    excludeNames : string[]  (noms déjà pris — casse ignorée)
 -->
 <script>
   import { profilesStore, createProfile } from '$lib/stores/profiles.js';
 
-  export let value = { name: '', profileId: null };
-  export let index = 0;
-  export let exclude = [];
+  export let value        = { name: '', profileId: null };
+  export let index        = 0;
+  export let exclude      = [];
+  export let excludeNames = [];
 
-  // Mode du picker : 'idle' | 'picking' | 'guest' | 'creating'
-  let mode = value.profileId ? 'idle' : (value.name ? 'guest' : 'idle');
+  const MAX_NAME = 16;
 
-  let search = '';
-  let newName = '';
-  let guestName = value.profileId ? '' : value.name;
+  // États : 'idle' | 'picking' | 'guest' | 'creating'
+  let mode = value.profileId || value.name ? 'idle' : 'idle';
+
+  let search    = '';
+  let newName   = '';
+  let guestName = '';
+
+  // ── Dérivés ─────────────────────────────────────────────
+  $: lowerExcludeNames = excludeNames.map(n => n.toLowerCase());
 
   $: availableProfiles = $profilesStore.filter(p =>
     !exclude.includes(p.id) &&
+    !lowerExcludeNames.includes(p.name.toLowerCase()) &&
     p.name.toLowerCase().includes(search.toLowerCase())
   );
 
-  $: selectedProfile = value.profileId
-    ? $profilesStore.find(p => p.id === value.profileId) ?? null
-    : null;
+  $: guestNameTaken  = !!guestName.trim() &&
+    lowerExcludeNames.includes(guestName.trim().toLowerCase());
 
+  $: newNameExists   = !!newName.trim() &&
+    $profilesStore.some(p => p.name.toLowerCase() === newName.trim().toLowerCase());
+  $: newNameTaken    = !!newName.trim() &&
+    lowerExcludeNames.includes(newName.trim().toLowerCase());
+  $: newNameBlocked  = newNameExists || newNameTaken;
+
+  // ── Blur avec délai pour laisser les clics sur la liste se déclencher
+  let blurTimer;
+  function onSearchFocus() {
+    clearTimeout(blurTimer);
+    mode = 'picking';
+  }
+  function onSearchBlur() {
+    blurTimer = setTimeout(() => {
+      if (mode === 'picking') mode = 'idle';
+    }, 180);
+  }
+
+  // ── Actions ─────────────────────────────────────────────
   function selectProfile(profile) {
     value = { name: profile.name, profileId: profile.id };
-    mode = 'idle';
+    mode  = 'idle';
     search = '';
   }
 
   function confirmGuest() {
     const name = guestName.trim();
-    if (!name) return;
+    if (!name || guestNameTaken) return;
     value = { name, profileId: null };
-    mode = 'idle';
+    mode  = 'idle';
   }
 
   function confirmCreate() {
     const name = newName.trim();
-    if (!name) return;
+    if (!name || newNameBlocked) return;
     const profile = createProfile(name);
     value = { name: profile.name, profileId: profile.id };
-    mode = 'idle';
+    mode  = 'idle';
     newName = '';
   }
 
   function clear() {
-    value = { name: '', profileId: null };
+    value     = { name: '', profileId: null };
     guestName = '';
-    search = '';
-    mode = 'picking';
+    search    = '';
+    newName   = '';
+    mode      = 'idle';
   }
 </script>
 
 <div class="player-picker">
-  <!-- ── État : un joueur est sélectionné ── -->
-  {#if mode === 'idle' && value.name}
+
+  <!-- ── Joueur sélectionné ── -->
+  {#if (mode === 'idle') && value.name}
     <div class="selected-row">
       <div class="selected-info">
         <span class="player-num">J{index + 1}</span>
@@ -80,89 +107,114 @@
       <button class="btn-change" on:click={clear}>✎</button>
     </div>
 
-  <!-- ── État : choix du mode ── -->
+  <!-- ── Formulaire invité ── -->
+  {:else if mode === 'guest'}
+    <div class="picker-header">
+      <span class="player-num">J{index + 1}</span>
+      <span class="picker-label">Jouer en invité</span>
+    </div>
+    <div class="inline-form">
+      <input
+        class="search-input"
+        class:input-error={guestNameTaken}
+        type="text"
+        placeholder="Pseudo de l'invité…"
+        maxlength={MAX_NAME}
+        bind:value={guestName}
+        on:keydown={e => e.key === 'Enter' && confirmGuest()}
+        autofocus
+      />
+      {#if guestNameTaken}
+        <div class="error-hint">Ce pseudo est déjà utilisé dans cette partie</div>
+      {/if}
+      <div class="inline-actions">
+        <button class="btn-action" on:click={() => { mode = 'idle'; guestName = ''; }}>← Retour</button>
+        <button class="btn-confirm" on:click={confirmGuest}
+                disabled={!guestName.trim() || guestNameTaken}>
+          Confirmer
+        </button>
+      </div>
+    </div>
+
+  <!-- ── Formulaire création ── -->
+  {:else if mode === 'creating'}
+    <div class="picker-header">
+      <span class="player-num">J{index + 1}</span>
+      <span class="picker-label">Nouveau profil</span>
+    </div>
+    <div class="inline-form">
+      <input
+        class="search-input"
+        class:input-error={newNameBlocked}
+        type="text"
+        placeholder="Nom du profil…"
+        maxlength={MAX_NAME}
+        bind:value={newName}
+        on:keydown={e => e.key === 'Enter' && confirmCreate()}
+        autofocus
+      />
+      {#if newNameTaken}
+        <div class="error-hint">Ce nom est déjà utilisé dans cette partie</div>
+      {:else if newNameExists}
+        <div class="error-hint">Un profil avec ce nom existe déjà</div>
+      {/if}
+      <div class="inline-actions">
+        <button class="btn-action" on:click={() => { mode = 'idle'; newName = ''; }}>← Retour</button>
+        <button class="btn-confirm" on:click={confirmCreate}
+                disabled={!newName.trim() || newNameBlocked}>
+          Créer et sélectionner
+        </button>
+      </div>
+    </div>
+
+  <!-- ── Recherche / sélection profil ── -->
   {:else}
     <div class="picker-header">
       <span class="player-num">J{index + 1}</span>
       <span class="picker-label">Choisir le joueur</span>
     </div>
 
-    {#if mode !== 'guest' && mode !== 'creating'}
-      <!-- Barre de recherche + liste des profils -->
-      <div class="search-row">
-        <input
-          class="search-input"
-          type="text"
-          placeholder="Rechercher un profil…"
-          bind:value={search}
-          on:focus={() => mode = 'picking'}
-        />
-      </div>
+    <input
+      class="search-input"
+      type="text"
+      placeholder="Rechercher un profil…"
+      maxlength={MAX_NAME}
+      bind:value={search}
+      on:focus={onSearchFocus}
+      on:blur={onSearchBlur}
+    />
 
-      {#if availableProfiles.length > 0}
-        <div class="profile-list">
+    <!-- Liste déroulante — visible seulement quand focused -->
+    {#if mode === 'picking'}
+      <div class="profile-list">
+        {#if availableProfiles.length > 0}
           {#each availableProfiles as profile}
-            <button class="profile-item" on:click={() => selectProfile(profile)}>
+            <button class="profile-item" on:mousedown|preventDefault={() => selectProfile(profile)}>
               <span class="profile-item-name">{profile.name}</span>
               <span class="profile-item-arrow">→</span>
             </button>
           {/each}
-        </div>
-      {:else if search}
-        <div class="empty-hint">Aucun profil trouvé pour « {search} »</div>
-      {:else if $profilesStore.length === 0}
-        <div class="empty-hint">Aucun profil enregistré</div>
-      {/if}
-
-      <!-- Actions secondaires -->
-      <div class="actions-row">
-        <button class="btn-action" on:click={() => { mode = 'creating'; newName = search; search = ''; }}>
-          ＋ Créer un profil
-        </button>
-        <button class="btn-action btn-guest" on:click={() => { mode = 'guest'; guestName = search; search = ''; }}>
-          👤 Invité
-        </button>
-      </div>
-
-    {:else if mode === 'guest'}
-      <!-- Saisie nom invité -->
-      <div class="inline-form">
-        <input
-          class="search-input"
-          type="text"
-          placeholder="Pseudo de l'invité…"
-          bind:value={guestName}
-          on:keydown={e => e.key === 'Enter' && confirmGuest()}
-          autofocus
-        />
-        <div class="inline-actions">
-          <button class="btn-action" on:click={() => mode = 'picking'}>← Retour</button>
-          <button class="btn-confirm" on:click={confirmGuest} disabled={!guestName.trim()}>
-            Confirmer
-          </button>
-        </div>
-      </div>
-
-    {:else if mode === 'creating'}
-      <!-- Création de profil -->
-      <div class="inline-form">
-        <input
-          class="search-input"
-          type="text"
-          placeholder="Nom du nouveau profil…"
-          bind:value={newName}
-          on:keydown={e => e.key === 'Enter' && confirmCreate()}
-          autofocus
-        />
-        <div class="inline-actions">
-          <button class="btn-action" on:click={() => mode = 'picking'}>← Retour</button>
-          <button class="btn-confirm" on:click={confirmCreate} disabled={!newName.trim()}>
-            Créer et sélectionner
-          </button>
-        </div>
+        {:else if search}
+          <div class="empty-hint">Aucun profil pour « {search} »</div>
+        {:else}
+          <div class="empty-hint">
+            {$profilesStore.length === 0 ? 'Aucun profil enregistré' : 'Tous les profils sont déjà sélectionnés'}
+          </div>
+        {/if}
       </div>
     {/if}
+
+    <!-- Actions secondaires -->
+    <div class="actions-row">
+      <button class="btn-action" on:click={() => { mode = 'creating'; newName = search; search = ''; }}>
+        ＋ Créer un profil
+      </button>
+      <button class="btn-action btn-guest" on:click={() => { mode = 'guest'; guestName = search; search = ''; }}>
+        👤 Invité
+      </button>
+    </div>
   {/if}
+
 </div>
 
 <style>
@@ -253,14 +305,10 @@
     letter-spacing: 1px;
   }
 
-  /* ── Recherche ── */
-  .search-row {
-    display: flex;
-    gap: 8px;
-  }
-
+  /* ── Input de recherche ── */
   .search-input {
-    flex: 1;
+    width: 100%;
+    box-sizing: border-box;
     background: rgba(255, 255, 255, 0.06);
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 10px;
@@ -268,6 +316,7 @@
     font-size: 15px;
     padding: 9px 12px;
     outline: none;
+    transition: border-color 0.15s;
   }
 
   .search-input:focus {
@@ -279,7 +328,17 @@
     color: rgba(255, 255, 255, 0.25);
   }
 
-  /* ── Liste des profils ── */
+  .search-input.input-error {
+    border-color: rgba(255, 80, 80, 0.5);
+  }
+
+  .error-hint {
+    font-size: 12px;
+    color: rgba(255, 120, 120, 0.9);
+    padding: 0 2px;
+  }
+
+  /* ── Liste déroulante ── */
   .profile-list {
     display: flex;
     flex-direction: column;
@@ -339,7 +398,7 @@
     color: rgba(255, 255, 255, 0.45);
   }
 
-  /* ── Formulaire inline ── */
+  /* ── Formulaires inline ── */
   .inline-form {
     display: flex;
     flex-direction: column;
