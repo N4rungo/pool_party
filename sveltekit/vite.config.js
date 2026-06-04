@@ -4,6 +4,9 @@ import { VitePWA } from 'vite-plugin-pwa';
 const isProd = process.env.NODE_ENV === 'production';
 const base = isProd ? '/pool_party' : '';
 
+// Revision unique à chaque build pour forcer le rechargement de index.html par le SW.
+const BUILD_REVISION = Date.now().toString(36);
+
 /** @type {import('vite').UserConfig} */
 const config = {
   plugins: [
@@ -42,14 +45,18 @@ const config = {
       },
 
       workbox: {
-        // Tous les assets statiques (copiés par Vite depuis static/ vers .svelte-kit/output/client/)
+        // Nouveau SW prend le contrôle immédiatement (y compris les onglets déjà ouverts).
+        skipWaiting: true,
+        clientsClaim: true,
+
+        // Tous les assets statiques
         globPatterns: ['**/*.{js,css,html,png,webmanifest,svg,ico,md}'],
 
         // index.html est généré par adapter-static APRÈS que Vite ait tourné,
         // donc il n'est pas dans .svelte-kit/output/client/ et ne matche pas le glob.
-        // On l'ajoute manuellement : c'est le point d'entrée SPA indispensable au hors-ligne.
+        // BUILD_REVISION change à chaque build → Workbox sait qu'il faut le re-fetcher.
         additionalManifestEntries: [
-          { url: `${base}/index.html`, revision: null }
+          { url: `${base}/index.html`, revision: BUILD_REVISION }
         ],
 
         // Sert index.html pour toute navigation vers une route inconnue du cache
