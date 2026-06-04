@@ -238,8 +238,12 @@
     <div class="setup-sub">Premier à 61 points</div>
 
     <div class="popup-box setup-box">
-      <PlayerPicker bind:value={pick1} index={0} exclude={pick2.profileId ? [pick2.profileId] : []} />
-      <PlayerPicker bind:value={pick2} index={1} exclude={pick1.profileId ? [pick1.profileId] : []} />
+      <PlayerPicker bind:value={pick1} index={0}
+        exclude={pick2.profileId ? [pick2.profileId] : []}
+        excludeNames={pick2.name.trim() ? [pick2.name.trim().toLowerCase()] : []} />
+      <PlayerPicker bind:value={pick2} index={1}
+        exclude={pick1.profileId ? [pick1.profileId] : []}
+        excludeNames={pick1.name.trim() ? [pick1.name.trim().toLowerCase()] : []} />
 
       <MatchSetup bind:matchMode bind:totalGames={matchTotalGames} />
 

@@ -29,7 +29,9 @@
   }
 
   // profileIds déjà sélectionnés (pour exclure des autres pickers)
-  $: selectedIds = picks.map(p => p.profileId).filter(Boolean);
+  $: selectedIds   = picks.map(p => p.profileId).filter(Boolean);
+  // noms déjà sélectionnés (pour bloquer les doublons nom — profil OU invité)
+  $: selectedNames = picks.map(p => p.name.trim().toLowerCase()).filter(Boolean);
 </script>
 
 <div class="player-setup-list">
@@ -38,6 +40,7 @@
       bind:value={picks[i]}
       index={i}
       exclude={selectedIds.filter(id => id !== pick.profileId)}
+      excludeNames={selectedNames.filter(n => n !== pick.name.trim().toLowerCase())}
     />
   {/each}
 </div>
