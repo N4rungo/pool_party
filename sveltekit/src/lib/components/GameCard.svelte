@@ -92,6 +92,7 @@
 
   .game-card-actions {
     display: flex;
+    align-items: center;
     gap: 8px;
     flex-shrink: 0;
   }
@@ -144,7 +145,7 @@
 
   .btn-card-play {
     background: linear-gradient(145deg, var(--color-gold-light), var(--color-gold));
-    border: none;
+    border: 1px solid transparent;
     color: var(--color-pool);
     box-shadow: 0 3px 0 var(--color-gold-dark);
     padding: 0 16px;
