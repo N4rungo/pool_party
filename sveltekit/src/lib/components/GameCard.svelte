@@ -55,16 +55,18 @@
   }
 
   .game-icon {
-    font-size: 42px;
-    min-width: clamp(38px, 11vw, 52px);
-    text-align: center;
+    width: clamp(44px, 13vw, 56px);
+    height: clamp(44px, 13vw, 56px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4));
     flex-shrink: 0;
   }
 
   .game-icon img {
-    width: clamp(40px, 12vw, 54px);
-    height: clamp(40px, 12vw, 54px);
+    width: 100%;
+    height: 100%;
     object-fit: contain;
   }
 
@@ -113,23 +115,27 @@
     .game-name {
       font-size: clamp(16px, 1.8vw, 22px);
     }
-    .btn-card-rules {
-      padding: 12px 14px;
-      font-size: 17px;
-    }
+    .btn-card-rules,
     .btn-card-play {
-      padding: 12px 18px;
-      font-size: 15px;
+      height: 48px;
+      min-width: 48px;
+      font-size: 17px;
     }
   }
 
   .btn-card-rules,
   .btn-card-play {
-    border: none;
+    height: 44px;
+    min-width: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     border-radius: 12px;
     font-family: inherit;
+    font-size: 16px;
     font-weight: bold;
     cursor: pointer;
+    text-decoration: none;
     transition: transform .1s, box-shadow .1s, opacity .15s;
     -webkit-tap-highlight-color: transparent;
   }
@@ -138,25 +144,19 @@
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.15);
     color: rgba(255, 255, 255, 0.85);
-    padding: 10px 12px;
-    font-size: 16px;
-    line-height: 1;
+    padding: 0 12px;
   }
   .btn-card-rules:hover { background: rgba(255, 255, 255, 0.14); }
 
   .btn-card-play {
     background: linear-gradient(145deg, var(--color-gold-light), var(--color-gold));
+    border: none;
     color: var(--color-pool);
     box-shadow: 0 3px 0 var(--color-gold-dark);
-    padding: 10px 16px;
-    font-size: 16px;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    padding: 0 16px;
   }
   .btn-card-play:active {
-    transform: translateY(2px);
+    transform: translateY(3px);
     box-shadow: none;
   }
   .btn-card-play:visited {
