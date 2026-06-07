@@ -139,9 +139,14 @@
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.15);
     color: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 3px 0 rgba(0, 0, 0, 0.3);
     padding: 0 12px;
   }
   .btn-card-rules:hover { background: rgba(255, 255, 255, 0.14); }
+  .btn-card-rules:active {
+    transform: translateY(3px);
+    box-shadow: none;
+  }
 
   .btn-card-play {
     background: linear-gradient(145deg, var(--color-gold-light), var(--color-gold));
