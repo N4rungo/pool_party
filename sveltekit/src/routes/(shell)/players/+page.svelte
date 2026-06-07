@@ -124,11 +124,6 @@
 </script>
 
 <div id="players-page">
-  <div class="page-header">
-    <button class="btn-back" on:click={() => goto(`${base}/`)}>‹</button>
-    <span class="page-title">Joueurs</span>
-  </div>
-
   <div class="tabs-bar">
     <button class="tab-btn" class:active={tab === 'global'} on:click={() => tab = 'global'}>Global</button>
     <button class="tab-btn" class:active={tab === 'jeux'}   on:click={() => tab = 'jeux'}>Par jeu</button>
