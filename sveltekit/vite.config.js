@@ -9,6 +9,10 @@ const BUILD_REVISION = Date.now().toString(36);
 
 /** @type {import('vite').UserConfig} */
 const config = {
+  define: {
+    // Injecté au build depuis package.json via la variable npm_package_version.
+    __APP_VERSION__: JSON.stringify(process.env.npm_package_version ?? '0.0.0'),
+  },
   plugins: [
     sveltekit(),
     VitePWA({

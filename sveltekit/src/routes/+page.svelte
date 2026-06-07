@@ -13,7 +13,8 @@
   import { GAMES } from '$lib/games.js';
   import { profilesStore } from '$lib/stores/profiles.js';
   import { historyStore } from '$lib/stores/history.js';
-  import { version } from '../../package.json';
+
+  const version = __APP_VERSION__;
 
   let rulesOpen = false;
   let rulesGameId = null;
