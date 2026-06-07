@@ -48,12 +48,6 @@
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
   }
 
-  .game-card.available:hover {
-    border-color: var(--color-gold);
-    box-shadow: 0 0 24px rgba(var(--color-gold-rgb), 0.15),
-                0 4px 16px rgba(0, 0, 0, 0.3);
-  }
-
   .game-icon {
     width: clamp(44px, 13vw, 56px);
     height: clamp(44px, 13vw, 56px);
