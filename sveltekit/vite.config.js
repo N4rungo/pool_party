@@ -9,6 +9,9 @@ const BUILD_REVISION = Date.now().toString(36);
 
 /** @type {import('vite').UserConfig} */
 const config = {
+  define: {
+    __APP_VERSION__: JSON.stringify(process.env.npm_package_version ?? '0.0.0'),
+  },
   plugins: [
     sveltekit(),
     VitePWA({
