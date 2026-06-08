@@ -2,14 +2,10 @@
   import { base } from '$app/paths';
   import GameCard from '$lib/components/GameCard.svelte';
   import RulesViewer from '$lib/components/RulesViewer.svelte';
-  import Overlay from '$lib/components/Overlay.svelte';
   import { GAMES } from '$lib/games.js';
-
-  const version = __APP_VERSION__;
 
   let rulesOpen = false;
   let rulesGameId = null;
-  let infoOpen = false;
 
   function showRules(event) {
     rulesGameId = event.detail;
@@ -20,7 +16,6 @@
 <div id="launcher">
   <div class="launcher-header">
     <span class="launcher-subtitle">Choisissez votre jeu</span>
-    <button class="info-btn" on:click={() => infoOpen = true} aria-label="Infos & installation">i</button>
   </div>
 
   <div class="games-list">
@@ -40,32 +35,6 @@
 </div>
 
 <RulesViewer gameId={rulesGameId} open={rulesOpen} on:close={() => rulesOpen = false} />
-
-<Overlay open={infoOpen} on:close={() => infoOpen = false}>
-  <div class="info-content">
-    <h2>
-      <img src="{base}/assets/pool_party.png" alt="" class="info-logo" />
-      Pool Party
-      <span class="info-version">v{version}</span>
-    </h2>
-    <p class="info-tagline">Scores de billard pour soirées — fonctionne sans connexion, même au fond d'un bar.</p>
-
-    <div class="info-section">
-      <div class="info-section-title">📲 Installer l'app</div>
-      <p>Ajoutez Pool Party à votre écran d'accueil pour un accès direct, sans barre de navigateur.</p>
-
-      <div class="install-step">
-        <div class="install-platform">🤖 Android</div>
-        <div class="install-instructions">Menu <strong>⋮</strong> → <strong>Ajouter à l'écran d'accueil</strong></div>
-      </div>
-
-      <div class="install-step">
-        <div class="install-platform">🍎 iPhone / iPad</div>
-        <div class="install-instructions">Bouton <strong>Partager ⬆</strong> → <strong>Sur l'écran d'accueil</strong></div>
-      </div>
-    </div>
-  </div>
-</Overlay>
 
 <style>
   #launcher {
@@ -88,35 +57,6 @@
     color: rgba(255, 255, 255, 0.4);
     letter-spacing: 2px;
     text-transform: uppercase;
-  }
-
-  .info-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 18px;
-    height: 18px;
-    border: 1.5px solid rgba(255, 255, 255, 0.35);
-    border-radius: 50%;
-    background: none;
-    cursor: pointer;
-    color: rgba(255, 255, 255, 0.4);
-    font-family: 'Times New Roman', Georgia, serif;
-    font-style: italic;
-    font-weight: 700;
-    font-size: 11px;
-    line-height: 1;
-    padding: 0;
-    opacity: 0.7;
-    transition: opacity .2s, transform .15s;
-    -webkit-tap-highlight-color: transparent;
-    flex-shrink: 0;
-  }
-
-  .info-btn:hover,
-  .info-btn:active {
-    opacity: 1;
-    transform: scale(1.12);
   }
 
   .games-list {
