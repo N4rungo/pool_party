@@ -92,6 +92,7 @@
     background: #143d24;
     position: relative;
     z-index: 1;
+    text-align: center;
   }
 
   .popup-footer::before {
