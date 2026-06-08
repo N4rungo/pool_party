@@ -45,7 +45,7 @@
   }
 </script>
 
-<Overlay open={true} dismissOnBackdrop={false}>
+<Overlay open={true} dismissOnBackdrop={false} showClose={false}>
   <div class="summary-content">
     <div class="summary-header">{abandoned ? 'Match abandonné' : 'Match terminé !'}</div>
 
@@ -111,7 +111,7 @@
 <style>
   .summary-content {
     text-align: center;
-    padding: 4px 0 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
   }

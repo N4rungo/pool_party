@@ -34,7 +34,7 @@
   const dispatch = createEventDispatcher();
 </script>
 
-<Overlay {open} dismissOnBackdrop={false} on:close={() => dispatch('replay')}>
+<Overlay {open} dismissOnBackdrop={false} showClose={false} on:close={() => dispatch('replay')}>
   <div class="win-content">
     <div class="win-trophy">{trophy}</div>
     <div class="win-name">{name}</div>
@@ -58,7 +58,7 @@
 <style>
   .win-content {
     text-align: center;
-    padding: 8px 0 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
   }

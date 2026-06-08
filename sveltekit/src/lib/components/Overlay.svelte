@@ -15,10 +15,9 @@
 <script>
   import { createEventDispatcher } from 'svelte';
 
-  // prop reçue du parent
   export let open = false;
-  // prop optionnelle : empêche la fermeture par clic sur le backdrop
   export let dismissOnBackdrop = true;
+  export let showClose = true;
 
   const dispatch = createEventDispatcher();
 
@@ -33,8 +32,10 @@
 
 {#if open}
   <div class="overlay" on:click={onBackdropClick} role="dialog" aria-modal="true">
-    <div class="popup-box">
-      <button class="overlay-close" on:click={close} aria-label="Fermer">✕</button>
+    <div class="popup-box" class:popup-no-close={!showClose}>
+      {#if showClose}
+        <button class="overlay-close" on:click={close} aria-label="Fermer">✕</button>
+      {/if}
       <slot />
     </div>
   </div>
@@ -59,7 +60,7 @@
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
     padding: 22px;
     width: min(92vw, 520px);
-    max-height: min(88vh, calc(100vh - 160px));
+    max-height: min(94vh, calc(100vh - 40px));
     overflow-y: auto;
     position: relative;
     text-align: left;
