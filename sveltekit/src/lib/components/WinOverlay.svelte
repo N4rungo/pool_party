@@ -1,26 +1,3 @@
-<!--
-  Overlay de fin de partie standardisé pour tous les jeux.
-
-  Affiche un trophée + nom + sous-texte, et 3 boutons :
-    - ↩ Annuler  : revient en jeu et annule la dernière action (au cas où on
-                   se trompe sur le coup décisif). Toujours présent, désactivé
-                   si l'historique est vide (canUndo = false).
-    - 🔄 Rejouer  : nouvelle partie avec les mêmes joueurs.
-    - ⚙️ Nouveau jeu : retour au launcher.
-
-  Slot optionnel pour insérer du contenu custom au-dessus des boutons
-  (ex. un récap de scores final pour Snooker, 14-1, etc.).
-
-  Props :
-   - open    : booléen
-   - trophy  : emoji (🏆 par défaut, 🤝 pour égalité)
-   - name    : nom du gagnant (ou 'Égalité !')
-   - sub     : sous-texte (ex. 'Félicitations !' ou détail du score)
-   - canUndo : booléen — désactive le bouton Annuler si false
-
-  Événements :
-   - undo, replay, newGame
--->
 <script>
   import { createEventDispatcher } from 'svelte';
   import Overlay from './Overlay.svelte';
@@ -41,26 +18,23 @@
     {#if sub}<div class="win-sub">{sub}</div>{/if}
 
     <slot />
-
-    <div class="win-actions">
-      <button
-        class="btn-main btn-gray win-undo"
-        disabled={!canUndo}
-        on:click={() => dispatch('undo')}>
-        ↩ Annuler le dernier coup
-      </button>
-      <button class="btn-main btn-gold" on:click={() => dispatch('replay')}>🔄 Rejouer</button>
-      <button class="btn-main btn-gray" on:click={() => dispatch('newGame')}>⚙️ Nouveau jeu</button>
-    </div>
   </div>
+
+  <svelte:fragment slot="footer">
+    <button
+      class="btn-main btn-gray win-undo"
+      disabled={!canUndo}
+      on:click={() => dispatch('undo')}>
+      ↩ Annuler le dernier coup
+    </button>
+    <button class="btn-main btn-gold" on:click={() => dispatch('replay')}>🔄 Rejouer</button>
+    <button class="btn-main btn-gray" on:click={() => dispatch('newGame')}>⚙️ Nouveau jeu</button>
+  </svelte:fragment>
 </Overlay>
 
 <style>
   .win-content {
     text-align: center;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
   }
   .win-trophy {
     font-size: 48px;
@@ -77,27 +51,6 @@
     font-size: 14px;
     color: rgba(255, 255, 255, 0.7);
     margin-bottom: 16px;
-  }
-  .win-actions {
-    position: sticky;
-    bottom: 0;
-    margin: 0 -22px -22px;
-    padding: 12px 22px 22px;
-    background: #143d24;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .win-actions::before {
-    content: '';
-    position: absolute;
-    top: -24px;
-    left: 0;
-    right: 0;
-    height: 24px;
-    background: linear-gradient(to bottom, transparent, #143d24);
-    pointer-events: none;
   }
   .win-undo:disabled {
     opacity: 0.4;

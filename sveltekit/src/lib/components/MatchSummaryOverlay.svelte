@@ -1,14 +1,3 @@
-<!--
-  MatchSummaryOverlay — récap final du match, affiché après la dernière partie.
-
-  Props :
-    - matchScores : { playerName: matchPoints }
-    - results     : tableau complet des résultats de chaque partie
-    - gameId      : string
-    - totalGames  : number
-    - onPlayAgain : callback → rejouer un match avec les mêmes paramètres
-    - onNewGame   : callback → retour à l'accueil
--->
 <script>
   import Overlay from './Overlay.svelte';
 
@@ -20,12 +9,10 @@
   export let onPlayAgain = () => {};
   export let onNewGame = () => {};
 
-  // Classement final trié
   $: sortedPlayers = Object.entries(matchScores)
     .map(([name, pts]) => ({ name, pts }))
     .sort((a, b) => b.pts - a.pts);
 
-  // Déterminer le(s) vainqueur(s) du match
   $: maxPts = sortedPlayers.length > 0 ? sortedPlayers[0].pts : 0;
   $: matchWinners = sortedPlayers.filter(p => p.pts === maxPts).map(p => p.name);
   $: isTie = matchWinners.length > 1;
@@ -34,10 +21,8 @@
     ? matchWinners.join(' & ')
     : matchWinners[0] ?? '—';
 
-  // Pour la grille per-game : liste des noms de joueurs
   $: players = sortedPlayers.map(p => p.name);
 
-  // Vérifie si un joueur a gagné une partie donnée
   function wonGame(playerName, gameNumber) {
     const result = results.find(r => r.gameNumber === gameNumber);
     if (!result) return false;
@@ -55,7 +40,6 @@
     </div>
     <div class="summary-winner-name">{winnerText}</div>
 
-    <!-- Classement final -->
     <div class="section-label">Classement final</div>
     <div class="standings-table">
       {#each sortedPlayers as player, i}
@@ -70,18 +54,15 @@
       {/each}
     </div>
 
-    <!-- Grille par partie -->
     {#if results.length > 0 && players.length > 0}
       <div class="section-label">Détail des parties</div>
       <div class="game-grid">
-        <!-- En-tête -->
         <div class="grid-header">
           <div class="grid-name-cell"></div>
           {#each Array(totalGames) as _, g}
             <div class="grid-game-cell">P{g + 1}</div>
           {/each}
         </div>
-        <!-- Lignes joueurs -->
         {#each players as name}
           <div class="grid-row">
             <div class="grid-name-cell">{name}</div>
@@ -94,26 +75,23 @@
         {/each}
       </div>
     {/if}
-
-    <div class="summary-actions">
-      {#if !abandoned}
-        <button class="btn-main btn-gold" on:click={onPlayAgain}>
-          🔄 Rejouer un match
-        </button>
-      {/if}
-      <button class="btn-main btn-gray" on:click={onNewGame}>
-        {abandoned ? '🏠 Quitter' : '⚙️ Nouvelle partie'}
-      </button>
-    </div>
   </div>
+
+  <svelte:fragment slot="footer">
+    {#if !abandoned}
+      <button class="btn-main btn-gold" on:click={onPlayAgain}>
+        🔄 Rejouer un match
+      </button>
+    {/if}
+    <button class="btn-main btn-gray" on:click={onNewGame}>
+      {abandoned ? '🏠 Quitter' : '⚙️ Nouvelle partie'}
+    </button>
+  </svelte:fragment>
 </Overlay>
 
 <style>
   .summary-content {
     text-align: center;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
   }
 
   .summary-header {
@@ -216,35 +194,11 @@
     font-size: 11px;
   }
 
-  .summary-actions {
-    position: sticky;
-    bottom: 0;
-    margin: 0 -22px -22px;
-    padding: 12px 22px 22px;
-    background: #143d24;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .summary-actions::before {
-    content: '';
-    position: absolute;
-    top: -24px;
-    left: 0;
-    right: 0;
-    height: 24px;
-    background: linear-gradient(to bottom, transparent, #143d24);
-    pointer-events: none;
-  }
-
-  /* Grille par partie */
   .game-grid {
     background: rgba(0, 0, 0, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 12px;
     overflow: hidden;
-    margin-bottom: 0;
     font-size: 13px;
   }
 
@@ -255,13 +209,8 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   }
 
-  .grid-row:last-child {
-    border-bottom: none;
-  }
-
-  .grid-header {
-    background: rgba(0, 0, 0, 0.15);
-  }
+  .grid-row:last-child { border-bottom: none; }
+  .grid-header { background: rgba(0, 0, 0, 0.15); }
 
   .grid-name-cell {
     flex: 1;

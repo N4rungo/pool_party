@@ -1,16 +1,3 @@
-<!--
-  MatchRecapOverlay — affiché après chaque partie dans un match.
-
-  Props :
-    - gameNumber  : numéro de la partie qui vient de se terminer
-    - totalGames  : nombre total de parties dans le match
-    - winners     : string[] — vainqueur(s) de cette partie
-    - matchScores : { playerName: matchPoints } — score de match en cours
-    - isLastGame  : boolean — true si c'est la dernière partie
-    - onNext      : callback → lancer la partie suivante
-    - onViewFinal : callback → voir le récap final (seulement si isLastGame)
-    - onAbandon   : callback → abandonner le match
--->
 <script>
   import Overlay from './Overlay.svelte';
 
@@ -25,7 +12,6 @@
   export let onUndo = null;
   export let canUndo = false;
 
-  // Classement trié par score de match décroissant
   $: sortedPlayers = Object.entries(matchScores)
     .map(([name, pts]) => ({ name, pts }))
     .sort((a, b) => b.pts - a.pts);
@@ -47,7 +33,6 @@
     </div>
     <div class="recap-winner-sub">remporte cette partie</div>
 
-    <!-- Classement du match -->
     <div class="recap-standings-label">Classement du match</div>
     <div class="standings-table">
       {#each sortedPlayers as player, i}
@@ -58,38 +43,34 @@
         </div>
       {/each}
     </div>
-
-    <!-- Actions -->
-    <div class="actions-bar">
-      {#if onUndo && canUndo}
-        <button class="btn-undo" on:click={onUndo}>
-          ↩ Annuler le dernier coup
-        </button>
-      {/if}
-
-      {#if isLastGame}
-        <button class="btn-main btn-gold" on:click={onViewFinal}>
-          Voir le récap final →
-        </button>
-      {:else}
-        <button class="btn-main btn-gold" on:click={onNext}>
-          Partie suivante →
-        </button>
-      {/if}
-
-      <button class="btn-abandon" on:click={onAbandon}>
-        Abandonner le match
-      </button>
-    </div>
   </div>
+
+  <svelte:fragment slot="footer">
+    {#if onUndo && canUndo}
+      <button class="btn-undo" on:click={onUndo}>
+        ↩ Annuler le dernier coup
+      </button>
+    {/if}
+
+    {#if isLastGame}
+      <button class="btn-main btn-gold" on:click={onViewFinal}>
+        Voir le récap final →
+      </button>
+    {:else}
+      <button class="btn-main btn-gold" on:click={onNext}>
+        Partie suivante →
+      </button>
+    {/if}
+
+    <button class="btn-abandon" on:click={onAbandon}>
+      Abandonner le match
+    </button>
+  </svelte:fragment>
 </Overlay>
 
 <style>
   .recap-content {
     text-align: center;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
   }
 
   .recap-header {
@@ -138,7 +119,6 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
-    margin-bottom: 0;
   }
 
   .standings-row {
@@ -188,28 +168,6 @@
   .standings-row.leader .standings-pts {
     color: var(--color-gold);
     font-weight: bold;
-  }
-
-  .actions-bar {
-    position: sticky;
-    bottom: 0;
-    margin: 0 -22px -22px;
-    padding: 12px 22px 22px;
-    background: #143d24;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .actions-bar::before {
-    content: '';
-    position: absolute;
-    top: -24px;
-    left: 0;
-    right: 0;
-    height: 24px;
-    background: linear-gradient(to bottom, transparent, #143d24);
-    pointer-events: none;
   }
 
   .btn-undo {
