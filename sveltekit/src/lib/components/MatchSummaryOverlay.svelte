@@ -43,7 +43,7 @@
     <div class="section-label">Classement final</div>
     <div class="standings-table">
       {#each sortedPlayers as player, i}
-        <div class="standings-row" class:winner={i === 0 && !isTie || (isTie && player.pts === maxPts)}>
+        <div class="standings-row" class:winner={(i === 0 && !isTie) || (isTie && player.pts === maxPts)}>
           <span class="standings-rank">{i + 1}</span>
           <span class="standings-name">{player.name}</span>
           <span class="standings-pts">

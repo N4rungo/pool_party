@@ -11,7 +11,7 @@
   const dispatch = createEventDispatcher();
 </script>
 
-<Overlay {open} dismissOnBackdrop={false} showClose={false} on:close={() => dispatch('replay')}>
+<Overlay {open} dismissOnBackdrop={false} showClose={false}>
   <div class="win-content">
     <div class="win-trophy">{trophy}</div>
     <div class="win-name">{name}</div>

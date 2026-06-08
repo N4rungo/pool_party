@@ -86,7 +86,16 @@
     margin-top: 12px;
     padding: 12px 0 8px;
 
-    /* Léger fondu au-dessus du footer pour adoucir l'apparition du contenu
-       qui passe en dessous au scroll. */
+  }
+
+  .game-footer::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background: linear-gradient(to bottom, transparent, var(--color-pool));
+    pointer-events: none;
   }
 </style>
