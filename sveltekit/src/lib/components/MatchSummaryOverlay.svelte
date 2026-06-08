@@ -219,12 +219,23 @@
   .summary-actions {
     position: sticky;
     bottom: 0;
-    margin: 8px -22px -22px;
-    padding: 14px 22px 22px;
-    background: linear-gradient(to bottom, rgba(20, 61, 36, 0) 0, #143d24 20px);
+    margin: 0 -22px -22px;
+    padding: 12px 22px 22px;
+    background: #143d24;
     display: flex;
     flex-direction: column;
     gap: 0;
+  }
+
+  .summary-actions::before {
+    content: '';
+    position: absolute;
+    top: -24px;
+    left: 0;
+    right: 0;
+    height: 24px;
+    background: linear-gradient(to bottom, transparent, #143d24);
+    pointer-events: none;
   }
 
   /* Grille par partie */
