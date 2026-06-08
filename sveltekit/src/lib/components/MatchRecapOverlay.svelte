@@ -60,32 +60,36 @@
     </div>
 
     <!-- Actions -->
-    {#if onUndo && canUndo}
-      <button class="btn-undo" on:click={onUndo}>
-        ↩ Annuler le dernier coup
-      </button>
-    {/if}
+    <div class="actions-bar">
+      {#if onUndo && canUndo}
+        <button class="btn-undo" on:click={onUndo}>
+          ↩ Annuler le dernier coup
+        </button>
+      {/if}
 
-    {#if isLastGame}
-      <button class="btn-main btn-gold" on:click={onViewFinal}>
-        Voir le récap final →
-      </button>
-    {:else}
-      <button class="btn-main btn-gold" on:click={onNext}>
-        Partie suivante →
-      </button>
-    {/if}
+      {#if isLastGame}
+        <button class="btn-main btn-gold" on:click={onViewFinal}>
+          Voir le récap final →
+        </button>
+      {:else}
+        <button class="btn-main btn-gold" on:click={onNext}>
+          Partie suivante →
+        </button>
+      {/if}
 
-    <button class="btn-abandon" on:click={onAbandon}>
-      Abandonner le match
-    </button>
+      <button class="btn-abandon" on:click={onAbandon}>
+        Abandonner le match
+      </button>
+    </div>
   </div>
 </Overlay>
 
 <style>
   .recap-content {
     text-align: center;
-    padding: 4px 0 8px;
+    padding: 4px 0 0;
+    display: flex;
+    flex-direction: column;
   }
 
   .recap-header {
@@ -93,7 +97,7 @@
     color: rgba(255, 255, 255, 0.55);
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin-bottom: 16px;
+    margin-bottom: 10px;
   }
 
   .recap-winner-row {
@@ -105,12 +109,12 @@
   }
 
   .recap-winner-trophy {
-    font-size: 36px;
+    font-size: 28px;
     line-height: 1;
   }
 
   .recap-winner-name {
-    font-size: 26px;
+    font-size: 22px;
     font-weight: bold;
     color: var(--color-gold);
     text-shadow: 0 0 16px rgba(var(--color-gold-rgb), 0.4);
@@ -119,7 +123,7 @@
   .recap-winner-sub {
     font-size: 13px;
     color: rgba(255, 255, 255, 0.5);
-    margin-bottom: 20px;
+    margin-bottom: 14px;
   }
 
   .recap-standings-label {
@@ -127,14 +131,14 @@
     color: rgba(255, 255, 255, 0.4);
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
 
   .standings-table {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    margin-bottom: 20px;
+    gap: 5px;
+    margin-bottom: 0;
   }
 
   .standings-row {
@@ -184,6 +188,17 @@
   .standings-row.leader .standings-pts {
     color: var(--color-gold);
     font-weight: bold;
+  }
+
+  .actions-bar {
+    position: sticky;
+    bottom: 0;
+    margin: 12px -22px -22px;
+    padding: 14px 22px 22px;
+    background: linear-gradient(to bottom, rgba(20, 61, 36, 0) 0, #143d24 20px);
+    display: flex;
+    flex-direction: column;
+    gap: 0;
   }
 
   .btn-undo {

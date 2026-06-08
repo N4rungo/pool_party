@@ -95,21 +95,25 @@
       </div>
     {/if}
 
-    {#if !abandoned}
-      <button class="btn-main btn-gold" on:click={onPlayAgain}>
-        🔄 Rejouer un match
+    <div class="summary-actions">
+      {#if !abandoned}
+        <button class="btn-main btn-gold" on:click={onPlayAgain}>
+          🔄 Rejouer un match
+        </button>
+      {/if}
+      <button class="btn-main btn-gray" on:click={onNewGame}>
+        {abandoned ? '🏠 Quitter' : '⚙️ Nouvelle partie'}
       </button>
-    {/if}
-    <button class="btn-main btn-gray" on:click={onNewGame}>
-      {abandoned ? '🏠 Quitter' : '⚙️ Nouvelle partie'}
-    </button>
+    </div>
   </div>
 </Overlay>
 
 <style>
   .summary-content {
     text-align: center;
-    padding: 4px 0 8px;
+    padding: 4px 0 0;
+    display: flex;
+    flex-direction: column;
   }
 
   .summary-header {
@@ -117,13 +121,13 @@
     color: rgba(255, 255, 255, 0.55);
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
 
   .summary-trophy {
-    font-size: 52px;
+    font-size: 40px;
     line-height: 1;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
 
   .summary-winner-label {
@@ -135,11 +139,11 @@
   }
 
   .summary-winner-name {
-    font-size: 26px;
+    font-size: 24px;
     font-weight: bold;
     color: var(--color-gold);
     text-shadow: 0 0 16px rgba(var(--color-gold-rgb), 0.4);
-    margin-bottom: 20px;
+    margin-bottom: 16px;
   }
 
   .section-label {
@@ -154,8 +158,8 @@
   .standings-table {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    margin-bottom: 20px;
+    gap: 5px;
+    margin-bottom: 14px;
   }
 
   .standings-row {
@@ -212,13 +216,24 @@
     font-size: 11px;
   }
 
+  .summary-actions {
+    position: sticky;
+    bottom: 0;
+    margin: 8px -22px -22px;
+    padding: 14px 22px 22px;
+    background: linear-gradient(to bottom, rgba(20, 61, 36, 0) 0, #143d24 20px);
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
   /* Grille par partie */
   .game-grid {
     background: rgba(0, 0, 0, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 12px;
     overflow: hidden;
-    margin-bottom: 20px;
+    margin-bottom: 0;
     font-size: 13px;
   }
 

@@ -42,29 +42,33 @@
 
     <slot />
 
-    <button
-      class="btn-main btn-gray win-undo"
-      disabled={!canUndo}
-      on:click={() => dispatch('undo')}>
-      ↩ Annuler le dernier coup
-    </button>
-    <button class="btn-main btn-gold" on:click={() => dispatch('replay')}>🔄 Rejouer</button>
-    <button class="btn-main btn-gray" on:click={() => dispatch('newGame')}>⚙️ Nouveau jeu</button>
+    <div class="win-actions">
+      <button
+        class="btn-main btn-gray win-undo"
+        disabled={!canUndo}
+        on:click={() => dispatch('undo')}>
+        ↩ Annuler le dernier coup
+      </button>
+      <button class="btn-main btn-gold" on:click={() => dispatch('replay')}>🔄 Rejouer</button>
+      <button class="btn-main btn-gray" on:click={() => dispatch('newGame')}>⚙️ Nouveau jeu</button>
+    </div>
   </div>
 </Overlay>
 
 <style>
   .win-content {
     text-align: center;
-    padding: 8px 0;
+    padding: 8px 0 0;
+    display: flex;
+    flex-direction: column;
   }
   .win-trophy {
-    font-size: 64px;
+    font-size: 48px;
     line-height: 1;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
   }
   .win-name {
-    font-size: 28px;
+    font-size: 26px;
     font-weight: bold;
     color: var(--color-gold);
     margin-bottom: 4px;
@@ -72,15 +76,23 @@
   .win-sub {
     font-size: 14px;
     color: rgba(255, 255, 255, 0.7);
-    margin-bottom: 20px;
+    margin-bottom: 16px;
+  }
+  .win-actions {
+    position: sticky;
+    bottom: 0;
+    margin: 8px -22px -22px;
+    padding: 14px 22px 22px;
+    background: linear-gradient(to bottom, rgba(20, 61, 36, 0) 0, #143d24 20px);
+    display: flex;
+    flex-direction: column;
+    gap: 0;
   }
   .win-undo:disabled {
     opacity: 0.4;
     cursor: not-allowed;
   }
   .win-undo {
-    /* Visuellement plus discret que Rejouer (qui est l'action principale),
-       mais bien visible quand même — il sauve une fin de partie ratée. */
     margin-bottom: 16px;
   }
 </style>
