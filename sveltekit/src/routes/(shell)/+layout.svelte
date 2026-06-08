@@ -1,0 +1,369 @@
+<script>
+  import { page } from '$app/stores';
+  import { base } from '$app/paths';
+  import { goto, afterNavigate } from '$app/navigation';
+  import { onMount } from 'svelte';
+  import Overlay from '$lib/components/Overlay.svelte';
+
+  const version = __APP_VERSION__;
+
+  const NAV = [
+    { id: 'jeux',     path: '/',         label: 'Jeux',     icon: '🎱' },
+    { id: 'joueurs',  path: '/players',  label: 'Joueurs',  icon: '👥' },
+    { id: 'stats',    path: '/stats',    label: 'Stats',    icon: '📊' },
+    { id: 'reglages', path: '/settings', label: 'Réglages', icon: '⚙️' },
+  ];
+
+  $: rawPath = $page.url.pathname.replace(base, '') || '/';
+
+  $: activeId = (() => {
+    if (rawPath === '/' || rawPath === '') return 'jeux';
+    if (rawPath.startsWith('/players'))  return 'joueurs';
+    if (rawPath.startsWith('/stats'))    return 'stats';
+    if (rawPath.startsWith('/settings')) return 'reglages';
+    return 'jeux';
+  })();
+
+  $: isHome = activeId === 'jeux';
+
+  // ── Shrink on scroll ────────────────────────────────────────────────────
+  let scrolled = false;
+
+  function onScroll() {
+    scrolled = window.scrollY > 48;
+  }
+
+  onMount(() => {
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  });
+
+  // Réinitialise l'état compact à chaque changement de page
+  afterNavigate(() => { scrolled = false; });
+
+  // ── Info overlay ────────────────────────────────────────────────────────
+  let infoOpen = false;
+
+  // Hauteur du header selon l'état (utilisée pour le padding-top du contenu)
+  // Expanded (home, top) = 80px  |  Compact = 52px
+  $: headerH = isHome && !scrolled ? 80 : 52;
+</script>
+
+<!-- ══ HEADER ══ -->
+<header
+  class="shell-header"
+  class:expanded={isHome && !scrolled}
+  class:compact={!isHome || scrolled}
+>
+  {#if isHome}
+    <!-- Section Jeux : branding complet -->
+    <div class="header-home">
+      <img src="{base}/assets/pool_party.png" alt="" class="header-logo" />
+      <span class="header-pool-party">POOL PARTY</span>
+      <button
+        class="header-info-btn"
+        on:click={() => infoOpen = true}
+        aria-label="Infos & installation"
+      >i</button>
+    </div>
+  {:else}
+    <!-- Autres sections : nom de la section -->
+    <div class="header-section">
+      <img src="{base}/assets/pool_party.png" alt="" class="header-icon-sm" />
+      <span class="header-section-title">
+        {NAV.find(n => n.id === activeId)?.label ?? ''}
+      </span>
+    </div>
+  {/if}
+</header>
+
+<!-- ══ CONTENT ══ -->
+<div class="shell-content" style="padding-top: {headerH}px">
+  <slot />
+</div>
+
+<!-- ══ BOTTOM NAV ══ -->
+<nav class="bottom-nav">
+  {#each NAV as item}
+    <button
+      class="nav-item"
+      class:active={activeId === item.id}
+      on:click={() => goto(`${base}${item.path}`)}
+      aria-label={item.label}
+    >
+      <span class="nav-icon">{item.icon}</span>
+      <span class="nav-label">{item.label}</span>
+    </button>
+  {/each}
+</nav>
+
+<!-- ══ INFO OVERLAY (Pool Party) ══ -->
+<Overlay open={infoOpen} on:close={() => infoOpen = false}>
+  <div class="info-content">
+    <h2>
+      <img src="{base}/assets/pool_party.png" alt="" class="info-logo" />
+      Pool Party
+      <span class="info-version">v{version}</span>
+    </h2>
+    <p class="info-tagline">Scores de billard pour soirées — fonctionne sans connexion, même au fond d'un bar.</p>
+
+    <div class="info-section">
+      <div class="info-section-title">📲 Installer l'app</div>
+      <p>Ajoutez Pool Party à votre écran d'accueil pour un accès direct, sans barre de navigateur.</p>
+
+      <div class="install-step">
+        <div class="install-platform">🤖 Android</div>
+        <div class="install-instructions">Menu <strong>⋮</strong> → <strong>Ajouter à l'écran d'accueil</strong></div>
+      </div>
+
+      <div class="install-step">
+        <div class="install-platform">🍎 iPhone / iPad</div>
+        <div class="install-instructions">Bouton <strong>Partager ⬆</strong> → <strong>Sur l'écran d'accueil</strong></div>
+      </div>
+    </div>
+  </div>
+</Overlay>
+
+<style>
+  /* ── Neutralise le padding-bottom body (géré ici) ── */
+  :global(body) { padding-bottom: 0 !important; }
+
+  /* ══ HEADER ══ */
+  .shell-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(20, 60, 34, 0.94);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    overflow: hidden;
+    transition: height 0.25s ease;
+  }
+
+  .shell-header.expanded { height: 80px; }
+  .shell-header.compact  { height: 52px; }
+
+  /* ── Jeux (home) ── */
+  .header-home {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+    width: 100%;
+    padding: 0 48px;
+  }
+
+  .header-logo {
+    object-fit: contain;
+    transition: width 0.25s ease, height 0.25s ease;
+  }
+
+  .expanded .header-logo { width: 52px; height: 52px; }
+  .compact  .header-logo { width: 32px; height: 32px; }
+
+  .header-pool-party {
+    color: var(--color-gold);
+    font-weight: bold;
+    text-shadow: 0 0 16px rgba(var(--color-gold-rgb), 0.45),
+                 2px 2px 0 rgba(0, 0, 0, 0.4);
+    letter-spacing: 3px;
+    white-space: nowrap;
+    transition: font-size 0.25s ease, letter-spacing 0.25s ease;
+  }
+
+  .expanded .header-pool-party { font-size: 26px; letter-spacing: 3px; }
+  .compact  .header-pool-party { font-size: 16px; letter-spacing: 2px; }
+
+  .header-info-btn {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border: 1.5px solid rgba(var(--color-gold-rgb), 0.4);
+    border-radius: 50%;
+    background: none;
+    cursor: pointer;
+    color: rgba(var(--color-gold-rgb), 0.6);
+    font-family: 'Times New Roman', Georgia, serif;
+    font-style: italic;
+    font-weight: 700;
+    font-size: 13px;
+    line-height: 1;
+    padding: 0;
+    transition: opacity 0.2s, transform 0.15s, color 0.2s, border-color 0.2s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .header-info-btn:hover,
+  .header-info-btn:active {
+    color: var(--color-gold);
+    border-color: rgba(var(--color-gold-rgb), 0.9);
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  /* ── Autres sections ── */
+  .header-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .header-icon-sm {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+  }
+
+  .header-section-title {
+    font-size: 15px;
+    font-weight: bold;
+    color: var(--color-gold);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-shadow: 0 0 12px rgba(var(--color-gold-rgb), 0.35);
+  }
+
+  /* ══ CONTENT ══ */
+  .shell-content {
+    padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    transition: padding-top 0.25s ease;
+  }
+
+  /* ══ BOTTOM NAV ══ */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    height: calc(60px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    display: flex;
+    align-items: stretch;
+    background: rgba(16, 50, 28, 0.96);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.4);
+    font-family: inherit;
+    transition: color 0.15s;
+    -webkit-tap-highlight-color: transparent;
+    padding: 0;
+  }
+
+  .nav-item.active { color: var(--color-gold); }
+
+  .nav-icon  { font-size: 22px; line-height: 1; }
+  .nav-label {
+    font-size: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* ══ INFO OVERLAY ══ */
+  .info-content { padding: 4px 0; }
+
+  .info-content h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 22px;
+    color: var(--color-gold);
+    margin-bottom: 8px;
+  }
+
+  .info-logo { width: 36px; height: 36px; object-fit: contain; }
+
+  .info-version {
+    margin-left: auto;
+    font-size: 12px;
+    font-weight: normal;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 0.5px;
+    font-family: monospace;
+    align-self: center;
+  }
+
+  .info-tagline {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.65);
+    line-height: 1.5;
+    margin-bottom: 20px;
+    font-style: italic;
+  }
+
+  .info-section {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 16px;
+  }
+
+  .info-section-title {
+    font-size: 15px;
+    font-weight: bold;
+    color: var(--color-gold-light);
+    margin-bottom: 8px;
+  }
+
+  .info-section p {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.5;
+    margin-bottom: 14px;
+  }
+
+  .install-step {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+  }
+
+  .install-platform {
+    font-size: 13px;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+
+  .install-instructions {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.5;
+  }
+
+  .install-instructions strong { color: white; }
+</style>

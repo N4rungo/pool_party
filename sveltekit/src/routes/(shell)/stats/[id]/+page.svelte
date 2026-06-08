@@ -18,7 +18,7 @@
 
   // Redirect if profile not found (e.g., deleted)
   $: if (typeof window !== 'undefined' && $profilesStore.length > 0 && !profile) {
-    goto(`${base}/players`);
+    goto(`${base}/stats`);
   }
 
   $: gStats    = globalStats($historyStore, profileId);
@@ -93,7 +93,7 @@
 
   <!-- Header -->
   <div class="page-header">
-    <button class="btn-back" on:click={() => goto(`${base}/players`)}>‹</button>
+    <button class="btn-back" on:click={() => goto(`${base}/stats`)}>‹</button>
     {#if editing}
       <input
         type="text"

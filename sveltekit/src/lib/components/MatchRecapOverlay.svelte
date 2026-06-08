@@ -1,16 +1,3 @@
-<!--
-  MatchRecapOverlay — affiché après chaque partie dans un match.
-
-  Props :
-    - gameNumber  : numéro de la partie qui vient de se terminer
-    - totalGames  : nombre total de parties dans le match
-    - winners     : string[] — vainqueur(s) de cette partie
-    - matchScores : { playerName: matchPoints } — score de match en cours
-    - isLastGame  : boolean — true si c'est la dernière partie
-    - onNext      : callback → lancer la partie suivante
-    - onViewFinal : callback → voir le récap final (seulement si isLastGame)
-    - onAbandon   : callback → abandonner le match
--->
 <script>
   import Overlay from './Overlay.svelte';
 
@@ -25,7 +12,6 @@
   export let onUndo = null;
   export let canUndo = false;
 
-  // Classement trié par score de match décroissant
   $: sortedPlayers = Object.entries(matchScores)
     .map(([name, pts]) => ({ name, pts }))
     .sort((a, b) => b.pts - a.pts);
@@ -35,7 +21,7 @@
     : winners.join(' & ');
 </script>
 
-<Overlay open={true} dismissOnBackdrop={false}>
+<Overlay open={true} dismissOnBackdrop={false} showClose={false}>
   <div class="recap-content">
     <div class="recap-header">
       Partie {gameNumber}/{totalGames} terminée
@@ -47,7 +33,6 @@
     </div>
     <div class="recap-winner-sub">remporte cette partie</div>
 
-    <!-- Classement du match -->
     <div class="recap-standings-label">Classement du match</div>
     <div class="standings-table">
       {#each sortedPlayers as player, i}
@@ -58,8 +43,9 @@
         </div>
       {/each}
     </div>
+  </div>
 
-    <!-- Actions -->
+  <svelte:fragment slot="footer">
     {#if onUndo && canUndo}
       <button class="btn-undo" on:click={onUndo}>
         ↩ Annuler le dernier coup
@@ -79,13 +65,12 @@
     <button class="btn-abandon" on:click={onAbandon}>
       Abandonner le match
     </button>
-  </div>
+  </svelte:fragment>
 </Overlay>
 
 <style>
   .recap-content {
     text-align: center;
-    padding: 4px 0 8px;
   }
 
   .recap-header {
@@ -93,7 +78,7 @@
     color: rgba(255, 255, 255, 0.55);
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin-bottom: 16px;
+    margin-bottom: 10px;
   }
 
   .recap-winner-row {
@@ -105,12 +90,12 @@
   }
 
   .recap-winner-trophy {
-    font-size: 36px;
+    font-size: 28px;
     line-height: 1;
   }
 
   .recap-winner-name {
-    font-size: 26px;
+    font-size: 22px;
     font-weight: bold;
     color: var(--color-gold);
     text-shadow: 0 0 16px rgba(var(--color-gold-rgb), 0.4);
@@ -119,7 +104,7 @@
   .recap-winner-sub {
     font-size: 13px;
     color: rgba(255, 255, 255, 0.5);
-    margin-bottom: 20px;
+    margin-bottom: 14px;
   }
 
   .recap-standings-label {
@@ -127,14 +112,13 @@
     color: rgba(255, 255, 255, 0.4);
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
 
   .standings-table {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    margin-bottom: 20px;
+    gap: 5px;
   }
 
   .standings-row {
@@ -213,7 +197,7 @@
     font-family: inherit;
     font-size: 13px;
     cursor: pointer;
-    padding: 8px;
+    padding: 6px 8px 0;
     text-decoration: underline;
     text-underline-offset: 3px;
     transition: color 0.15s;

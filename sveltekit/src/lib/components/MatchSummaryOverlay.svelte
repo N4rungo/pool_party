@@ -1,14 +1,3 @@
-<!--
-  MatchSummaryOverlay — récap final du match, affiché après la dernière partie.
-
-  Props :
-    - matchScores : { playerName: matchPoints }
-    - results     : tableau complet des résultats de chaque partie
-    - gameId      : string
-    - totalGames  : number
-    - onPlayAgain : callback → rejouer un match avec les mêmes paramètres
-    - onNewGame   : callback → retour à l'accueil
--->
 <script>
   import Overlay from './Overlay.svelte';
 
@@ -20,12 +9,10 @@
   export let onPlayAgain = () => {};
   export let onNewGame = () => {};
 
-  // Classement final trié
   $: sortedPlayers = Object.entries(matchScores)
     .map(([name, pts]) => ({ name, pts }))
     .sort((a, b) => b.pts - a.pts);
 
-  // Déterminer le(s) vainqueur(s) du match
   $: maxPts = sortedPlayers.length > 0 ? sortedPlayers[0].pts : 0;
   $: matchWinners = sortedPlayers.filter(p => p.pts === maxPts).map(p => p.name);
   $: isTie = matchWinners.length > 1;
@@ -34,10 +21,8 @@
     ? matchWinners.join(' & ')
     : matchWinners[0] ?? '—';
 
-  // Pour la grille per-game : liste des noms de joueurs
   $: players = sortedPlayers.map(p => p.name);
 
-  // Vérifie si un joueur a gagné une partie donnée
   function wonGame(playerName, gameNumber) {
     const result = results.find(r => r.gameNumber === gameNumber);
     if (!result) return false;
@@ -45,7 +30,7 @@
   }
 </script>
 
-<Overlay open={true} dismissOnBackdrop={false}>
+<Overlay open={true} dismissOnBackdrop={false} showClose={false}>
   <div class="summary-content">
     <div class="summary-header">{abandoned ? 'Match abandonné' : 'Match terminé !'}</div>
 
@@ -55,11 +40,10 @@
     </div>
     <div class="summary-winner-name">{winnerText}</div>
 
-    <!-- Classement final -->
     <div class="section-label">Classement final</div>
     <div class="standings-table">
       {#each sortedPlayers as player, i}
-        <div class="standings-row" class:winner={i === 0 && !isTie || (isTie && player.pts === maxPts)}>
+        <div class="standings-row" class:winner={(i === 0 && !isTie) || (isTie && player.pts === maxPts)}>
           <span class="standings-rank">{i + 1}</span>
           <span class="standings-name">{player.name}</span>
           <span class="standings-pts">
@@ -70,18 +54,15 @@
       {/each}
     </div>
 
-    <!-- Grille par partie -->
     {#if results.length > 0 && players.length > 0}
       <div class="section-label">Détail des parties</div>
       <div class="game-grid">
-        <!-- En-tête -->
         <div class="grid-header">
           <div class="grid-name-cell"></div>
           {#each Array(totalGames) as _, g}
             <div class="grid-game-cell">P{g + 1}</div>
           {/each}
         </div>
-        <!-- Lignes joueurs -->
         {#each players as name}
           <div class="grid-row">
             <div class="grid-name-cell">{name}</div>
@@ -94,7 +75,9 @@
         {/each}
       </div>
     {/if}
+  </div>
 
+  <svelte:fragment slot="footer">
     {#if !abandoned}
       <button class="btn-main btn-gold" on:click={onPlayAgain}>
         🔄 Rejouer un match
@@ -103,13 +86,12 @@
     <button class="btn-main btn-gray" on:click={onNewGame}>
       {abandoned ? '🏠 Quitter' : '⚙️ Nouvelle partie'}
     </button>
-  </div>
+  </svelte:fragment>
 </Overlay>
 
 <style>
   .summary-content {
     text-align: center;
-    padding: 4px 0 8px;
   }
 
   .summary-header {
@@ -117,13 +99,13 @@
     color: rgba(255, 255, 255, 0.55);
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
 
   .summary-trophy {
-    font-size: 52px;
+    font-size: 40px;
     line-height: 1;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
 
   .summary-winner-label {
@@ -135,11 +117,11 @@
   }
 
   .summary-winner-name {
-    font-size: 26px;
+    font-size: 24px;
     font-weight: bold;
     color: var(--color-gold);
     text-shadow: 0 0 16px rgba(var(--color-gold-rgb), 0.4);
-    margin-bottom: 20px;
+    margin-bottom: 16px;
   }
 
   .section-label {
@@ -154,8 +136,8 @@
   .standings-table {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    margin-bottom: 20px;
+    gap: 5px;
+    margin-bottom: 14px;
   }
 
   .standings-row {
@@ -212,13 +194,11 @@
     font-size: 11px;
   }
 
-  /* Grille par partie */
   .game-grid {
     background: rgba(0, 0, 0, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 12px;
     overflow: hidden;
-    margin-bottom: 20px;
     font-size: 13px;
   }
 
@@ -229,13 +209,8 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   }
 
-  .grid-row:last-child {
-    border-bottom: none;
-  }
-
-  .grid-header {
-    background: rgba(0, 0, 0, 0.15);
-  }
+  .grid-row:last-child { border-bottom: none; }
+  .grid-header { background: rgba(0, 0, 0, 0.15); }
 
   .grid-name-cell {
     flex: 1;
