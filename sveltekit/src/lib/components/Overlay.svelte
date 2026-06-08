@@ -48,7 +48,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 100;
+    z-index: 300;
     backdrop-filter: blur(4px);
   }
 
@@ -59,7 +59,7 @@
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
     padding: 22px;
     width: min(92vw, 520px);
-    max-height: 88vh;
+    max-height: min(88vh, calc(100vh - 160px));
     overflow-y: auto;
     position: relative;
     text-align: left;
