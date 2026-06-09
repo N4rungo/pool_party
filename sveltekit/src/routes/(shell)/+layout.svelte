@@ -7,10 +7,10 @@
   const version = __APP_VERSION__;
 
   const NAV = [
-    { id: 'jeux',     path: '/',         label: 'Jeux',     icon: '🎱' },
-    { id: 'joueurs',  path: '/players',  label: 'Joueurs',  icon: '👥' },
-    { id: 'stats',    path: '/stats',    label: 'Stats',    icon: '🥇' },
-    { id: 'reglages', path: '/settings', label: 'Réglages', icon: '⚙️' },
+    { id: 'jeux',     path: '/',         label: 'Jeux',     title: 'Jeux',          icon: '🎱' },
+    { id: 'joueurs',  path: '/players',  label: 'Joueurs',  title: 'Joueurs',       icon: '👥' },
+    { id: 'stats',    path: '/stats',    label: 'Stats',    title: 'Statistiques',  icon: '🥇' },
+    { id: 'reglages', path: '/settings', label: 'Réglages', title: 'Réglages',      icon: '⚙️' },
   ];
 
   $: rawPath = $page.url.pathname.replace(base, '') || '/';
@@ -54,7 +54,7 @@
     <div class="header-section">
       <img src="{base}/assets/pool_party.png" alt="" class="header-icon-sm" />
       <span class="header-section-title">
-        {NAV.find(n => n.id === activeId)?.label ?? ''}
+        {NAV.find(n => n.id === activeId)?.title ?? ''}
       </span>
     </div>
   {/if}
