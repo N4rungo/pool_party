@@ -9,7 +9,7 @@
   const NAV = [
     { id: 'jeux',     path: '/',         label: 'Jeux',     icon: '🎱' },
     { id: 'joueurs',  path: '/players',  label: 'Joueurs',  icon: '👥' },
-    { id: 'stats',    path: '/stats',    label: 'Stats',    icon: '📊' },
+    { id: 'stats',    path: '/stats',    label: 'Stats',    icon: '🥇' },
     { id: 'reglages', path: '/settings', label: 'Réglages', icon: '⚙️' },
   ];
 
