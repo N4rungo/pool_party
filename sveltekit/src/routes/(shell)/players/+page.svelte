@@ -13,6 +13,7 @@
   function addProfile() {
     const name = newProfileName.trim();
     if (!name) return;
+    if ($profilesStore.some(p => p.name.toLowerCase() === name.toLowerCase())) return;
     createProfile(name);
     newProfileName = '';
   }
@@ -27,7 +28,10 @@
   }
 
   function commitEdit() {
-    if (editingName.trim()) renameProfile(editingId, editingName.trim());
+    const name = editingName.trim();
+    if (!name) { editingId = null; return; }
+    const duplicate = $profilesStore.some(p => p.id !== editingId && p.name.toLowerCase() === name.toLowerCase());
+    if (!duplicate) renameProfile(editingId, name);
     editingId = null;
   }
 

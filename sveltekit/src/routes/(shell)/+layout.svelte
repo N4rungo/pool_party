@@ -1,8 +1,7 @@
 <script>
   import { page } from '$app/stores';
   import { base } from '$app/paths';
-  import { goto, afterNavigate } from '$app/navigation';
-  import { onMount } from 'svelte';
+  import { goto } from '$app/navigation';
   import Overlay from '$lib/components/Overlay.svelte';
 
   const version = __APP_VERSION__;
@@ -26,34 +25,18 @@
 
   $: isHome = activeId === 'jeux';
 
-  // ── Shrink on scroll ────────────────────────────────────────────────────
-  let scrolled = false;
-
-  function onScroll() {
-    scrolled = window.scrollY > 48;
-  }
-
-  onMount(() => {
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  });
-
-  // Réinitialise l'état compact à chaque changement de page
-  afterNavigate(() => { scrolled = false; });
-
   // ── Info overlay ────────────────────────────────────────────────────────
   let infoOpen = false;
 
-  // Hauteur du header selon l'état (utilisée pour le padding-top du contenu)
-  // Expanded (home, top) = 80px  |  Compact = 52px
-  $: headerH = isHome && !scrolled ? 80 : 52;
+  // Hauteur du header : 80px sur l'accueil, 52px sur les autres sections
+  $: headerH = isHome ? 80 : 52;
 </script>
 
 <!-- ══ HEADER ══ -->
 <header
   class="shell-header"
-  class:expanded={isHome && !scrolled}
-  class:compact={!isHome || scrolled}
+  class:expanded={isHome}
+  class:compact={!isHome}
 >
   {#if isHome}
     <!-- Section Jeux : branding complet -->
@@ -143,7 +126,6 @@
     -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.07);
     overflow: hidden;
-    transition: height 0.25s ease;
   }
 
   .shell-header.expanded { height: 80px; }
@@ -162,7 +144,6 @@
 
   .header-logo {
     object-fit: contain;
-    transition: width 0.25s ease, height 0.25s ease;
   }
 
   .expanded .header-logo { width: 52px; height: 52px; }
@@ -175,7 +156,6 @@
                  2px 2px 0 rgba(0, 0, 0, 0.4);
     letter-spacing: 3px;
     white-space: nowrap;
-    transition: font-size 0.25s ease, letter-spacing 0.25s ease;
   }
 
   .expanded .header-pool-party { font-size: 26px; letter-spacing: 3px; }
@@ -244,7 +224,6 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
-    transition: padding-top 0.25s ease;
   }
 
   /* ══ BOTTOM NAV ══ */
