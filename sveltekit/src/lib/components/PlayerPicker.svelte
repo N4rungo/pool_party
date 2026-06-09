@@ -12,6 +12,7 @@
     excludeNames : string[]  (noms déjà pris — casse ignorée)
 -->
 <script>
+  import { tick } from 'svelte';
   import { profilesStore, createProfile } from '$lib/stores/profiles.js';
 
   export let value        = { name: '', profileId: null };
@@ -21,8 +22,9 @@
 
   const MAX_NAME = 16;
 
-  let mode   = 'idle'; // 'idle' | 'picking'
-  let search = '';
+  let mode       = 'idle'; // 'idle' | 'picking'
+  let search     = '';
+  let searchEl;
 
   // ── Dérivés ─────────────────────────────────────────────
   $: lowerExcludeNames = excludeNames.map(n => n.toLowerCase());
@@ -90,6 +92,17 @@
     search = '';
   }
 
+  async function startEdit() {
+    search = value.name;
+    value  = { name: '', profileId: null };
+    mode   = 'idle';
+    await tick();
+    if (searchEl) {
+      searchEl.focus();
+      searchEl.setSelectionRange(search.length, search.length);
+    }
+  }
+
   function clear() {
     value  = { name: '', profileId: null };
     search = '';
@@ -111,7 +124,7 @@
           <span class="badge-guest">Invité</span>
         {/if}
       </div>
-      <button class="btn-change" on:click={clear}>✎</button>
+      <button class="btn-change" on:click={startEdit}>✎</button>
     </div>
 
   <!-- ── Recherche / sélection ── -->
@@ -127,6 +140,7 @@
       placeholder="Rechercher ou saisir un nom…"
       maxlength={MAX_NAME}
       bind:value={search}
+      bind:this={searchEl}
       on:focus={onSearchFocus}
       on:blur={onSearchBlur}
       on:keydown={e => { if (e.key === 'Enter' && !guestBlocked) addGuest(); }}
