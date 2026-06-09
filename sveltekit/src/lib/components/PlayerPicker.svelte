@@ -199,12 +199,12 @@
     flex: 1;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     min-width: 0;
   }
 
   .player-num {
-    font-size: 11px;
+    font-size: 13px;
     color: rgba(255, 255, 255, 0.35);
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -212,7 +212,7 @@
   }
 
   .player-name {
-    font-size: 16px;
+    font-size: 17px;
     font-weight: bold;
     color: white;
     white-space: nowrap;
@@ -228,8 +228,8 @@
   }
 
   .badge-profile {
-    font-size: 12px;
-    padding: 2px 5px;
+    font-size: 11px;
+    padding: 3px 8px;
     background: rgba(var(--color-gold-rgb), 0.12);
     border: 1px solid rgba(var(--color-gold-rgb), 0.3);
   }
