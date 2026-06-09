@@ -6,7 +6,7 @@ Chaque joueur a un nombre de vies prédéfini. Vous en perdez une à chaque coup
 Le dernier en vie gagne.
 
 ## 🎱 Mise en place
-- **2 à 16 joueurs**
+- **2 à 15 joueurs**
 - **1 à 5 vies** par joueur (3 par défaut)
 - L'ordre de jeu est tiré au sort
 

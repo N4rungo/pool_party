@@ -2,10 +2,12 @@
   Composant GameCard : carte de jeu sur le launcher.
 
   Usage :
-    <GameCard {game} on:rules={(e) => openRules(e.detail)} />
+    <GameCard {game} isFavorite={bool} on:rules={(e) => openRules(e.detail)} on:favorite={(e) => toggle(e.detail)} />
 
-  - prop `game` : objet { id, name, tagline, icon } provenant de games.js
-  - événement `rules` : émis avec l'id du jeu quand on clique sur 📖
+  - prop `game`       : objet { id, name, tagline, icon, ... } provenant de games.js
+  - prop `isFavorite` : si le jeu est dans les favoris
+  - événement `rules`    : émis avec l'id du jeu quand on clique sur 📖
+  - événement `favorite` : émis avec l'id du jeu quand on clique sur ☆/★
   - le bouton ▶ Jouer fait directement la navigation via SvelteKit
 -->
 <script>
@@ -13,11 +15,16 @@
   import { createEventDispatcher } from 'svelte';
 
   export let game;
+  export let isFavorite = false;
 
   const dispatch = createEventDispatcher();
 
   function openRules() {
     dispatch('rules', game.id);
+  }
+
+  function toggleFavorite() {
+    dispatch('favorite', game.id);
   }
 </script>
 
@@ -30,6 +37,13 @@
     <div class="game-tagline">{game.tagline}</div>
   </div>
   <div class="game-card-actions">
+    <button
+      class="btn-card-star"
+      class:is-favorite={isFavorite}
+      on:click={toggleFavorite}
+      aria-label={isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris'}>
+      {isFavorite ? '★' : '☆'}
+    </button>
     <button class="btn-card-rules" on:click={openRules} aria-label="Règles">📖</button>
     <a class="btn-card-play" href="{base}/{game.id}">▶</a>
   </div>
@@ -97,7 +111,7 @@
     flex-shrink: 0;
   }
 
-  /* ── Tablette / Desktop : les cartes s'élargissent avec le launcher ── */
+  /* ── Tablette / Desktop ── */
   @media (min-width: 700px) {
     .game-card {
       padding: 22px 26px;
@@ -110,6 +124,7 @@
     .game-name {
       font-size: clamp(16px, 1.8vw, 22px);
     }
+    .btn-card-star,
     .btn-card-rules,
     .btn-card-play {
       height: 48px;
@@ -118,6 +133,7 @@
     }
   }
 
+  .btn-card-star,
   .btn-card-rules,
   .btn-card-play {
     height: 44px;
@@ -133,6 +149,29 @@
     text-decoration: none;
     transition: transform .1s, box-shadow .1s, opacity .15s;
     -webkit-tap-highlight-color: transparent;
+  }
+
+  .btn-card-star {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.35);
+    box-shadow: 0 3px 0 rgba(0, 0, 0, 0.3);
+    font-size: 18px;
+    padding: 0 12px;
+    transition: background .15s, color .15s, border-color .15s, transform .1s, box-shadow .1s;
+  }
+  .btn-card-star:hover {
+    color: rgba(var(--color-gold-rgb), 0.8);
+    border-color: rgba(var(--color-gold-rgb), 0.4);
+  }
+  .btn-card-star.is-favorite {
+    background: rgba(var(--color-gold-rgb), 0.12);
+    border-color: rgba(var(--color-gold-rgb), 0.5);
+    color: var(--color-gold);
+  }
+  .btn-card-star:active {
+    transform: translateY(3px);
+    box-shadow: none;
   }
 
   .btn-card-rules {

@@ -21,7 +21,7 @@ export const JOKER_TYPES = [
 ];
 
 export const KILLER_MIN_PLAYERS     = 2;
-export const KILLER_MAX_PLAYERS     = 16;
+export const KILLER_MAX_PLAYERS     = 15;
 export const KILLER_DEFAULT_PLAYERS = 4;
 
 export const KILLER_MIN_LIVES     = 1;
