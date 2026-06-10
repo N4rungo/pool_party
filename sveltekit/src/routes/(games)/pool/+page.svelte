@@ -64,6 +64,19 @@
     playerTeams = playerTeams.map((t, j) => (j === i ? 1 - t : t));
   }
 
+  function randomizeTeams() {
+    const n = picks.length;
+    const indices = Array.from({ length: n }, (_, i) => i);
+    for (let i = n - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [indices[i], indices[j]] = [indices[j], indices[i]];
+    }
+    const half = Math.round(n / 2);
+    const newTeams = new Array(n).fill(1);
+    indices.slice(0, half).forEach(i => (newTeams[i] = 0));
+    playerTeams = newTeams;
+  }
+
   // Aperçu des équipes
   $: teamAPreview = picks
     .filter((_, i) => playerTeams[i] === 0 && picks[i].name.trim())
@@ -255,7 +268,7 @@
       <img src="{base}/assets/bille_8.png" alt="" class="icon-title" />
       Pool
     </h1>
-    <div class="setup-sub">8-Ball — Rayures ou Pleines</div>
+    <div class="setup-sub">Pleines ou Rayées ?</div>
 
     <div class="popup-box setup-box">
 
@@ -277,20 +290,26 @@
                 excludeNames={selectedNames.filter(n => n !== pick.name.trim().toLowerCase())}
               />
             </div>
-            <button
-              class="team-toggle"
-              class:team-a={playerTeams[i] === 0}
-              class:team-b={playerTeams[i] === 1}
-              on:click={() => toggleTeam(i)}
-              title="Basculer d'équipe"
-            >
-              {playerTeams[i] === 0 ? 'A' : 'B'}
-            </button>
+            {#if picks[i].name}
+              <button
+                class="team-toggle"
+                class:team-a={playerTeams[i] === 0}
+                class:team-b={playerTeams[i] === 1}
+                on:click={() => toggleTeam(i)}
+                title="Basculer d'équipe"
+              >
+                {playerTeams[i] === 0 ? 'A' : 'B'}
+              </button>
+            {/if}
           </div>
         {/each}
       </div>
 
-      <!-- Aperçu des équipes -->
+      <!-- Aperçu des équipes + bouton randomize -->
+      <div class="teams-section-header">
+        <div class="section-label" style="margin-bottom: 0">Équipes</div>
+        <button class="btn-randomize" on:click={randomizeTeams}>🔀 Aléatoire</button>
+      </div>
       <div class="team-preview">
         <div class="team-preview-col">
           <span class="team-badge team-badge-a">A</span>
@@ -376,10 +395,16 @@
       <!-- Rappels de règles -->
       <div class="reminders">
         <div class="reminder-item">
-          👥 Le même joueur reste à la table tant qu'il empoche
+          👥 <strong>Libre</strong> : même joueur à table tant qu'il empoche
         </div>
         <div class="reminder-item">
-          ⚫ Bille noire : annoncer le trou avant de jouer
+          👥 <strong>Alterné</strong> : les coéquipiers se relaient à chaque passage de main
+        </div>
+        <div class="reminder-item">
+          ⚠️ <strong>Faute</strong> : bille en main n'importe où sur la table
+        </div>
+        <div class="reminder-item">
+          ⚫ <strong>Bille noire</strong> : annoncer le trou avant de jouer
         </div>
       </div>
 
@@ -486,7 +511,7 @@
 
   .player-row {
     display: flex;
-    align-items: stretch;
+    align-items: center;
     gap: 8px;
   }
 
@@ -497,6 +522,7 @@
 
   .team-toggle {
     width: 44px;
+    height: 44px;
     flex-shrink: 0;
     border-radius: 12px;
     border: 2px solid transparent;
@@ -518,6 +544,32 @@
     background: rgba(229, 57, 53, 0.2);
     border-color: rgba(229, 57, 53, 0.55);
     color: #ef9a9a;
+  }
+
+  /* ── Section équipes ── */
+  .teams-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .btn-randomize {
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    color: rgba(255, 255, 255, 0.6);
+    font-family: inherit;
+    font-size: 12px;
+    padding: 5px 12px;
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .btn-randomize:active {
+    background: rgba(255, 255, 255, 0.12);
+    color: white;
   }
 
   /* ── Aperçu équipes ── */
