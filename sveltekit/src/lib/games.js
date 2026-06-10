@@ -30,6 +30,12 @@ export const GAMES = [
     icon: '/assets/3_billes_americain.png'
   },
   {
+    id: 'pool',
+    name: 'Pool',
+    tagline: 'Rayures ou Pleines — 8-Ball',
+    icon: '/assets/bille_8.png'
+  },
+  {
     id: 'straightpool',
     name: '14-1',
     tagline: 'Comptez vos points, pas vos billes',
