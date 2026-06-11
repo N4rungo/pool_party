@@ -7,8 +7,34 @@
 
   let rulesOpen = false;
   let rulesGameId = null;
-  let playerFilter = 0;
 
+  // ── Filtre joueurs ────────────────────────────────────
+  let playerFilter = 0;   // 0 = tous
+  let filterOpen = false;
+
+  function openFilter() {
+    if (playerFilter === 0) playerFilter = 2;
+    filterOpen = true;
+  }
+
+  function closeFilter() {
+    filterOpen = false;
+  }
+
+  function resetFilter() {
+    playerFilter = 0;
+    filterOpen = false;
+  }
+
+  function decFilter() {
+    if (playerFilter > 2) playerFilter--;
+  }
+
+  function incFilter() {
+    if (playerFilter < 15) playerFilter++;
+  }
+
+  // ── Jeux filtrés & sections ───────────────────────────
   $: favIds = $favorites;
 
   $: visibleGames = playerFilter === 0
@@ -30,30 +56,23 @@
   function onFavorite(event) {
     favorites.toggle(event.detail);
   }
-
-  function decFilter() {
-    playerFilter = playerFilter <= 2 ? 0 : playerFilter - 1;
-  }
-  function incFilter() {
-    playerFilter = playerFilter === 0 ? 2 : Math.min(15, playerFilter + 1);
-  }
 </script>
 
 <div id="launcher">
 
-  <!-- Filtre joueurs -->
-  <div class="player-filter">
-    <span class="pf-label">Joueurs</span>
-    <div class="pf-control">
-      <button class="pf-btn" on:click={decFilter} disabled={playerFilter === 0}>−</button>
-      <span class="pf-value" class:active={playerFilter > 0}>
-        {playerFilter === 0 ? '—' : playerFilter}
-      </span>
-      <button class="pf-btn" on:click={incFilter} disabled={playerFilter === 15}>+</button>
-    </div>
-    {#if playerFilter > 0}
-      <button class="pf-reset" on:click={() => playerFilter = 0}>Tous</button>
-    {/if}
+  <!-- Bouton filtre joueurs -->
+  <div class="filter-row">
+    <button
+      class="filter-chip"
+      class:active={playerFilter > 0}
+      on:click={openFilter}
+      aria-label="Filtrer par nombre de joueurs">
+      {#if playerFilter > 0}
+        {playerFilter} joueur{playerFilter > 1 ? 's' : ''}
+      {:else}
+        Joueurs
+      {/if}
+    </button>
   </div>
 
   <!-- Section Favoris -->
@@ -70,8 +89,8 @@
   {/if}
 
   <!-- Sections par catégorie -->
-  {#each sections as section (section.id)}
-    <div class="section-header" class:first={favGames.length === 0 && section.id === sections[0]?.id}>
+  {#each sections as section, si (section.id)}
+    <div class="section-header" class:first={favGames.length === 0 && si === 0}>
       <span class="section-label">{section.label}</span>
     </div>
     <div class="games-list">
@@ -95,6 +114,23 @@
 
 </div>
 
+<!-- ── Overlay filtre joueurs ── -->
+{#if filterOpen}
+  <!-- svelte-ignore a11y-click-events-have-key-events -->
+  <!-- svelte-ignore a11y-no-static-element-interactions -->
+  <div class="filter-overlay" on:click|self={closeFilter}>
+    <div class="filter-panel">
+      <div class="fp-title">Nombre de joueurs</div>
+      <div class="fp-control">
+        <button class="fp-btn" on:click={decFilter} disabled={playerFilter <= 2}>−</button>
+        <span class="fp-value">{playerFilter}</span>
+        <button class="fp-btn" on:click={incFilter} disabled={playerFilter >= 15}>+</button>
+      </div>
+      <button class="fp-reset" on:click={resetFilter}>Tous les jeux</button>
+    </div>
+  </div>
+{/if}
+
 <RulesViewer gameId={rulesGameId} open={rulesOpen} on:close={() => rulesOpen = false} />
 
 <style>
@@ -105,84 +141,36 @@
     padding-bottom: 8px;
   }
 
-  /* ── Filtre joueurs ── */
-  .player-filter {
+  /* ── Filtre chip ── */
+  .filter-row {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 24px;
-    min-height: 36px;
+    justify-content: flex-end;
+    margin-bottom: 20px;
   }
 
-  .pf-label {
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.35);
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-  }
-
-  .pf-control {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .pf-btn {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    background: rgba(255, 255, 255, 0.06);
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 1;
-    transition: background .15s, border-color .15s;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .pf-btn:hover:not(:disabled) {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(var(--color-gold-rgb), 0.5);
-  }
-  .pf-btn:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-  }
-
-  .pf-value {
-    font-size: 16px;
-    font-weight: bold;
-    color: rgba(255, 255, 255, 0.25);
-    min-width: 24px;
-    text-align: center;
-    transition: color .15s;
-  }
-  .pf-value.active {
-    color: var(--color-gold);
-    text-shadow: 0 0 12px rgba(var(--color-gold-rgb), 0.4);
-  }
-
-  .pf-reset {
-    font-size: 11px;
-    background: none;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    color: rgba(255, 255, 255, 0.45);
-    border-radius: 20px;
-    padding: 3px 10px;
-    cursor: pointer;
+  .filter-chip {
     font-family: inherit;
-    letter-spacing: 0.5px;
-    transition: background .15s, color .15s;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.35);
+    border-radius: 20px;
+    padding: 5px 12px;
+    cursor: pointer;
+    transition: background .15s, color .15s, border-color .15s;
     -webkit-tap-highlight-color: transparent;
   }
-  .pf-reset:hover {
-    background: rgba(255, 255, 255, 0.08);
-    color: rgba(255, 255, 255, 0.7);
+  .filter-chip:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.65);
+  }
+  .filter-chip.active {
+    background: rgba(var(--color-gold-rgb), 0.1);
+    border-color: rgba(var(--color-gold-rgb), 0.5);
+    color: var(--color-gold);
   }
 
   /* ── En-têtes de section ── */
@@ -272,5 +260,99 @@
     font-size: 13px;
     color: rgba(255, 255, 255, 0.25);
     font-style: italic;
+  }
+
+  /* ── Overlay filtre ── */
+  .filter-overlay {
+    position: fixed;
+    inset: 0;
+    /* semi-transparent : liste visible derrière */
+    background: rgba(0, 0, 0, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+  }
+
+  .filter-panel {
+    background: linear-gradient(160deg, #1e5c34, #143d24);
+    border: 1px solid rgba(var(--color-gold-rgb), 0.5);
+    border-radius: 20px;
+    padding: 24px 28px;
+    text-align: center;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    min-width: 200px;
+  }
+
+  .fp-title {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.45);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 600;
+  }
+
+  .fp-control {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .fp-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(145deg, var(--color-gold-light), var(--color-gold));
+    color: var(--color-pool);
+    font-size: 22px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    box-shadow: 0 3px 0 var(--color-gold-dark);
+    transition: transform .1s, box-shadow .1s, opacity .15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .fp-btn:active:not(:disabled) {
+    transform: translateY(2px);
+    box-shadow: none;
+  }
+  .fp-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  .fp-value {
+    font-size: 40px;
+    font-weight: bold;
+    color: var(--color-gold);
+    text-shadow: 0 0 20px rgba(var(--color-gold-rgb), 0.4);
+    min-width: 52px;
+    text-align: center;
+    line-height: 1;
+  }
+
+  .fp-reset {
+    font-family: inherit;
+    font-size: 12px;
+    background: none;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.4);
+    border-radius: 20px;
+    padding: 5px 16px;
+    cursor: pointer;
+    transition: background .15s, color .15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .fp-reset:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.7);
   }
 </style>

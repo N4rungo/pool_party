@@ -29,6 +29,15 @@
 </script>
 
 <div class="game-card available">
+  <!-- Étoile favoris : coin haut-droit -->
+  <button
+    class="star-btn"
+    class:is-favorite={isFavorite}
+    on:click={toggleFavorite}
+    aria-label={isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris'}>
+    {isFavorite ? '★' : '☆'}
+  </button>
+
   <div class="game-icon">
     <img src="{base}{game.icon}" alt={game.name} />
   </div>
@@ -37,13 +46,6 @@
     <div class="game-tagline">{game.tagline}</div>
   </div>
   <div class="game-card-actions">
-    <button
-      class="btn-card-star"
-      class:is-favorite={isFavorite}
-      on:click={toggleFavorite}
-      aria-label={isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris'}>
-      {isFavorite ? '★' : '☆'}
-    </button>
     <button class="btn-card-rules" on:click={openRules} aria-label="Règles">📖</button>
     <a class="btn-card-play" href="{base}/{game.id}">▶</a>
   </div>
@@ -51,10 +53,12 @@
 
 <style>
   .game-card {
+    position: relative;
     background: linear-gradient(145deg, rgba(255, 255, 255, 0.07), rgba(0, 0, 0, 0.2));
     border: 1px solid rgba(var(--color-gold-rgb), 0.3);
     border-radius: 20px;
-    padding: 20px 22px;
+    /* padding-right élargi pour laisser la zone de l'étoile sans chevaucher les actions */
+    padding: 20px 40px 20px 22px;
     display: flex;
     align-items: center;
     gap: 18px;
@@ -62,6 +66,39 @@
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
   }
 
+  /* ── Étoile favoris ── */
+  .star-btn {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    transition: color .15s, transform .1s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .star-btn:hover {
+    color: rgba(var(--color-gold-rgb), 0.7);
+    transform: scale(1.15);
+  }
+  .star-btn.is-favorite {
+    color: var(--color-gold);
+  }
+  .star-btn.is-favorite:hover {
+    color: rgba(var(--color-gold-rgb), 0.7);
+  }
+  .star-btn:active { transform: scale(0.9); }
+
+  /* ── Icône ── */
   .game-icon {
     width: clamp(44px, 13vw, 56px);
     height: clamp(44px, 13vw, 56px);
@@ -78,6 +115,7 @@
     object-fit: contain;
   }
 
+  /* ── Infos ── */
   .game-info {
     flex: 1;
     min-width: 0;
@@ -104,6 +142,7 @@
     overflow: hidden;
   }
 
+  /* ── Actions ── */
   .game-card-actions {
     display: flex;
     align-items: center;
@@ -114,7 +153,7 @@
   /* ── Tablette / Desktop ── */
   @media (min-width: 700px) {
     .game-card {
-      padding: 22px 26px;
+      padding: 22px 46px 22px 26px;
       gap: 20px;
     }
     .game-icon img {
@@ -124,16 +163,21 @@
     .game-name {
       font-size: clamp(16px, 1.8vw, 22px);
     }
-    .btn-card-star,
     .btn-card-rules,
     .btn-card-play {
       height: 48px;
       min-width: 48px;
       font-size: 17px;
     }
+    .star-btn {
+      top: 10px;
+      right: 12px;
+      font-size: 17px;
+      width: 28px;
+      height: 28px;
+    }
   }
 
-  .btn-card-star,
   .btn-card-rules,
   .btn-card-play {
     height: 44px;
@@ -149,29 +193,6 @@
     text-decoration: none;
     transition: transform .1s, box-shadow .1s, opacity .15s;
     -webkit-tap-highlight-color: transparent;
-  }
-
-  .btn-card-star {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    color: rgba(255, 255, 255, 0.35);
-    box-shadow: 0 3px 0 rgba(0, 0, 0, 0.3);
-    font-size: 18px;
-    padding: 0 12px;
-    transition: background .15s, color .15s, border-color .15s, transform .1s, box-shadow .1s;
-  }
-  .btn-card-star:hover {
-    color: rgba(var(--color-gold-rgb), 0.8);
-    border-color: rgba(var(--color-gold-rgb), 0.4);
-  }
-  .btn-card-star.is-favorite {
-    background: rgba(var(--color-gold-rgb), 0.12);
-    border-color: rgba(var(--color-gold-rgb), 0.5);
-    color: var(--color-gold);
-  }
-  .btn-card-star:active {
-    transform: translateY(3px);
-    box-shadow: none;
   }
 
   .btn-card-rules {
