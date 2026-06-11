@@ -1,12 +1,13 @@
 /**
  * Registre central des jeux disponibles.
  *
- * Chaque entrée : { id, name, tagline, icon, category, minPlayers, maxPlayers }
+ * Chaque entrée : { id, name, tagline, icon, category, tableTypes, minPlayers, maxPlayers }
  *  - id         : utilisé dans l'URL (/<id>) et le nom du fichier rules/<id>.md
  *  - name       : affiché sur la carte du launcher
  *  - tagline    : phrase d'accroche sous le nom
  *  - icon       : chemin vers l'image (depuis static/, donc /assets/...)
- *  - category   : 'americain' | 'francais' | 'snooker'
+ *  - category   : 'americain' | 'francais' | 'snooker'  — used for section grouping
+ *  - tableTypes : string[]  — types de table compatibles (filtre)
  *  - minPlayers : nombre minimum de joueurs
  *  - maxPlayers : nombre maximum de joueurs
  *
@@ -20,6 +21,13 @@ export const CATEGORIES = [
   { id: 'snooker',   label: 'Snooker'           },
 ];
 
+export const TABLE_TYPES = [
+  { id: 'americain', label: 'Américain' },
+  { id: 'anglais',   label: 'Anglais'   },
+  { id: 'francais',  label: 'Français'  },
+  { id: 'snooker',   label: 'Snooker'   },
+];
+
 export const GAMES = [
   {
     id: 'killer',
@@ -27,6 +35,7 @@ export const GAMES = [
     tagline: "Il ne peut en rester qu'un",
     icon: '/assets/bille_8_killer.png',
     category: 'americain',
+    tableTypes: ['americain', 'anglais'],
     minPlayers: 2,
     maxPlayers: 15,
   },
@@ -36,6 +45,7 @@ export const GAMES = [
     tagline: 'Éliminez-les tous',
     icon: '/assets/bille_1_target.png',
     category: 'americain',
+    tableTypes: ['americain'],
     minPlayers: 2,
     maxPlayers: 15,
   },
@@ -45,6 +55,7 @@ export const GAMES = [
     tagline: 'Premier à 61 points',
     icon: '/assets/3_billes_americain.png',
     category: 'americain',
+    tableTypes: ['americain'],
     minPlayers: 2,
     maxPlayers: 4,
   },
@@ -54,6 +65,7 @@ export const GAMES = [
     tagline: 'Pleines ou Rayées ?',
     icon: '/assets/bille_8.png',
     category: 'americain',
+    tableTypes: ['americain'],
     minPlayers: 2,
     maxPlayers: 8,
   },
@@ -63,6 +75,7 @@ export const GAMES = [
     tagline: 'Empochez les toutes !',
     icon: '/assets/triangle_14-1.png',
     category: 'americain',
+    tableTypes: ['americain'],
     minPlayers: 2,
     maxPlayers: 6,
   },
@@ -72,6 +85,7 @@ export const GAMES = [
     tagline: 'Le français revisité',
     icon: '/assets/3_billes.png',
     category: 'francais',
+    tableTypes: ['francais'],
     minPlayers: 2,
     maxPlayers: 6,
   },
@@ -81,6 +95,7 @@ export const GAMES = [
     tagline: 'On vise 0 pile !',
     icon: '/assets/5-ball.png',
     category: 'francais',
+    tableTypes: ['francais'],
     minPlayers: 2,
     maxPlayers: 6,
   },
@@ -90,6 +105,7 @@ export const GAMES = [
     tagline: 'Objectif : 147 points',
     icon: '/assets/3_billes_snooker.png',
     category: 'snooker',
+    tableTypes: ['snooker'],
     minPlayers: 2,
     maxPlayers: 6,
   },

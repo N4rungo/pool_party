@@ -2,15 +2,18 @@
   import { base } from '$app/paths';
   import GameCard from '$lib/components/GameCard.svelte';
   import RulesViewer from '$lib/components/RulesViewer.svelte';
-  import { GAMES, CATEGORIES } from '$lib/games.js';
+  import { GAMES, CATEGORIES, TABLE_TYPES } from '$lib/games.js';
   import { favorites } from '$lib/stores/favorites.js';
 
   let rulesOpen = false;
   let rulesGameId = null;
 
-  // ── Filtre joueurs ────────────────────────────────────
-  let playerFilter = 0;   // 0 = tous
-  let filterOpen = false;
+  // ── Filtres ───────────────────────────────────────────
+  let playerFilter = 0;     // 0 = tous
+  let tableFilter  = null;  // null = tous
+  let filterOpen   = false;
+
+  $: isFilterActive = playerFilter > 0 || tableFilter !== null;
 
   function openFilter() {
     if (playerFilter === 0) playerFilter = 2;
@@ -23,23 +26,21 @@
 
   function resetFilter() {
     playerFilter = 0;
-    filterOpen = false;
+    tableFilter  = null;
+    filterOpen   = false;
   }
 
-  function decFilter() {
-    if (playerFilter > 2) playerFilter--;
-  }
-
-  function incFilter() {
-    if (playerFilter < 15) playerFilter++;
-  }
+  function decFilter() { if (playerFilter > 2) playerFilter--; }
+  function incFilter() { if (playerFilter < 15) playerFilter++; }
 
   // ── Jeux filtrés & sections ───────────────────────────
   $: favIds = $favorites;
 
-  $: visibleGames = playerFilter === 0
-    ? GAMES
-    : GAMES.filter(g => g.minPlayers <= playerFilter && g.maxPlayers >= playerFilter);
+  $: visibleGames = GAMES.filter(g => {
+    if (playerFilter > 0 && (g.minPlayers > playerFilter || g.maxPlayers < playerFilter)) return false;
+    if (tableFilter !== null && !g.tableTypes.includes(tableFilter)) return false;
+    return true;
+  });
 
   $: favGames = visibleGames.filter(g => favIds.includes(g.id));
 
@@ -60,17 +61,24 @@
 
 <div id="launcher">
 
-  <!-- Bouton filtre joueurs -->
+  <!-- Bouton filtre -->
   <div class="filter-row">
     <button
       class="filter-chip"
-      class:active={playerFilter > 0}
+      class:active={isFilterActive}
       on:click={openFilter}
-      aria-label="Filtrer par nombre de joueurs">
-      {#if playerFilter > 0}
-        {playerFilter} joueur{playerFilter > 1 ? 's' : ''}
-      {:else}
-        Joueurs
+      aria-label="Filtres">
+      <!-- Icône sliders -->
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="1"  y="1"  width="1.8" height="13" rx="0.9" fill="currentColor"/>
+        <rect x="6.1" y="1" width="1.8" height="13" rx="0.9" fill="currentColor"/>
+        <rect x="11.2" y="1" width="1.8" height="13" rx="0.9" fill="currentColor"/>
+        <circle cx="1.9"  cy="9"  r="2.4" fill="currentColor"/>
+        <circle cx="7"    cy="5"  r="2.4" fill="currentColor"/>
+        <circle cx="12.1" cy="10.5" r="2.4" fill="currentColor"/>
+      </svg>
+      {#if isFilterActive}
+        <span class="filter-dot"></span>
       {/if}
     </button>
   </div>
@@ -101,7 +109,7 @@
   {/each}
 
   <!-- Carte "Bientôt" -->
-  {#if playerFilter === 0}
+  {#if !isFilterActive}
     <div class="game-card unavailable">
       <div class="game-icon">🚧</div>
       <div class="game-info">
@@ -114,18 +122,36 @@
 
 </div>
 
-<!-- ── Overlay filtre joueurs ── -->
+<!-- ── Overlay filtres ── -->
 {#if filterOpen}
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   <div class="filter-overlay" on:click|self={closeFilter}>
     <div class="filter-panel">
-      <div class="fp-title">Nombre de joueurs</div>
+
+      <!-- Nombre de joueurs -->
+      <div class="fp-section-title">Nombre de joueurs</div>
       <div class="fp-control">
         <button class="fp-btn" on:click={decFilter} disabled={playerFilter <= 2}>−</button>
         <span class="fp-value">{playerFilter}</span>
         <button class="fp-btn" on:click={incFilter} disabled={playerFilter >= 15}>+</button>
       </div>
+
+      <div class="fp-divider"></div>
+
+      <!-- Type de table -->
+      <div class="fp-section-title">Type de table</div>
+      <div class="fp-chips">
+        {#each TABLE_TYPES as tt}
+          <button
+            class="fp-type-chip"
+            class:active={tableFilter === tt.id}
+            on:click={() => tableFilter = tableFilter === tt.id ? null : tt.id}>
+            {tt.label}
+          </button>
+        {/each}
+      </div>
+
       <button class="fp-reset" on:click={resetFilter}>Tous les jeux</button>
     </div>
   </div>
@@ -149,16 +175,16 @@
   }
 
   .filter-chip {
-    font-family: inherit;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.8px;
-    text-transform: uppercase;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.12);
     color: rgba(255, 255, 255, 0.35);
-    border-radius: 20px;
-    padding: 5px 12px;
+    border-radius: 10px;
     cursor: pointer;
     transition: background .15s, color .15s, border-color .15s;
     -webkit-tap-highlight-color: transparent;
@@ -173,6 +199,17 @@
     color: var(--color-gold);
   }
 
+  /* Indicateur point actif */
+  .filter-dot {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-gold);
+  }
+
   /* ── En-têtes de section ── */
   .section-header {
     display: flex;
@@ -181,9 +218,7 @@
     margin-top: 24px;
     margin-bottom: 12px;
   }
-  .section-header.first {
-    margin-top: 0;
-  }
+  .section-header.first { margin-top: 0; }
 
   .section-icon {
     font-size: 13px;
@@ -262,11 +297,10 @@
     font-style: italic;
   }
 
-  /* ── Overlay filtre ── */
+  /* ── Overlay filtres ── */
   .filter-overlay {
     position: fixed;
     inset: 0;
-    /* semi-transparent : liste visible derrière */
     background: rgba(0, 0, 0, 0.55);
     display: flex;
     align-items: center;
@@ -284,11 +318,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 16px;
-    min-width: 200px;
+    gap: 14px;
+    min-width: 240px;
   }
 
-  .fp-title {
+  .fp-section-title {
     font-size: 11px;
     color: rgba(255, 255, 255, 0.45);
     text-transform: uppercase;
@@ -296,6 +330,7 @@
     font-weight: 600;
   }
 
+  /* Nombre de joueurs */
   .fp-control {
     display: flex;
     align-items: center;
@@ -339,6 +374,45 @@
     line-height: 1;
   }
 
+  /* Séparateur */
+  .fp-divider {
+    width: 100%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  /* Type de table */
+  .fp-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .fp-type-chip {
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: rgba(255, 255, 255, 0.55);
+    border-radius: 20px;
+    padding: 6px 14px;
+    cursor: pointer;
+    transition: background .15s, color .15s, border-color .15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .fp-type-chip:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.85);
+  }
+  .fp-type-chip.active {
+    background: rgba(var(--color-gold-rgb), 0.15);
+    border-color: rgba(var(--color-gold-rgb), 0.6);
+    color: var(--color-gold);
+  }
+
+  /* Reset */
   .fp-reset {
     font-family: inherit;
     font-size: 12px;
