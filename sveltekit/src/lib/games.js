@@ -32,13 +32,13 @@ export const GAMES = [
   {
     id: 'pool',
     name: 'Pool',
-    tagline: 'Rayures ou Pleines — 8-Ball',
+    tagline: 'Pleines ou Rayées ?',
     icon: '/assets/bille_8.png'
   },
   {
     id: 'straightpool',
     name: '14-1',
-    tagline: 'Comptez vos points, pas vos billes',
+    tagline: 'Empochez les toutes !',
     icon: '/assets/triangle_14-1.png'
   },
   {
@@ -56,7 +56,7 @@ export const GAMES = [
   {
     id: 'fiveball',
     name: '5-Ball',
-    tagline: 'Atteignez 0 pile, comme aux fléchettes',
+    tagline: 'On vise 0 pile !',
     icon: '/assets/5-ball.png'
   }
 ];
