@@ -42,12 +42,11 @@
     <!-- Section Jeux : branding complet -->
     <div class="header-home">
       <img src="{base}/assets/pool_party.png" alt="" class="header-logo" />
-      <span class="header-pool-party">POOL PARTY</span>
-      <button
+      <span class="header-pool-party">POOL PARTY<button
         class="header-info-btn"
         on:click={() => infoOpen = true}
         aria-label="Infos & installation"
-      >i</button>
+      >i</button></span>
     </div>
   {:else}
     <!-- Autres sections : nom de la section -->
@@ -160,32 +159,33 @@
   .compact  .header-pool-party { font-size: 16px; letter-spacing: 2px; }
 
   .header-info-btn {
-    vertical-align: super;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 22px;
-    height: 22px;
-    border: 1.5px solid rgba(var(--color-gold-rgb), 0.4);
+    vertical-align: super;
+    font-size: 0.42em;
+    width: 1.7em;
+    height: 1.7em;
+    border: 1.5px solid currentColor;
     border-radius: 50%;
     background: none;
     cursor: pointer;
-    color: rgba(var(--color-gold-rgb), 0.6);
+    color: inherit;
     font-family: 'Times New Roman', Georgia, serif;
     font-style: italic;
     font-weight: 700;
-    font-size: 13px;
     line-height: 1;
     padding: 0;
-    transition: opacity 0.2s, transform 0.15s, color 0.2s, border-color 0.2s;
+    margin-left: 0.25em;
+    opacity: 0.65;
+    transition: opacity 0.2s, transform 0.15s;
     -webkit-tap-highlight-color: transparent;
   }
 
   .header-info-btn:hover,
   .header-info-btn:active {
-    color: var(--color-gold);
-    border-color: rgba(var(--color-gold-rgb), 0.9);
-    transform: scale(1.1);
+    opacity: 1;
+    transform: scale(1.12);
   }
 
   /* ── Autres sections ── */
