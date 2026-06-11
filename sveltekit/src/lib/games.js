@@ -49,9 +49,18 @@ export const GAMES = [
     maxPlayers: 4,
   },
   {
+    id: 'pool',
+    name: 'Pool',
+    tagline: 'Pleines ou Rayées ?',
+    icon: '/assets/bille_8.png',
+    category: 'americain',
+    minPlayers: 2,
+    maxPlayers: 8,
+  },
+  {
     id: 'straightpool',
     name: '14-1',
-    tagline: 'Comptez vos points, pas vos billes',
+    tagline: 'Empochez les toutes !',
     icon: '/assets/triangle_14-1.png',
     category: 'americain',
     minPlayers: 2,
@@ -69,7 +78,7 @@ export const GAMES = [
   {
     id: 'fiveball',
     name: '5-Ball',
-    tagline: 'Atteignez 0 pile, comme aux fléchettes',
+    tagline: 'On vise 0 pile !',
     icon: '/assets/5-ball.png',
     category: 'francais',
     minPlayers: 2,
