@@ -14,7 +14,7 @@ puis la **bille 8** remporte la partie.
 | **La noire** | 8 — clé de la victoire |
 
 La répartition est fixée par la **première bille empochée après la casse**,
-quel que soit le joueur qui la poche.
+quel que soit le joueur qui l'empoche.
 
 ## 🎱 La casse
 - Le joueur qui casse doit frapper le triangle et **disperser les billes**.
@@ -22,12 +22,13 @@ quel que soit le joueur qui la poche.
   la position laissée.
 - Si la **bille 8** est empochée sur la casse : **remise en jeu** (re-rack).
 - Si la **bille blanche** est empochée sur la casse : **bille en main** pour
-  l'adversaire (n'importe où sur la table).
+  l'adversaire (derrière la ligne de casse).
 
 ## ▶️ Tour de jeu
+- Il est impératif de **toucher une de ses propres billes en premier**.
 - On continue à jouer tant qu'on empoche **une de ses propres billes**.
 - Si on rate, si on empoche une bille adverse ou si on commet une faute :
-  **passage de main** (et bille en main si faute).
+  **passage de main**.
 
 ## ⚠️ Fautes → bille en main pour l'adversaire
 Une faute est commise si :
@@ -38,13 +39,13 @@ Une faute est commise si :
 - Après contact, aucune bille ne touche une **bande** et aucune bille
   n'est empochée
 
-En cas de faute, l'adversaire récupère la **bille en main** : il peut placer
+En cas de faute, l'adversaire a **bille en main** : il peut placer
 la blanche n'importe où sur la table avant de jouer.
 
 ## 👥 Jeu en équipe
-Quand plusieurs joueurs forment une équipe, les coéquipiers se relaient
-à chaque **passage de main** entre les deux équipes.
-Le même joueur reste à la table tant qu'il empoche des billes.
+2 variantes possibles : 
+- Les coéquipiers se relaient après chaque empochage de bille.
+- Le même joueur reste à la table tant qu'il empoche des billes.
 
 ## ⚫ La bille noire
 La bille 8 ne peut être jouée qu'**après avoir empoché toutes ses billes**.
