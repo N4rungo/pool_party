@@ -137,9 +137,7 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    position: relative;
     width: 100%;
-    padding: 0 48px;
   }
 
   .header-logo {
@@ -162,10 +160,6 @@
   .compact  .header-pool-party { font-size: 16px; letter-spacing: 2px; }
 
   .header-info-btn {
-    position: absolute;
-    right: 16px;
-    top: 50%;
-    transform: translateY(-50%);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -190,7 +184,7 @@
   .header-info-btn:active {
     color: var(--color-gold);
     border-color: rgba(var(--color-gold-rgb), 0.9);
-    transform: translateY(-50%) scale(1.1);
+    transform: scale(1.1);
   }
 
   /* ── Autres sections ── */
