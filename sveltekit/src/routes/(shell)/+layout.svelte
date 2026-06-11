@@ -160,6 +160,7 @@
   .compact  .header-pool-party { font-size: 16px; letter-spacing: 2px; }
 
   .header-info-btn {
+    vertical-align: super;
     display: inline-flex;
     align-items: center;
     justify-content: center;
