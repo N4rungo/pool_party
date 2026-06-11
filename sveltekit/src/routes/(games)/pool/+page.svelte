@@ -394,12 +394,15 @@
 
       <!-- Rappels de règles -->
       <div class="reminders">
-        <div class="reminder-item">
-          👥 <strong>Libre</strong> : même joueur à table tant qu'il empoche
-        </div>
-        <div class="reminder-item">
-          👥 <strong>Alterné</strong> : les coéquipiers se relaient à chaque passage de main
-        </div>
+        {#if state.teams.some(t => t.players.length > 1)}
+          <div class="reminder-item">
+            👥 <strong>En équipe</strong>, soit :
+            <ul class="reminder-list">
+              <li>Le même joueur reste à table tant qu'il empoche</li>
+              <li>Les coéquipiers alternent entre chaque empochage</li>
+            </ul>
+          </div>
+        {/if}
         <div class="reminder-item">
           ⚠️ <strong>Faute</strong> : bille en main n'importe où sur la table
         </div>
@@ -750,20 +753,38 @@
 
   /* ── Rappels ── */
   .reminders {
-    background: rgba(0, 0, 0, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 12px;
-    padding: 10px 14px;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    padding: 12px 16px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 10px;
     margin-bottom: 10px;
   }
 
   .reminder-item {
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.4);
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.65);
     text-align: left;
+    line-height: 1.5;
+  }
+
+  .reminder-item strong {
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .reminder-list {
+    margin: 4px 0 0 4px;
+    padding-left: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .reminder-list li {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.55);
   }
 
   /* ── Boutons victoire ── */
