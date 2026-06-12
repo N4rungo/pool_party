@@ -69,16 +69,16 @@
   /* ── Étoile favoris ── */
   .star-btn {
     position: absolute;
-    top: 8px;
-    right: 10px;
-    width: 26px;
-    height: 26px;
+    top: 6px;
+    right: 7px;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
     background: none;
     border: none;
-    font-size: 16px;
+    font-size: 21px;
     color: rgba(255, 255, 255, 0.2);
     cursor: pointer;
     padding: 0;
@@ -170,11 +170,11 @@
       font-size: 17px;
     }
     .star-btn {
-      top: 10px;
-      right: 12px;
-      font-size: 17px;
-      width: 28px;
-      height: 28px;
+      top: 8px;
+      right: 9px;
+      font-size: 22px;
+      width: 34px;
+      height: 34px;
     }
   }
 

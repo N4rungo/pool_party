@@ -16,7 +16,6 @@
   $: isFilterActive = playerFilter > 0 || tableFilter !== null;
 
   function openFilter() {
-    if (playerFilter === 0) playerFilter = 2;
     filterOpen = true;
   }
 
@@ -30,8 +29,13 @@
     filterOpen   = false;
   }
 
-  function decFilter() { if (playerFilter > 2) playerFilter--; }
-  function incFilter() { if (playerFilter < 15) playerFilter++; }
+  function decFilter() {
+    if (playerFilter === 0) return;
+    playerFilter = playerFilter <= 2 ? 0 : playerFilter - 1;
+  }
+  function incFilter() {
+    playerFilter = playerFilter === 0 ? 2 : Math.min(15, playerFilter + 1);
+  }
 
   // ── Jeux filtrés & sections ───────────────────────────
   $: favIds = $favorites;
@@ -69,7 +73,7 @@
       on:click={openFilter}
       aria-label="Filtres">
       <!-- Icône sliders -->
-      <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <svg width="14" height="14" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="flex-shrink:0">
         <rect x="1"  y="1"  width="1.8" height="13" rx="0.9" fill="currentColor"/>
         <rect x="6.1" y="1" width="1.8" height="13" rx="0.9" fill="currentColor"/>
         <rect x="11.2" y="1" width="1.8" height="13" rx="0.9" fill="currentColor"/>
@@ -77,6 +81,7 @@
         <circle cx="7"    cy="5"  r="2.4" fill="currentColor"/>
         <circle cx="12.1" cy="10.5" r="2.4" fill="currentColor"/>
       </svg>
+      <span class="filter-label">On joue à quoi ?</span>
       {#if isFilterActive}
         <span class="filter-dot"></span>
       {/if}
@@ -132,8 +137,8 @@
       <!-- Nombre de joueurs -->
       <div class="fp-section-title">Nombre de joueurs</div>
       <div class="fp-control">
-        <button class="fp-btn" on:click={decFilter} disabled={playerFilter <= 2}>−</button>
-        <span class="fp-value">{playerFilter}</span>
+        <button class="fp-btn" on:click={decFilter} disabled={playerFilter === 0}>−</button>
+        <span class="fp-value" class:muted={playerFilter === 0}>{playerFilter === 0 ? '—' : playerFilter}</span>
         <button class="fp-btn" on:click={incFilter} disabled={playerFilter >= 15}>+</button>
       </div>
 
@@ -178,16 +183,23 @@
     position: relative;
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    width: 34px;
-    height: 34px;
+    gap: 7px;
+    height: 32px;
+    padding: 0 12px 0 10px;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.12);
     color: rgba(255, 255, 255, 0.35);
-    border-radius: 10px;
+    border-radius: 20px;
     cursor: pointer;
     transition: background .15s, color .15s, border-color .15s;
     -webkit-tap-highlight-color: transparent;
+  }
+
+  .filter-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
   }
   .filter-chip:hover {
     background: rgba(255, 255, 255, 0.1);
@@ -372,6 +384,11 @@
     min-width: 52px;
     text-align: center;
     line-height: 1;
+    transition: color .15s;
+  }
+  .fp-value.muted {
+    color: rgba(255, 255, 255, 0.25);
+    text-shadow: none;
   }
 
   /* Séparateur */
