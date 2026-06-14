@@ -93,7 +93,17 @@
   "setup": {
     "searchOrType": "Rechercher ou saisir un nom…",
     "playerName": "Nom du joueur",
-    "playerCount": "Nombre de joueurs"
+    "playerCount": "Nombre de joueurs",
+    "defaultPlayer": "Joueur {n}",
+    "step": "Étape {n} / {total}",
+    "playerNames": "Noms des joueurs",
+    "recap": "Récapitulatif",
+    "next": "Suivant →",
+    "back": "← Retour",
+    "launchMatch": "🏆 Lancer le match !",
+    "launchGame": "🎱 Lancer la partie !",
+    "validate": "Valider",
+    "targetScore": "Score à atteindre"
   },
   "players": {
     "newProfile": "Nouveau profil",
@@ -182,9 +192,34 @@
   },
   "confirm": {
     "leaveGame": "Abandonner la partie et revenir à l'accueil ?",
-    "leaveMatch": "Abandonner le match en cours ?"
+    "leaveMatch": "Abandonner le match en cours ?",
+    "abandonLabel": "Abandonner",
+    "continueLabel": "Continuer"
   },
   "killer": {
+    "winSub": "Dernier survivant !",
+    "jokerMode": "Mode jokers",
+    "jokerRandom": "🎲 Aléatoire",
+    "jokerChoice": "🃏 Choix libre",
+    "jokerRandomTip": "Un joker aléatoire est tiré depuis le pool commun.",
+    "jokerChoiceTip": "Chaque joueur démarre avec 1 joker de chaque type.",
+    "adjustLivesTip": "Ajustez les vies par joueur si besoin.",
+    "useJoker": "Utiliser un joker",
+    "drawRandom": "Tirer un joker aléatoire",
+    "currentTurn": "Tour de {name}",
+    "chooseTarget": "Choisir une cible",
+    "targetHint": "Le joueur ciblé joue immédiatement un tour forcé.",
+    "forcedMini": "Forcé",
+    "handMini": "Bille en main",
+    "activeBadge": "EN JEU",
+    "forcedBadge": "TOUR FORCÉ",
+    "handBadge": "BILLE EN MAIN",
+    "actionHit": "✅ Tir réussi",
+    "actionMiss": "❌ Tir raté",
+    "actionBlack": "Bille noire",
+    "actionJoker": "🃏 Joker",
+    "jokerBlocked": "(bloqué)",
+    "jokerExhaustedLabel": "(épuisés)",
     "jokers": {
       "pass": "Passez votre tour",
       "hand": "Bille en main",
@@ -204,12 +239,40 @@
     }
   },
   "chicago": {
+    "winSub": "Félicitations !",
+    "drawSub": "Les deux joueurs finissent à {score} points",
     "toast": {
       "starts": "🎲 {name} commence !",
       "points": "🎱 +{n} pts pour {name}"
     }
   },
   "snooker": {
+    "winSub": "{score} points • Meilleur break : {breakMax}",
+    "gameMode": "Mode de jeu",
+    "modeSimple": "🟢 Simple",
+    "modeExpert": "🔴 Expert",
+    "simpleTip": "Faute : les autres joueurs reçoivent les points automatiquement.",
+    "expertTip": "Faute : le joueur lésé choisit (prendre les points / faire rejouer). Free ball disponible.",
+    "currentTurn": "Tour de {name}",
+    "replaying": "Rejoue (suite à une faute)",
+    "currentBreak": "Break : {n}",
+    "redsLeft": "🔢 Rouges restantes : {n} —",
+    "multiShot": "🔴🔴 Coup multiple",
+    "multiShotTitle": "🔴 Coup multiple",
+    "multiShotHint": "Combien de rouges + quelles couleurs en un coup ?",
+    "redsLabel": "Rouges empochées",
+    "colorsLabel": "Couleurs (toggle)",
+    "totalLabel": "Total :",
+    "faultTitle": "⚠️ Faute",
+    "faultHint": "Valeur de la pénalité (min {min}, max 7)",
+    "expertChoiceTitle": "⚖️ Faute — choix expert",
+    "expertChoiceHint": "+{value} pts attribués au lésé. Que voulez-vous faire ?",
+    "takePoints": "Prendre les points et jouer",
+    "forceReplay": "Faire rejouer le fautif",
+    "freeBallTitle": "🎱 Free Ball ?",
+    "freeBallHint": "Suite à la faute, le joueur est snookered. Il peut désigner une bille libre qui vaudra les points de la bille normalement visée.",
+    "useFreeBall": "✅ Utiliser la free ball",
+    "noFreeBall": "✖️ Non merci",
     "balls": {
       "red": "Rouge",
       "yellow": "Jaune",
@@ -230,6 +293,13 @@
     }
   },
   "casin": {
+    "winSub": "Checklist complétée !",
+    "alreadyDone": "✅ Action déjà complétée !",
+    "actionDone": "✅ {label} validé !",
+    "neutralShot": "↺ Coup libre",
+    "neutralResetToast": "↺ Coup libre — toutes les actions disponibles",
+    "neutralNoneToast": "ℹ️ Aucune action à réinitialiser",
+    "blockedBadge": "Pas {action}",
     "actions": {
       "direct": "Direct",
       "libre": "Libre",
@@ -255,6 +325,9 @@
     }
   },
   "fiveball": {
+    "winSub": "Pile à 0 ! Bravo !",
+    "validate": "Valider le tour →",
+    "engagement": "🎯 Engagement — la rouge doit être touchée en premier !",
     "balls": {
       "red": "Rouge",
       "green": "Verte",
@@ -262,16 +335,36 @@
       "white": "Blanche",
       "yellow": "Jaune"
     },
+    "preview": {
+      "zero": "Aucune bille sélectionnée — tour passé sans points.",
+      "one": "1 seule bille — il en faut au moins 2 pour scorer.",
+      "engagementFail": "Engagement raté : la rouge doit être touchée.",
+      "bust": "−{total} → resterait {remaining} : tour annulé.",
+      "win": "−{total} → 0 pile, partie gagnée ! 🏆",
+      "ok": "−{total} → reste {remaining} pts"
+    },
     "toast": {
-      "start": "🎯 Engagement : {name} doit toucher la rouge !"
+      "start": "🎯 Engagement : {name} doit toucher la rouge !",
+      "scored": "🎱 −{delta} pts"
     }
   },
   "cutthroat": {
+    "winSub": "Dernier joueur en lice !",
+    "eliminated": "ÉLIMINÉ",
+    "faultBtn": "⚠️ Faute",
+    "faultWho": "⚠️ Qui a fait la faute ?",
+    "faultOf": "Faute de {name}",
+    "faultReturns": "Remise en jeu des billes (dans l'ordre) :",
+    "faultPutsBack": "remet la",
+    "faultNone": "Aucune bille à remettre en jeu.",
     "toast": {
       "ball": "🎱 Bille {n} empochée"
     }
   },
   "pool": {
+    "winSub": "Félicitations !",
+    "teamA": "Équipe A",
+    "teamB": "Équipe B",
     "toast": {
       "allNameRequired": "⚠️ Tous les joueurs doivent avoir un nom",
       "onePlayerPerTeam": "⚠️ Il faut au moins un joueur par équipe",
@@ -279,6 +372,7 @@
     }
   },
   "straightpool": {
+    "winSub": "Score atteint !",
     "toast": {
       "starts": "🎯 Tour de {name}",
       "fault": "⚠️ Faute ! −1 point"

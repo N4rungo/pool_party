@@ -93,7 +93,17 @@
   "setup": {
     "searchOrType": "Search or type a name…",
     "playerName": "Player name",
-    "playerCount": "Number of players"
+    "playerCount": "Number of players",
+    "defaultPlayer": "Player {n}",
+    "step": "Step {n} of {total}",
+    "playerNames": "Player names",
+    "recap": "Summary",
+    "next": "Next →",
+    "back": "← Back",
+    "launchMatch": "🏆 Start match!",
+    "launchGame": "🎱 Start game!",
+    "validate": "Confirm",
+    "targetScore": "Target score"
   },
   "players": {
     "newProfile": "New profile",
@@ -182,9 +192,34 @@
   },
   "confirm": {
     "leaveGame": "Quit and go back home?",
-    "leaveMatch": "Abandon the current match?"
+    "leaveMatch": "Abandon the current match?",
+    "abandonLabel": "Abandon",
+    "continueLabel": "Continue"
   },
   "killer": {
+    "winSub": "Last one standing!",
+    "jokerMode": "Joker mode",
+    "jokerRandom": "🎲 Random",
+    "jokerChoice": "🃏 Free choice",
+    "jokerRandomTip": "A random joker is drawn from the shared pool.",
+    "jokerChoiceTip": "Each player starts with 1 of each joker type.",
+    "adjustLivesTip": "Adjust lives per player if needed.",
+    "useJoker": "Use a joker",
+    "drawRandom": "Draw a random joker",
+    "currentTurn": "{name}'s turn",
+    "chooseTarget": "Choose a target",
+    "targetHint": "The targeted player immediately takes a forced turn.",
+    "forcedMini": "Forced",
+    "handMini": "Ball in hand",
+    "activeBadge": "ACTIVE",
+    "forcedBadge": "FORCED TURN",
+    "handBadge": "BALL IN HAND",
+    "actionHit": "✅ Made it",
+    "actionMiss": "❌ Missed",
+    "actionBlack": "8 ball",
+    "actionJoker": "🃏 Joker",
+    "jokerBlocked": "(blocked)",
+    "jokerExhaustedLabel": "(exhausted)",
     "jokers": {
       "pass": "Skip your turn",
       "hand": "Ball in hand",
@@ -204,12 +239,40 @@
     }
   },
   "chicago": {
+    "winSub": "Congratulations!",
+    "drawSub": "Both players finish on {score} points",
     "toast": {
       "starts": "🎲 {name} goes first!",
       "points": "🎱 +{n} pts for {name}"
     }
   },
   "snooker": {
+    "winSub": "{score} points • Best break: {breakMax}",
+    "gameMode": "Game mode",
+    "modeSimple": "🟢 Simple",
+    "modeExpert": "🔴 Expert",
+    "simpleTip": "Foul: other players receive points automatically.",
+    "expertTip": "Foul: the fouled player chooses (take points / force replay). Free ball available.",
+    "currentTurn": "{name}'s turn",
+    "replaying": "Replaying (after foul)",
+    "currentBreak": "Break: {n}",
+    "redsLeft": "🔢 Reds left: {n} —",
+    "multiShot": "🔴🔴 Multi-shot",
+    "multiShotTitle": "🔴 Multi-shot",
+    "multiShotHint": "How many reds + which colours in one shot?",
+    "redsLabel": "Reds potted",
+    "colorsLabel": "Colours (toggle)",
+    "totalLabel": "Total:",
+    "faultTitle": "⚠️ Foul",
+    "faultHint": "Penalty value (min {min}, max 7)",
+    "expertChoiceTitle": "⚖️ Foul — expert choice",
+    "expertChoiceHint": "+{value} pts awarded to fouled player. What do you want to do?",
+    "takePoints": "Take points and play",
+    "forceReplay": "Force opponent to replay",
+    "freeBallTitle": "🎱 Free Ball?",
+    "freeBallHint": "Following the foul, the player is snookered. They can designate a free ball worth the points of the ball normally aimed at.",
+    "useFreeBall": "✅ Use free ball",
+    "noFreeBall": "✖️ No thanks",
     "balls": {
       "red": "Red",
       "yellow": "Yellow",
@@ -230,6 +293,13 @@
     }
   },
   "casin": {
+    "winSub": "Checklist complete!",
+    "alreadyDone": "✅ Already done!",
+    "actionDone": "✅ {label} done!",
+    "neutralShot": "↺ Free shot",
+    "neutralResetToast": "↺ Free shot — all actions available",
+    "neutralNoneToast": "ℹ️ Nothing to reset",
+    "blockedBadge": "No {action}",
     "actions": {
       "direct": "Direct",
       "libre": "Free",
@@ -255,6 +325,9 @@
     }
   },
   "fiveball": {
+    "winSub": "Exactly zero! Nice one!",
+    "validate": "Confirm turn →",
+    "engagement": "🎯 Break — red must be hit first!",
     "balls": {
       "red": "Red",
       "green": "Green",
@@ -262,16 +335,36 @@
       "white": "White",
       "yellow": "Yellow"
     },
+    "preview": {
+      "zero": "No balls selected — turn passes with no points.",
+      "one": "Only 1 ball — need at least 2 to score.",
+      "engagementFail": "Break missed: red must be hit first.",
+      "bust": "−{total} → would leave {remaining}: turn cancelled.",
+      "win": "−{total} → zero! Game over! 🏆",
+      "ok": "−{total} → {remaining} pts left"
+    },
     "toast": {
-      "start": "🎯 Break: {name} must hit the red!"
+      "start": "🎯 Break: {name} must hit the red!",
+      "scored": "🎱 −{delta} pts"
     }
   },
   "cutthroat": {
+    "winSub": "Last player standing!",
+    "eliminated": "OUT",
+    "faultBtn": "⚠️ Foul",
+    "faultWho": "⚠️ Who fouled?",
+    "faultOf": "{name} fouled",
+    "faultReturns": "Balls returned to the table (in order):",
+    "faultPutsBack": "returns the",
+    "faultNone": "No balls to return.",
     "toast": {
       "ball": "🎱 Ball {n} potted"
     }
   },
   "pool": {
+    "winSub": "Congratulations!",
+    "teamA": "Team A",
+    "teamB": "Team B",
     "toast": {
       "allNameRequired": "⚠️ All players need a name",
       "onePlayerPerTeam": "⚠️ Each team needs at least one player",
@@ -279,6 +372,7 @@
     }
   },
   "straightpool": {
+    "winSub": "Target reached!",
     "toast": {
       "starts": "🎯 {name}'s turn",
       "fault": "⚠️ Foul! −1 point"

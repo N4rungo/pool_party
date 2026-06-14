@@ -28,6 +28,8 @@
   import MatchSummaryOverlay from '$lib/components/MatchSummaryOverlay.svelte';
   import { showToast } from '$lib/stores/toast.js';
   import { askConfirm } from '$lib/stores/confirm.js';
+  import { t } from 'svelte-i18n';
+  import { get } from 'svelte/store';
   import { shuffle } from '$lib/utils.js';
   import { matchStore, startMatch, recordResult, endMatch, undoResult, isLastGame } from '$lib/stores/match.js';
   import { recordHistory } from '$lib/stores/history.js';
@@ -98,9 +100,10 @@
   }
 
   function gotoSetup3() {
+    const _t = get(t);
     setupPlayers = setupPlayers.map((p, i) => ({
       ...p,
-      name: picks[i]?.name?.trim() || `Joueur ${i + 1}`,
+      name: picks[i]?.name?.trim() || _t('setup.defaultPlayer', { values: { n: i + 1 } }),
     }));
     phase = 'setup3';
   }
@@ -121,7 +124,7 @@
     state = createInitialState(players, jokerMode);
     winnerName = null;
     phase = 'game';
-    showToast(`🎯 ${state.players[0].name} commence !`);
+    showToast(get(t)('toast.starts', { values: { name: state.players[0].name } }));
   }
 
   // ── Actions de tir ────────────────────────────────────
@@ -150,21 +153,22 @@
       return;
     }
 
+    const _t = get(t);
     switch (outcome.kind) {
       case 'hit':
-        showToast(`✅ ${outcome.name} a réussi son tir`);
+        showToast(_t('killer.toast.hit', { values: { name: outcome.name } }));
         break;
       case 'miss':
-        showToast(`⚪ ${outcome.name} a raté ! −1 vie (reste ${outcome.livesLeft})`);
+        showToast(_t('killer.toast.miss', { values: { name: outcome.name, lives: outcome.livesLeft } }));
         break;
       case 'eliminated':
-        showToast(`💀 ${outcome.name} est éliminé !`);
+        showToast(_t('killer.toast.eliminated', { values: { name: outcome.name } }));
         break;
       case 'black':
         if (outcome.gained) {
-          showToast(`🎱 ${outcome.name} : noire empochée ! +1 vie (${outcome.newLives})`);
+          showToast(_t('killer.toast.blackGained', { values: { name: outcome.name, lives: outcome.newLives } }));
         } else {
-          showToast(`🎱 ${outcome.name} : noire empochée (vies max)`);
+          showToast(_t('killer.toast.blackMax', { values: { name: outcome.name } }));
         }
         break;
     }
@@ -188,7 +192,7 @@
 
     handActive = false;
     const j = JOKER_TYPES.find(j => j.id === jokerId);
-    showToast(`${j.icon} ${state.players[state.currentIndex].name} : ${j.label}`);
+    showToast(get(t)('killer.toast.joker', { values: { icon: j.icon, name: state.players[state.currentIndex].name, label: get(t)('killer.jokers.' + jokerId) } }));
     if (jokerId === 'target') targetOpen = true;
     else if (jokerId === 'hand') handActive = true;
   }
@@ -203,7 +207,7 @@
     const { newState, action } = useJoker(state, jokerId);
     state = newState;
     const j = JOKER_TYPES.find(j => j.id === jokerId);
-    showToast(`${j.icon} ${state.players[state.currentIndex].name} : ${j.label}`);
+    showToast(get(t)('killer.toast.joker', { values: { icon: j.icon, name: state.players[state.currentIndex].name, label: get(t)('killer.jokers.' + jokerId) } }));
 
     if (action === 'target') {
       targetOpen = true;
@@ -215,14 +219,14 @@
   function onSelectTarget(targetIdx) {
     targetOpen = false;
     state = applyTarget(state, targetIdx);
-    showToast(`🎯 ${state.players[targetIdx].name} doit jouer maintenant !`);
+    showToast(get(t)('killer.toast.targetMustPlay', { values: { name: state.players[targetIdx].name } }));
   }
 
   // ── Annuler ───────────────────────────────────────────
   function onUndo() {
     handActive = false;
     state = undo(state);
-    showToast('↩ Action annulée');
+    showToast(get(t)('toast.actionCancelled'));
   }
 
   function onUndoFromWin() {
@@ -230,7 +234,7 @@
     state = undo(state);
     winnerName = null;
     phase = 'game';
-    showToast('↩ Coup décisif annulé — on continue !');
+    showToast(get(t)('toast.finalShotCancelled'));
   }
 
   // ── Rejouer / Nouveau jeu / Accueil ───────────────────
@@ -241,9 +245,10 @@
     goto(base || '/');
   }
   async function confirmGoHome() {
-    const ok = await askConfirm("Abandonner la partie et revenir à l'accueil ?", {
-      confirmLabel: 'Abandonner',
-      cancelLabel:  'Continuer',
+    const _t = get(t);
+    const ok = await askConfirm(_t('confirm.leaveGame'), {
+      confirmLabel: _t('confirm.abandonLabel'),
+      cancelLabel:  _t('confirm.continueLabel'),
       iconImage:    `${base}/assets/home.png`
     });
     if (ok) {
@@ -272,12 +277,13 @@
     state = undo(state);
     winnerName = null;
     showMatchRecap = false;
-    showToast('↩ Coup décisif annulé — on continue !');
+    showToast(get(t)('toast.finalShotCancelled'));
   }
   async function onMatchAbandon() {
-    const ok = await askConfirm('Abandonner le match en cours ?', {
-      confirmLabel: 'Abandonner',
-      cancelLabel:  'Continuer',
+    const _t = get(t);
+    const ok = await askConfirm(_t('confirm.leaveMatch'), {
+      confirmLabel: _t('confirm.abandonLabel'),
+      cancelLabel:  _t('confirm.continueLabel'),
     });
     if (!ok) return;
     showMatchRecap = false;
@@ -317,36 +323,36 @@
       <img src="{base}/assets/bille_8_killer.png" alt="" class="icon-title" />
       Killer
     </h1>
-    <div class="setup-sub">Étape 1 / 3</div>
+    <div class="setup-sub">{$t('setup.step', { values: { n: 1, total: 3 } })}</div>
 
     <div class="popup-box setup-box">
       <NumberSelector
         bind:value={count}
         min={KILLER_MIN_PLAYERS}
         max={KILLER_MAX_PLAYERS}
-        label="Nombre de joueurs" />
+        label={$t('setup.playerCount')} />
 
       <div class="sep"></div>
 
-      <div class="ns-label" style="margin-bottom:10px;">Mode jokers</div>
+      <div class="ns-label" style="margin-bottom:10px;">{$t('killer.jokerMode')}</div>
       <div class="toggle-group">
         <button class="toggle-btn" class:active={jokerMode === 'random'} on:click={() => jokerMode = 'random'}>
-          🎲 Aléatoire
+          {$t('killer.jokerRandom')}
         </button>
         <button class="toggle-btn" class:active={jokerMode === 'choice'} on:click={() => jokerMode = 'choice'}>
-          🃏 Choix libre
+          {$t('killer.jokerChoice')}
         </button>
       </div>
       <div class="setup-tip">
         {#if jokerMode === 'random'}
-          Un joker aléatoire est tiré depuis le pool commun.
+          {$t('killer.jokerRandomTip')}
         {:else}
-          Chaque joueur démarre avec 1 joker de chaque type.
+          {$t('killer.jokerChoiceTip')}
         {/if}
       </div>
 
-      <button class="btn-main btn-gold" on:click={gotoSetup2}>Suivant →</button>
-      <button class="btn-main btn-gray" on:click={() => goto(base || '/')}>← Retour</button>
+      <button class="btn-main btn-gold" on:click={gotoSetup2}>{$t('setup.next')}</button>
+      <button class="btn-main btn-gray" on:click={() => goto(base || '/')}>{$t('setup.back')}</button>
     </div>
   </div>
 {/if}
@@ -358,13 +364,13 @@
       <img src="{base}/assets/bille_8_killer.png" alt="" class="icon-title" />
       Killer
     </h1>
-    <div class="setup-sub">Étape 2 / 3 — Noms des joueurs</div>
+    <div class="setup-sub">{$t('setup.step', { values: { n: 2, total: 3 } })} — {$t('setup.playerNames')}</div>
 
     <div class="popup-box setup-box">
       <PlayerSetupList bind:picks count={setupPlayers.length} />
 
-      <button class="btn-main btn-gold" on:click={gotoSetup3}>Suivant →</button>
-      <button class="btn-main btn-gray" on:click={() => phase = 'setup1'}>← Retour</button>
+      <button class="btn-main btn-gold" on:click={gotoSetup3}>{$t('setup.next')}</button>
+      <button class="btn-main btn-gray" on:click={() => phase = 'setup1'}>{$t('setup.back')}</button>
     </div>
   </div>
 {/if}
@@ -376,14 +382,14 @@
       <img src="{base}/assets/bille_8_killer.png" alt="" class="icon-title" />
       Killer
     </h1>
-    <div class="setup-sub">Étape 3 / 3 — Récapitulatif</div>
+    <div class="setup-sub">{$t('setup.step', { values: { n: 3, total: 3 } })} — {$t('setup.recap')}</div>
 
     <div class="popup-box setup-box">
       <div class="setup-tip" style="margin-bottom:2px;">
-        Mode {jokerMode === 'random' ? '🎲 Aléatoire' : '🃏 Choix libre'}
+        {jokerMode === 'random' ? $t('killer.jokerRandom') : $t('killer.jokerChoice')}
       </div>
       <div class="setup-tip" style="margin-bottom:8px;">
-        Ajustez les vies par joueur si besoin.
+        {$t('killer.adjustLivesTip')}
       </div>
 
       <RecapList players={setupPlayers} let:player let:i>
@@ -403,9 +409,9 @@
       <MatchSetup bind:randomizeOrder bind:matchMode bind:totalGames={matchTotalGames} />
 
       <button class="btn-main btn-gold" on:click={() => { if (matchMode) startMatch('killer', setupPlayers.map(p => p.name), matchTotalGames); startGame(); }}>
-        {matchMode ? '🏆 Lancer le match !' : '🎱 Lancer la partie !'}
+        {matchMode ? $t('setup.launchMatch') : $t('setup.launchGame')}
       </button>
-      <button class="btn-main btn-gray" on:click={() => phase = 'setup2'}>← Retour</button>
+      <button class="btn-main btn-gray" on:click={() => phase = 'setup2'}>{$t('setup.back')}</button>
     </div>
   </div>
 {/if}
@@ -461,12 +467,12 @@
               </div>
             {/if}
             {#if i === activeIdx && isForcedTurn}
-              <span class="kp-badge kp-badge-forced">TOUR FORCÉ</span>
+              <span class="kp-badge kp-badge-forced">{$t('killer.forcedBadge')}</span>
             {:else if i === activeIdx && !player.eliminated}
               {#if handActive}
-                <span class="kp-badge kp-badge-hand">BILLE EN MAIN</span>
+                <span class="kp-badge kp-badge-hand">{$t('killer.handBadge')}</span>
               {:else}
-                <span class="kp-badge kp-badge-active">EN JEU</span>
+                <span class="kp-badge kp-badge-active">{$t('killer.activeBadge')}</span>
               {/if}
             {/if}
           </div>
@@ -478,25 +484,25 @@
       <svelte:fragment slot="footer">
         <div class="killer-action-section">
           <div class="killer-action-title">
-            Tour de <strong>{activePlayer.name}</strong>
+            {$t('killer.currentTurn', { values: { name: activePlayer.name } })}
             {#if isForcedTurn}
-              <span class="kp-mini-badge kp-mini-badge-forced">Forcé</span>
+              <span class="kp-mini-badge kp-mini-badge-forced">{$t('killer.forcedMini')}</span>
             {:else if handActive}
-              <span class="kp-mini-badge kp-mini-badge-hand">Bille en main</span>
+              <span class="kp-mini-badge kp-mini-badge-hand">{$t('killer.handMini')}</span>
             {/if}
           </div>
           <div class="killer-actions">
-            <button class="btn-action btn-hit"   on:click={() => onAction('hit')}>✅ Tir réussi</button>
-            <button class="btn-action btn-miss"  on:click={() => onAction('miss')}>❌ Tir raté</button>
+            <button class="btn-action btn-hit"   on:click={() => onAction('hit')}>{$t('killer.actionHit')}</button>
+            <button class="btn-action btn-miss"  on:click={() => onAction('miss')}>{$t('killer.actionMiss')}</button>
             <button class="btn-action btn-black" on:click={() => onAction('black')}>
-              <img src="{base}/assets/bille_8_killer.png" alt="" class="icon-img" /> Bille noire
+              <img src="{base}/assets/bille_8_killer.png" alt="" class="icon-img" /> {$t('killer.actionBlack')}
             </button>
             <button class="btn-action btn-joker"
                     on:click={openJokerMenu}
                     disabled={!jokerEnabled}>
-              🃏 Joker
-              {#if isForcedTurn} (bloqué)
-              {:else if activePlayer.jokersUsed >= KILLER_MAX_JOKERS} (épuisés)
+              {$t('killer.actionJoker')}
+              {#if isForcedTurn} {$t('killer.jokerBlocked')}
+              {:else if activePlayer.jokersUsed >= KILLER_MAX_JOKERS} {$t('killer.jokerExhaustedLabel')}
               {/if}
             </button>
           </div>
@@ -509,7 +515,7 @@
 <!-- ============== OVERLAY JOKER ============== -->
 <Overlay open={jokerOpen} on:close={() => jokerOpen = false}>
   {#if state && activePlayer}
-    <h2 style="text-align:center;margin-bottom:6px;">🃏 Utiliser un joker</h2>
+    <h2 style="text-align:center;margin-bottom:6px;">{$t('killer.useJoker')}</h2>
     <div style="text-align:center;font-size:13px;color:rgba(255,255,255,0.55);margin-bottom:14px;">
       {activePlayer.name}
     </div>
@@ -517,9 +523,9 @@
       <button class="joker-choice-btn" on:click={onDrawRandom}>
         <span class="jc-icon">🎲</span>
         <div>
-          <div>Tirer un joker aléatoire</div>
+          <div>{$t('killer.drawRandom')}</div>
           <div class="jc-desc">
-            {state.pool.length} joker{state.pool.length > 1 ? 's' : ''} restant{state.pool.length > 1 ? 's' : ''} dans le pool
+            {state.pool.length} joker{state.pool.length > 1 ? 's' : ''} left in pool
           </div>
         </div>
       </button>
@@ -530,8 +536,8 @@
                 on:click={() => onUseJoker(j.id)}>
           <span class="jc-icon">{j.icon}</span>
           <div>
-            <div>{j.label}</div>
-            <div class="jc-desc">{j.desc}</div>
+            <div>{$t('killer.jokers.' + j.id)}</div>
+            <div class="jc-desc">{$t('killer.jokers.' + j.id + 'Desc')}</div>
           </div>
         </button>
       {/each}
@@ -542,9 +548,9 @@
 <!-- ============== OVERLAY CIBLE ============== -->
 <Overlay open={targetOpen} on:close={() => targetOpen = false}>
   {#if state}
-    <h2 style="text-align:center;margin-bottom:6px;">🎯 Choisir une cible</h2>
+    <h2 style="text-align:center;margin-bottom:6px;">{$t('killer.chooseTarget')}</h2>
     <div style="text-align:center;font-size:13px;color:rgba(255,255,255,0.55);margin-bottom:14px;">
-      Le joueur ciblé joue immédiatement un tour forcé.
+      {$t('killer.targetHint')}
     </div>
     <div class="target-list">
       {#each targetCandidates(state) as p (p.index)}
@@ -567,7 +573,7 @@
   open={phase === 'win'}
   trophy="🏆"
   name={winnerName}
-  sub="Dernier survivant !"
+  sub={$t('killer.winSub')}
   canUndo={state?.history?.length > 0}
   on:undo={onUndoFromWin}
   on:replay={replay}

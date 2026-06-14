@@ -30,6 +30,8 @@
   import MatchSummaryOverlay from '$lib/components/MatchSummaryOverlay.svelte';
   import { showToast } from '$lib/stores/toast.js';
   import { askConfirm } from '$lib/stores/confirm.js';
+  import { t } from 'svelte-i18n';
+  import { get } from 'svelte/store';
   import { matchStore, startMatch, recordResult, endMatch, undoResult, isLastGame } from '$lib/stores/match.js';
   import { recordHistory } from '$lib/stores/history.js';
   import {
@@ -99,9 +101,10 @@
   }
 
   function gotoSetup3() {
+    const _t = get(t);
     setupPlayers = setupPlayers.map((p, i) => ({
       ...p,
-      name: picks[i]?.name?.trim() || `Joueur ${i + 1}`,
+      name: picks[i]?.name?.trim() || _t('setup.defaultPlayer', { values: { n: i + 1 } }),
     }));
     phase = 'setup3';
   }
@@ -120,7 +123,7 @@
     winnerName = null;
     finalRanking = [];
     phase = 'game';
-    showToast(`🎯 ${state.players[0].name} commence !`);
+    showToast(get(t)('toast.starts', { values: { name: state.players[0].name } }));
   }
 
   // ── Empocher une bille ────────────────────────────────
@@ -131,7 +134,7 @@
       finishWin(outcome.winner);
     } else {
       const b = SNOOKER_BALLS[ballId];
-      showToast(`🎱 ${b.label} : +${b.points} pts`);
+      showToast(get(t)('snooker.toast.ball', { values: { label: get(t)('snooker.balls.' + ballId), points: b.points } }));
     }
   }
 
@@ -184,7 +187,7 @@
     const { newState, points } = applyMultiShot(state, multiShot);
     state = newState;
     multiShotOpen = false;
-    showToast(`🔴×${multiShot.reds} + couleurs : +${points} pts`);
+    showToast(get(t)('snooker.toast.multiShot', { values: { reds: multiShot.reds, points } }));
   }
 
   // ── Faute ──────────────────────────────────────────────
@@ -210,7 +213,7 @@
     if (state.mode === 'simple') {
       const { newState } = applyFaultSimple(state, faultValue);
       state = newState;
-      showToast(`⚠️ Faute (+${faultValue} pts pour les autres)`);
+      showToast(get(t)('snooker.toast.fault', { values: { value: faultValue } }));
     } else {
       // Mode expert : on attend le choix
       pendingFaultValue = faultValue;
@@ -223,9 +226,9 @@
     const { newState, askFreeBall } = applyFaultExpert(state, pendingFaultValue, replay);
     state = newState;
     if (replay) {
-      showToast(`⚠️ Faute (+${pendingFaultValue} pts) — ${state.players[state.currentIndex].name} rejoue`);
+      showToast(get(t)('snooker.toast.faultReplay', { values: { value: pendingFaultValue, name: state.players[state.currentIndex].name } }));
     } else {
-      showToast(`⚠️ Faute (+${pendingFaultValue} pts) — main passe`);
+      showToast(get(t)('snooker.toast.faultPass', { values: { value: pendingFaultValue } }));
       if (askFreeBall) {
         freeBallAskOpen = true;
       }
@@ -236,24 +239,24 @@
     freeBallAskOpen = false;
     state = setFreeBall(state, useFreeBall);
     if (useFreeBall) {
-      showToast(`🎱 Free ball activée pour ${state.players[state.currentIndex].name}`);
+      showToast(get(t)('snooker.toast.freeball', { values: { name: state.players[state.currentIndex].name } }));
     }
   }
 
   function onPlayFreeBall() {
     state = playFreeBall(state);
-    showToast('🎱 Free ball jouée');
+    showToast(get(t)('snooker.toast.freeballPlayed'));
   }
 
   // ── Suivant volontaire / Annuler ──────────────────────
   function onEndTurn() {
     state = endTurn(state);
-    showToast(`👤 Tour de ${state.players[state.currentIndex].name}`);
+    showToast(get(t)('toast.yourTurn', { values: { name: state.players[state.currentIndex].name } }));
   }
 
   function onUndo() {
     state = undo(state);
-    showToast('↩ Action annulée');
+    showToast(get(t)('toast.actionCancelled'));
   }
 
   function onUndoFromWin() {
@@ -261,7 +264,7 @@
     winnerName = null;
     finalRanking = [];
     phase = 'game';
-    showToast('↩ Coup décisif annulé — on continue !');
+    showToast(get(t)('toast.finalShotCancelled'));
   }
 
   // ── Rejouer / Nouveau jeu / Accueil ───────────────────
@@ -272,9 +275,10 @@
     goto(base || '/');
   }
   async function confirmGoHome() {
-    const ok = await askConfirm("Abandonner la partie et revenir à l'accueil ?", {
-      confirmLabel: 'Abandonner',
-      cancelLabel:  'Continuer',
+    const _t = get(t);
+    const ok = await askConfirm(_t('confirm.leaveGame'), {
+      confirmLabel: _t('confirm.abandonLabel'),
+      cancelLabel:  _t('confirm.continueLabel'),
       iconImage:    `${base}/assets/home.png`
     });
     if (ok) {
@@ -305,12 +309,13 @@
     winnerBreak = 0;
     finalRanking = [];
     showMatchRecap = false;
-    showToast('↩ Coup décisif annulé — on continue !');
+    showToast(get(t)('toast.finalShotCancelled'));
   }
   async function onMatchAbandon() {
-    const ok = await askConfirm('Abandonner le match en cours ?', {
-      confirmLabel: 'Abandonner',
-      cancelLabel:  'Continuer',
+    const _t = get(t);
+    const ok = await askConfirm(_t('confirm.leaveMatch'), {
+      confirmLabel: _t('confirm.abandonLabel'),
+      cancelLabel:  _t('confirm.continueLabel'),
     });
     if (!ok) return;
     showMatchRecap = false;
@@ -340,6 +345,7 @@
   // Helpers réactifs
   $: activePlayer = state ? state.players[state.currentIndex] : null;
   $: phaseLabelText = state ? phaseLabel(state) : '';
+  $: winSubText = $t('snooker.winSub', { values: { score: winnerScore, breakMax: winnerBreak } });
   $: msPoints = multiShot ? multiShotPoints(multiShot) : null;
   $: tabCols = state ? (state.players.length >= 5 ? 3 : 2) : 1;
   $: matchRecapGameNumber = $matchStore.currentGame - 1;
@@ -353,37 +359,36 @@
       <img src="{base}/assets/3_billes_snooker.png" alt="" class="icon-title" />
       Snooker
     </h1>
-    <div class="setup-sub">Étape 1 / 3</div>
+    <div class="setup-sub">{$t('setup.step', { values: { n: 1, total: 3 } })}</div>
 
     <div class="popup-box setup-box">
       <NumberSelector
         bind:value={count}
         min={SNOOKER_MIN_PLAYERS}
         max={SNOOKER_MAX_PLAYERS}
-        label="Nombre de joueurs" />
+        label={$t('setup.playerCount')} />
 
       <div class="sep"></div>
 
-      <div class="ns-label" style="margin-bottom:10px;">Mode de jeu</div>
+      <div class="ns-label" style="margin-bottom:10px;">{$t('snooker.gameMode')}</div>
       <div class="toggle-group">
         <button class="toggle-btn" class:active={mode === 'simple'} on:click={() => mode = 'simple'}>
-          🟢 Simple
+          {$t('snooker.modeSimple')}
         </button>
         <button class="toggle-btn" class:active={mode === 'expert'} on:click={() => mode = 'expert'}>
-          🔴 Expert
+          {$t('snooker.modeExpert')}
         </button>
       </div>
       <div class="setup-tip">
         {#if mode === 'simple'}
-          Faute : les autres joueurs reçoivent les points automatiquement.
+          {$t('snooker.simpleTip')}
         {:else}
-          Faute : le joueur lésé choisit (prendre les points / faire rejouer).
-          Free ball disponible.
+          {$t('snooker.expertTip')}
         {/if}
       </div>
 
-      <button class="btn-main btn-gold" on:click={gotoSetup2}>Suivant →</button>
-      <button class="btn-main btn-gray" on:click={() => goto(base || '/')}>← Retour</button>
+      <button class="btn-main btn-gold" on:click={gotoSetup2}>{$t('setup.next')}</button>
+      <button class="btn-main btn-gray" on:click={() => goto(base || '/')}>{$t('setup.back')}</button>
     </div>
   </div>
 {/if}
@@ -395,13 +400,13 @@
       <img src="{base}/assets/3_billes_snooker.png" alt="" class="icon-title" />
       Snooker
     </h1>
-    <div class="setup-sub">Étape 2 / 3 — Noms des joueurs</div>
+    <div class="setup-sub">{$t('setup.step', { values: { n: 2, total: 3 } })} — {$t('setup.playerNames')}</div>
 
     <div class="popup-box setup-box">
       <PlayerSetupList bind:picks count={setupPlayers.length} />
 
-      <button class="btn-main btn-gold" on:click={gotoSetup3}>Suivant →</button>
-      <button class="btn-main btn-gray" on:click={() => phase = 'setup1'}>← Retour</button>
+      <button class="btn-main btn-gold" on:click={gotoSetup3}>{$t('setup.next')}</button>
+      <button class="btn-main btn-gray" on:click={() => phase = 'setup1'}>{$t('setup.back')}</button>
     </div>
   </div>
 {/if}
@@ -413,11 +418,11 @@
       <img src="{base}/assets/3_billes_snooker.png" alt="" class="icon-title" />
       Snooker
     </h1>
-    <div class="setup-sub">Étape 3 / 3 — Récapitulatif</div>
+    <div class="setup-sub">{$t('setup.step', { values: { n: 3, total: 3 } })} — {$t('setup.recap')}</div>
 
     <div class="popup-box setup-box">
       <div class="setup-tip" style="margin-bottom:10px;">
-        Mode : {mode === 'simple' ? '🟢 Simple' : '🔴 Expert'}
+        {mode === 'simple' ? $t('snooker.modeSimple') : $t('snooker.modeExpert')}
       </div>
 
       <div class="recap-list">
@@ -432,9 +437,9 @@
       <MatchSetup bind:randomizeOrder bind:matchMode bind:totalGames={matchTotalGames} />
 
       <button class="btn-main btn-gold" on:click={() => { if (matchMode) startMatch('snooker', setupPlayers.map(p => p.name), matchTotalGames); startGame(); }}>
-        {matchMode ? '🏆 Lancer le match !' : '🎱 Lancer la partie !'}
+        {matchMode ? $t('setup.launchMatch') : $t('setup.launchGame')}
       </button>
-      <button class="btn-main btn-gray" on:click={() => phase = 'setup2'}>← Retour</button>
+      <button class="btn-main btn-gray" on:click={() => phase = 'setup2'}>{$t('setup.back')}</button>
     </div>
   </div>
 {/if}
@@ -465,16 +470,16 @@
 
     <!-- Bandeau actif -->
     <div class="snk-active-info">
-      <div class="snk-active-name">Tour de {activePlayer.name}</div>
+      <div class="snk-active-name">{$t('snooker.currentTurn', { values: { name: activePlayer.name } })}</div>
       <div class="snk-break-now">
         {#if state.mustReplay}
-          Rejoue (suite à une faute)
+          {$t('snooker.replaying')}
         {:else}
-          Break : {activePlayer.currentBreak}
+          {$t('snooker.currentBreak', { values: { n: activePlayer.currentBreak } })}
         {/if}
       </div>
       <div class="snk-phase-label">
-        🔢 Rouges restantes : {state.redsRemaining} — {phaseLabelText}
+        {$t('snooker.redsLeft', { values: { n: state.redsRemaining } })} {phaseLabelText}
       </div>
     </div>
 
@@ -488,7 +493,7 @@
           </button>
           <button class="btn-multired" on:click={openMultiShot}
                   disabled={state.redsRemaining < 1}>
-            🔴🔴 Coup multiple
+            {$t('snooker.multiShot')}
           </button>
         </div>
       {:else if state.phase === 'color'}
@@ -528,8 +533,8 @@
 
       <svelte:fragment slot="footer">
         <div class="game-bottombar">
-          <button class="btn-fault" on:click={openFault}>⚠️ Faute</button>
-          <button class="btn-next" on:click={onEndTurn}>Suivant →</button>
+          <button class="btn-fault" on:click={openFault}>{$t('snooker.faultTitle')}</button>
+          <button class="btn-next" on:click={onEndTurn}>{$t('setup.next')}</button>
         </div>
       </svelte:fragment>
     </GameLayout>
@@ -539,13 +544,13 @@
 <!-- ============== OVERLAY MULTI-SHOT ============== -->
 <Overlay open={multiShotOpen} on:close={() => multiShotOpen = false}>
   {#if multiShot}
-    <h2 style="text-align:center;margin-bottom:6px;">🔴 Coup multiple</h2>
+    <h2 style="text-align:center;margin-bottom:6px;">{$t('snooker.multiShotTitle')}</h2>
     <div style="text-align:center;font-size:13px;color:rgba(255,255,255,0.55);margin-bottom:14px;">
-      Combien de rouges + quelles couleurs en un coup ?
+      {$t('snooker.multiShotHint')}
     </div>
 
     <div class="snk-multi-section">
-      <div class="snk-multi-label">Rouges empochées</div>
+      <div class="snk-multi-label">{$t('snooker.redsLabel')}</div>
       <div class="snk-multi-red-stepper">
         <button class="btn-round-sm" on:click={() => multiShotChangeReds(-1)}
                 disabled={multiShot.reds <= 1}>−</button>
@@ -556,7 +561,7 @@
     </div>
 
     <div class="snk-multi-section">
-      <div class="snk-multi-label">Couleurs (toggle)</div>
+      <div class="snk-multi-label">{$t('snooker.colorsLabel')}</div>
       <div class="snk-colors-grid">
         {#each SNOOKER_COLORS_ORDER as colorId (colorId)}
           {@const b = SNOOKER_BALLS[colorId]}
@@ -572,20 +577,20 @@
     </div>
 
     <div class="snk-multi-total">
-      Total : <strong>{msPoints?.total ?? 0} pts</strong>
+      {$t('snooker.totalLabel')} <strong>{msPoints?.total ?? 0} pts</strong>
     </div>
 
-    <button class="btn-main btn-gold" on:click={confirmMultiShot}>Valider</button>
-    <button class="btn-main btn-gray" on:click={() => multiShotOpen = false}>Annuler</button>
+    <button class="btn-main btn-gold" on:click={confirmMultiShot}>{$t('setup.validate')}</button>
+    <button class="btn-main btn-gray" on:click={() => multiShotOpen = false}>{$t('common.cancel')}</button>
   {/if}
 </Overlay>
 
 <!-- ============== OVERLAY FAUTE ============== -->
 <Overlay open={faultOpen} on:close={() => faultOpen = false}>
   {#if state}
-    <h2 style="text-align:center;margin-bottom:6px;">⚠️ Faute</h2>
+    <h2 style="text-align:center;margin-bottom:6px;">{$t('snooker.faultTitle')}</h2>
     <div style="text-align:center;font-size:13px;color:rgba(255,255,255,0.55);margin-bottom:14px;">
-      Valeur de la pénalité (min {getMinFault(state)}, max 7)
+      {$t('snooker.faultHint', { values: { min: getMinFault(state) } })}
     </div>
     <div class="snk-fault-stepper">
       <button class="btn-round-sm" on:click={() => changeFaultValue(-1)}
@@ -594,24 +599,23 @@
       <button class="btn-round-sm" on:click={() => changeFaultValue(+1)}
               disabled={faultValue >= 7}>+</button>
     </div>
-    <button class="btn-main btn-gold" on:click={confirmFault}>Valider</button>
-    <button class="btn-main btn-gray" on:click={() => faultOpen = false}>Annuler</button>
+    <button class="btn-main btn-gold" on:click={confirmFault}>{$t('setup.validate')}</button>
+    <button class="btn-main btn-gray" on:click={() => faultOpen = false}>{$t('common.cancel')}</button>
   {/if}
 </Overlay>
 
 <!-- ============== OVERLAY EXPERT — choix après faute ============== -->
 <Overlay open={expertChoiceOpen} on:close={() => expertChoiceOpen = false}>
   {#if state}
-    <h2 style="text-align:center;margin-bottom:6px;">⚖️ Faute — choix expert</h2>
+    <h2 style="text-align:center;margin-bottom:6px;">{$t('snooker.expertChoiceTitle')}</h2>
     <div style="text-align:center;font-size:13px;color:rgba(255,255,255,0.65);margin-bottom:14px;">
-      +{pendingFaultValue} pts attribués au lésé.
-      <br>Que voulez-vous faire ?
+      {$t('snooker.expertChoiceHint', { values: { value: pendingFaultValue } })}
     </div>
     <button class="btn-main btn-gold" on:click={() => expertChoice(false)}>
-      Prendre les points et jouer
+      {$t('snooker.takePoints')}
     </button>
     <button class="btn-main btn-gray" on:click={() => expertChoice(true)}>
-      Faire rejouer le fautif
+      {$t('snooker.forceReplay')}
     </button>
   {/if}
 </Overlay>
@@ -619,18 +623,16 @@
 <!-- ============== OVERLAY FREE BALL ============== -->
 <Overlay open={freeBallAskOpen} on:close={() => freeBallAskOpen = false}
          dismissOnBackdrop={false}>
-  <h2 style="text-align:center;margin-bottom:6px;">🎱 Free Ball ?</h2>
+  <h2 style="text-align:center;margin-bottom:6px;">{$t('snooker.freeBallTitle')}</h2>
   <div style="text-align:center;font-size:13px;color:rgba(255,255,255,0.65);
               line-height:1.6;margin-bottom:14px;">
-    Suite à la faute, le joueur est snookered.<br>
-    Il peut désigner une bille libre qui vaudra les points de la bille
-    normalement visée.
+    {$t('snooker.freeBallHint')}
   </div>
   <button class="btn-main btn-gold" on:click={() => freeBallChoice(true)}>
-    ✅ Utiliser la free ball
+    {$t('snooker.useFreeBall')}
   </button>
   <button class="btn-main btn-gray" on:click={() => freeBallChoice(false)}>
-    ✖️ Non merci
+    {$t('snooker.noFreeBall')}
   </button>
 </Overlay>
 
@@ -639,7 +641,7 @@
   open={phase === 'win'}
   trophy="🏆"
   name={winnerName}
-  sub={`${winnerScore} points • Meilleur break : ${winnerBreak}`}
+  sub={winSubText}
   canUndo={state?.history?.length > 0}
   on:undo={onUndoFromWin}
   on:replay={replay}
