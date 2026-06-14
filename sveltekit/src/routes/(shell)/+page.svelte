@@ -158,6 +158,7 @@
       </div>
 
       <button class="fp-reset" on:click={resetFilter}>Tous les jeux</button>
+      <button class="fp-confirm" on:click={closeFilter}>Voir les jeux</button>
     </div>
   </div>
 {/if}
@@ -430,6 +431,26 @@
   }
 
   /* Reset */
+  .fp-confirm {
+    width: 100%;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: bold;
+    background: linear-gradient(145deg, var(--color-gold-light), var(--color-gold));
+    border: none;
+    color: var(--color-pool);
+    border-radius: 14px;
+    padding: 12px 0;
+    cursor: pointer;
+    box-shadow: 0 3px 0 var(--color-gold-dark);
+    transition: transform .1s, box-shadow .1s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .fp-confirm:active {
+    transform: translateY(2px);
+    box-shadow: none;
+  }
+
   .fp-reset {
     font-family: inherit;
     font-size: 12px;
