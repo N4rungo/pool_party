@@ -21,6 +21,8 @@
    - emojis  : tableau d'emojis (par défaut, on utilise la liste EMOJIS standard)
 -->
 <script>
+  import { t } from 'svelte-i18n';
+
   const DEFAULT_EMOJIS = ['🟡', '🔵', '🔴', '⚪', '🟠', '🟣', '🟤', '🟢'];
 
   export let players = [];
@@ -31,7 +33,7 @@
   {#each players as player, i (i)}
     <div class="recap-row">
       <span class="recap-emoji">{emojis[i % emojis.length]}</span>
-      <span class="recap-name">{player.name || `Joueur ${i + 1}`}</span>
+      <span class="recap-name">{player.name || $t('setup.defaultPlayer', { values: { n: i + 1 } })}</span>
       <div class="recap-extra">
         <slot {player} {i}>
           <!-- Slot par défaut : rien -->

@@ -294,6 +294,10 @@
   },
   "casin": {
     "winSub": "Checklist complete!",
+    "repetitionsLabel": "Repetitions per action (X)",
+    "repetitionsTip": "Each player must complete each action X times.",
+    "targetPerPlayer": "Target per player",
+    "targetPerPlayerSub": "Adjust to balance skill levels",
     "alreadyDone": "✅ Already done!",
     "actionDone": "✅ {label} done!",
     "neutralShot": "↺ Free shot",
@@ -348,8 +352,21 @@
       "scored": "🎱 −{delta} pts"
     }
   },
+  "picker": {
+    "playerShort": "P",
+    "choose": "Choose player",
+    "guest": "Guest",
+    "noProfile": "No profile for « {name} »",
+    "noProfiles": "No saved profiles",
+    "allSelected": "All profiles already selected",
+    "createProfile": "+ Create profile",
+    "nameTaken": "This name is already used in this game.",
+    "nameIsProfile": "This name matches a profile — select it from the list."
+  },
   "cutthroat": {
     "winSub": "Last player standing!",
+    "skillTip": "From beginner (Player 1) to expert (last).",
+    "ballsPerPlayer": "Balls per player",
     "eliminated": "OUT",
     "faultBtn": "⚠️ Foul",
     "faultWho": "⚠️ Who fouled?",
@@ -385,6 +402,8 @@
   },
   "straightpool": {
     "winSub": "Target reached!",
+    "targetPerPlayer": "Target per player",
+    "targetPerPlayerSub": "Adjust to balance skill levels",
     "toast": {
       "starts": "🎯 {name}'s turn",
       "fault": "⚠️ Foul! −1 point"

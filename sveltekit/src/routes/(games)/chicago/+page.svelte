@@ -71,15 +71,19 @@
 
   // ── Démarrage (random sur qui commence) ───────────────
   function startGame() {
-    picksMap = { [pick1.name.trim() || 'Joueur 1']: pick1.profileId, [pick2.name.trim() || 'Joueur 2']: pick2.profileId };
-    state = createInitialState(name1.trim() || 'Joueur 1', name2.trim() || 'Joueur 2');
+    const _t = get(t);
+    const d1 = _t('setup.defaultPlayer', { values: { n: 1 } });
+    const d2 = _t('setup.defaultPlayer', { values: { n: 2 } });
+    picksMap = { [pick1.name.trim() || d1]: pick1.profileId, [pick2.name.trim() || d2]: pick2.profileId };
+    state = createInitialState(name1.trim() || d1, name2.trim() || d2);
     phase = 'game';
     showToast(get(t)('chicago.toast.starts', { values: { name: state.players[state.currentIndex].name } }));
   }
 
   function handleLaunch() {
     if (matchMode) {
-      const players = [name1.trim() || 'Joueur 1', name2.trim() || 'Joueur 2'];
+      const _t = get(t);
+      const players = [name1.trim() || _t('setup.defaultPlayer', { values: { n: 1 } }), name2.trim() || _t('setup.defaultPlayer', { values: { n: 2 } })];
       startMatch('chicago', players, matchTotalGames);
     }
     startGame();

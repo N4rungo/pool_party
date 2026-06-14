@@ -294,6 +294,10 @@
   },
   "casin": {
     "winSub": "Checklist complétée !",
+    "repetitionsLabel": "Répétitions par action (X)",
+    "repetitionsTip": "Chaque joueur doit réussir chaque action X fois.",
+    "targetPerPlayer": "Score cible par joueur",
+    "targetPerPlayerSub": "Ajustez pour équilibrer les niveaux",
     "alreadyDone": "✅ Action déjà complétée !",
     "actionDone": "✅ {label} validé !",
     "neutralShot": "↺ Coup libre",
@@ -348,8 +352,21 @@
       "scored": "🎱 −{delta} pts"
     }
   },
+  "picker": {
+    "playerShort": "J",
+    "choose": "Choisir le joueur",
+    "guest": "Invité",
+    "noProfile": "Aucun profil pour « {name} »",
+    "noProfiles": "Aucun profil enregistré",
+    "allSelected": "Tous les profils sont déjà sélectionnés",
+    "createProfile": "+ Créer le profil",
+    "nameTaken": "Ce nom est déjà utilisé dans cette partie.",
+    "nameIsProfile": "Ce nom correspond à un profil — sélectionne-le dans la liste."
+  },
   "cutthroat": {
     "winSub": "Dernier joueur en lice !",
+    "skillTip": "Du débutant (Joueur 1) à l'expert (dernier).",
+    "ballsPerPlayer": "Billes par joueur",
     "eliminated": "ÉLIMINÉ",
     "faultBtn": "⚠️ Faute",
     "faultWho": "⚠️ Qui a fait la faute ?",
@@ -385,6 +402,8 @@
   },
   "straightpool": {
     "winSub": "Score atteint !",
+    "targetPerPlayer": "Score cible par joueur",
+    "targetPerPlayerSub": "Ajustez pour équilibrer les niveaux",
     "toast": {
       "starts": "🎯 Tour de {name}",
       "fault": "⚠️ Faute ! −1 point"

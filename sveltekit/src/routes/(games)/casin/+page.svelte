@@ -263,9 +263,9 @@
         bind:value={globalX}
         min={CASIN_MIN_X}
         max={CASIN_MAX_X}
-        label="Répétitions par action (X)" />
+        label={$t('casin.repetitionsLabel')} />
       <div class="setup-tip">
-        Chaque joueur doit réussir chaque action X fois.
+        {$t('casin.repetitionsTip')}
       </div>
 
       <button class="btn-main btn-gold" on:click={gotoSetup2}>{$t('setup.next')}</button>
@@ -302,8 +302,8 @@
     <div class="setup-sub">{$t('setup.step', { values: { n: 3, total: 3 } })} — {$t('setup.recap')}</div>
 
     <div class="popup-box setup-box">
-      <div class="casin-target-title">Score cible par joueur</div>
-      <div class="casin-target-sub">Ajustez pour équilibrer les niveaux</div>
+      <div class="casin-target-title">{$t('casin.targetPerPlayer')}</div>
+      <div class="casin-target-sub">{$t('casin.targetPerPlayerSub')}</div>
 
       <RecapList players={setupPlayers} let:player let:i>
         <NumberSelector

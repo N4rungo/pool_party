@@ -294,7 +294,7 @@
 
     <div class="popup-box setup-box">
       <div class="setup-tip" style="margin-bottom:10px;">
-        Du débutant (Joueur 1) à l'expert (dernier).
+        {$t('cutthroat.skillTip')}
       </div>
 
       <PlayerSetupList bind:picks count={setupPlayers.length} />
@@ -325,7 +325,7 @@
         </div>
       </div>
 
-      <div class="ct-section-label" style="margin-top:14px;">Billes par joueur</div>
+      <div class="ct-section-label" style="margin-top:14px;">{$t('cutthroat.ballsPerPlayer')}</div>
       <div class="recap-list">
         {#each setupPlayers as player, i (i)}
           <div class="recap-row">

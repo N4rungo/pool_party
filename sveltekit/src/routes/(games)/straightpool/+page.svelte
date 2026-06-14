@@ -305,8 +305,8 @@
     <div class="setup-sub">{$t('setup.step', { values: { n: 3, total: 3 } })} — {$t('setup.recap')}</div>
 
     <div class="popup-box setup-box">
-      <div class="sp-target-title">Score cible par joueur</div>
-      <div class="sp-target-sub">Ajustez pour équilibrer les niveaux</div>
+      <div class="sp-target-title">{$t('straightpool.targetPerPlayer')}</div>
+      <div class="sp-target-sub">{$t('straightpool.targetPerPlayerSub')}</div>
 
       <RecapList players={setupPlayers} let:player let:i>
         <NumberSelector
