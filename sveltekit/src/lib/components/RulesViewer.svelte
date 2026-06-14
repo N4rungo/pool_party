@@ -9,6 +9,8 @@
   import { onMount } from 'svelte';
   import { marked } from 'marked';
   import { base } from '$app/paths';
+  import { locale } from 'svelte-i18n';
+  import { get } from 'svelte/store';
   import Overlay from './Overlay.svelte';
 
   export let gameId = null;
@@ -18,8 +20,6 @@
   let loading = false;
   let error = null;
 
-  // À chaque changement de gameId pendant que l'overlay est ouvert,
-  // on (re)charge le fichier markdown correspondant.
   $: if (open && gameId) loadRules(gameId);
 
   async function loadRules(id) {
@@ -27,8 +27,12 @@
     error = null;
     html = '';
     try {
-      const r = await fetch(`${base}/rules/${id}.md`);
-      if (!r.ok) throw new Error(`Règles ${id} non trouvées (${r.status})`);
+      const lang = get(locale) ?? 'fr';
+      let r = await fetch(`${base}/rules/${lang}/${id}.md`);
+      if (!r.ok && lang !== 'fr') {
+        r = await fetch(`${base}/rules/fr/${id}.md`);
+      }
+      if (!r.ok) throw new Error(`${r.status}`);
       const md = await r.text();
       html = marked.parse(md);
     } catch (e) {
