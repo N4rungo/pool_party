@@ -70,8 +70,8 @@
     background: linear-gradient(145deg, rgba(255, 255, 255, 0.07), rgba(0, 0, 0, 0.2));
     border: 1px solid rgba(var(--color-gold-rgb), 0.3);
     border-radius: 20px;
-    /* padding-right large pour que le bouton 📖 ne remonte pas sous l'étoile */
-    padding: 16px 52px 16px 18px;
+    /* padding-right : étoile (34px) à right:5px → zone 39px, bouton règles laisse 6px de séparation */
+    padding: 16px 46px 16px 18px;
     display: flex;
     align-items: center;
     gap: 0;
@@ -177,16 +177,16 @@
   /* ── Étoile favoris ── */
   .star-btn {
     position: absolute;
-    top: 6px;
-    right: 7px;
-    width: 32px;
-    height: 32px;
+    top: 5px;
+    right: 5px;
+    width: 34px;
+    height: 34px;
     display: flex;
     align-items: center;
     justify-content: center;
     background: none;
     border: none;
-    font-size: 21px;
+    font-size: 23px;
     color: rgba(255, 255, 255, 0.2);
     cursor: pointer;
     padding: 0;
@@ -209,7 +209,7 @@
   /* ── Tablette / Desktop ── */
   @media (min-width: 700px) {
     .game-card {
-      padding: 18px 58px 18px 22px;
+      padding: 18px 52px 18px 22px;
     }
     .game-icon img {
       width: clamp(50px, 5vw, 64px);
@@ -224,11 +224,11 @@
       font-size: 17px;
     }
     .star-btn {
-      top: 8px;
-      right: 9px;
-      font-size: 22px;
-      width: 34px;
-      height: 34px;
+      top: 7px;
+      right: 7px;
+      font-size: 24px;
+      width: 36px;
+      height: 36px;
     }
   }
 </style>
