@@ -2,6 +2,14 @@
   import { historyStore, PERIODS, deleteHistoryBefore, deleteHistoryForGame, clearAllHistory } from '$lib/stores/history.js';
   import { GAMES } from '$lib/games.js';
   import { askConfirm } from '$lib/stores/confirm.js';
+  import FlagIcon from '$lib/components/FlagIcon.svelte';
+  import { locale } from 'svelte-i18n';
+  import { setLang } from '$lib/i18n/index.js';
+
+  const LANGS = [
+    { id: 'fr', label: 'Français' },
+    { id: 'en', label: 'English'  },
+  ];
 
   // ── Nettoyage par ancienneté ─────────────────────────────────────────
   let cleanPeriodId = '30d';
@@ -87,9 +95,21 @@
 
   <!-- ── Langue ── -->
   <div class="section-label">Langue</div>
-  <div class="setting-block setting-block-soon">
-    <span class="soon-icon">🌍</span>
-    <span class="soon-text">Bientôt disponible</span>
+  <div class="setting-block setting-block-lang">
+    {#each LANGS as lang}
+      <button
+        class="lang-row"
+        class:active={$locale === lang.id}
+        on:click={() => setLang(lang.id)}
+        aria-pressed={$locale === lang.id}
+      >
+        <FlagIcon lang={lang.id} size={40} />
+        <span class="lang-name">{lang.label}</span>
+        {#if $locale === lang.id}
+          <span class="lang-check">✓</span>
+        {/if}
+      </button>
+    {/each}
   </div>
 
 </div>
@@ -206,5 +226,51 @@
     font-size: 14px;
     color: rgba(255, 255, 255, 0.5);
     font-style: italic;
+  }
+
+  /* ── Langue ── */
+  .setting-block-lang {
+    gap: 6px;
+    padding: 10px;
+  }
+
+  .lang-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.15);
+    border: 1.5px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 10px 12px;
+    cursor: pointer;
+    font-family: inherit;
+    color: rgba(255, 255, 255, 0.6);
+    transition: background 0.12s, border-color 0.12s, color 0.12s;
+    -webkit-tap-highlight-color: transparent;
+    text-align: left;
+  }
+
+  .lang-row.active {
+    background: rgba(var(--color-gold-rgb), 0.12);
+    border-color: rgba(var(--color-gold-rgb), 0.5);
+    color: var(--color-gold);
+  }
+
+  .lang-row:not(.active):hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .lang-name {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .lang-check {
+    font-size: 16px;
+    color: var(--color-gold);
   }
 </style>

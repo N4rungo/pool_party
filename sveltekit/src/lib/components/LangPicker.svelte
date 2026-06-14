@@ -1,5 +1,6 @@
 <script>
   import { createEventDispatcher } from 'svelte';
+  import FlagIcon from './FlagIcon.svelte';
 
   export let open = false;
 
@@ -19,34 +20,13 @@
       </div>
 
       <div class="flags-row">
-        <!-- France -->
         <button class="flag-btn" on:click={() => pick('fr')} aria-label="Français">
-          <svg class="flag" viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <rect width="20" height="40" fill="#002395"/>
-            <rect x="20" width="20" height="40" fill="#EDEDED"/>
-            <rect x="40" width="20" height="40" fill="#ED2939"/>
-          </svg>
+          <FlagIcon lang="fr" size={72} />
           <span class="flag-label">Français</span>
         </button>
 
-        <!-- United Kingdom -->
         <button class="flag-btn" on:click={() => pick('en')} aria-label="English">
-          <svg class="flag" viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <!-- Fond bleu -->
-            <rect width="60" height="40" fill="#012169"/>
-            <!-- Diagonales blanches (X de Saint-André) -->
-            <line x1="0" y1="0"  x2="60" y2="40" stroke="white" stroke-width="8"/>
-            <line x1="60" y1="0" x2="0"  y2="40" stroke="white" stroke-width="8"/>
-            <!-- Diagonales rouges (X de Saint-Patrick, filets) -->
-            <line x1="0" y1="0"  x2="60" y2="40" stroke="#C8102E" stroke-width="4.5"/>
-            <line x1="60" y1="0" x2="0"  y2="40" stroke="#C8102E" stroke-width="4.5"/>
-            <!-- Croix blanche (Saint-Georges) -->
-            <rect x="22" y="0"  width="16" height="40" fill="white"/>
-            <rect x="0"  y="14" width="60" height="12" fill="white"/>
-            <!-- Croix rouge (Saint-Georges) -->
-            <rect x="24.5" y="0"  width="11" height="40" fill="#C8102E"/>
-            <rect x="0"    y="15.5" width="60" height="9" fill="#C8102E"/>
-          </svg>
+          <FlagIcon lang="en" size={72} />
           <span class="flag-label">English</span>
         </button>
       </div>
@@ -126,14 +106,6 @@
     border-color: rgba(var(--color-gold-rgb), 0.7);
     background: rgba(var(--color-gold-rgb), 0.08);
     transform: scale(1.04);
-  }
-
-  .flag {
-    width: 72px;
-    height: 48px;
-    border-radius: 5px;
-    display: block;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
   }
 
   .flag-label {
