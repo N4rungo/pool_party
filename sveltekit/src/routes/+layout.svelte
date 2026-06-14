@@ -12,12 +12,17 @@
   import { afterNavigate } from '$app/navigation';
   import Toast from '$lib/components/Toast.svelte';
   import ConfirmDialog from '$lib/components/ConfirmDialog.svelte';
+  import { waitLocale } from 'svelte-i18n';
 
   // Remet la vue en haut à chaque navigation entre pages
   afterNavigate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
 </script>
 
-<slot />
+{#await waitLocale()}
+  <!-- traductions en cours de chargement -->
+{:then}
+  <slot />
+  <Toast />
+  <ConfirmDialog />
+{/await}
 
-<Toast />
-<ConfirmDialog />

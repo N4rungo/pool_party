@@ -1,0 +1,255 @@
+{
+  "nav": {
+    "games": "Games",
+    "players": "Players",
+    "stats": "Stats",
+    "settings": "Settings",
+    "statsTitle": "Statistics"
+  },
+  "info": {
+    "tagline": "Pool scores for game nights — works offline, even in the back of a bar.",
+    "install": "📲 Install the app",
+    "installDesc": "Add Pool Party to your home screen for quick access, no browser bar needed.",
+    "android": "🤖 Android",
+    "androidInstructions": "Menu <strong>⋮</strong> → <strong>Add to Home Screen</strong>",
+    "iphone": "🍎 iPhone / iPad",
+    "iphoneInstructions": "Share button <strong>⬆</strong> → <strong>Add to Home Screen</strong>",
+    "ariaInstall": "Info & install"
+  },
+  "games": {
+    "categories": {
+      "americain": "Pool",
+      "francais": "French billiards",
+      "snooker": "Snooker"
+    },
+    "tableTypes": {
+      "americain": "Pool",
+      "anglais": "English",
+      "francais": "French",
+      "snooker": "Snooker"
+    },
+    "taglines": {
+      "killer": "There can be only one",
+      "cutthroat": "Knock 'em all out",
+      "chicago": "First to 61 points",
+      "pool": "Solids or Stripes?",
+      "straightpool": "Pocket 'em all!",
+      "casin": "French billiards, remixed",
+      "fiveball": "Aim for zero!",
+      "snooker": "Target: 147 points"
+    },
+    "card": {
+      "rules": "Rules",
+      "addFavorite": "Add to favorites",
+      "removeFavorite": "Remove from favorites",
+      "play": "Play {name}"
+    }
+  },
+  "header": {
+    "home": "Home",
+    "rules": "Rules",
+    "matchInfo": "Match info",
+    "cancelUndo": "↩ Cancel"
+  },
+  "win": {
+    "undo": "↩ Undo last shot",
+    "replay": "🔄 Play again",
+    "newGame": "⚙️ New game"
+  },
+  "match": {
+    "randomOrder": "🔀 Random order",
+    "matchMode": "🏆 Match mode",
+    "gamesCount": "Number of games",
+    "inProgress": "Match in progress",
+    "game": "Game {n} / {total}",
+    "ranking": "Ranking",
+    "gamesPlayed": "Games played"
+  },
+  "setup": {
+    "searchOrType": "Search or type a name…",
+    "playerName": "Player name",
+    "playerCount": "Number of players"
+  },
+  "players": {
+    "newProfile": "New profile",
+    "create": "Create",
+    "noProfile": "No profiles yet",
+    "profiles": "Profiles ({count})",
+    "validate": "Done",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "rename": "Rename",
+    "deleteConfirm": "Delete \"{name}\"?",
+    "deleteHistorySuffix": "\nHistory will be kept (player anonymised)."
+  },
+  "stats": {
+    "global": "Global",
+    "byGame": "By game",
+    "noStats": "No stats yet — play some games!",
+    "noStatsGame": "No stats for this game yet",
+    "periods": {
+      "7d": "7d",
+      "30d": "30d",
+      "6m": "6m",
+      "all": "All"
+    },
+    "sort": {
+      "won": "Wins",
+      "played": "Games played",
+      "lost": "Losses",
+      "winRate": "Win rate",
+      "maxScore": "Best score",
+      "avgScore": "Avg score",
+      "maxBreak": "Best break",
+      "avgBreak": "Avg break"
+    },
+    "statLabel": {
+      "winRate": "{rate} %",
+      "won_one": "{count} win",
+      "won_other": "{count} wins",
+      "played_one": "{count} game",
+      "played_other": "{count} games"
+    },
+    "detail": {
+      "games": "Games",
+      "wins": "Wins",
+      "winRate": "Win rate",
+      "noGames": "No games recorded yet",
+      "historyTab": "History"
+    }
+  },
+  "settings": {
+    "history": "Game history",
+    "deleteOlderThan": "Delete games older than:",
+    "deleteByGame": "Clear history for a game:",
+    "delete": "Delete",
+    "deleteAll": "💥 Clear all history",
+    "themes": "Themes",
+    "language": "Language",
+    "comingSoon": "Coming soon",
+    "confirmDeleteBefore": "Delete {count} game(s) older than {period}?",
+    "confirmDeleteGame": "Delete {count} game(s) of {game}?",
+    "confirmDeleteAll": "Clear all history ({count} game{s})?",
+    "confirmDeleteAllBtn": "Clear all"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "delete": "Delete"
+  },
+  "toast": {
+    "actionCancelled": "↩ Action undone",
+    "finalShotCancelled": "↩ Final shot undone — game on!",
+    "winCancelled": "↩ Win undone — game on!",
+    "yourTurn": "👤 {name}'s turn",
+    "starts": "🎯 {name} starts!",
+    "fault": "⚠️ Foul! −1 point"
+  },
+  "confirm": {
+    "leaveGame": "Quit and go back home?",
+    "leaveMatch": "Abandon the current match?"
+  },
+  "killer": {
+    "jokers": {
+      "pass": "Skip your turn",
+      "hand": "Ball in hand",
+      "target": "Pick a player",
+      "passDesc": "Turn passes straight to the next player",
+      "handDesc": "Place the cue ball anywhere before shooting",
+      "targetDesc": "That player immediately takes a forced turn"
+    },
+    "toast": {
+      "hit": "✅ {name} made the shot",
+      "miss": "⚪ {name} missed! −1 life ({lives} left)",
+      "eliminated": "💀 {name} is out!",
+      "blackGained": "🎱 {name}: black potted! +1 life ({lives})",
+      "blackMax": "🎱 {name}: black potted (max lives)",
+      "joker": "{icon} {name}: {label}",
+      "targetMustPlay": "🎯 {name} must play now!"
+    }
+  },
+  "chicago": {
+    "toast": {
+      "starts": "🎲 {name} goes first!",
+      "points": "🎱 +{n} pts for {name}"
+    }
+  },
+  "snooker": {
+    "balls": {
+      "red": "Red",
+      "yellow": "Yellow",
+      "green": "Green",
+      "brown": "Brown",
+      "blue": "Blue",
+      "pink": "Pink",
+      "black": "Black"
+    },
+    "toast": {
+      "ball": "🎱 {label}: +{points} pts",
+      "multiShot": "🔴×{reds} + colours: +{points} pts",
+      "fault": "⚠️ Foul (+{value} pts to others)",
+      "faultReplay": "⚠️ Foul (+{value} pts) — {name} replays",
+      "faultPass": "⚠️ Foul (+{value} pts) — next player",
+      "freeball": "🎱 Free ball for {name}",
+      "freeballPlayed": "🎱 Free ball played"
+    }
+  },
+  "casin": {
+    "actions": {
+      "direct": "Direct",
+      "libre": "Free",
+      "rouge": "Red",
+      "bande1": "1 rail",
+      "bande2": "2 rails",
+      "bande3": "3 rails",
+      "bande_avant": "Rail first",
+      "main_gauche": "Weak hand",
+      "casin": "Casin",
+      "directDesc": "Hit both balls without touching a rail",
+      "libreDesc": "No restrictions",
+      "rougeDesc": "Hit the red ball first",
+      "bande1Desc": "1 rail before hitting the 2nd ball",
+      "bande2Desc": "2 rails before hitting the 2nd ball",
+      "bande3Desc": "3 or more rails before hitting the 2nd ball",
+      "bande_avantDesc": "At least 1 rail before hitting either ball",
+      "main_gaucheDesc": "Legal shot with the non-dominant hand",
+      "casinDesc": "Hit the red which touches the 2nd ball via at least 1 rail"
+    },
+    "toast": {
+      "turn": "🎯 {name}'s turn"
+    }
+  },
+  "fiveball": {
+    "balls": {
+      "red": "Red",
+      "green": "Green",
+      "blue": "Blue",
+      "white": "White",
+      "yellow": "Yellow"
+    },
+    "toast": {
+      "start": "🎯 Break: {name} must hit the red!"
+    }
+  },
+  "cutthroat": {
+    "toast": {
+      "ball": "🎱 Ball {n} potted"
+    }
+  },
+  "pool": {
+    "toast": {
+      "allNameRequired": "⚠️ All players need a name",
+      "onePlayerPerTeam": "⚠️ Each team needs at least one player",
+      "break": "🎱 {team} breaks!"
+    }
+  },
+  "straightpool": {
+    "toast": {
+      "starts": "🎯 {name}'s turn",
+      "fault": "⚠️ Foul! −1 point"
+    }
+  },
+  "langPicker": {
+    "title": "Choose your language",
+    "subtitle": "Vous pourrez changer ça dans les Réglages"
+  }
+}
