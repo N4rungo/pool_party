@@ -20,6 +20,8 @@
 
   const dispatch = createEventDispatcher();
 
+  let pressing = false;
+
   function openRules() {
     dispatch('rules', game.id);
   }
@@ -29,7 +31,7 @@
   }
 </script>
 
-<div class="game-card">
+<div class="game-card" class:pressing>
   <!-- Étoile favoris : coin haut-droit -->
   <button
     class="star-btn"
@@ -40,7 +42,13 @@
   </button>
 
   <!-- Zone cliquable gauche → lance le jeu -->
-  <a class="card-play-area" href="{base}/{game.id}" aria-label="Jouer à {game.name}">
+  <a
+    class="card-play-area"
+    href="{base}/{game.id}"
+    aria-label="Jouer à {game.name}"
+    on:touchstart={() => pressing = true}
+    on:touchend={() => pressing = false}
+    on:touchcancel={() => pressing = false}>
     <div class="game-icon">
       <img src="{base}{game.icon}" alt={game.name} />
     </div>
@@ -62,18 +70,19 @@
     background: linear-gradient(145deg, rgba(255, 255, 255, 0.07), rgba(0, 0, 0, 0.2));
     border: 1px solid rgba(var(--color-gold-rgb), 0.3);
     border-radius: 20px;
-    padding: 16px 16px 16px 18px;
+    /* padding-right large pour que le bouton 📖 ne remonte pas sous l'étoile */
+    padding: 16px 52px 16px 18px;
     display: flex;
     align-items: center;
     gap: 0;
-    transition: border-color .15s, box-shadow .15s;
+    transition: border-color .1s, box-shadow .1s;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
   }
 
-  /* Effet gold quand on tape la zone de jeu */
-  .game-card:has(.card-play-area:active) {
-    border-color: rgba(var(--color-gold-rgb), 0.75);
-    box-shadow: 0 0 0 1px rgba(var(--color-gold-rgb), 0.2), 0 4px 20px rgba(0, 0, 0, 0.4);
+  /* Effet gold immédiat au touch (géré en JS pour éviter le délai :active mobile) */
+  .game-card.pressing {
+    border-color: rgba(var(--color-gold-rgb), 0.8);
+    box-shadow: 0 0 0 1px rgba(var(--color-gold-rgb), 0.25), 0 4px 20px rgba(0, 0, 0, 0.4);
   }
 
   /* ── Zone cliquable gauche ── */
@@ -87,6 +96,7 @@
     padding: 4px 12px 4px 0;
     border-radius: 14px;
     -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
   }
 
   /* ── Icône ── */
@@ -199,7 +209,7 @@
   /* ── Tablette / Desktop ── */
   @media (min-width: 700px) {
     .game-card {
-      padding: 18px 18px 18px 22px;
+      padding: 18px 58px 18px 22px;
     }
     .game-icon img {
       width: clamp(50px, 5vw, 64px);
