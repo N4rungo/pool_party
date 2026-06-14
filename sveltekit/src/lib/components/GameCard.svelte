@@ -71,7 +71,7 @@
     border: 1px solid rgba(var(--color-gold-rgb), 0.3);
     border-radius: 20px;
     /* padding-right : étoile (34px) à right:5px → zone 39px, bouton règles laisse 6px de séparation */
-    padding: 16px 46px 16px 18px;
+    padding: 16px 42px 16px 18px;
     display: flex;
     align-items: center;
     gap: 0;
@@ -186,7 +186,7 @@
     justify-content: center;
     background: none;
     border: none;
-    font-size: 23px;
+    font-size: 25px;
     color: rgba(255, 255, 255, 0.2);
     cursor: pointer;
     padding: 0;
