@@ -8,7 +8,8 @@
   - prop `isFavorite` : si le jeu est dans les favoris
   - événement `rules`    : émis avec l'id du jeu quand on clique sur 📖
   - événement `favorite` : émis avec l'id du jeu quand on clique sur ☆/★
-  - le bouton ▶ Jouer fait directement la navigation via SvelteKit
+  - La zone gauche (icône + nom) est un lien cliquable vers le jeu
+  - Le bouton ▶ a été supprimé
 -->
 <script>
   import { base } from '$app/paths';
@@ -28,7 +29,7 @@
   }
 </script>
 
-<div class="game-card available">
+<div class="game-card">
   <!-- Étoile favoris : coin haut-droit -->
   <button
     class="star-btn"
@@ -38,16 +39,20 @@
     {isFavorite ? '★' : '☆'}
   </button>
 
-  <div class="game-icon">
-    <img src="{base}{game.icon}" alt={game.name} />
-  </div>
-  <div class="game-info">
-    <div class="game-name">{game.name}</div>
-    <div class="game-tagline">{game.tagline}</div>
-  </div>
+  <!-- Zone cliquable gauche → lance le jeu -->
+  <a class="card-play-area" href="{base}/{game.id}" aria-label="Jouer à {game.name}">
+    <div class="game-icon">
+      <img src="{base}{game.icon}" alt={game.name} />
+    </div>
+    <div class="game-info">
+      <div class="game-name">{game.name}</div>
+      <div class="game-tagline">{game.tagline}</div>
+    </div>
+  </a>
+
+  <!-- Bouton règles -->
   <div class="game-card-actions">
     <button class="btn-card-rules" on:click={openRules} aria-label="Règles">📖</button>
-    <a class="btn-card-play" href="{base}/{game.id}">▶</a>
   </div>
 </div>
 
@@ -57,46 +62,32 @@
     background: linear-gradient(145deg, rgba(255, 255, 255, 0.07), rgba(0, 0, 0, 0.2));
     border: 1px solid rgba(var(--color-gold-rgb), 0.3);
     border-radius: 20px;
-    /* padding-right élargi pour laisser la zone de l'étoile sans chevaucher les actions */
-    padding: 20px 40px 20px 22px;
+    padding: 16px 16px 16px 18px;
     display: flex;
     align-items: center;
-    gap: 18px;
+    gap: 0;
     transition: border-color .15s, box-shadow .15s;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
   }
 
-  /* ── Étoile favoris ── */
-  .star-btn {
-    position: absolute;
-    top: 6px;
-    right: 7px;
-    width: 32px;
-    height: 32px;
+  /* Effet gold quand on tape la zone de jeu */
+  .game-card:has(.card-play-area:active) {
+    border-color: rgba(var(--color-gold-rgb), 0.75);
+    box-shadow: 0 0 0 1px rgba(var(--color-gold-rgb), 0.2), 0 4px 20px rgba(0, 0, 0, 0.4);
+  }
+
+  /* ── Zone cliquable gauche ── */
+  .card-play-area {
     display: flex;
     align-items: center;
-    justify-content: center;
-    background: none;
-    border: none;
-    font-size: 21px;
-    color: rgba(255, 255, 255, 0.2);
-    cursor: pointer;
-    padding: 0;
-    line-height: 1;
-    transition: color .15s, transform .1s;
+    gap: 18px;
+    flex: 1;
+    min-width: 0;
+    text-decoration: none;
+    padding: 4px 12px 4px 0;
+    border-radius: 14px;
     -webkit-tap-highlight-color: transparent;
   }
-  .star-btn:hover {
-    color: rgba(var(--color-gold-rgb), 0.7);
-    transform: scale(1.15);
-  }
-  .star-btn.is-favorite {
-    color: var(--color-gold);
-  }
-  .star-btn.is-favorite:hover {
-    color: rgba(var(--color-gold-rgb), 0.7);
-  }
-  .star-btn:active { transform: scale(0.9); }
 
   /* ── Icône ── */
   .game-icon {
@@ -142,44 +133,14 @@
     overflow: hidden;
   }
 
-  /* ── Actions ── */
+  /* ── Bouton règles ── */
   .game-card-actions {
     display: flex;
     align-items: center;
-    gap: 8px;
     flex-shrink: 0;
   }
 
-  /* ── Tablette / Desktop ── */
-  @media (min-width: 700px) {
-    .game-card {
-      padding: 22px 46px 22px 26px;
-      gap: 20px;
-    }
-    .game-icon img {
-      width: clamp(50px, 5vw, 64px);
-      height: clamp(50px, 5vw, 64px);
-    }
-    .game-name {
-      font-size: clamp(16px, 1.8vw, 22px);
-    }
-    .btn-card-rules,
-    .btn-card-play {
-      height: 48px;
-      min-width: 48px;
-      font-size: 17px;
-    }
-    .star-btn {
-      top: 8px;
-      right: 9px;
-      font-size: 22px;
-      width: 34px;
-      height: 34px;
-    }
-  }
-
-  .btn-card-rules,
-  .btn-card-play {
+  .btn-card-rules {
     height: 44px;
     min-width: 44px;
     display: inline-flex;
@@ -188,14 +149,9 @@
     border-radius: 12px;
     font-family: inherit;
     font-size: 16px;
-    font-weight: bold;
     cursor: pointer;
-    text-decoration: none;
-    transition: transform .1s, box-shadow .1s, opacity .15s;
+    transition: transform .1s, box-shadow .1s;
     -webkit-tap-highlight-color: transparent;
-  }
-
-  .btn-card-rules {
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.15);
     color: rgba(255, 255, 255, 0.85);
@@ -208,18 +164,61 @@
     box-shadow: none;
   }
 
-  .btn-card-play {
-    background: linear-gradient(145deg, var(--color-gold-light), var(--color-gold));
-    border: 1px solid transparent;
-    color: var(--color-pool);
-    box-shadow: 0 3px 0 var(--color-gold-dark);
-    padding: 0 16px;
+  /* ── Étoile favoris ── */
+  .star-btn {
+    position: absolute;
+    top: 6px;
+    right: 7px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    font-size: 21px;
+    color: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    transition: color .15s, transform .1s;
+    -webkit-tap-highlight-color: transparent;
   }
-  .btn-card-play:active {
-    transform: translateY(3px);
-    box-shadow: none;
+  .star-btn:hover {
+    color: rgba(var(--color-gold-rgb), 0.7);
+    transform: scale(1.15);
   }
-  .btn-card-play:visited {
-    color: var(--color-pool);
+  .star-btn.is-favorite {
+    color: var(--color-gold);
+  }
+  .star-btn.is-favorite:hover {
+    color: rgba(var(--color-gold-rgb), 0.7);
+  }
+  .star-btn:active { transform: scale(0.9); }
+
+  /* ── Tablette / Desktop ── */
+  @media (min-width: 700px) {
+    .game-card {
+      padding: 18px 18px 18px 22px;
+    }
+    .game-icon img {
+      width: clamp(50px, 5vw, 64px);
+      height: clamp(50px, 5vw, 64px);
+    }
+    .game-name {
+      font-size: clamp(16px, 1.8vw, 22px);
+    }
+    .btn-card-rules {
+      height: 48px;
+      min-width: 48px;
+      font-size: 17px;
+    }
+    .star-btn {
+      top: 8px;
+      right: 9px;
+      font-size: 22px;
+      width: 34px;
+      height: 34px;
+    }
   }
 </style>
