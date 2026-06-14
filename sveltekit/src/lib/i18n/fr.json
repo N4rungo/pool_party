@@ -355,7 +355,8 @@
       "start": "🎯 Engagement : {name} doit toucher la rouge !",
       "scored": "🎱 −{delta} pts",
       "bust": "🚫 Bust ! Tour annulé.",
-      "engagementFail": "❌ Engagement raté ! La rouge doit être touchée."
+      "engagementFail": "❌ Engagement raté ! La rouge doit être touchée.",
+      "noScore": "⏩ Aucun point — tour passé."
     }
   },
   "picker": {

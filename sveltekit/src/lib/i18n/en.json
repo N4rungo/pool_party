@@ -355,7 +355,8 @@
       "start": "🎯 Break: {name} must hit the red!",
       "scored": "🎱 −{delta} pts",
       "bust": "🚫 Bust! Turn cancelled.",
-      "engagementFail": "❌ Break missed! Red must be hit first."
+      "engagementFail": "❌ Break missed! Red must be hit first.",
+      "noScore": "⏩ No score — turn passes."
     }
   },
   "picker": {

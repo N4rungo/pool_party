@@ -163,8 +163,10 @@
     } else if (outcome.kind === 'fault') {
       if (outcome.reason === 'bust') {
         showToast(get(t)('fiveball.toast.bust'));
-      } else {
+      } else if (outcome.reason === 'engagement') {
         showToast(get(t)('fiveball.toast.engagementFail'));
+      } else {
+        showToast(get(t)('fiveball.toast.noScore'));
       }
     }
   }
