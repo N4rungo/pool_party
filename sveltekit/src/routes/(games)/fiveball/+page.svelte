@@ -161,7 +161,11 @@
     } else if (outcome.kind === 'scored') {
       showToast(get(t)('fiveball.toast.scored', { values: { delta: outcome.delta } }));
     } else if (outcome.kind === 'fault') {
-      showToast(get(t)('toast.fault'));
+      if (outcome.reason === 'bust') {
+        showToast(get(t)('fiveball.toast.bust'));
+      } else {
+        showToast(get(t)('fiveball.toast.engagementFail'));
+      }
     }
   }
 
@@ -254,7 +258,7 @@
 
   // ── Helpers réactifs ──────────────────────────────────
   $: cue = state ? activeCueBall(state) : null;
-  $: cueLabel = cue ? FIVE_BALL_BALLS[cue].label : '';
+  $: cueLabel = cue ? $t('fiveball.balls.' + cue) : '';
   $: total = state ? selectedTotal(state) : 0;
   $: activePlayer = state ? state.players[state.currentIndex] : null;
   $: remaining = activePlayer ? activePlayer.score - total : 0;
@@ -297,7 +301,7 @@
         min={FIVE_BALL_MIN_TARGET}
         step={FIVE_BALL_TARGET_STEP}
         label={$t('setup.targetScore')} />
-      <div class="setup-tip">Le but : descendre à 0 pile (par pas de 10).</div>
+      <div class="setup-tip">{$t('fiveball.goalTip')}</div>
 
       <button class="btn-main btn-gold" on:click={gotoSetup2}>{$t('setup.next')}</button>
       <button class="btn-main btn-gray" on:click={() => goto(base || '/')}>{$t('setup.back')}</button>
@@ -334,7 +338,7 @@
 
     <div class="popup-box setup-box">
       <div class="setup-tip" style="margin-bottom:8px;">
-        Score modifiable par joueur (par pas de 10)
+        {$t('fiveball.targetPerPlayer')}
       </div>
 
       <RecapList players={setupPlayers} let:player let:i>
@@ -386,8 +390,8 @@
         <!-- Bandeau d'info — toujours visible avec le plateau -->
         <div class="fb-banner">
           <div class="fb-banner-line">
-            Tour de <strong>{activePlayer.name}</strong>
-            <span class="fb-banner-cue">— Cue : {cueLabel}</span>
+            {$t('fiveball.currentTurn', { values: { name: activePlayer.name } })}
+            <span class="fb-banner-cue">— {$t('fiveball.cueBall', { values: { ball: cueLabel } })}</span>
           </div>
           {#if state.isFirstTurn}
             <div class="fb-banner-engagement">
@@ -404,7 +408,7 @@
             <div class="fb-cell fb-cell-{ballId}">
               <BallButton
                 src={`${base}/assets/${ball.asset}`}
-                alt={`${ball.label} (${ball.value})`}
+                alt={`${$t('fiveball.balls.' + ballId)} (${ball.value})`}
                 size={boardBallSize}
                 disabled={isCue}
                 selected={state.selected.includes(ballId)}

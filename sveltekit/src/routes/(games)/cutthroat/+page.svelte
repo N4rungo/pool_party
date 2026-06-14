@@ -316,8 +316,8 @@
 
     <div class="popup-box setup-box">
       <div class="ct-corners-section">
-        <div class="ct-triangle-title">Formation du triangle</div>
-        <div class="ct-section-label" style="text-align:center;">Dans les 3 coins</div>
+        <div class="ct-triangle-title">{$t('cutthroat.triangleTitle')}</div>
+        <div class="ct-section-label" style="text-align:center;">{$t('cutthroat.triangleCorners')}</div>
         <div class="ct-corners">
           {#each previewCorners as b}
             <img src="{base}/assets/bille_{b}.png" alt="Bille {b}" class="ball-corner" />

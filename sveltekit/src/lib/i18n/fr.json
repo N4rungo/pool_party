@@ -331,6 +331,10 @@
   "fiveball": {
     "winSub": "Pile à 0 ! Bravo !",
     "validate": "Valider le tour →",
+    "goalTip": "Le but : descendre à 0 pile.",
+    "targetPerPlayer": "Score modifiable par joueur",
+    "currentTurn": "Tour de {name}",
+    "cueBall": "Cue : {ball}",
     "engagement": "🎯 Engagement — la rouge doit être touchée en premier !",
     "balls": {
       "red": "Rouge",
@@ -349,7 +353,9 @@
     },
     "toast": {
       "start": "🎯 Engagement : {name} doit toucher la rouge !",
-      "scored": "🎱 −{delta} pts"
+      "scored": "🎱 −{delta} pts",
+      "bust": "🚫 Bust ! Tour annulé.",
+      "engagementFail": "❌ Engagement raté ! La rouge doit être touchée."
     }
   },
   "picker": {
@@ -367,6 +373,8 @@
     "winSub": "Dernier joueur en lice !",
     "skillTip": "Du débutant (Joueur 1) à l'expert (dernier).",
     "ballsPerPlayer": "Billes par joueur",
+    "triangleTitle": "Formation du triangle",
+    "triangleCorners": "Dans les 3 coins",
     "eliminated": "ÉLIMINÉ",
     "faultBtn": "⚠️ Faute",
     "faultWho": "⚠️ Qui a fait la faute ?",
@@ -402,6 +410,11 @@
   },
   "straightpool": {
     "winSub": "Score atteint !",
+    "setupTip": "Chaque bille empochée = 1 point.",
+    "currentTurn": "Tour de {name}",
+    "currentBreakLabel": "Break en cours",
+    "breakHint": "+ à chaque bille empochée. − pour corriger.",
+    "bestBreak": "🏆 Meilleur break : {n}",
     "targetPerPlayer": "Score cible par joueur",
     "targetPerPlayerSub": "Ajustez pour équilibrer les niveaux",
     "toast": {

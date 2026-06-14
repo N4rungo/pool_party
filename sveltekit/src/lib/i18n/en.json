@@ -331,6 +331,10 @@
   "fiveball": {
     "winSub": "Exactly zero! Nice one!",
     "validate": "Confirm turn →",
+    "goalTip": "Goal: reach exactly zero!",
+    "targetPerPlayer": "Adjustable score per player",
+    "currentTurn": "{name}'s turn",
+    "cueBall": "Cue: {ball}",
     "engagement": "🎯 Break — red must be hit first!",
     "balls": {
       "red": "Red",
@@ -349,7 +353,9 @@
     },
     "toast": {
       "start": "🎯 Break: {name} must hit the red!",
-      "scored": "🎱 −{delta} pts"
+      "scored": "🎱 −{delta} pts",
+      "bust": "🚫 Bust! Turn cancelled.",
+      "engagementFail": "❌ Break missed! Red must be hit first."
     }
   },
   "picker": {
@@ -367,6 +373,8 @@
     "winSub": "Last player standing!",
     "skillTip": "From beginner (Player 1) to expert (last).",
     "ballsPerPlayer": "Balls per player",
+    "triangleTitle": "Triangle formation",
+    "triangleCorners": "Place in the 3 corners",
     "eliminated": "OUT",
     "faultBtn": "⚠️ Foul",
     "faultWho": "⚠️ Who fouled?",
@@ -402,6 +410,11 @@
   },
   "straightpool": {
     "winSub": "Target reached!",
+    "setupTip": "Each ball pocketed = 1 point.",
+    "currentTurn": "{name}'s turn",
+    "currentBreakLabel": "Current break",
+    "breakHint": "+ for each ball pocketed. − to correct.",
+    "bestBreak": "🏆 Best break: {n}",
     "targetPerPlayer": "Target per player",
     "targetPerPlayerSub": "Adjust to balance skill levels",
     "toast": {

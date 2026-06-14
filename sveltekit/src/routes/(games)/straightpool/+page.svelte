@@ -269,7 +269,7 @@
         max={STRAIGHTPOOL_MAX_TARGET}
         step={STRAIGHTPOOL_TARGET_STEP}
         label={$t('setup.targetScore')} />
-      <div class="setup-tip">Chaque bille empochée = 1 point.</div>
+      <div class="setup-tip">{$t('straightpool.setupTip')}</div>
 
       <button class="btn-main btn-gold" on:click={gotoSetup2}>{$t('setup.next')}</button>
       <button class="btn-main btn-gray" on:click={() => goto(base || '/')}>{$t('setup.back')}</button>
@@ -357,22 +357,22 @@
           <div class="sp-progress-bar">
             <div class="sp-progress-fill" style="width: {progressPct(i)}%"></div>
           </div>
-          <div class="sp-best-break">🏆 Meilleur break : {player.bestBreak}</div>
+          <div class="sp-best-break">{$t('straightpool.bestBreak', { values: { n: player.bestBreak } })}</div>
         </div>
       {/each}
     </div>
 
       <svelte:fragment slot="footer">
-        <div class="sp-action-title">Tour de <strong>{activePlayer.name}</strong></div>
+        <div class="sp-action-title">{$t('straightpool.currentTurn', { values: { name: activePlayer.name } })}</div>
         <!-- Sélecteur de break courant — toujours visible -->
         <div class="sp-break-section">
-          <div class="sp-break-label">Break en cours</div>
+          <div class="sp-break-label">{$t('straightpool.currentBreakLabel')}</div>
           <div class="sp-break-selector">
             <button class="sp-break-btn" on:click={onDecBreak} disabled={state.currentBreak === 0}>−</button>
             <span class="sp-break-value">{state.currentBreak}</span>
             <button class="sp-break-btn" on:click={onIncBreak}>+</button>
           </div>
-          <div class="sp-break-hint">+ à chaque bille empochée. − pour corriger.</div>
+          <div class="sp-break-hint">{$t('straightpool.breakHint')}</div>
         </div>
         <div class="game-bottombar">
           <button class="btn-fault" on:click={onFault}>{$t('cutthroat.faultBtn')}</button>
