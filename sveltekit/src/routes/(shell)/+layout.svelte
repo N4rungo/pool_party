@@ -3,14 +3,15 @@
   import { base } from '$app/paths';
   import { goto } from '$app/navigation';
   import Overlay from '$lib/components/Overlay.svelte';
+  import { t } from 'svelte-i18n';
 
   const version = __APP_VERSION__;
 
-  const NAV = [
-    { id: 'jeux',     path: '/',         label: 'Jeux',     title: 'Jeux',          icon: '🎱' },
-    { id: 'joueurs',  path: '/players',  label: 'Joueurs',  title: 'Joueurs',       icon: '👥' },
-    { id: 'stats',    path: '/stats',    label: 'Stats',    title: 'Statistiques',  icon: '🥇' },
-    { id: 'reglages', path: '/settings', label: 'Réglages', title: 'Réglages',      icon: '⚙️' },
+  $: NAV = [
+    { id: 'jeux',     path: '/',         label: $t('nav.games'),    title: $t('nav.games'),       icon: '🎱' },
+    { id: 'joueurs',  path: '/players',  label: $t('nav.players'),  title: $t('nav.players'),     icon: '👥' },
+    { id: 'stats',    path: '/stats',    label: $t('nav.stats'),    title: $t('nav.statsTitle'),  icon: '🥇' },
+    { id: 'reglages', path: '/settings', label: $t('nav.settings'), title: $t('nav.settings'),    icon: '⚙️' },
   ];
 
   $: rawPath = $page.url.pathname.replace(base, '') || '/';
@@ -87,20 +88,20 @@
       Pool Party
       <span class="info-version">v{version}</span>
     </h2>
-    <p class="info-tagline">Scores de billard pour soirées — fonctionne sans connexion, même au fond d'un bar.</p>
+    <p class="info-tagline">{$t('info.tagline')}</p>
 
     <div class="info-section">
-      <div class="info-section-title">📲 Installer l'app</div>
-      <p>Ajoutez Pool Party à votre écran d'accueil pour un accès direct, sans barre de navigateur.</p>
+      <div class="info-section-title">{$t('info.install')}</div>
+      <p>{$t('info.installDesc')}</p>
 
       <div class="install-step">
-        <div class="install-platform">🤖 Android</div>
-        <div class="install-instructions">Menu <strong>⋮</strong> → <strong>Ajouter à l'écran d'accueil</strong></div>
+        <div class="install-platform">{$t('info.android')}</div>
+        <div class="install-instructions">{@html $t('info.androidInstructions')}</div>
       </div>
 
       <div class="install-step">
-        <div class="install-platform">🍎 iPhone / iPad</div>
-        <div class="install-instructions">Bouton <strong>Partager ⬆</strong> → <strong>Sur l'écran d'accueil</strong></div>
+        <div class="install-platform">{$t('info.iphone')}</div>
+        <div class="install-instructions">{@html $t('info.iphoneInstructions')}</div>
       </div>
     </div>
   </div>

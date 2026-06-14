@@ -1,5 +1,6 @@
 <script>
   import Overlay from './Overlay.svelte';
+  import { t } from 'svelte-i18n';
 
   export let gameNumber = 1;
   export let totalGames = 3;
@@ -24,22 +25,22 @@
 <Overlay open={true} dismissOnBackdrop={false} showClose={false}>
   <div class="recap-content">
     <div class="recap-header">
-      Partie {gameNumber}/{totalGames} terminée
+      {$t('match.gameFinished', { values: { n: gameNumber, total: totalGames } })}
     </div>
 
     <div class="recap-winner-row">
       <span class="recap-winner-trophy">🏆</span>
       <span class="recap-winner-name">{winnerText}</span>
     </div>
-    <div class="recap-winner-sub">remporte cette partie</div>
+    <div class="recap-winner-sub">{$t('match.winsGame')}</div>
 
-    <div class="recap-standings-label">Classement du match</div>
+    <div class="recap-standings-label">{$t('match.standingsLabel')}</div>
     <div class="standings-table">
       {#each sortedPlayers as player, i}
         <div class="standings-row" class:leader={i === 0 && player.pts > 0}>
           <span class="standings-rank">{i + 1}</span>
           <span class="standings-name">{player.name}</span>
-          <span class="standings-pts">{player.pts} victoire{player.pts !== 1 ? 's' : ''}</span>
+          <span class="standings-pts">{$t('match.wins', { values: { count: player.pts } })}</span>
         </div>
       {/each}
     </div>
@@ -48,22 +49,22 @@
   <svelte:fragment slot="footer">
     {#if onUndo && canUndo}
       <button class="btn-undo" on:click={onUndo}>
-        ↩ Annuler le dernier coup
+        {$t('win.undo')}
       </button>
     {/if}
 
     {#if isLastGame}
       <button class="btn-main btn-gold" on:click={onViewFinal}>
-        Voir le récap final →
+        {$t('match.viewFinal')}
       </button>
     {:else}
       <button class="btn-main btn-gold" on:click={onNext}>
-        Partie suivante →
+        {$t('match.nextGame')}
       </button>
     {/if}
 
     <button class="btn-abandon" on:click={onAbandon}>
-      Abandonner le match
+      {$t('match.abandon')}
     </button>
   </svelte:fragment>
 </Overlay>

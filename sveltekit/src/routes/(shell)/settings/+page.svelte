@@ -3,7 +3,8 @@
   import { GAMES } from '$lib/games.js';
   import { askConfirm } from '$lib/stores/confirm.js';
   import FlagIcon from '$lib/components/FlagIcon.svelte';
-  import { locale } from 'svelte-i18n';
+  import { t, locale } from 'svelte-i18n';
+  import { get } from 'svelte/store';
   import { setLang } from '$lib/i18n/index.js';
 
   const LANGS = [
@@ -15,13 +16,14 @@
   let cleanPeriodId = '30d';
 
   async function handleClearBefore() {
+    const $t = get(t);
     const period = PERIODS.find(p => p.id === cleanPeriodId);
     if (!period?.days) return;
     const cutoff = Date.now() - period.days * 24 * 60 * 60 * 1000;
     const count = $historyStore.filter(e => e.playedAt < cutoff).length;
     if (!count) return;
-    if (await askConfirm(`Supprimer ${count} partie(s) datant de plus de ${period.label.toLowerCase()} ?`, {
-      icon: '📅', confirmLabel: 'Supprimer', cancelLabel: 'Annuler',
+    if (await askConfirm($t('settings.confirmDeleteBefore', { values: { count, period: period.label.toLowerCase() } }), {
+      icon: '📅', confirmLabel: $t('settings.delete'), cancelLabel: $t('common.cancel'),
     })) {
       deleteHistoryBefore(cutoff);
     }
@@ -31,11 +33,12 @@
   let cleanGameId = GAMES[0].id;
 
   async function handleClearGame() {
+    const $t = get(t);
     const game  = GAMES.find(g => g.id === cleanGameId);
     const count = $historyStore.filter(e => e.gameId === cleanGameId).length;
     if (!count) return;
-    if (await askConfirm(`Supprimer ${count} partie(s) de ${game?.name} ?`, {
-      icon: '🎱', confirmLabel: 'Supprimer', cancelLabel: 'Annuler',
+    if (await askConfirm($t('settings.confirmDeleteGame', { values: { count, game: game?.name } }), {
+      icon: '🎱', confirmLabel: $t('settings.delete'), cancelLabel: $t('common.cancel'),
     })) {
       deleteHistoryForGame(cleanGameId);
     }
@@ -43,58 +46,62 @@
 
   // ── Tout effacer ─────────────────────────────────────────────────────
   async function handleClearAll() {
+    const $t = get(t);
     const count = $historyStore.length;
     if (!count) return;
-    if (await askConfirm(`Effacer tout l'historique (${count} partie${count > 1 ? 's' : ''}) ?`, {
-      icon: '💥', confirmLabel: 'Tout effacer', cancelLabel: 'Annuler',
+    if (await askConfirm($t('settings.confirmDeleteAll', { values: { count, s: count > 1 ? 's' : '' } }), {
+      icon: '💥', confirmLabel: $t('settings.confirmDeleteAllBtn'), cancelLabel: $t('common.cancel'),
     })) {
       clearAllHistory();
     }
   }
 
-  const PERIOD_SHORT = { '7d': '7j', '30d': '30j', '6m': '6m', 'all': 'Tout' };
+  $: PERIOD_SHORT = {
+    '7d': $t('stats.periods.7d'), '30d': $t('stats.periods.30d'),
+    '6m': $t('stats.periods.6m'), 'all': $t('stats.periods.all'),
+  };
 </script>
 
 <div class="page">
 
   <!-- ── Historique ── -->
-  <div class="section-label">Historique des parties</div>
+  <div class="section-label">{$t('settings.history')}</div>
 
   <div class="setting-block">
-    <div class="setting-desc">Supprimer les parties datant de plus de&nbsp;:</div>
+    <div class="setting-desc">{$t('settings.deleteOlderThan')}</div>
     <div class="pill-group">
       {#each PERIODS.filter(p => p.days) as p}
         <button class="pill" class:active={cleanPeriodId === p.id}
           on:click={() => cleanPeriodId = p.id}>{PERIOD_SHORT[p.id]}</button>
       {/each}
     </div>
-    <button class="btn-action" on:click={handleClearBefore}>Supprimer</button>
+    <button class="btn-action" on:click={handleClearBefore}>{$t('settings.delete')}</button>
   </div>
 
   <div class="setting-block">
-    <div class="setting-desc">Supprimer tout l'historique d'un jeu&nbsp;:</div>
+    <div class="setting-desc">{$t('settings.deleteByGame')}</div>
     <div class="pill-group wrap">
       {#each GAMES as g}
         <button class="pill" class:active={cleanGameId === g.id}
           on:click={() => cleanGameId = g.id}>{g.name}</button>
       {/each}
     </div>
-    <button class="btn-action" on:click={handleClearGame}>Supprimer</button>
+    <button class="btn-action" on:click={handleClearGame}>{$t('settings.delete')}</button>
   </div>
 
   <div class="setting-block setting-block-danger">
-    <button class="btn-danger" on:click={handleClearAll}>💥 Effacer tout l'historique</button>
+    <button class="btn-danger" on:click={handleClearAll}>{$t('settings.deleteAll')}</button>
   </div>
 
   <!-- ── Thèmes ── -->
-  <div class="section-label" style="margin-top: 12px">Thèmes</div>
+  <div class="section-label" style="margin-top: 12px">{$t('settings.themes')}</div>
   <div class="setting-block setting-block-soon">
     <span class="soon-icon">🎨</span>
-    <span class="soon-text">Bientôt disponible</span>
+    <span class="soon-text">{$t('settings.comingSoon')}</span>
   </div>
 
   <!-- ── Langue ── -->
-  <div class="section-label">Langue</div>
+  <div class="section-label">{$t('settings.language')}</div>
   <div class="setting-block setting-block-lang">
     {#each LANGS as lang}
       <button

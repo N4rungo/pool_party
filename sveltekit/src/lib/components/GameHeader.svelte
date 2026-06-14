@@ -19,6 +19,7 @@
 <script>
   import { base } from '$app/paths';
   import { createEventDispatcher } from 'svelte';
+  import { t } from 'svelte-i18n';
 
   export let title;
   export let icon = null;
@@ -30,7 +31,7 @@
 </script>
 
 <div class="game-header">
-  <button class="btn-home" on:click={() => dispatch('home')} aria-label="Accueil">
+  <button class="btn-home" on:click={() => dispatch('home')} aria-label={$t('header.home')}>
     <img src="{base}/assets/home.png" alt="" class="icon-img" />
   </button>
   <h1>
@@ -38,10 +39,10 @@
     {title}<button
       class="rules-mark"
       on:click={() => dispatch('rules')}
-      aria-label="Règles">i</button>
+      aria-label={$t('header.rules')}>i</button>
   </h1>
   {#if showMatchInfo}
-    <button class="btn-match" on:click={() => dispatch('matchInfo')} aria-label="Infos match">
+    <button class="btn-match" on:click={() => dispatch('matchInfo')} aria-label={$t('header.matchInfo')}>
       🏆
     </button>
   {:else}
@@ -51,7 +52,7 @@
 
 <div class="game-actionbar">
   <button class="btn-undo" disabled={!canUndo} on:click={() => dispatch('undo')}>
-    ↩ Annuler
+    {$t('header.cancelUndo')}
   </button>
 </div>
 

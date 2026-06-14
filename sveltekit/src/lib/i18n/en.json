@@ -16,6 +16,15 @@
     "iphoneInstructions": "Share button <strong>⬆</strong> → <strong>Add to Home Screen</strong>",
     "ariaInstall": "Info & install"
   },
+  "home": {
+    "filterLabel": "What are we playing?",
+    "favorites": "Favourites",
+    "comingSoon": "Coming soon",
+    "comingSoonSub": "Stay tuned...",
+    "tableType": "Table type",
+    "resetFilter": "All games",
+    "viewGames": "Show games"
+  },
   "games": {
     "categories": {
       "americain": "Pool",
@@ -40,8 +49,8 @@
     },
     "card": {
       "rules": "Rules",
-      "addFavorite": "Add to favorites",
-      "removeFavorite": "Remove from favorites",
+      "addFavorite": "Add to favourites",
+      "removeFavorite": "Remove from favourites",
       "play": "Play {name}"
     }
   },
@@ -49,7 +58,7 @@
     "home": "Home",
     "rules": "Rules",
     "matchInfo": "Match info",
-    "cancelUndo": "↩ Cancel"
+    "cancelUndo": "↩ Undo"
   },
   "win": {
     "undo": "↩ Undo last shot",
@@ -62,8 +71,24 @@
     "gamesCount": "Number of games",
     "inProgress": "Match in progress",
     "game": "Game {n} / {total}",
+    "gameFinished": "Game {n}/{total} done",
     "ranking": "Ranking",
-    "gamesPlayed": "Games played"
+    "standingsLabel": "Match standings",
+    "finalRanking": "Final standings",
+    "gamesPlayed": "Games played",
+    "gamesDetail": "Game breakdown",
+    "winsGame": "wins this game",
+    "wins": "{count, plural, one {{count} win} other {{count} wins}}",
+    "nextGame": "Next game →",
+    "viewFinal": "See final recap →",
+    "abandon": "Abandon match",
+    "matchFinished": "Match over!",
+    "matchAbandoned": "Match abandoned",
+    "tie": "Tie:",
+    "winner": "Match winner:",
+    "playAgain": "🔄 Play another match",
+    "quit": "🏠 Quit",
+    "newGameBtn": "⚙️ New game"
   },
   "setup": {
     "searchOrType": "Search or type a name…",
@@ -105,17 +130,28 @@
     },
     "statLabel": {
       "winRate": "{rate} %",
-      "won_one": "{count} win",
-      "won_other": "{count} wins",
-      "played_one": "{count} game",
-      "played_other": "{count} games"
+      "won": "{count, plural, one {{count} win} other {{count} wins}}",
+      "played": "{count, plural, one {{count} game} other {{count} games}}"
     },
     "detail": {
       "games": "Games",
       "wins": "Wins",
+      "losses": "Losses",
       "winRate": "Win rate",
+      "winRateBar": "Win rate",
       "noGames": "No games recorded yet",
-      "historyTab": "History"
+      "historyTab": "History",
+      "max": "max",
+      "avg": "avg"
+    },
+    "gameScore": {
+      "chicago": "Points",
+      "killer": "Lives left",
+      "straightpool": "Balls potted",
+      "snooker": "Frame score",
+      "casin": "Score",
+      "fiveball": "Score",
+      "default": "Score"
     }
   },
   "settings": {

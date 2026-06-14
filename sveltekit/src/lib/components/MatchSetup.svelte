@@ -13,6 +13,7 @@
 -->
 <script>
   import NumberSelector from './NumberSelector.svelte';
+  import { t } from 'svelte-i18n';
 
   export let randomizeOrder = undefined;
   export let matchMode = false;
@@ -24,7 +25,7 @@
 
   {#if randomizeOrder !== undefined}
     <label class="option-row">
-      <span class="option-label">🔀 Ordre aléatoire</span>
+      <span class="option-label">{$t('match.randomOrder')}</span>
       <div
         class="toggle-track"
         class:on={randomizeOrder}
@@ -40,7 +41,7 @@
   {/if}
 
   <label class="option-row">
-    <span class="option-label">🏆 Mode match</span>
+    <span class="option-label">{$t('match.matchMode')}</span>
     <div
       class="toggle-track"
       class:on={matchMode}
@@ -61,7 +62,7 @@
         min={2}
         max={10}
         step={1}
-        label="Nombre de parties" />
+        label={$t('match.gamesCount')} />
     </div>
   {/if}
 </div>

@@ -4,6 +4,8 @@
   import { profilesStore, createProfile, renameProfile, deleteProfile } from '$lib/stores/profiles.js';
   import { historyStore, unlinkProfile } from '$lib/stores/history.js';
   import { askConfirm } from '$lib/stores/confirm.js';
+  import { t } from 'svelte-i18n';
+  import { get } from 'svelte/store';
 
   const MAX_NAME = 16;
 
@@ -40,9 +42,10 @@
   // ── Suppression ────────────────────────────────────────────────────────
   async function handleDelete(profile) {
     const hasHistory = $historyStore.some(e => e.players.some(p => p.profileId === profile.id));
-    const suffix = hasHistory ? '\nL\'historique sera conservé (joueur anonymisé).' : '';
-    if (await askConfirm(`Supprimer "${profile.name}" ?${suffix}`, {
-      icon: '🗑️', confirmLabel: 'Supprimer', cancelLabel: 'Annuler',
+    const $t = get(t);
+    const suffix = hasHistory ? $t('players.deleteHistorySuffix') : '';
+    if (await askConfirm($t('players.deleteConfirm', { values: { name: profile.name } }) + suffix, {
+      icon: '🗑️', confirmLabel: $t('players.delete'), cancelLabel: $t('players.cancel'),
     })) {
       unlinkProfile(profile.id);
       deleteProfile(profile.id);
@@ -53,25 +56,25 @@
 <div class="page">
 
   <!-- Créer un profil -->
-  <div class="section-label">Nouveau profil</div>
+  <div class="section-label">{$t('players.newProfile')}</div>
   <div class="create-row">
     <input
       type="text"
       bind:value={newProfileName}
-      placeholder="Nom du joueur"
+      placeholder={$t('setup.playerName')}
       maxlength={MAX_NAME}
       class="text-input"
       on:keydown={e => e.key === 'Enter' && addProfile()}
     />
-    <button class="btn-add" on:click={addProfile} disabled={!newProfileName.trim()}>Créer</button>
+    <button class="btn-add" on:click={addProfile} disabled={!newProfileName.trim()}>{$t('players.create')}</button>
   </div>
 
   <!-- Liste des profils -->
   {#if $profilesStore.length === 0}
-    <div class="empty-state">Aucun profil créé</div>
+    <div class="empty-state">{$t('players.noProfile')}</div>
   {:else}
     <div class="section-label" style="margin-top: 24px">
-      Profils ({$profilesStore.length})
+      {$t('players.profiles', { values: { count: $profilesStore.length } })}
     </div>
     <div class="profile-list">
       {#each $profilesStore as profile (profile.id)}
@@ -84,16 +87,16 @@
               class="text-input text-input-inline"
               on:keydown={e => { if (e.key === 'Enter') commitEdit(); if (e.key === 'Escape') cancelEdit(); }}
             />
-            <button class="icon-btn icon-btn-green" on:click={commitEdit} title="Valider">✓</button>
-            <button class="icon-btn" on:click={cancelEdit} title="Annuler">✕</button>
+            <button class="icon-btn icon-btn-green" on:click={commitEdit} title={$t('players.validate')}>✓</button>
+            <button class="icon-btn" on:click={cancelEdit} title={$t('players.cancel')}>✕</button>
           </div>
         {:else}
           <div class="profile-row">
             <button class="profile-name-btn" on:click={() => goto(`${base}/stats/${profile.id}`)}>
               {profile.name}
             </button>
-            <button class="icon-btn" on:click={() => startEdit(profile)} title="Renommer">✏️</button>
-            <button class="icon-btn icon-btn-red" on:click={() => handleDelete(profile)} title="Supprimer">🗑️</button>
+            <button class="icon-btn" on:click={() => startEdit(profile)} title={$t('players.rename')}>✏️</button>
+            <button class="icon-btn icon-btn-red" on:click={() => handleDelete(profile)} title={$t('players.delete')}>🗑️</button>
           </div>
         {/if}
       {/each}
