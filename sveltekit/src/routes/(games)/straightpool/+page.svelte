@@ -24,6 +24,8 @@
   import MatchSummaryOverlay from '$lib/components/MatchSummaryOverlay.svelte';
   import { showToast } from '$lib/stores/toast.js';
   import { askConfirm } from '$lib/stores/confirm.js';
+  import { t } from 'svelte-i18n';
+  import { get } from 'svelte/store';
   import { matchStore, startMatch, recordResult, endMatch, undoResult, isLastGame } from '$lib/stores/match.js';
   import { recordHistory } from '$lib/stores/history.js';
   import {
@@ -88,7 +90,7 @@
   function gotoSetup3() {
     setupPlayers = setupPlayers.map((p, i) => ({
       ...p,
-      name: picks[i]?.name?.trim() || `Joueur ${i + 1}`,
+      name: picks[i]?.name?.trim() || get(t)('setup.defaultPlayer', { values: { n: i + 1 } }),
     }));
     phase = 'setup3';
   }
@@ -110,7 +112,7 @@
     winnerName = null;
     winnerRanking = [];
     phase = 'game';
-    showToast(`🎯 Tour de ${state.players[0].name}`);
+    showToast(get(t)('straightpool.toast.starts', { values: { name: state.players[0].name } }));
   }
 
   function onIncBreak() {
@@ -142,17 +144,17 @@
 
   function onPassTurn() {
     state = passTurn(state);
-    showToast(`👤 Tour de ${state.players[state.currentIndex].name}`);
+    showToast(get(t)('toast.yourTurn', { values: { name: state.players[state.currentIndex].name } }));
   }
 
   function onFault() {
     state = fault(state);
-    showToast('⚠️ Faute ! −1 point');
+    showToast(get(t)('straightpool.toast.fault'));
   }
 
   function onUndo() {
     state = undo(state);
-    showToast('↩ Action annulée');
+    showToast(get(t)('toast.actionCancelled'));
   }
 
   function onUndoFromWin() {
@@ -160,7 +162,7 @@
     winnerName = null;
     winnerRanking = [];
     phase = 'game';
-    showToast('↩ Coup décisif annulé — on continue !');
+    showToast(get(t)('toast.finalShotCancelled'));
   }
 
   function replay() {
@@ -170,9 +172,10 @@
     goto(base || '/');
   }
   async function confirmGoHome() {
-    const ok = await askConfirm("Abandonner la partie et revenir à l'accueil ?", {
-      confirmLabel: 'Abandonner',
-      cancelLabel:  'Continuer',
+    const _t = get(t);
+    const ok = await askConfirm(_t('confirm.leaveGame'), {
+      confirmLabel: _t('confirm.abandonLabel'),
+      cancelLabel:  _t('confirm.continueLabel'),
       iconImage:    `${base}/assets/home.png`
     });
     if (ok) {
@@ -200,12 +203,13 @@
     winnerName = null;
     winnerRanking = [];
     showMatchRecap = false;
-    showToast('↩ Coup décisif annulé — on continue !');
+    showToast(get(t)('toast.winCancelled'));
   }
   async function onMatchAbandon() {
-    const ok = await askConfirm('Abandonner le match en cours ?', {
-      confirmLabel: 'Abandonner',
-      cancelLabel:  'Continuer',
+    const _t = get(t);
+    const ok = await askConfirm(_t('confirm.leaveMatch'), {
+      confirmLabel: _t('confirm.abandonLabel'),
+      cancelLabel:  _t('confirm.continueLabel'),
     });
     if (!ok) return;
     showMatchRecap = false;
@@ -248,14 +252,14 @@
       <img src="{base}/assets/triangle_14-1.png" alt="" class="icon-title" />
       14-1 Continu
     </h1>
-    <div class="setup-sub">Étape 1 / 3</div>
+    <div class="setup-sub">{$t('setup.step', { values: { n: 1, total: 3 } })}</div>
 
     <div class="popup-box setup-box">
       <NumberSelector
         bind:value={count}
         min={STRAIGHTPOOL_MIN_PLAYERS}
         max={STRAIGHTPOOL_MAX_PLAYERS}
-        label="Nombre de joueurs" />
+        label={$t('setup.playerCount')} />
 
       <div class="sep"></div>
 
@@ -264,11 +268,11 @@
         min={STRAIGHTPOOL_MIN_TARGET}
         max={STRAIGHTPOOL_MAX_TARGET}
         step={STRAIGHTPOOL_TARGET_STEP}
-        label="Score à atteindre" />
+        label={$t('setup.targetScore')} />
       <div class="setup-tip">Chaque bille empochée = 1 point.</div>
 
-      <button class="btn-main btn-gold" on:click={gotoSetup2}>Suivant →</button>
-      <button class="btn-main btn-gray" on:click={() => goto(base || '/')}>← Retour</button>
+      <button class="btn-main btn-gold" on:click={gotoSetup2}>{$t('setup.next')}</button>
+      <button class="btn-main btn-gray" on:click={() => goto(base || '/')}>{$t('setup.back')}</button>
     </div>
   </div>
 {/if}
@@ -280,13 +284,13 @@
       <img src="{base}/assets/triangle_14-1.png" alt="" class="icon-title" />
       14-1 Continu
     </h1>
-    <div class="setup-sub">Étape 2 / 3 — Noms des joueurs</div>
+    <div class="setup-sub">{$t('setup.step', { values: { n: 2, total: 3 } })} — {$t('setup.playerNames')}</div>
 
     <div class="popup-box setup-box">
       <PlayerSetupList bind:picks count={setupPlayers.length} />
 
-      <button class="btn-main btn-gold" on:click={gotoSetup3}>Suivant →</button>
-      <button class="btn-main btn-gray" on:click={() => phase = 'setup1'}>← Retour</button>
+      <button class="btn-main btn-gold" on:click={gotoSetup3}>{$t('setup.next')}</button>
+      <button class="btn-main btn-gray" on:click={() => phase = 'setup1'}>{$t('setup.back')}</button>
     </div>
   </div>
 {/if}
@@ -298,7 +302,7 @@
       <img src="{base}/assets/triangle_14-1.png" alt="" class="icon-title" />
       14-1 Continu
     </h1>
-    <div class="setup-sub">Étape 3 / 3 — Récapitulatif</div>
+    <div class="setup-sub">{$t('setup.step', { values: { n: 3, total: 3 } })} — {$t('setup.recap')}</div>
 
     <div class="popup-box setup-box">
       <div class="sp-target-title">Score cible par joueur</div>
@@ -316,9 +320,9 @@
       <MatchSetup bind:randomizeOrder bind:matchMode bind:totalGames={matchTotalGames} />
 
       <button class="btn-main btn-gold" on:click={() => { if (matchMode) startMatch('straightpool', setupPlayers.map(p => p.name), matchTotalGames); startGame(); }}>
-        {matchMode ? '🏆 Lancer le match !' : '🎱 Lancer la partie !'}
+        {matchMode ? $t('setup.launchMatch') : $t('setup.launchGame')}
       </button>
-      <button class="btn-main btn-gray" on:click={() => phase = 'setup2'}>← Retour</button>
+      <button class="btn-main btn-gray" on:click={() => phase = 'setup2'}>{$t('setup.back')}</button>
     </div>
   </div>
 {/if}
@@ -371,8 +375,8 @@
           <div class="sp-break-hint">+ à chaque bille empochée. − pour corriger.</div>
         </div>
         <div class="game-bottombar">
-          <button class="btn-fault" on:click={onFault}>⚠️ Faute</button>
-          <button class="btn-next" on:click={onPassTurn}>Suivant →</button>
+          <button class="btn-fault" on:click={onFault}>{$t('cutthroat.faultBtn')}</button>
+          <button class="btn-next" on:click={onPassTurn}>{$t('setup.next')}</button>
         </div>
       </svelte:fragment>
     </GameLayout>
@@ -384,7 +388,7 @@
   open={phase === 'win'}
   trophy="🏆"
   name={winnerName}
-  sub="Score atteint !"
+  sub={$t('straightpool.winSub')}
   canUndo={state?.history?.length > 0}
   on:undo={onUndoFromWin}
   on:replay={replay}

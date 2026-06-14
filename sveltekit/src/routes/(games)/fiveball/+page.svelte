@@ -35,6 +35,8 @@
   import MatchSummaryOverlay from '$lib/components/MatchSummaryOverlay.svelte';
   import { showToast } from '$lib/stores/toast.js';
   import { askConfirm } from '$lib/stores/confirm.js';
+  import { t } from 'svelte-i18n';
+  import { get } from 'svelte/store';
   import { matchStore, startMatch, recordResult, endMatch, undoResult, isLastGame } from '$lib/stores/match.js';
   import { recordHistory } from '$lib/stores/history.js';
   import {
@@ -104,7 +106,7 @@
     // Defaults pour les noms vides
     setupPlayers = setupPlayers.map((p, i) => ({
       ...p,
-      name: picks[i]?.name?.trim() || `Joueur ${i + 1}`,
+      name: picks[i]?.name?.trim() || get(t)('setup.defaultPlayer', { values: { n: i + 1 } }),
     }));
     phase = 'setup3';
   }
@@ -128,7 +130,7 @@
     state = createInitialState(players);
     winnerName = null;
     phase = 'game';
-    showToast(`🎯 Engagement : ${state.players[0].name} doit toucher la rouge !`);
+    showToast(get(t)('fiveball.toast.start', { values: { name: state.players[0].name } }));
   }
 
   // ── Sélection / validation ────────────────────────────
@@ -157,16 +159,16 @@
         phase = 'win';
       }
     } else if (outcome.kind === 'scored') {
-      showToast(`🎱 −${outcome.delta} pts`);
+      showToast(get(t)('fiveball.toast.scored', { values: { delta: outcome.delta } }));
     } else if (outcome.kind === 'fault') {
-      showToast(`⚠️ ${outcome.detail}`);
+      showToast(get(t)('toast.fault'));
     }
   }
 
   // ── Annuler (en jeu) ──────────────────────────────────
   function onUndo() {
     state = undo(state);
-    showToast('↩ Action annulée');
+    showToast(get(t)('toast.actionCancelled'));
   }
 
   // ── Annuler depuis l'overlay de victoire ──────────────
@@ -174,7 +176,7 @@
     state = undo(state);
     winnerName = null;
     phase = 'game';
-    showToast('↩ Coup décisif annulé — on continue !');
+    showToast(get(t)('toast.finalShotCancelled'));
   }
 
   // ── Rejouer / Nouveau jeu / Accueil ───────────────────
@@ -185,9 +187,10 @@
     goto(base || '/');
   }
   async function confirmGoHome() {
-    const ok = await askConfirm("Abandonner la partie et revenir à l'accueil ?", {
-      confirmLabel: 'Abandonner',
-      cancelLabel:  'Continuer',
+    const _t = get(t);
+    const ok = await askConfirm(_t('confirm.leaveGame'), {
+      confirmLabel: _t('confirm.abandonLabel'),
+      cancelLabel:  _t('confirm.continueLabel'),
       iconImage:    `${base}/assets/home.png`
     });
     if (ok) {
@@ -219,12 +222,13 @@
     state = undo(state);
     winnerName = null;
     showMatchRecap = false;
-    showToast('↩ Coup décisif annulé — on continue !');
+    showToast(get(t)('toast.winCancelled'));
   }
   async function onMatchAbandon() {
-    const ok = await askConfirm('Abandonner le match en cours ?', {
-      confirmLabel: 'Abandonner',
-      cancelLabel:  'Continuer',
+    const _t = get(t);
+    const ok = await askConfirm(_t('confirm.leaveMatch'), {
+      confirmLabel: _t('confirm.abandonLabel'),
+      cancelLabel:  _t('confirm.continueLabel'),
     });
     if (!ok) return;
     showMatchRecap = false;
@@ -277,14 +281,14 @@
       <img src="{base}/assets/5-ball.png" alt="" class="icon-title" />
       5-Ball
     </h1>
-    <div class="setup-sub">Étape 1 / 3</div>
+    <div class="setup-sub">{$t('setup.step', { values: { n: 1, total: 3 } })}</div>
 
     <div class="popup-box setup-box">
       <NumberSelector
         bind:value={count}
         min={FIVE_BALL_MIN_PLAYERS}
         max={FIVE_BALL_MAX_PLAYERS}
-        label="Nombre de joueurs" />
+        label={$t('setup.playerCount')} />
 
       <div class="sep"></div>
 
@@ -292,11 +296,11 @@
         bind:value={defaultTarget}
         min={FIVE_BALL_MIN_TARGET}
         step={FIVE_BALL_TARGET_STEP}
-        label="Score à atteindre" />
+        label={$t('setup.targetScore')} />
       <div class="setup-tip">Le but : descendre à 0 pile (par pas de 10).</div>
 
-      <button class="btn-main btn-gold" on:click={gotoSetup2}>Suivant →</button>
-      <button class="btn-main btn-gray" on:click={() => goto(base || '/')}>← Retour</button>
+      <button class="btn-main btn-gold" on:click={gotoSetup2}>{$t('setup.next')}</button>
+      <button class="btn-main btn-gray" on:click={() => goto(base || '/')}>{$t('setup.back')}</button>
     </div>
   </div>
 {/if}
@@ -308,13 +312,13 @@
       <img src="{base}/assets/5-ball.png" alt="" class="icon-title" />
       5-Ball
     </h1>
-    <div class="setup-sub">Étape 2 / 3 — Noms des joueurs</div>
+    <div class="setup-sub">{$t('setup.step', { values: { n: 2, total: 3 } })} — {$t('setup.playerNames')}</div>
 
     <div class="popup-box setup-box">
       <PlayerSetupList bind:picks count={setupPlayers.length} />
 
-      <button class="btn-main btn-gold" on:click={gotoSetup3}>Suivant →</button>
-      <button class="btn-main btn-gray" on:click={() => phase = 'setup1'}>← Retour</button>
+      <button class="btn-main btn-gold" on:click={gotoSetup3}>{$t('setup.next')}</button>
+      <button class="btn-main btn-gray" on:click={() => phase = 'setup1'}>{$t('setup.back')}</button>
     </div>
   </div>
 {/if}
@@ -326,7 +330,7 @@
       <img src="{base}/assets/5-ball.png" alt="" class="icon-title" />
       5-Ball
     </h1>
-    <div class="setup-sub">Étape 3 / 3 — Récapitulatif</div>
+    <div class="setup-sub">{$t('setup.step', { values: { n: 3, total: 3 } })} — {$t('setup.recap')}</div>
 
     <div class="popup-box setup-box">
       <div class="setup-tip" style="margin-bottom:8px;">
@@ -344,9 +348,9 @@
       <MatchSetup bind:randomizeOrder bind:matchMode bind:totalGames={matchTotalGames} />
 
       <button class="btn-main btn-gold" on:click={() => { if (matchMode) startMatch('fiveball', setupPlayers.map(p => p.name), matchTotalGames); startGame(); }}>
-        {matchMode ? '🏆 Lancer le match !' : '🎱 Lancer la partie !'}
+        {matchMode ? $t('setup.launchMatch') : $t('setup.launchGame')}
       </button>
-      <button class="btn-main btn-gray" on:click={() => phase = 'setup2'}>← Retour</button>
+      <button class="btn-main btn-gray" on:click={() => phase = 'setup2'}>{$t('setup.back')}</button>
     </div>
   </div>
 {/if}
@@ -387,7 +391,7 @@
           </div>
           {#if state.isFirstTurn}
             <div class="fb-banner-engagement">
-              🎯 Engagement — la rouge doit être touchée en premier !
+              {$t('fiveball.engagement')}
             </div>
           {/if}
         </div>
@@ -411,21 +415,21 @@
         <!-- Preview du score + bouton Valider, fixés en bas -->
         <div class="fb-action-bar">
           {#if previewKind === 'muted-zero'}
-            <span class="fb-preview-muted">Aucune bille sélectionnée — tour passé sans points.</span>
+            <span class="fb-preview-muted">{$t('fiveball.preview.zero')}</span>
           {:else if previewKind === 'muted-one'}
-            <span class="fb-preview-muted">1 seule bille — il en faut au moins 2 pour scorer.</span>
+            <span class="fb-preview-muted">{$t('fiveball.preview.one')}</span>
           {:else if previewKind === 'engagement'}
-            <span class="fb-preview-bust">Engagement raté : la rouge doit être touchée.</span>
+            <span class="fb-preview-bust">{$t('fiveball.preview.engagementFail')}</span>
           {:else if previewKind === 'bust'}
-            <span class="fb-preview-bust">−{total} → resterait {remaining} : tour annulé.</span>
+            <span class="fb-preview-bust">{$t('fiveball.preview.bust', { values: { total, remaining } })}</span>
           {:else if previewKind === 'win'}
-            <span class="fb-preview-win">−{total} → 0 pile, partie gagnée ! 🏆</span>
+            <span class="fb-preview-win">{$t('fiveball.preview.win', { values: { total } })}</span>
           {:else if previewKind === 'ok'}
-            <span class="fb-preview-ok">−{total} → reste {remaining} pts</span>
+            <span class="fb-preview-ok">{$t('fiveball.preview.ok', { values: { total, remaining } })}</span>
           {/if}
         </div>
 
-        <button class="btn-main btn-gold" on:click={onValidateTurn}>Valider le tour →</button>
+        <button class="btn-main btn-gold" on:click={onValidateTurn}>{$t('fiveball.validate')}</button>
       </svelte:fragment>
     </GameLayout>
   </div>
@@ -436,7 +440,7 @@
   open={phase === 'win'}
   trophy="🏆"
   name={winnerName}
-  sub="Pile à 0 ! Bravo !"
+  sub={$t('fiveball.winSub')}
   canUndo={state?.history?.length > 0}
   on:undo={onUndoFromWin}
   on:replay={replay}

@@ -28,6 +28,8 @@
   import MatchSummaryOverlay from '$lib/components/MatchSummaryOverlay.svelte';
   import { showToast } from '$lib/stores/toast.js';
   import { askConfirm } from '$lib/stores/confirm.js';
+  import { t } from 'svelte-i18n';
+  import { get } from 'svelte/store';
   import { matchStore, startMatch, recordResult, endMatch, undoResult, isLastGame } from '$lib/stores/match.js';
   import { recordHistory } from '$lib/stores/history.js';
   import {
@@ -92,7 +94,7 @@
   function gotoSetup3() {
     setupPlayers = setupPlayers.map((p, i) => ({
       ...p,
-      name: picks[i]?.name?.trim() || `Joueur ${i + 1}`,
+      name: picks[i]?.name?.trim() || get(t)('setup.defaultPlayer', { values: { n: i + 1 } }),
     }));
     phase = 'setup3';
   }
@@ -106,7 +108,7 @@
     state = createInitialState(setupPlayers);
     winnerName = null;
     phase = 'game';
-    showToast(`🎯 ${state.players[0].name} commence !`);
+    showToast(get(t)('toast.starts', { values: { name: state.players[0].name } }));
   }
 
   // ── Empocher une bille ────────────────────────────────
@@ -135,7 +137,7 @@
     } else if (outcome.kind === 'continue') {
       // Vérifier si on vient d'éliminer quelqu'un (toast d'info)
       // (sinon le bruit de toast à chaque bille est inutile)
-      showToast(`🎱 Bille ${n} empochée`);
+      showToast(get(t)('cutthroat.toast.ball', { values: { n } }));
     }
   }
 
@@ -168,14 +170,14 @@
   // ── Annuler ───────────────────────────────────────────
   function onUndo() {
     state = undo(state);
-    showToast('↩ Action annulée');
+    showToast(get(t)('toast.actionCancelled'));
   }
 
   function onUndoFromWin() {
     state = undo(state);
     winnerName = null;
     phase = 'game';
-    showToast('↩ Coup décisif annulé — on continue !');
+    showToast(get(t)('toast.finalShotCancelled'));
   }
 
   // ── Rejouer / Nouveau jeu / Accueil ───────────────────
@@ -186,9 +188,10 @@
     goto(base || '/');
   }
   async function confirmGoHome() {
-    const ok = await askConfirm("Abandonner la partie et revenir à l'accueil ?", {
-      confirmLabel: 'Abandonner',
-      cancelLabel:  'Continuer',
+    const _t = get(t);
+    const ok = await askConfirm(_t('confirm.leaveGame'), {
+      confirmLabel: _t('confirm.abandonLabel'),
+      cancelLabel:  _t('confirm.continueLabel'),
       iconImage:    `${base}/assets/home.png`
     });
     if (ok) {
@@ -215,12 +218,13 @@
     state = undo(state);
     winnerName = null;
     showMatchRecap = false;
-    showToast('↩ Coup décisif annulé — on continue !');
+    showToast(get(t)('toast.winCancelled'));
   }
   async function onMatchAbandon() {
-    const ok = await askConfirm('Abandonner le match en cours ?', {
-      confirmLabel: 'Abandonner',
-      cancelLabel:  'Continuer',
+    const _t = get(t);
+    const ok = await askConfirm(_t('confirm.leaveMatch'), {
+      confirmLabel: _t('confirm.abandonLabel'),
+      cancelLabel:  _t('confirm.continueLabel'),
     });
     if (!ok) return;
     showMatchRecap = false;
@@ -264,17 +268,17 @@
       <img src="{base}/assets/bille_1_target.png" alt="" class="icon-title" />
       Cutthroat
     </h1>
-    <div class="setup-sub">Étape 1 / 3</div>
+    <div class="setup-sub">{$t('setup.step', { values: { n: 1, total: 3 } })}</div>
 
     <div class="popup-box setup-box">
       <NumberSelector
         bind:value={count}
         min={CT_MIN_PLAYERS}
         max={CT_MAX_PLAYERS}
-        label="Nombre de joueurs" />
+        label={$t('setup.playerCount')} />
 
-      <button class="btn-main btn-gold" on:click={gotoSetup2}>Suivant →</button>
-      <button class="btn-main btn-gray" on:click={() => goto(base || '/')}>← Retour</button>
+      <button class="btn-main btn-gold" on:click={gotoSetup2}>{$t('setup.next')}</button>
+      <button class="btn-main btn-gray" on:click={() => goto(base || '/')}>{$t('setup.back')}</button>
     </div>
   </div>
 {/if}
@@ -286,7 +290,7 @@
       <img src="{base}/assets/bille_1_target.png" alt="" class="icon-title" />
       Cutthroat
     </h1>
-    <div class="setup-sub">Étape 2 / 3 — Noms des joueurs</div>
+    <div class="setup-sub">{$t('setup.step', { values: { n: 2, total: 3 } })} — {$t('setup.playerNames')}</div>
 
     <div class="popup-box setup-box">
       <div class="setup-tip" style="margin-bottom:10px;">
@@ -295,8 +299,8 @@
 
       <PlayerSetupList bind:picks count={setupPlayers.length} />
 
-      <button class="btn-main btn-gold" on:click={gotoSetup3}>Suivant →</button>
-      <button class="btn-main btn-gray" on:click={() => phase = 'setup1'}>← Retour</button>
+      <button class="btn-main btn-gold" on:click={gotoSetup3}>{$t('setup.next')}</button>
+      <button class="btn-main btn-gray" on:click={() => phase = 'setup1'}>{$t('setup.back')}</button>
     </div>
   </div>
 {/if}
@@ -308,7 +312,7 @@
       <img src="{base}/assets/bille_1_target.png" alt="" class="icon-title" />
       Cutthroat
     </h1>
-    <div class="setup-sub">Étape 3 / 3 — Récapitulatif</div>
+    <div class="setup-sub">{$t('setup.step', { values: { n: 3, total: 3 } })} — {$t('setup.recap')}</div>
 
     <div class="popup-box setup-box">
       <div class="ct-corners-section">
@@ -326,7 +330,7 @@
         {#each setupPlayers as player, i (i)}
           <div class="recap-row">
             <span class="recap-emoji">{EMOJIS[i % EMOJIS.length]}</span>
-            <span class="recap-name">{player.name || `Joueur ${i + 1}`}</span>
+            <span class="recap-name">{player.name || $t('setup.defaultPlayer', { values: { n: i + 1 } })}</span>
             <div class="ct-balls-row-recap">
               {#each previewDistribution.groups[i] as b}
                 <img src="{base}/assets/bille_{b}.png" class="ball-player" alt="{b}" />
@@ -339,9 +343,9 @@
       <MatchSetup bind:matchMode bind:totalGames={matchTotalGames} />
 
       <button class="btn-main btn-gold" on:click={() => { if (matchMode) startMatch('cutthroat', setupPlayers.map(p => p.name), matchTotalGames); startGame(); }}>
-        {matchMode ? '🏆 Lancer le match !' : '🎱 Lancer la partie !'}
+        {matchMode ? $t('setup.launchMatch') : $t('setup.launchGame')}
       </button>
-      <button class="btn-main btn-gray" on:click={() => phase = 'setup2'}>← Retour</button>
+      <button class="btn-main btn-gray" on:click={() => phase = 'setup2'}>{$t('setup.back')}</button>
     </div>
   </div>
 {/if}
@@ -369,7 +373,7 @@
               <span class="ct-player-emoji">{EMOJIS[i % EMOJIS.length]}</span>
               <span class="ct-name-text">{player.name}</span>
               {#if player.eliminated}
-                <span class="ct-badge-eliminated">ÉLIMINÉ</span>
+                <span class="ct-badge-eliminated">{$t('cutthroat.eliminated')}</span>
               {/if}
             </div>
             <div class="ct-balls-row">
@@ -390,7 +394,7 @@
 
       <svelte:fragment slot="footer">
         <div class="game-bottombar">
-          <button class="btn-fault" on:click={openFaultMenu}>⚠️ Faute</button>
+          <button class="btn-fault" on:click={openFaultMenu}>{$t('cutthroat.faultBtn')}</button>
         </div>
       </svelte:fragment>
     </GameLayout>
@@ -401,7 +405,7 @@
 <!-- Sélection du fautif -->
 <Overlay open={faultSelectOpen} on:close={() => faultSelectOpen = false}>
   {#if state}
-    <h2 style="text-align:center;margin-bottom:14px;">⚠️ Qui a fait la faute ?</h2>
+    <h2 style="text-align:center;margin-bottom:14px;">{$t('cutthroat.faultWho')}</h2>
     <div class="ct-fault-list">
       {#each state.players as player, i (i)}
         {#if !player.eliminated}
@@ -417,9 +421,9 @@
 <!-- Résultat de la faute -->
 <Overlay open={faultResultOpen} on:close={closeFaultResult}>
   {#if faultResult}
-    <h2 style="text-align:center;margin-bottom:6px;">Faute de {faultResult.faulterName}</h2>
+    <h2 style="text-align:center;margin-bottom:6px;">{$t('cutthroat.faultOf', { values: { name: faultResult.faulterName } })}</h2>
     <div style="font-size:13px;color:rgba(255,255,255,0.55);text-align:center;margin-bottom:14px;">
-      Remise en jeu des billes (dans l'ordre) :
+      {$t('cutthroat.faultReturns')}
     </div>
     {#if faultResult.returns.length}
       <div class="recap-list">
@@ -427,14 +431,14 @@
           <div class="recap-row">
             <span class="recap-emoji">{EMOJIS[r.playerIdx % EMOJIS.length]}</span>
             <span class="recap-name">{state.players[r.playerIdx].name}</span>
-            <span style="font-size:13px;color:rgba(255,255,255,0.5);">remet la</span>
+            <span style="font-size:13px;color:rgba(255,255,255,0.5);">{$t('cutthroat.faultPutsBack')}</span>
             <img src="{base}/assets/bille_{r.ball}.png" class="ball-mini" alt={String(r.ball)} />
           </div>
         {/each}
       </div>
     {:else}
       <div style="text-align:center;color:rgba(255,255,255,0.5);font-size:14px;padding:14px 0;">
-        Aucune bille à remettre en jeu.
+        {$t('cutthroat.faultNone')}
       </div>
     {/if}
     <button class="btn-main btn-gold" on:click={closeFaultResult}>OK</button>
@@ -446,7 +450,7 @@
   open={phase === 'win'}
   trophy="🏆"
   name={winnerName}
-  sub="Dernier joueur en lice !"
+  sub={$t('cutthroat.winSub')}
   canUndo={state?.history?.length > 0}
   on:undo={onUndoFromWin}
   on:replay={replay}
