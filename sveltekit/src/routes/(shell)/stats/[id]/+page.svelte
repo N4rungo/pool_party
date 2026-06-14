@@ -7,9 +7,9 @@
   import { historyStore } from '$lib/stores/history.js';
   import {
     globalStats, gameStats, playedGameIds,
-    SORT_LABELS, GAME_SCORE_LABEL,
   } from '$lib/utils/stats.js';
   import { GAMES } from '$lib/games.js';
+  import { t } from 'svelte-i18n';
 
   const MAX_NAME = 16;
 
@@ -65,8 +65,10 @@
   function cancelRename() { editing = false; }
 
   // ── Helpers ──────────────────────────────────────────────────────────────
+  $: locale = $t('nav.games') === 'Games' ? 'en-GB' : 'fr-FR';
+
   function fmtDate(ts) {
-    return new Date(ts).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: '2-digit' });
+    return new Date(ts).toLocaleDateString(locale, { day: 'numeric', month: 'short', year: '2-digit' });
   }
 
   function gameName(id) { return GAMES.find(g => g.id === id)?.name ?? id; }
@@ -102,11 +104,11 @@
         class="name-input"
         on:keydown={e => { if (e.key === 'Enter') commitRename(); if (e.key === 'Escape') cancelRename(); }}
       />
-      <button class="icon-btn icon-btn-green" on:click={commitRename} title="Valider">✓</button>
-      <button class="icon-btn" on:click={cancelRename} title="Annuler">✕</button>
+      <button class="icon-btn icon-btn-green" on:click={commitRename} title={$t('players.validate')}>✓</button>
+      <button class="icon-btn" on:click={cancelRename} title={$t('players.cancel')}>✕</button>
     {:else}
       <span class="player-name">{profile.name}</span>
-      <button class="icon-btn" on:click={startRename} title="Renommer">✏️</button>
+      <button class="icon-btn" on:click={startRename} title={$t('players.rename')}>✏️</button>
     {/if}
   </div>
 
@@ -114,17 +116,17 @@
   <div class="summary-bar">
     <div class="summary-item">
       <div class="summary-value">{gStats.played}</div>
-      <div class="summary-label">Parties</div>
+      <div class="summary-label">{$t('stats.detail.games')}</div>
     </div>
     <div class="summary-sep"></div>
     <div class="summary-item">
       <div class="summary-value">{gStats.won}</div>
-      <div class="summary-label">Victoires</div>
+      <div class="summary-label">{$t('stats.detail.wins')}</div>
     </div>
     <div class="summary-sep"></div>
     <div class="summary-item">
       <div class="summary-value">{gStats.winRate} %</div>
-      <div class="summary-label">Win rate</div>
+      <div class="summary-label">{$t('stats.detail.winRateBar')}</div>
     </div>
   </div>
 
@@ -137,7 +139,7 @@
         </button>
       {/each}
       <button class="tab-btn" class:active={tab === 'historique'} on:click={() => tab = 'historique'}>
-        Historique
+        {$t('stats.detail.historyTab')}
       </button>
     </div>
   {/if}
@@ -146,7 +148,7 @@
   {#if tab === 'historique'}
     <div class="tab-content">
       {#if history.length === 0}
-        <div class="empty-state">Aucune partie enregistrée</div>
+        <div class="empty-state">{$t('stats.detail.noGames')}</div>
       {:else}
         <div class="history-list">
           {#each history as entry}
@@ -173,42 +175,42 @@
       <div class="stats-grid">
         <div class="stat-card">
           <div class="stat-value">{currentGameStats.played}</div>
-          <div class="stat-label">Parties</div>
+          <div class="stat-label">{$t('stats.detail.games')}</div>
         </div>
         <div class="stat-card">
           <div class="stat-value">{currentGameStats.won}</div>
-          <div class="stat-label">Victoires</div>
+          <div class="stat-label">{$t('stats.detail.wins')}</div>
         </div>
         <div class="stat-card">
           <div class="stat-value">{currentGameStats.lost}</div>
-          <div class="stat-label">Défaites</div>
+          <div class="stat-label">{$t('stats.detail.losses')}</div>
         </div>
         <div class="stat-card stat-card-wide">
           <div class="stat-value">{currentGameStats.winRate} %</div>
-          <div class="stat-label">Taux de victoire</div>
+          <div class="stat-label">{$t('stats.detail.winRate')}</div>
         </div>
         {#if currentGameStats.maxScore !== null}
           <div class="stat-card">
             <div class="stat-value">{currentGameStats.maxScore}</div>
-            <div class="stat-label">{GAME_SCORE_LABEL[tab] ?? 'Score'} max</div>
+            <div class="stat-label">{$t('stats.gameScore.' + tab, { default: $t('stats.gameScore.default') })} {$t('stats.detail.max')}</div>
           </div>
         {/if}
         {#if currentGameStats.avgScore !== null}
           <div class="stat-card">
             <div class="stat-value">{currentGameStats.avgScore}</div>
-            <div class="stat-label">{GAME_SCORE_LABEL[tab] ?? 'Score'} moy.</div>
+            <div class="stat-label">{$t('stats.gameScore.' + tab, { default: $t('stats.gameScore.default') })} {$t('stats.detail.avg')}</div>
           </div>
         {/if}
         {#if currentGameStats.maxBreak !== null}
           <div class="stat-card">
             <div class="stat-value">{currentGameStats.maxBreak}</div>
-            <div class="stat-label">Break max</div>
+            <div class="stat-label">{$t('stats.sort.maxBreak')}</div>
           </div>
         {/if}
         {#if currentGameStats.avgBreak !== null}
           <div class="stat-card">
             <div class="stat-value">{currentGameStats.avgBreak}</div>
-            <div class="stat-label">Break moy.</div>
+            <div class="stat-label">{$t('stats.sort.avgBreak')}</div>
           </div>
         {/if}
       </div>

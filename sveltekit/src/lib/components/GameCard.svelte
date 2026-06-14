@@ -14,6 +14,7 @@
 <script>
   import { base } from '$app/paths';
   import { createEventDispatcher } from 'svelte';
+  import { t } from 'svelte-i18n';
 
   export let game;
   export let isFavorite = false;
@@ -37,7 +38,7 @@
     class="star-btn"
     class:is-favorite={isFavorite}
     on:click={toggleFavorite}
-    aria-label={isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris'}>
+    aria-label={isFavorite ? $t('games.card.removeFavorite') : $t('games.card.addFavorite')}>
     {isFavorite ? '★' : '☆'}
   </button>
 
@@ -45,7 +46,7 @@
   <a
     class="card-play-area"
     href="{base}/{game.id}"
-    aria-label="Jouer à {game.name}"
+    aria-label={$t('games.card.play', { values: { name: game.name } })}
     on:touchstart={() => pressing = true}
     on:touchend={() => pressing = false}
     on:touchcancel={() => pressing = false}>
@@ -54,13 +55,13 @@
     </div>
     <div class="game-info">
       <div class="game-name">{game.name}</div>
-      <div class="game-tagline">{game.tagline}</div>
+      <div class="game-tagline">{$t('games.taglines.' + game.id)}</div>
     </div>
   </a>
 
   <!-- Bouton règles -->
   <div class="game-card-actions">
-    <button class="btn-card-rules" on:click={openRules} aria-label="Règles">📖</button>
+    <button class="btn-card-rules" on:click={openRules} aria-label={$t('games.card.rules')}>📖</button>
   </div>
 </div>
 

@@ -1,5 +1,6 @@
 <script>
   import Overlay from './Overlay.svelte';
+  import { t } from 'svelte-i18n';
 
   export let matchScores = {};
   export let results = [];
@@ -32,30 +33,29 @@
 
 <Overlay open={true} dismissOnBackdrop={false} showClose={false}>
   <div class="summary-content">
-    <div class="summary-header">{abandoned ? 'Match abandonné' : 'Match terminé !'}</div>
+    <div class="summary-header">{abandoned ? $t('match.matchAbandoned') : $t('match.matchFinished')}</div>
 
     <div class="summary-trophy">{abandoned ? '🚪' : '🏆'}</div>
     <div class="summary-winner-label">
-      {#if isTie}Égalité :{:else}Vainqueur du match :{/if}
+      {#if isTie}{$t('match.tie')}{:else}{$t('match.winner')}{/if}
     </div>
     <div class="summary-winner-name">{winnerText}</div>
 
-    <div class="section-label">Classement final</div>
+    <div class="section-label">{$t('match.finalRanking')}</div>
     <div class="standings-table">
       {#each sortedPlayers as player, i}
         <div class="standings-row" class:winner={(i === 0 && !isTie) || (isTie && player.pts === maxPts)}>
           <span class="standings-rank">{i + 1}</span>
           <span class="standings-name">{player.name}</span>
           <span class="standings-pts">
-            {player.pts} / {totalGames}
-            <span class="standings-pts-label"> victoire{player.pts !== 1 ? 's' : ''}</span>
+            {$t('match.wins', { values: { count: player.pts } })} / {totalGames}
           </span>
         </div>
       {/each}
     </div>
 
     {#if results.length > 0 && players.length > 0}
-      <div class="section-label">Détail des parties</div>
+      <div class="section-label">{$t('match.gamesDetail')}</div>
       <div class="game-grid">
         <div class="grid-header">
           <div class="grid-name-cell"></div>
@@ -80,11 +80,11 @@
   <svelte:fragment slot="footer">
     {#if !abandoned}
       <button class="btn-main btn-gold" on:click={onPlayAgain}>
-        🔄 Rejouer un match
+        {$t('match.playAgain')}
       </button>
     {/if}
     <button class="btn-main btn-gray" on:click={onNewGame}>
-      {abandoned ? '🏠 Quitter' : '⚙️ Nouvelle partie'}
+      {abandoned ? $t('match.quit') : $t('match.newGameBtn')}
     </button>
   </svelte:fragment>
 </Overlay>

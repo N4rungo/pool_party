@@ -12,6 +12,7 @@
 -->
 <script>
   import Overlay from './Overlay.svelte';
+  import { t } from 'svelte-i18n';
 
   export let open = false;
   export let gameId = '';
@@ -34,10 +35,10 @@
 
 <Overlay {open} on:close>
   <div class="info-content">
-    <div class="info-header">Match en cours</div>
-    <div class="info-progress">Partie {currentGame} / {totalGames}</div>
+    <div class="info-header">{$t('match.inProgress')}</div>
+    <div class="info-progress">{$t('match.game', { values: { n: currentGame, total: totalGames } })}</div>
 
-    <div class="section-label">Classement</div>
+    <div class="section-label">{$t('match.ranking')}</div>
     <div class="standings-table">
       {#each sortedPlayers as player, i}
         <div class="standings-row" class:leader={player.pts === maxPts && player.pts > 0}>
@@ -49,7 +50,7 @@
     </div>
 
     {#if results.length > 0}
-      <div class="section-label">Parties jouées</div>
+      <div class="section-label">{$t('match.gamesPlayed')}</div>
       <div class="game-grid">
         <div class="grid-header">
           <div class="grid-name-cell"></div>

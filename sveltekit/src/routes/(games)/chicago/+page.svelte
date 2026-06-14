@@ -22,6 +22,8 @@
   import MatchSummaryOverlay from '$lib/components/MatchSummaryOverlay.svelte';
   import { showToast } from '$lib/stores/toast.js';
   import { askConfirm } from '$lib/stores/confirm.js';
+  import { t } from 'svelte-i18n';
+  import { get } from 'svelte/store';
   import { matchStore, startMatch, recordResult, endMatch, undoResult, isLastGame } from '$lib/stores/match.js';
   import { recordHistory } from '$lib/stores/history.js';
   import PlayerPicker from '$lib/components/PlayerPicker.svelte';
@@ -69,15 +71,19 @@
 
   // ── Démarrage (random sur qui commence) ───────────────
   function startGame() {
-    picksMap = { [pick1.name.trim() || 'Joueur 1']: pick1.profileId, [pick2.name.trim() || 'Joueur 2']: pick2.profileId };
-    state = createInitialState(name1.trim() || 'Joueur 1', name2.trim() || 'Joueur 2');
+    const _t = get(t);
+    const d1 = _t('setup.defaultPlayer', { values: { n: 1 } });
+    const d2 = _t('setup.defaultPlayer', { values: { n: 2 } });
+    picksMap = { [pick1.name.trim() || d1]: pick1.profileId, [pick2.name.trim() || d2]: pick2.profileId };
+    state = createInitialState(name1.trim() || d1, name2.trim() || d2);
     phase = 'game';
-    showToast(`🎲 ${state.players[state.currentIndex].name} commence !`);
+    showToast(get(t)('chicago.toast.starts', { values: { name: state.players[state.currentIndex].name } }));
   }
 
   function handleLaunch() {
     if (matchMode) {
-      const players = [name1.trim() || 'Joueur 1', name2.trim() || 'Joueur 2'];
+      const _t = get(t);
+      const players = [name1.trim() || _t('setup.defaultPlayer', { values: { n: 1 } }), name2.trim() || _t('setup.defaultPlayer', { values: { n: 2 } })];
       startMatch('chicago', players, matchTotalGames);
     }
     startGame();
@@ -113,20 +119,20 @@
         phase = 'win';
       }
     } else if (outcome.kind === 'continue') {
-      showToast(`🎱 +${n} pts pour ${playerName}`);
+      showToast(get(t)('chicago.toast.points', { values: { n, name: playerName } }));
     }
   }
 
   // ── Passer la main ────────────────────────────────────
   function onEndTurn() {
     state = endTurn(state);
-    showToast(`👤 Tour de ${state.players[state.currentIndex].name}`);
+    showToast(get(t)('toast.yourTurn', { values: { name: state.players[state.currentIndex].name } }));
   }
 
   // ── Annuler (en jeu) ──────────────────────────────────
   function onUndo() {
     state = undo(state);
-    showToast('↩ Action annulée');
+    showToast(get(t)('toast.actionCancelled'));
   }
 
   // ── Annuler depuis l'overlay de victoire ──────────────
@@ -134,7 +140,7 @@
     state = undo(state);
     winOutcome = null;
     phase = 'game';
-    showToast('↩ Coup décisif annulé — on continue !');
+    showToast(get(t)('toast.finalShotCancelled'));
   }
 
   // ── Rejouer (mêmes joueurs, scores reset, nouveau tirage) ──
@@ -142,7 +148,7 @@
     state = createInitialState(state.players[0].name, state.players[1].name);
     winOutcome = null;
     phase = 'game';
-    showToast(`🎲 ${state.players[state.currentIndex].name} commence !`);
+    showToast(get(t)('chicago.toast.starts', { values: { name: state.players[state.currentIndex].name } }));
   }
 
   // ── Nouveau jeu (retour launcher) ─────────────────────
@@ -152,9 +158,10 @@
 
   // ── Confirmation retour accueil pendant la partie ─────
   async function confirmGoHome() {
-    const ok = await askConfirm("Abandonner la partie et revenir à l'accueil ?", {
-      confirmLabel: 'Abandonner',
-      cancelLabel:  'Continuer',
+    const _t = get(t);
+    const ok = await askConfirm(_t('confirm.leaveGame'), {
+      confirmLabel: _t('confirm.abandonLabel'),
+      cancelLabel:  _t('confirm.continueLabel'),
       iconImage:    `${base}/assets/home.png`
     });
     if (ok) {
@@ -178,12 +185,13 @@
     state = undo(state);
     winOutcome = null;
     showMatchRecap = false;
-    showToast('↩ Coup décisif annulé — on continue !');
+    showToast(get(t)('toast.finalShotCancelled'));
   }
   async function onMatchAbandon() {
-    const ok = await askConfirm('Abandonner le match en cours ?', {
-      confirmLabel: 'Abandonner',
-      cancelLabel:  'Continuer',
+    const _t = get(t);
+    const ok = await askConfirm(_t('confirm.leaveMatch'), {
+      confirmLabel: _t('confirm.abandonLabel'),
+      cancelLabel:  _t('confirm.continueLabel'),
     });
     if (!ok) return;
     showMatchRecap = false;
@@ -220,8 +228,8 @@
   $: winTrophy = winOutcome?.kind === 'draw' ? '🤝' : '🏆';
   $: winName   = winOutcome?.kind === 'draw' ? 'Égalité !' : winOutcome?.winner?.name ?? '';
   $: winSub    = winOutcome?.kind === 'draw'
-                   ? `Les deux joueurs finissent à ${winOutcome.score} points`
-                   : 'Félicitations !';
+                   ? $t('chicago.drawSub', { values: { score: winOutcome.score } })
+                   : $t('chicago.winSub');
 
   // Pour les overlays match : on lit le store APRÈS recordResult
   $: matchRecapGameNumber = $matchStore.currentGame - 1;
@@ -235,7 +243,7 @@
       <img src="{base}/assets/3_billes_americain.png" alt="" class="icon-title" />
       Chicago
     </h1>
-    <div class="setup-sub">Premier à 61 points</div>
+    <div class="setup-sub">{$t('games.taglines.chicago')}</div>
 
     <div class="popup-box setup-box">
       <PlayerPicker bind:value={pick1} index={0}
@@ -248,9 +256,9 @@
       <MatchSetup bind:matchMode bind:totalGames={matchTotalGames} />
 
       <button class="btn-main btn-gold" on:click={handleLaunch}>
-        {matchMode ? '🏆 Lancer le match !' : '🎱 Lancer la partie !'}
+        {matchMode ? $t('setup.launchMatch') : $t('setup.launchGame')}
       </button>
-      <button class="btn-main btn-gray" on:click={() => goto(base || '/')}>← Retour</button>
+      <button class="btn-main btn-gray" on:click={() => goto(base || '/')}>{$t('setup.back')}</button>
     </div>
   </div>
 {/if}
@@ -304,7 +312,7 @@
 
       <svelte:fragment slot="footer">
         <div class="game-bottombar">
-          <button class="btn-next" on:click={onEndTurn}>Suivant →</button>
+          <button class="btn-next" on:click={onEndTurn}>{$t('setup.next')}</button>
         </div>
       </svelte:fragment>
     </GameLayout>

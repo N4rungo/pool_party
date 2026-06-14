@@ -1,6 +1,7 @@
 <script>
   import { createEventDispatcher } from 'svelte';
   import Overlay from './Overlay.svelte';
+  import { t } from 'svelte-i18n';
 
   export let open = false;
   export let trophy = '🏆';
@@ -25,10 +26,10 @@
       class="btn-main btn-gray win-undo"
       disabled={!canUndo}
       on:click={() => dispatch('undo')}>
-      ↩ Annuler le dernier coup
+      {$t('win.undo')}
     </button>
-    <button class="btn-main btn-gold" on:click={() => dispatch('replay')}>🔄 Rejouer</button>
-    <button class="btn-main btn-gray" on:click={() => dispatch('newGame')}>⚙️ Nouveau jeu</button>
+    <button class="btn-main btn-gold" on:click={() => dispatch('replay')}>{$t('win.replay')}</button>
+    <button class="btn-main btn-gray" on:click={() => dispatch('newGame')}>{$t('win.newGame')}</button>
   </svelte:fragment>
 </Overlay>
 

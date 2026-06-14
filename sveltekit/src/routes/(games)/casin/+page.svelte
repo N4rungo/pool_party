@@ -24,6 +24,8 @@
   import MatchSummaryOverlay from '$lib/components/MatchSummaryOverlay.svelte';
   import { showToast } from '$lib/stores/toast.js';
   import { askConfirm } from '$lib/stores/confirm.js';
+  import { t } from 'svelte-i18n';
+  import { get } from 'svelte/store';
   import { matchStore, startMatch, recordResult, endMatch, undoResult, isLastGame } from '$lib/stores/match.js';
   import { recordHistory } from '$lib/stores/history.js';
   import {
@@ -86,9 +88,10 @@
   }
 
   function gotoSetup3() {
+    const _t = get(t);
     setupPlayers = setupPlayers.map((p, i) => ({
       ...p,
-      name: picks[i]?.name?.trim() || `Joueur ${i + 1}`,
+      name: picks[i]?.name?.trim() || _t('setup.defaultPlayer', { values: { n: i + 1 } }),
     }));
     phase = 'setup3';
   }
@@ -109,7 +112,7 @@
     state = createInitialState(players);
     winnerName = null;
     phase = 'game';
-    showToast(`🎯 Tour de ${state.players[0].name}`);
+    showToast(get(t)('casin.toast.turn', { values: { name: state.players[0].name } }));
   }
 
   function onDoAction(actionId) {
@@ -117,7 +120,7 @@
     state = newState;
 
     if (outcome.kind === 'closed') {
-      showToast('✅ Action déjà complétée !');
+      showToast(get(t)('casin.alreadyDone'));
     } else if (outcome.kind === 'win') {
       winnerName = outcome.winner.name;
       recordHistory({
@@ -134,8 +137,7 @@
         phase = 'win';
       }
     } else if (outcome.kind === 'scored') {
-      const a = CASIN_ACTIONS.find(a => a.id === outcome.actionId);
-      showToast(`✅ ${a.label} validé !`);
+      showToast(get(t)('casin.actionDone', { values: { label: get(t)('casin.actions.' + outcome.actionId) } }));
     }
   }
 
@@ -143,27 +145,27 @@
     const { newState, outcome } = neutralShot(state);
     state = newState;
     if (outcome.kind === 'reset') {
-      showToast('↺ Coup libre — toutes les actions disponibles');
+      showToast(get(t)('casin.neutralResetToast'));
     } else {
-      showToast('ℹ️ Aucune action à réinitialiser');
+      showToast(get(t)('casin.neutralNoneToast'));
     }
   }
 
   function onNextPlayer() {
     state = nextPlayer(state);
-    showToast(`👤 Tour de ${state.players[state.currentIndex].name}`);
+    showToast(get(t)('toast.yourTurn', { values: { name: state.players[state.currentIndex].name } }));
   }
 
   function onUndo() {
     state = undo(state);
-    showToast('↩ Action annulée');
+    showToast(get(t)('toast.actionCancelled'));
   }
 
   function onUndoFromWin() {
     state = undo(state);
     winnerName = null;
     phase = 'game';
-    showToast('↩ Coup décisif annulé — on continue !');
+    showToast(get(t)('toast.finalShotCancelled'));
   }
 
   function replay() {
@@ -173,9 +175,10 @@
     goto(base || '/');
   }
   async function confirmGoHome() {
-    const ok = await askConfirm("Abandonner la partie et revenir à l'accueil ?", {
-      confirmLabel: 'Abandonner',
-      cancelLabel:  'Continuer',
+    const _t = get(t);
+    const ok = await askConfirm(_t('confirm.leaveGame'), {
+      confirmLabel: _t('confirm.abandonLabel'),
+      cancelLabel:  _t('confirm.continueLabel'),
       iconImage:    `${base}/assets/home.png`
     });
     if (ok) {
@@ -201,12 +204,13 @@
     state = undo(state);
     winnerName = null;
     showMatchRecap = false;
-    showToast('↩ Coup décisif annulé — on continue !');
+    showToast(get(t)('toast.winCancelled'));
   }
   async function onMatchAbandon() {
-    const ok = await askConfirm('Abandonner le match en cours ?', {
-      confirmLabel: 'Abandonner',
-      cancelLabel:  'Continuer',
+    const _t = get(t);
+    const ok = await askConfirm(_t('confirm.leaveMatch'), {
+      confirmLabel: _t('confirm.abandonLabel'),
+      cancelLabel:  _t('confirm.continueLabel'),
     });
     if (!ok) return;
     showMatchRecap = false;
@@ -244,14 +248,14 @@
       <img src="{base}/assets/3_billes.png" alt="" class="icon-title" />
       Casin
     </h1>
-    <div class="setup-sub">Étape 1 / 3</div>
+    <div class="setup-sub">{$t('setup.step', { values: { n: 1, total: 3 } })}</div>
 
     <div class="popup-box setup-box">
       <NumberSelector
         bind:value={count}
         min={CASIN_MIN_PLAYERS}
         max={CASIN_MAX_PLAYERS}
-        label="Nombre de joueurs" />
+        label={$t('setup.playerCount')} />
 
       <div class="sep"></div>
 
@@ -259,13 +263,13 @@
         bind:value={globalX}
         min={CASIN_MIN_X}
         max={CASIN_MAX_X}
-        label="Répétitions par action (X)" />
+        label={$t('casin.repetitionsLabel')} />
       <div class="setup-tip">
-        Chaque joueur doit réussir chaque action X fois.
+        {$t('casin.repetitionsTip')}
       </div>
 
-      <button class="btn-main btn-gold" on:click={gotoSetup2}>Suivant →</button>
-      <button class="btn-main btn-gray" on:click={() => goto(base || '/')}>← Retour</button>
+      <button class="btn-main btn-gold" on:click={gotoSetup2}>{$t('setup.next')}</button>
+      <button class="btn-main btn-gray" on:click={() => goto(base || '/')}>{$t('setup.back')}</button>
     </div>
   </div>
 {/if}
@@ -277,13 +281,13 @@
       <img src="{base}/assets/3_billes.png" alt="" class="icon-title" />
       Casin
     </h1>
-    <div class="setup-sub">Étape 2 / 3 — Noms des joueurs</div>
+    <div class="setup-sub">{$t('setup.step', { values: { n: 2, total: 3 } })} — {$t('setup.playerNames')}</div>
 
     <div class="popup-box setup-box">
       <PlayerSetupList bind:picks count={setupPlayers.length} />
 
-      <button class="btn-main btn-gold" on:click={gotoSetup3}>Suivant →</button>
-      <button class="btn-main btn-gray" on:click={() => phase = 'setup1'}>← Retour</button>
+      <button class="btn-main btn-gold" on:click={gotoSetup3}>{$t('setup.next')}</button>
+      <button class="btn-main btn-gray" on:click={() => phase = 'setup1'}>{$t('setup.back')}</button>
     </div>
   </div>
 {/if}
@@ -295,11 +299,11 @@
       <img src="{base}/assets/3_billes.png" alt="" class="icon-title" />
       Casin
     </h1>
-    <div class="setup-sub">Étape 3 / 3 — Récapitulatif</div>
+    <div class="setup-sub">{$t('setup.step', { values: { n: 3, total: 3 } })} — {$t('setup.recap')}</div>
 
     <div class="popup-box setup-box">
-      <div class="casin-target-title">Score cible par joueur</div>
-      <div class="casin-target-sub">Ajustez pour équilibrer les niveaux</div>
+      <div class="casin-target-title">{$t('casin.targetPerPlayer')}</div>
+      <div class="casin-target-sub">{$t('casin.targetPerPlayerSub')}</div>
 
       <RecapList players={setupPlayers} let:player let:i>
         <NumberSelector
@@ -312,9 +316,9 @@
       <MatchSetup bind:randomizeOrder bind:matchMode bind:totalGames={matchTotalGames} />
 
       <button class="btn-main btn-gold" on:click={() => { if (matchMode) startMatch('casin', setupPlayers.map(p => p.name), matchTotalGames); startGame(); }}>
-        {matchMode ? '🏆 Lancer le match !' : '🎱 Lancer la partie !'}
+        {matchMode ? $t('setup.launchMatch') : $t('setup.launchGame')}
       </button>
-      <button class="btn-main btn-gray" on:click={() => phase = 'setup2'}>← Retour</button>
+      <button class="btn-main btn-gray" on:click={() => phase = 'setup2'}>{$t('setup.back')}</button>
     </div>
   </div>
 {/if}
@@ -342,7 +346,7 @@
           <span class="casin-score-emoji">{EMOJIS[i % EMOJIS.length]}</span>
           <span class="casin-score-name">{player.name}</span>
           {#if blockedAction}
-            <span class="casin-blocked-badge">Pas {blockedAction.label}</span>
+            <span class="casin-blocked-badge">{$t('casin.blockedBadge', { values: { action: $t('casin.actions.' + blockedAction.id) } })}</span>
           {/if}
           <span class="casin-score-progress">{doneCount(player)} / {CASIN_ACTIONS.length}</span>
           <span class="casin-score-x">×{player.x}</span>
@@ -362,10 +366,10 @@
           class:closed
           class:blocked
           {disabled}
-          title={action.desc}
+          title={$t('casin.actions.' + action.id + 'Desc')}
           on:click={() => onDoAction(action.id)}>
           <span class="casin-action-icon">{action.icon}</span>
-          <span class="casin-action-label">{action.label}</span>
+          <span class="casin-action-label">{$t('casin.actions.' + action.id)}</span>
           <div class="casin-pips">
             {#each Array(activePlayer.x) as _, h}
               <span class="casin-pip" class:filled={h < count}></span>
@@ -377,8 +381,8 @@
 
       <svelte:fragment slot="footer">
         <div class="game-bottombar">
-          <button class="btn-neutral" on:click={onNeutralShot}>↺ Coup libre</button>
-          <button class="btn-next" on:click={onNextPlayer}>Suivant →</button>
+          <button class="btn-neutral" on:click={onNeutralShot}>{$t('casin.neutralShot')}</button>
+          <button class="btn-next" on:click={onNextPlayer}>{$t('setup.next')}</button>
         </div>
       </svelte:fragment>
     </GameLayout>
@@ -390,7 +394,7 @@
   open={phase === 'win'}
   trophy="🏆"
   name={winnerName}
-  sub="Checklist complétée !"
+  sub={$t('casin.winSub')}
   canUndo={state?.history?.length > 0}
   on:undo={onUndoFromWin}
   on:replay={replay}

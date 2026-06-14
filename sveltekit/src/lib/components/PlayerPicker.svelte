@@ -14,6 +14,7 @@
 <script>
   import { tick } from 'svelte';
   import { profilesStore, createProfile } from '$lib/stores/profiles.js';
+  import { t } from 'svelte-i18n';
 
   export let value        = { name: '', profileId: null };
   export let index        = 0;
@@ -53,8 +54,8 @@
   // Message d'erreur contextuel sous les boutons
   $: hintMsg = (() => {
     if (!trimmed) return '';
-    if (takenInGame)    return 'Ce nom est déjà utilisé dans cette partie.';
-    if (matchesProfile) return 'Ce nom correspond à un profil — sélectionne-le dans la liste.';
+    if (takenInGame)    return $t('picker.nameTaken');
+    if (matchesProfile) return $t('picker.nameIsProfile');
     return '';
   })();
 
@@ -116,12 +117,12 @@
   {#if mode === 'idle' && value.name}
     <div class="selected-row">
       <div class="selected-info">
-        <span class="player-num">J{index + 1}</span>
+        <span class="player-num">{$t('picker.playerShort')}{index + 1}</span>
         <span class="player-name">{value.name}</span>
         {#if value.profileId}
           <span class="badge-profile">💾</span>
         {:else}
-          <span class="badge-guest">Invité</span>
+          <span class="badge-guest">{$t('picker.guest')}</span>
         {/if}
       </div>
       <button class="btn-change" on:click={startEdit}>✎</button>
@@ -130,14 +131,14 @@
   <!-- ── Recherche / sélection ── -->
   {:else}
     <div class="picker-header">
-      <span class="player-num">J{index + 1}</span>
-      <span class="picker-label">Choisir le joueur</span>
+      <span class="player-num">{$t('picker.playerShort')}{index + 1}</span>
+      <span class="picker-label">{$t('picker.choose')}</span>
     </div>
 
     <input
       class="search-input"
       type="text"
-      placeholder="Rechercher ou saisir un nom…"
+      placeholder={$t('setup.searchOrType')}
       maxlength={MAX_NAME}
       bind:value={search}
       bind:this={searchEl}
@@ -157,10 +158,10 @@
             </button>
           {/each}
         {:else if search && !matchesProfile}
-          <div class="empty-hint">Aucun profil pour « {search} »</div>
+          <div class="empty-hint">{$t('picker.noProfile', { values: { name: search } })}</div>
         {:else if !search}
           <div class="empty-hint">
-            {$profilesStore.length === 0 ? 'Aucun profil enregistré' : 'Tous les profils sont déjà sélectionnés'}
+            {$profilesStore.length === 0 ? $t('picker.noProfiles') : $t('picker.allSelected')}
           </div>
         {/if}
       </div>
@@ -173,14 +174,14 @@
         disabled={createBlocked}
         on:mousedown|preventDefault={addNewProfile}
       >
-        + Créer le profil
+        {$t('picker.createProfile')}
       </button>
       <button
         class="btn-action btn-guest"
         disabled={guestBlocked}
         on:mousedown|preventDefault={addGuest}
       >
-        Invité
+        {$t('picker.guest')}
       </button>
     </div>
 

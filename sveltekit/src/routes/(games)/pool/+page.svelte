@@ -22,6 +22,8 @@
   import PlayerPicker from '$lib/components/PlayerPicker.svelte';
   import { showToast } from '$lib/stores/toast.js';
   import { askConfirm } from '$lib/stores/confirm.js';
+  import { t } from 'svelte-i18n';
+  import { get } from 'svelte/store';
   import { matchStore, startMatch, recordResult, endMatch, undoResult } from '$lib/stores/match.js';
   import { recordHistory } from '$lib/stores/history.js';
   import { createInitialState, declareWinner, undo } from '$lib/games/pool.js';
@@ -106,8 +108,8 @@
       .filter((_, i) => playerTeams[i] === 1 && picks[i].name.trim())
       .map(p => ({ name: p.name.trim(), profileId: p.profileId }));
     return [
-      { label: tA.length === 1 ? tA[0].name : 'Équipe A', players: tA },
-      { label: tB.length === 1 ? tB[0].name : 'Équipe B', players: tB },
+      { label: tA.length === 1 ? tA[0].name : get(t)('pool.teamA'), players: tA },
+      { label: tB.length === 1 ? tB[0].name : get(t)('pool.teamB'), players: tB },
     ];
   }
 
@@ -117,11 +119,11 @@
     const tB = picks.filter((_, i) => playerTeams[i] === 1 && picks[i].name.trim());
 
     if (picks.some(p => !p.name.trim())) {
-      showToast('⚠️ Tous les joueurs doivent avoir un nom');
+      showToast(get(t)('pool.toast.allNameRequired'));
       return;
     }
     if (tA.length === 0 || tB.length === 0) {
-      showToast('⚠️ Il faut au moins un joueur par équipe');
+      showToast(get(t)('pool.toast.onePlayerPerTeam'));
       return;
     }
 
@@ -140,7 +142,7 @@
     state = createInitialState(gameTeams, gameBreakOrder, initialBreakerIndex);
     winTeamIndex = null;
     phase = 'game';
-    showToast(`🎱 ${state.teams[state.breakerTeamIndex].label} casse !`);
+    showToast(get(t)('pool.toast.break', { values: { team: state.teams[state.breakerTeamIndex].label } }));
   }
 
   // ── Déclarer un vainqueur ──────────────────────────────
@@ -173,7 +175,7 @@
     state = undo(state);
     winTeamIndex = null;
     phase = 'game';
-    showToast('↩ Victoire annulée — on continue !');
+    showToast(get(t)('toast.winCancelled'));
   }
 
   // ── Rejouer / nouveau jeu ──────────────────────────────
@@ -188,9 +190,10 @@
 
   // ── Confirmation retour accueil ────────────────────────
   async function confirmGoHome() {
-    const ok = await askConfirm("Abandonner la partie et revenir à l'accueil ?", {
-      confirmLabel: 'Abandonner',
-      cancelLabel: 'Continuer',
+    const _t = get(t);
+    const ok = await askConfirm(_t('confirm.leaveGame'), {
+      confirmLabel: _t('confirm.abandonLabel'),
+      cancelLabel: _t('confirm.continueLabel'),
       iconImage: `${base}/assets/home.png`,
     });
     if (ok) {
@@ -216,13 +219,14 @@
     state = undo(state);
     winTeamIndex = null;
     showMatchRecap = false;
-    showToast('↩ Victoire annulée — on continue !');
+    showToast(get(t)('toast.winCancelled'));
   }
 
   async function onMatchAbandon() {
-    const ok = await askConfirm('Abandonner le match en cours ?', {
-      confirmLabel: 'Abandonner',
-      cancelLabel: 'Continuer',
+    const _t = get(t);
+    const ok = await askConfirm(_t('confirm.leaveMatch'), {
+      confirmLabel: _t('confirm.abandonLabel'),
+      cancelLabel: _t('confirm.continueLabel'),
     });
     if (!ok) return;
     showMatchRecap = false;
@@ -255,7 +259,7 @@
   $: winName = winnerTeam?.label ?? '';
   $: winSub = winnerTeam && winnerTeam.players.length > 1
     ? winnerTeam.players.map(p => p.name).join(' & ')
-    : 'Félicitations !';
+    : $t('pool.winSub');
 
   $: matchRecapGameNumber = $matchStore.currentGame - 1;
   $: matchRecapWinners = $matchStore.results?.[$matchStore.results.length - 1]?.winners ?? [];
@@ -268,7 +272,7 @@
       <img src="{base}/assets/bille_8.png" alt="" class="icon-title" />
       Pool
     </h1>
-    <div class="setup-sub">Pleines ou Rayées ?</div>
+    <div class="setup-sub">{$t('games.taglines.pool')}</div>
 
     <div class="popup-box setup-box">
 
@@ -277,7 +281,7 @@
         min={2}
         max={8}
         step={1}
-        label="Nombre de joueurs" />
+        label={$t('setup.playerCount')} />
 
       <div class="players-list">
         {#each picks as pick, i (i)}
@@ -296,7 +300,7 @@
                 class:team-a={playerTeams[i] === 0}
                 class:team-b={playerTeams[i] === 1}
                 on:click={() => toggleTeam(i)}
-                title="Basculer d'équipe"
+                title={$t('pool.toggleTeam')}
               >
                 {playerTeams[i] === 0 ? 'A' : 'B'}
               </button>
@@ -307,8 +311,8 @@
 
       <!-- Aperçu des équipes + bouton randomize -->
       <div class="teams-section-header">
-        <div class="section-label" style="margin-bottom: 0">Équipes</div>
-        <button class="btn-randomize" on:click={randomizeTeams}>🔀 Aléatoire</button>
+        <div class="section-label" style="margin-bottom: 0">{$t('pool.teams')}</div>
+        <button class="btn-randomize" on:click={randomizeTeams}>{$t('pool.randomize')}</button>
       </div>
       <div class="team-preview">
         <div class="team-preview-col">
@@ -328,26 +332,26 @@
 
       <!-- Ordre de casse -->
       <div class="section-sep"></div>
-      <div class="section-label">Ordre de casse</div>
+      <div class="section-label">{$t('pool.breakOrder')}</div>
       <div class="break-options">
         <button
           class="break-option"
           class:active={breakOrder === 'alternate'}
           on:click={() => (breakOrder = 'alternate')}
-        >🔄 Casse alternée</button>
+        >{$t('pool.breakAlternate')}</button>
         <button
           class="break-option"
           class:active={breakOrder === 'winner'}
           on:click={() => (breakOrder = 'winner')}
-        >🏆 Le vainqueur casse</button>
+        >{$t('pool.breakWinner')}</button>
       </div>
 
       <MatchSetup bind:matchMode bind:totalGames={matchTotalGames} />
 
       <button class="btn-main btn-gold" on:click={handleLaunch}>
-        {matchMode ? '🏆 Lancer le match !' : '🎱 Lancer la partie !'}
+        {matchMode ? $t('setup.launchMatch') : $t('setup.launchGame')}
       </button>
-      <button class="btn-main btn-gray" on:click={() => goto(base || '/')}>← Retour</button>
+      <button class="btn-main btn-gray" on:click={() => goto(base || '/')}>{$t('setup.back')}</button>
     </div>
   </div>
 {/if}
@@ -374,7 +378,7 @@
             class:team-card-breaker={state.breakerTeamIndex === i}
           >
             {#if state.breakerTeamIndex === i}
-              <div class="break-badge">🎱 Casse</div>
+              <div class="break-badge">{$t('pool.breakBadge')}</div>
             {/if}
             <div
               class="team-label"
@@ -396,18 +400,18 @@
       <div class="reminders">
         {#if state.teams.some(t => t.players.length > 1)}
           <div class="reminder-item">
-            👥 <strong>En équipe</strong>, soit :
+            {@html $t('pool.reminderTeam')}
             <ul class="reminder-list">
-              <li>Le même joueur reste à table tant qu'il empoche</li>
-              <li>Les coéquipiers alternent entre chaque empochage</li>
+              <li>{$t('pool.reminderTeamRule1')}</li>
+              <li>{$t('pool.reminderTeamRule2')}</li>
             </ul>
           </div>
         {/if}
         <div class="reminder-item">
-          ⚠️ <strong>Faute</strong> : bille en main n'importe où sur la table
+          {@html $t('pool.reminderFault')}
         </div>
         <div class="reminder-item">
-          ⚫ <strong>Bille noire</strong> : annoncer le trou avant de jouer
+          {@html $t('pool.reminderBlack')}
         </div>
       </div>
 

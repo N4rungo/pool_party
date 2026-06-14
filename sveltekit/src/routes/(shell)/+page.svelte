@@ -4,6 +4,7 @@
   import RulesViewer from '$lib/components/RulesViewer.svelte';
   import { GAMES, CATEGORIES, TABLE_TYPES } from '$lib/games.js';
   import { favorites } from '$lib/stores/favorites.js';
+  import { t } from 'svelte-i18n';
 
   let rulesOpen = false;
   let rulesGameId = null;
@@ -81,7 +82,7 @@
         <circle cx="7"    cy="5"  r="2.4" fill="currentColor"/>
         <circle cx="12.1" cy="10.5" r="2.4" fill="currentColor"/>
       </svg>
-      <span class="filter-label">On joue à quoi ?</span>
+      <span class="filter-label">{$t('home.filterLabel')}</span>
       {#if isFilterActive}
         <span class="filter-dot"></span>
       {/if}
@@ -92,7 +93,7 @@
   {#if favGames.length > 0}
     <div class="section-header">
       <span class="section-icon">★</span>
-      <span class="section-label">Favoris</span>
+      <span class="section-label">{$t('home.favorites')}</span>
     </div>
     <div class="games-list">
       {#each favGames as game (game.id)}
@@ -104,7 +105,7 @@
   <!-- Sections par catégorie -->
   {#each sections as section, si (section.id)}
     <div class="section-header" class:first={favGames.length === 0 && si === 0}>
-      <span class="section-label">{section.label}</span>
+      <span class="section-label">{$t('games.categories.' + section.id)}</span>
     </div>
     <div class="games-list">
       {#each section.games as game (game.id)}
@@ -118,8 +119,8 @@
     <div class="game-card unavailable">
       <div class="game-icon">🚧</div>
       <div class="game-info">
-        <div class="game-name">Bientôt</div>
-        <div class="game-tagline">Soyez patient...</div>
+        <div class="game-name">{$t('home.comingSoon')}</div>
+        <div class="game-tagline">{$t('home.comingSoonSub')}</div>
       </div>
       <div class="game-arrow">Bientôt</div>
     </div>
@@ -135,7 +136,7 @@
     <div class="filter-panel">
 
       <!-- Nombre de joueurs -->
-      <div class="fp-section-title">Nombre de joueurs</div>
+      <div class="fp-section-title">{$t('setup.playerCount')}</div>
       <div class="fp-control">
         <button class="fp-btn" on:click={decFilter} disabled={playerFilter === 0}>−</button>
         <span class="fp-value" class:muted={playerFilter === 0}>{playerFilter === 0 ? '—' : playerFilter}</span>
@@ -145,20 +146,20 @@
       <div class="fp-divider"></div>
 
       <!-- Type de table -->
-      <div class="fp-section-title">Type de table</div>
+      <div class="fp-section-title">{$t('home.tableType')}</div>
       <div class="fp-chips">
         {#each TABLE_TYPES as tt}
           <button
             class="fp-type-chip"
             class:active={tableFilter === tt.id}
             on:click={() => tableFilter = tableFilter === tt.id ? null : tt.id}>
-            {tt.label}
+            {$t('games.tableTypes.' + tt.id)}
           </button>
         {/each}
       </div>
 
-      <button class="fp-reset" on:click={resetFilter}>Tous les jeux</button>
-      <button class="fp-confirm" on:click={closeFilter}>Voir les jeux</button>
+      <button class="fp-reset" on:click={resetFilter}>{$t('home.resetFilter')}</button>
+      <button class="fp-confirm" on:click={closeFilter}>{$t('home.viewGames')}</button>
     </div>
   </div>
 {/if}

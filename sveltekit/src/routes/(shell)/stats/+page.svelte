@@ -5,9 +5,10 @@
   import { historyStore, PERIODS, filterByPeriod } from '$lib/stores/history.js';
   import {
     globalLeaderboard, gameLeaderboard,
-    GAME_SORT_OPTIONS, SORT_LABELS,
+    GAME_SORT_OPTIONS,
   } from '$lib/utils/stats.js';
   import { GAMES } from '$lib/games.js';
+  import { t } from 'svelte-i18n';
 
   let tab = 'global';
 
@@ -29,12 +30,15 @@
   $: { if (!gameSortOptions.includes(gameSortBy)) gameSortBy = gameSortOptions[0]; }
 
   // ── Helpers ─────────────────────────────────────────────────────────────
-  const PERIOD_SHORT = { '7d': '7j', '30d': '30j', '6m': '6m', 'all': 'Tout' };
+  $: PERIOD_SHORT = {
+    '7d': $t('stats.periods.7d'), '30d': $t('stats.periods.30d'),
+    '6m': $t('stats.periods.6m'), 'all': $t('stats.periods.all'),
+  };
 
   function statLabel(sortBy, stats) {
-    if (sortBy === 'winRate') return `${stats.winRate} %`;
-    if (sortBy === 'won')     return `${stats.won} victoire${stats.won !== 1 ? 's' : ''}`;
-    if (sortBy === 'played')  return `${stats.played} partie${stats.played !== 1 ? 's' : ''}`;
+    if (sortBy === 'winRate') return $t('stats.statLabel.winRate', { values: { rate: stats.winRate } });
+    if (sortBy === 'won')     return $t('stats.statLabel.won',     { values: { count: stats.won } });
+    if (sortBy === 'played')  return $t('stats.statLabel.played',  { values: { count: stats.played } });
     const v = stats[sortBy];
     return v !== null && v !== undefined ? String(v) : '—';
   }
@@ -43,8 +47,8 @@
 <div class="page">
 
   <div class="tabs-bar">
-    <button class="tab-btn" class:active={tab === 'global'} on:click={() => tab = 'global'}>Global</button>
-    <button class="tab-btn" class:active={tab === 'jeux'}   on:click={() => tab = 'jeux'}>Par jeu</button>
+    <button class="tab-btn" class:active={tab === 'global'} on:click={() => tab = 'global'}>{$t('stats.global')}</button>
+    <button class="tab-btn" class:active={tab === 'jeux'}   on:click={() => tab = 'jeux'}>{$t('stats.byGame')}</button>
   </div>
 
   <!-- ══ GLOBAL ══ -->
@@ -59,13 +63,13 @@
       <div class="pill-group">
         {#each ['won', 'played', 'winRate'] as s}
           <button class="pill" class:active={globalSortBy === s}
-            on:click={() => globalSortBy = s}>{SORT_LABELS[s]}</button>
+            on:click={() => globalSortBy = s}>{$t('stats.sort.' + s)}</button>
         {/each}
       </div>
     </div>
 
     {#if globalBoard.length === 0}
-      <div class="empty-state">Aucune statistique disponible</div>
+      <div class="empty-state">{$t('stats.noStats')}</div>
     {:else}
       <div class="leaderboard">
         {#each globalBoard as row, i}
@@ -97,13 +101,13 @@
       <div class="pill-group wrap">
         {#each gameSortOptions as s}
           <button class="pill" class:active={gameSortBy === s}
-            on:click={() => gameSortBy = s}>{SORT_LABELS[s]}</button>
+            on:click={() => gameSortBy = s}>{$t('stats.sort.' + s)}</button>
         {/each}
       </div>
     </div>
 
     {#if gameBoard.length === 0}
-      <div class="empty-state">Aucune statistique pour ce jeu</div>
+      <div class="empty-state">{$t('stats.noStatsGame')}</div>
     {:else}
       <div class="leaderboard">
         {#each gameBoard as row, i}
