@@ -95,6 +95,7 @@
     "playerName": "Nom du joueur",
     "playerCount": "Nombre de joueurs",
     "defaultPlayer": "Joueur {n}",
+    "configuration": "Configuration",
     "step": "Étape {n} / {total}",
     "playerNames": "Noms des joueurs",
     "recap": "Récapitulatif",

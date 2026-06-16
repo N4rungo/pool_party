@@ -115,16 +115,23 @@
 
   // ── Lancement ──────────────────────────────────────────
   function handleLaunch() {
-    const tA = picks.filter((_, i) => playerTeams[i] === 0 && picks[i].name.trim());
-    const tB = picks.filter((_, i) => playerTeams[i] === 1 && picks[i].name.trim());
+    const _t = get(t);
+    const allNamed = picks.every(p => p.name.trim());
 
-    if (picks.some(p => !p.name.trim())) {
-      showToast(get(t)('pool.toast.allNameRequired'));
-      return;
-    }
-    if (tA.length === 0 || tB.length === 0) {
-      showToast(get(t)('pool.toast.onePlayerPerTeam'));
-      return;
+    if (!allNamed) {
+      // Applique les noms par défaut et redistribue les équipes aléatoirement
+      picks = picks.map((p, i) =>
+        p.name.trim() ? p : { ...p, name: _t('setup.defaultPlayer', { values: { n: i + 1 } }) }
+      );
+      randomizeTeams();
+    } else {
+      // Tous les joueurs sont nommés : on vérifie que les deux équipes existent
+      const tA = picks.filter((_, i) => playerTeams[i] === 0);
+      const tB = picks.filter((_, i) => playerTeams[i] === 1);
+      if (tA.length === 0 || tB.length === 0) {
+        showToast(_t('pool.toast.onePlayerPerTeam'));
+        return;
+      }
     }
 
     gameTeams = buildTeams();
@@ -272,7 +279,7 @@
       <img src="{base}/assets/bille_8.png" alt="" class="icon-title" />
       Pool
     </h1>
-    <div class="setup-sub">{$t('games.taglines.pool')}</div>
+    <div class="setup-sub">{$t('setup.configuration')}</div>
 
     <div class="popup-box setup-box">
 

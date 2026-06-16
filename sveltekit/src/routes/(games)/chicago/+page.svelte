@@ -243,7 +243,7 @@
       <img src="{base}/assets/3_billes_americain.png" alt="" class="icon-title" />
       Chicago
     </h1>
-    <div class="setup-sub">{$t('games.taglines.chicago')}</div>
+    <div class="setup-sub">{$t('setup.configuration')}</div>
 
     <div class="popup-box setup-box">
       <PlayerPicker bind:value={pick1} index={0}

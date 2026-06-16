@@ -95,6 +95,7 @@
     "playerName": "Player name",
     "playerCount": "Number of players",
     "defaultPlayer": "Player {n}",
+    "configuration": "Configuration",
     "step": "Step {n} of {total}",
     "playerNames": "Player names",
     "recap": "Summary",
