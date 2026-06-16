@@ -10,11 +10,11 @@
   let rulesGameId = null;
 
   // ── Filtres ───────────────────────────────────────────
-  let playerFilter = 0;     // 0 = tous
-  let tableFilter  = null;  // null = tous
-  let filterOpen   = false;
+  let playerFilter  = 0;        // 0 = tous
+  let tableFilters  = new Set(); // vide = tous
+  let filterOpen    = false;
 
-  $: isFilterActive = playerFilter > 0 || tableFilter !== null;
+  $: isFilterActive = playerFilter > 0 || tableFilters.size > 0;
 
   function openFilter() {
     filterOpen = true;
@@ -26,8 +26,15 @@
 
   function resetFilter() {
     playerFilter = 0;
-    tableFilter  = null;
+    tableFilters = new Set();
     filterOpen   = false;
+  }
+
+  function toggleTableFilter(id) {
+    const next = new Set(tableFilters);
+    if (next.has(id)) next.delete(id);
+    else next.add(id);
+    tableFilters = next;
   }
 
   function decFilter() {
@@ -43,7 +50,7 @@
 
   $: visibleGames = GAMES.filter(g => {
     if (playerFilter > 0 && (g.minPlayers > playerFilter || g.maxPlayers < playerFilter)) return false;
-    if (tableFilter !== null && !g.tableTypes.includes(tableFilter)) return false;
+    if (tableFilters.size > 0 && !g.tableTypes.some(t => tableFilters.has(t))) return false;
     return true;
   });
 
@@ -151,8 +158,8 @@
         {#each TABLE_TYPES as tt}
           <button
             class="fp-type-chip"
-            class:active={tableFilter === tt.id}
-            on:click={() => tableFilter = tableFilter === tt.id ? null : tt.id}>
+            class:active={tableFilters.has(tt.id)}
+            on:click={() => toggleTableFilter(tt.id)}>
             {$t('games.tableTypes.' + tt.id)}
           </button>
         {/each}
