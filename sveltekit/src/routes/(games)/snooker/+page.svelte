@@ -359,7 +359,7 @@
       <img src="{base}/assets/3_billes_snooker.png" alt="" class="icon-title" />
       Snooker
     </h1>
-    <div class="setup-sub">{$t('setup.step', { values: { n: 1, total: 3 } })}</div>
+    <div class="setup-sub">{$t('setup.step', { values: { n: 1, total: 3 } })} — {$t('setup.general')}</div>
 
     <div class="popup-box setup-box">
       <NumberSelector

@@ -119,11 +119,19 @@
     const allNamed = picks.every(p => p.name.trim());
 
     if (!allNamed) {
-      // Applique les noms par défaut et redistribue les équipes aléatoirement
-      picks = picks.map((p, i) =>
-        p.name.trim() ? p : { ...p, name: _t('setup.defaultPlayer', { values: { n: i + 1 } }) }
-      );
-      randomizeTeams();
+      // Compte les joueurs nommés déjà affectés à chaque équipe
+      let countA = picks.filter((p, i) => p.name.trim() && playerTeams[i] === 0).length;
+      let countB = picks.filter((p, i) => p.name.trim() && playerTeams[i] === 1).length;
+
+      // Applique les noms par défaut et distribue les joueurs sans nom pour équilibrer
+      const newTeams = [...playerTeams];
+      picks = picks.map((p, i) => {
+        if (p.name.trim()) return p;
+        if (countA <= countB) { newTeams[i] = 0; countA++; }
+        else { newTeams[i] = 1; countB++; }
+        return { ...p, name: _t('setup.defaultPlayer', { values: { n: i + 1 } }) };
+      });
+      playerTeams = newTeams;
     } else {
       // Tous les joueurs sont nommés : on vérifie que les deux équipes existent
       const tA = picks.filter((_, i) => playerTeams[i] === 0);
