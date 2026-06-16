@@ -252,7 +252,7 @@
       <img src="{base}/assets/triangle_14-1.png" alt="" class="icon-title" />
       14-1 Continu
     </h1>
-    <div class="setup-sub">{$t('setup.step', { values: { n: 1, total: 3 } })}</div>
+    <div class="setup-sub">{$t('setup.step', { values: { n: 1, total: 3 } })} — {$t('setup.general')}</div>
 
     <div class="popup-box setup-box">
       <NumberSelector
