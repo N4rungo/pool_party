@@ -227,12 +227,14 @@
   /* Chips ordre de casse */
   .break-chips {
     display: flex;
+    flex-wrap: wrap;
     gap: 4px;
     width: 100%;
   }
 
   .break-chip {
-    flex: 1;
+    flex: 1 1 auto;
+    min-width: 0;
     padding: 6px 4px;
     border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.15);
