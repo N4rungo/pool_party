@@ -28,6 +28,7 @@
   "games": {
     "categories": {
       "americain": "Billard américain",
+      "anglais": "Billard anglais",
       "francais": "Billard français",
       "snooker": "Snooker"
     },
@@ -42,6 +43,7 @@
       "cutthroat": "Éliminez-les tous",
       "chicago": "Premier à 61 points",
       "pool": "Pleines ou Rayées ?",
+      "blackball": "Jaunes ou Rouges ?",
       "nineball": "La 9 est ta seule cible",
       "straightpool": "Empochez-les toutes !",
       "casin": "Le français revisité",
@@ -388,6 +390,27 @@
     "faultNone": "Aucune bille à remettre en jeu.",
     "toast": {
       "ball": "🎱 Bille {n} empochée"
+    }
+  },
+  "blackball": {
+    "winSub": "Félicitations !",
+    "teamA": "Jaunes",
+    "teamB": "Rouges",
+    "teams": "Équipes",
+    "toggleTeam": "Changer d'équipe",
+    "randomize": "🔀 Aléatoire",
+    "breakOrder": "Ordre de casse",
+    "breakAlternate": "🔄 Casse alternée",
+    "breakWinner": "🏆 Le vainqueur casse",
+    "breakBadge": "🎱 Casse",
+    "reminderTeam": "👥 <strong>En équipe</strong>, soit :",
+    "reminderTeamRule1": "Le même joueur reste à table tant qu'il empoche",
+    "reminderTeamRule2": "Les coéquipiers alternent entre chaque empochage",
+    "reminderFault": "⚠️ <strong>Faute</strong> : 2 visites pour l'adversaire ; bille en main dans le D si blanche empochée",
+    "reminderBlack": "⚫ <strong>Bille noire</strong> : annoncer le trou avant de jouer",
+    "toast": {
+      "onePlayerPerTeam": "⚠️ Il faut au moins un joueur par équipe",
+      "break": "🎱 {team} casse !"
     }
   },
   "nineball": {
