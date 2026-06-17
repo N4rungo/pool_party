@@ -6,18 +6,19 @@
     - randomizeOrder (boolean|undefined) : si défini, affiche le toggle "Ordre aléatoire"
     - matchMode      (boolean)           : activer ou non le mode match
     - totalGames     (number)            : nombre de parties (2-10, défaut 3)
+    - breakOrder     (string|undefined)  : si défini, affiche le choix de casse en mode match
 
   Usage :
-    <MatchSetup bind:randomizeOrder bind:matchMode bind:totalGames />
-    <MatchSetup bind:matchMode bind:totalGames />   ← sans ordre aléatoire
+    <MatchSetup bind:randomizeOrder bind:matchMode bind:totalGames bind:breakOrder />
+    <MatchSetup bind:matchMode bind:totalGames />   ← sans ordre aléatoire ni casse
 -->
 <script>
-  import NumberSelector from './NumberSelector.svelte';
   import { t } from 'svelte-i18n';
 
   export let randomizeOrder = undefined;
   export let matchMode = false;
   export let totalGames = 3;
+  export let breakOrder = undefined;
 </script>
 
 <div class="match-setup-section">
@@ -56,13 +57,36 @@
   </label>
 
   {#if matchMode}
-    <div class="match-options">
-      <NumberSelector
-        bind:value={totalGames}
-        min={2}
-        max={10}
-        step={1}
-        label={$t('match.gamesCount')} />
+    <div class="match-options" class:two-col={breakOrder !== undefined}>
+
+      <div class="match-col">
+        <div class="match-col-label">{$t('match.gamesCount')}</div>
+        <div class="match-stepper">
+          <button class="stepper-btn" on:click={() => totalGames = Math.max(2, totalGames - 1)}>−</button>
+          <span class="stepper-val">{totalGames}</span>
+          <button class="stepper-btn" on:click={() => totalGames = Math.min(10, totalGames + 1)}>+</button>
+        </div>
+      </div>
+
+      {#if breakOrder !== undefined}
+        <div class="match-col-sep"></div>
+        <div class="match-col">
+          <div class="match-col-label">{$t('match.breakOrder')}</div>
+          <div class="break-chips">
+            <button
+              class="break-chip"
+              class:active={breakOrder === 'alternate'}
+              on:click={() => breakOrder = 'alternate'}
+            >{$t('match.breakAlternate')}</button>
+            <button
+              class="break-chip"
+              class:active={breakOrder === 'winner'}
+              on:click={() => breakOrder = 'winner'}
+            >{$t('match.breakWinner')}</button>
+          </div>
+        </div>
+      {/if}
+
     </div>
   {/if}
 </div>
@@ -127,7 +151,105 @@
     transform: translateX(20px);
   }
 
+  /* ── Options match compactes ── */
   .match-options {
-    margin-top: 14px;
+    margin-top: 12px;
+    display: flex;
+    align-items: stretch;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 14px;
+    padding: 10px 12px;
+  }
+
+  .match-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .match-col-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.35);
+  }
+
+  .match-col-sep {
+    width: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 0 10px;
+    align-self: stretch;
+    flex-shrink: 0;
+  }
+
+  /* Stepper +/− */
+  .match-stepper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .stepper-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid rgba(var(--color-gold-rgb), 0.45);
+    background: rgba(var(--color-gold-rgb), 0.12);
+    color: var(--color-gold);
+    font-size: 18px;
+    font-weight: bold;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.15s;
+    -webkit-tap-highlight-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    padding: 0;
+  }
+
+  .stepper-btn:active {
+    background: rgba(var(--color-gold-rgb), 0.28);
+  }
+
+  .stepper-val {
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    min-width: 22px;
+    text-align: center;
+  }
+
+  /* Chips ordre de casse */
+  .break-chips {
+    display: flex;
+    gap: 4px;
+    width: 100%;
+  }
+
+  .break-chip {
+    flex: 1;
+    padding: 6px 4px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(0, 0, 0, 0.25);
+    color: rgba(255, 255, 255, 0.5);
+    font-family: inherit;
+    font-size: 11px;
+    cursor: pointer;
+    transition: background 0.12s, border-color 0.12s, color 0.12s;
+    -webkit-tap-highlight-color: transparent;
+    white-space: nowrap;
+  }
+
+  .break-chip.active {
+    background: rgba(var(--color-gold-rgb), 0.15);
+    border-color: rgba(var(--color-gold-rgb), 0.5);
+    color: var(--color-gold);
+    font-weight: bold;
   }
 </style>
