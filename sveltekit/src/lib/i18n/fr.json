@@ -394,8 +394,8 @@
   },
   "blackball": {
     "winSub": "Félicitations !",
-    "teamA": "Jaunes",
-    "teamB": "Rouges",
+    "teamA": "Équipe A",
+    "teamB": "Équipe B",
     "teams": "Équipes",
     "toggleTeam": "Changer d'équipe",
     "randomize": "🔀 Aléatoire",

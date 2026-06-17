@@ -38,7 +38,8 @@
     { name: '', profileId: null },
     { name: '', profileId: null },
   ];
-  let playerTeams = [0, 1]; // 0 = Jaunes, 1 = Rouges
+  let playerTeams = [0, 1]; // 0 = Équipe A, 1 = Équipe B
+  let randomizeOrder = true;
   let breakOrder = 'alternate';
   let matchMode = false;
   let matchTotalGames = 3;
@@ -144,7 +145,7 @@
       startMatch('blackball', gameTeams.map(t => t.label), matchTotalGames);
     }
 
-    startGame();
+    startGame(randomizeOrder ? null : 0);
   }
 
   function startGame(initialBreakerIndex = null) {
@@ -312,7 +313,7 @@
                 on:click={() => toggleTeam(i)}
                 title={$t('blackball.toggleTeam')}
               >
-                {playerTeams[i] === 0 ? '🟡' : '🔴'}
+                {playerTeams[i] === 0 ? 'A' : 'B'}
               </button>
             {/if}
           </div>
@@ -326,37 +327,38 @@
       </div>
       <div class="team-preview">
         <div class="team-preview-col">
-          <span class="team-badge team-badge-a">🟡</span>
+          <span class="team-badge team-badge-a">A</span>
           <span class="team-preview-names">
             {teamAPreview.length ? teamAPreview.join(', ') : '—'}
           </span>
         </div>
         <div class="team-preview-sep"></div>
         <div class="team-preview-col">
-          <span class="team-badge team-badge-b">🔴</span>
+          <span class="team-badge team-badge-b">B</span>
           <span class="team-preview-names">
             {teamBPreview.length ? teamBPreview.join(', ') : '—'}
           </span>
         </div>
       </div>
 
-      <!-- Ordre de casse -->
-      <div class="section-sep"></div>
-      <div class="section-label">{$t('blackball.breakOrder')}</div>
-      <div class="break-options">
-        <button
-          class="break-option"
-          class:active={breakOrder === 'alternate'}
-          on:click={() => (breakOrder = 'alternate')}
-        >{$t('blackball.breakAlternate')}</button>
-        <button
-          class="break-option"
-          class:active={breakOrder === 'winner'}
-          on:click={() => (breakOrder = 'winner')}
-        >{$t('blackball.breakWinner')}</button>
-      </div>
+      <MatchSetup bind:randomizeOrder bind:matchMode bind:totalGames={matchTotalGames} />
 
-      <MatchSetup bind:matchMode bind:totalGames={matchTotalGames} />
+      {#if matchMode}
+        <div class="section-sep"></div>
+        <div class="section-label">{$t('blackball.breakOrder')}</div>
+        <div class="break-options">
+          <button
+            class="break-option"
+            class:active={breakOrder === 'alternate'}
+            on:click={() => (breakOrder = 'alternate')}
+          >{$t('blackball.breakAlternate')}</button>
+          <button
+            class="break-option"
+            class:active={breakOrder === 'winner'}
+            on:click={() => (breakOrder = 'winner')}
+          >{$t('blackball.breakWinner')}</button>
+        </div>
+      {/if}
 
       <button class="btn-main btn-gold" on:click={handleLaunch}>
         {matchMode ? $t('setup.launchMatch') : $t('setup.launchGame')}
@@ -547,24 +549,24 @@
     flex-shrink: 0;
     border-radius: 12px;
     border: 2px solid transparent;
-    font-size: 18px;
+    font-size: 15px;
+    font-weight: bold;
     font-family: inherit;
     cursor: pointer;
     transition: background 0.15s, border-color 0.15s;
     -webkit-tap-highlight-color: transparent;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 
   .team-toggle.team-a {
-    background: rgba(255, 193, 7, 0.15);
-    border-color: rgba(255, 193, 7, 0.5);
+    background: rgba(33, 150, 243, 0.2);
+    border-color: rgba(33, 150, 243, 0.55);
+    color: #64b5f6;
   }
 
   .team-toggle.team-b {
-    background: rgba(229, 57, 53, 0.15);
-    border-color: rgba(229, 57, 53, 0.5);
+    background: rgba(229, 57, 53, 0.2);
+    border-color: rgba(229, 57, 53, 0.55);
+    color: #ef9a9a;
   }
 
   /* ── Section équipes ── */
@@ -621,9 +623,24 @@
   }
 
   .team-badge {
-    font-size: 14px;
+    font-size: 11px;
+    font-weight: bold;
+    border-radius: 6px;
+    padding: 2px 7px;
     flex-shrink: 0;
     line-height: 1.6;
+  }
+
+  .team-badge-a {
+    background: rgba(33, 150, 243, 0.15);
+    border: 1px solid rgba(33, 150, 243, 0.45);
+    color: #64b5f6;
+  }
+
+  .team-badge-b {
+    background: rgba(229, 57, 53, 0.15);
+    border: 1px solid rgba(229, 57, 53, 0.45);
+    color: #ef9a9a;
   }
 
   .team-preview-names {
@@ -701,13 +718,11 @@
     gap: 5px;
   }
 
-  /* Jaunes */
   .team-card-breaker.team-card-a {
-    border-color: rgba(255, 193, 7, 0.65);
-    box-shadow: 0 0 18px rgba(255, 193, 7, 0.18);
+    border-color: rgba(33, 150, 243, 0.65);
+    box-shadow: 0 0 18px rgba(33, 150, 243, 0.18);
   }
 
-  /* Rouges */
   .team-card-breaker.team-card-b {
     border-color: rgba(229, 57, 53, 0.65);
     box-shadow: 0 0 18px rgba(229, 57, 53, 0.18);
@@ -727,8 +742,8 @@
   }
 
   .team-card-breaker.team-card-a .break-badge {
-    color: #FFC107;
-    border: 1px solid rgba(255, 193, 7, 0.4);
+    color: #64b5f6;
+    border: 1px solid rgba(33, 150, 243, 0.4);
   }
 
   .team-card-breaker.team-card-b .break-badge {
@@ -746,7 +761,7 @@
     max-width: 100%;
   }
 
-  .team-label-a { color: #FFC107; }
+  .team-label-a { color: #64b5f6; }
   .team-label-b { color: #ef9a9a; }
 
   .team-players {
@@ -819,14 +834,12 @@
     box-shadow: none;
   }
 
-  /* Jaunes */
   .btn-victory-a {
-    background: linear-gradient(145deg, #FFD54F, #FFC107);
-    color: #1a2000;
-    box-shadow: 0 4px 0 #e65100;
+    background: linear-gradient(145deg, #2196f3, #1565c0);
+    color: white;
+    box-shadow: 0 4px 0 #0d47a1;
   }
 
-  /* Rouges */
   .btn-victory-b {
     background: linear-gradient(145deg, #e53935, #b71c1c);
     color: white;

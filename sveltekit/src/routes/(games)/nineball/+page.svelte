@@ -39,7 +39,7 @@
     { name: '', profileId: null },
     { name: '', profileId: null },
   ];
-  let randomOrder = false;
+  let randomOrder = true;
   let breakOrder = 'alternate';
   let matchMode = false;
   let matchTotalGames = 3;
@@ -259,34 +259,24 @@
         {/each}
       </div>
 
-      <!-- Ordre de jeu -->
-      <div class="section-sep"></div>
-      <div class="section-label">{$t('nineball.playOrder')}</div>
-      <button
-        class="toggle-chip"
-        class:active={randomOrder}
-        on:click={() => randomOrder = !randomOrder}
-      >
-        {$t('nineball.randomOrder')}
-      </button>
+      <MatchSetup bind:randomizeOrder={randomOrder} bind:matchMode bind:totalGames={matchTotalGames} />
 
-      <!-- Ordre de casse -->
-      <div class="section-sep"></div>
-      <div class="section-label">{$t('nineball.breakOrder')}</div>
-      <div class="break-options">
-        <button
-          class="break-option"
-          class:active={breakOrder === 'alternate'}
-          on:click={() => (breakOrder = 'alternate')}
-        >{$t('nineball.breakAlternate')}</button>
-        <button
-          class="break-option"
-          class:active={breakOrder === 'winner'}
-          on:click={() => (breakOrder = 'winner')}
-        >{$t('nineball.breakWinner')}</button>
-      </div>
-
-      <MatchSetup bind:matchMode bind:totalGames={matchTotalGames} />
+      {#if matchMode}
+        <div class="section-sep"></div>
+        <div class="section-label">{$t('nineball.breakOrder')}</div>
+        <div class="break-options">
+          <button
+            class="break-option"
+            class:active={breakOrder === 'alternate'}
+            on:click={() => (breakOrder = 'alternate')}
+          >{$t('nineball.breakAlternate')}</button>
+          <button
+            class="break-option"
+            class:active={breakOrder === 'winner'}
+            on:click={() => (breakOrder = 'winner')}
+          >{$t('nineball.breakWinner')}</button>
+        </div>
+      {/if}
 
       <button class="btn-main btn-gold" on:click={handleLaunch}>
         {matchMode ? $t('setup.launchMatch') : $t('setup.launchGame')}
@@ -466,26 +456,6 @@
     letter-spacing: 1px;
     margin-bottom: 8px;
     text-align: left;
-  }
-
-  .toggle-chip {
-    font-family: inherit;
-    font-size: 13px;
-    font-weight: 600;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    color: rgba(255, 255, 255, 0.5);
-    border-radius: 20px;
-    padding: 8px 18px;
-    cursor: pointer;
-    transition: background .15s, color .15s, border-color .15s;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  .toggle-chip.active {
-    background: rgba(var(--color-gold-rgb), 0.15);
-    border-color: rgba(var(--color-gold-rgb), 0.6);
-    color: var(--color-gold);
   }
 
   .break-options {

@@ -39,6 +39,7 @@
     { name: '', profileId: null },
   ];
   let playerTeams = [0, 1]; // 0 = Équipe A, 1 = Équipe B
+  let randomizeOrder = true;
   let breakOrder = 'alternate'; // 'alternate' | 'winner'
   let matchMode = false;
   let matchTotalGames = 3;
@@ -150,7 +151,7 @@
       startMatch('pool', gameTeams.map(t => t.label), matchTotalGames);
     }
 
-    startGame();
+    startGame(randomizeOrder ? null : 0);
   }
 
   function startGame(initialBreakerIndex = null) {
@@ -345,23 +346,24 @@
         </div>
       </div>
 
-      <!-- Ordre de casse -->
-      <div class="section-sep"></div>
-      <div class="section-label">{$t('pool.breakOrder')}</div>
-      <div class="break-options">
-        <button
-          class="break-option"
-          class:active={breakOrder === 'alternate'}
-          on:click={() => (breakOrder = 'alternate')}
-        >{$t('pool.breakAlternate')}</button>
-        <button
-          class="break-option"
-          class:active={breakOrder === 'winner'}
-          on:click={() => (breakOrder = 'winner')}
-        >{$t('pool.breakWinner')}</button>
-      </div>
+      <MatchSetup bind:randomizeOrder bind:matchMode bind:totalGames={matchTotalGames} />
 
-      <MatchSetup bind:matchMode bind:totalGames={matchTotalGames} />
+      {#if matchMode}
+        <div class="section-sep"></div>
+        <div class="section-label">{$t('pool.breakOrder')}</div>
+        <div class="break-options">
+          <button
+            class="break-option"
+            class:active={breakOrder === 'alternate'}
+            on:click={() => (breakOrder = 'alternate')}
+          >{$t('pool.breakAlternate')}</button>
+          <button
+            class="break-option"
+            class:active={breakOrder === 'winner'}
+            on:click={() => (breakOrder = 'winner')}
+          >{$t('pool.breakWinner')}</button>
+        </div>
+      {/if}
 
       <button class="btn-main btn-gold" on:click={handleLaunch}>
         {matchMode ? $t('setup.launchMatch') : $t('setup.launchGame')}
