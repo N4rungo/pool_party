@@ -42,6 +42,7 @@
       "cutthroat": "Knock 'em all out",
       "chicago": "First to 61 points",
       "pool": "Solids or Stripes?",
+      "nineball": "The 9 is your only target",
       "straightpool": "Pocket 'em all!",
       "casin": "French billiards, remixed",
       "fiveball": "Aim for zero!",
@@ -387,6 +388,23 @@
     "faultNone": "No balls to return.",
     "toast": {
       "ball": "🎱 Ball {n} potted"
+    }
+  },
+  "nineball": {
+    "winSub": "Congratulations!",
+    "playOrder": "Play order",
+    "randomOrder": "🔀 Random order",
+    "breakOrder": "Break order",
+    "breakAlternate": "🔄 Alternating break",
+    "breakWinner": "🏆 Winner breaks",
+    "breakBadge": "🎱 Break",
+    "declareWinner": "🏆 Declare winner…",
+    "chooseWinner": "Who won?",
+    "reminderLowest": "⚡ <strong>Lowest first</strong>: always hit the lowest-numbered ball on the table",
+    "reminderNine": "🎯 <strong>The 9 wins</strong>: it can be pocketed at any time on a legal shot — directly, by combo, or on the break",
+    "reminderFault": "⚠️ <strong>Foul</strong>: ball in hand anywhere on the table for the next player",
+    "toast": {
+      "break": "🎱 {name} breaks!"
     }
   },
   "pool": {
