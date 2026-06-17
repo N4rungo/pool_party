@@ -39,7 +39,7 @@
     { name: '', profileId: null },
     { name: '', profileId: null },
   ];
-  let randomOrder = false;
+  let randomOrder = true;
   let breakOrder = 'alternate';
   let matchMode = false;
   let matchTotalGames = 3;
@@ -259,34 +259,7 @@
         {/each}
       </div>
 
-      <!-- Ordre de jeu -->
-      <div class="section-sep"></div>
-      <div class="section-label">{$t('nineball.playOrder')}</div>
-      <button
-        class="toggle-chip"
-        class:active={randomOrder}
-        on:click={() => randomOrder = !randomOrder}
-      >
-        {$t('nineball.randomOrder')}
-      </button>
-
-      <!-- Ordre de casse -->
-      <div class="section-sep"></div>
-      <div class="section-label">{$t('nineball.breakOrder')}</div>
-      <div class="break-options">
-        <button
-          class="break-option"
-          class:active={breakOrder === 'alternate'}
-          on:click={() => (breakOrder = 'alternate')}
-        >{$t('nineball.breakAlternate')}</button>
-        <button
-          class="break-option"
-          class:active={breakOrder === 'winner'}
-          on:click={() => (breakOrder = 'winner')}
-        >{$t('nineball.breakWinner')}</button>
-      </div>
-
-      <MatchSetup bind:matchMode bind:totalGames={matchTotalGames} />
+      <MatchSetup bind:randomizeOrder={randomOrder} bind:matchMode bind:totalGames={matchTotalGames} bind:breakOrder />
 
       <button class="btn-main btn-gold" on:click={handleLaunch}>
         {matchMode ? $t('setup.launchMatch') : $t('setup.launchGame')}
@@ -451,68 +424,6 @@
     gap: 8px;
     margin: 16px 0;
     text-align: left;
-  }
-
-  .section-sep {
-    height: 1px;
-    background: rgba(255, 255, 255, 0.1);
-    margin: 16px 0 12px;
-  }
-
-  .section-label {
-    font-size: 11px;
-    color: rgba(255, 255, 255, 0.4);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 8px;
-    text-align: left;
-  }
-
-  .toggle-chip {
-    font-family: inherit;
-    font-size: 13px;
-    font-weight: 600;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    color: rgba(255, 255, 255, 0.5);
-    border-radius: 20px;
-    padding: 8px 18px;
-    cursor: pointer;
-    transition: background .15s, color .15s, border-color .15s;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  .toggle-chip.active {
-    background: rgba(var(--color-gold-rgb), 0.15);
-    border-color: rgba(var(--color-gold-rgb), 0.6);
-    color: var(--color-gold);
-  }
-
-  .break-options {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 4px;
-  }
-
-  .break-option {
-    flex: 1;
-    padding: 10px 8px;
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    background: rgba(0, 0, 0, 0.25);
-    color: rgba(255, 255, 255, 0.55);
-    font-family: inherit;
-    font-size: 12px;
-    cursor: pointer;
-    transition: background .12s, border-color .12s, color .12s;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  .break-option.active {
-    background: rgba(var(--color-gold-rgb), 0.15);
-    border-color: rgba(var(--color-gold-rgb), 0.5);
-    color: var(--color-gold);
-    font-weight: bold;
   }
 
   /* ── Ordre de jeu (game screen) ── */

@@ -17,6 +17,7 @@
 
 export const CATEGORIES = [
   { id: 'americain', label: 'Billard américain' },
+  { id: 'anglais',   label: 'Billard anglais'   },
   { id: 'francais',  label: 'Billard français'  },
   { id: 'snooker',   label: 'Snooker'           },
 ];
@@ -88,6 +89,16 @@ export const GAMES = [
     tableTypes: ['americain'],
     minPlayers: 2,
     maxPlayers: 6,
+  },
+  {
+    id: 'blackball',
+    name: 'Blackball',
+    tagline: 'Jaunes ou Rouges ?',
+    icon: '/assets/3_billes_blackball.png',
+    category: 'anglais',
+    tableTypes: ['anglais'],
+    minPlayers: 2,
+    maxPlayers: 8,
   },
   {
     id: 'casin',

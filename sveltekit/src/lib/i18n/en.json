@@ -28,6 +28,7 @@
   "games": {
     "categories": {
       "americain": "Pool",
+      "anglais": "English pool",
       "francais": "French billiards",
       "snooker": "Snooker"
     },
@@ -42,6 +43,7 @@
       "cutthroat": "Knock 'em all out",
       "chicago": "First to 61 points",
       "pool": "Solids or Stripes?",
+      "blackball": "Yellows or Reds?",
       "nineball": "The 9 is your only target",
       "straightpool": "Pocket 'em all!",
       "casin": "French billiards, remixed",
@@ -70,6 +72,9 @@
     "randomOrder": "🔀 Random order",
     "matchMode": "🏆 Match mode",
     "gamesCount": "Number of games",
+    "breakOrder": "Break order",
+    "breakAlternate": "🔄 Alternate",
+    "breakWinner": "🏆 Winner",
     "inProgress": "Match in progress",
     "game": "Game {n} / {total}",
     "gameFinished": "Game {n}/{total} done",
@@ -388,6 +393,27 @@
     "faultNone": "No balls to return.",
     "toast": {
       "ball": "🎱 Ball {n} potted"
+    }
+  },
+  "blackball": {
+    "winSub": "Congratulations!",
+    "teamA": "Team A",
+    "teamB": "Team B",
+    "teams": "Teams",
+    "toggleTeam": "Switch team",
+    "randomize": "🔀 Random",
+    "breakOrder": "Break order",
+    "breakAlternate": "🔄 Alternating break",
+    "breakWinner": "🏆 Winner breaks",
+    "breakBadge": "🎱 Break",
+    "reminderTeam": "👥 <strong>Team play</strong>, either:",
+    "reminderTeamRule1": "The same player stays at the table while they pocket",
+    "reminderTeamRule2": "Teammates alternate after each pocket",
+    "reminderFault": "⚠️ <strong>Foul</strong>: 2 visits for the opponent; ball in hand in the D if cue ball is pocketed",
+    "reminderBlack": "⚫ <strong>Black ball</strong>: call your pocket before shooting",
+    "toast": {
+      "onePlayerPerTeam": "⚠️ Each team needs at least one player",
+      "break": "🎱 {team} breaks!"
     }
   },
   "nineball": {

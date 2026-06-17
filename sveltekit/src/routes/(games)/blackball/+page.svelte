@@ -1,13 +1,13 @@
 <!--
-  Page complète du jeu Pool (8-ball américain).
+  Page complète du jeu Blackball (8-ball anglais).
 
   Phases :
-   - 'setup' → saisie des joueurs, équipes, ordre de casse et mode match
+   - 'setup' → saisie des joueurs, équipes (Jaunes/Rouges), ordre de casse, mode match
    - 'game'  → écran de jeu : équipes, casseur actif, rappels, boutons victoire
    - 'win'   → overlay de victoire (partie simple)
 
-  Pas de score numérique : le score est dans le match store (victoires par équipe).
-  La logique pure vit dans $lib/games/pool.js.
+  Même logique que Pool ; la différence est dans les règles, les couleurs et l'i18n.
+  La logique pure vit dans $lib/games/blackball.js (re-export de pool.js).
 -->
 <script>
   import { goto } from '$app/navigation';
@@ -26,7 +26,7 @@
   import { get } from 'svelte/store';
   import { matchStore, startMatch, recordResult, endMatch, undoResult } from '$lib/stores/match.js';
   import { recordHistory } from '$lib/stores/history.js';
-  import { createInitialState, declareWinner, undo } from '$lib/games/pool.js';
+  import { createInitialState, declareWinner, undo } from '$lib/games/blackball.js';
 
   // ── Phase courante ─────────────────────────────────────
   let phase = 'setup';
@@ -40,11 +40,10 @@
   ];
   let playerTeams = [0, 1]; // 0 = Équipe A, 1 = Équipe B
   let randomizeOrder = true;
-  let breakOrder = 'alternate'; // 'alternate' | 'winner'
+  let breakOrder = 'alternate';
   let matchMode = false;
   let matchTotalGames = 3;
 
-  // Redimensionne les tableaux quand playerCount change
   let _prevCount = 2;
   $: if (playerCount !== _prevCount) {
     if (playerCount > _prevCount) {
@@ -59,7 +58,6 @@
     _prevCount = playerCount;
   }
 
-  // Listes d'exclusion pour les PlayerPickers
   $: selectedIds   = picks.map(p => p.profileId).filter(Boolean);
   $: selectedNames = picks.map(p => p.name.trim().toLowerCase()).filter(Boolean);
 
@@ -80,7 +78,6 @@
     playerTeams = newTeams;
   }
 
-  // Aperçu des équipes
   $: teamAPreview = picks
     .filter((_, i) => playerTeams[i] === 0 && picks[i].name.trim())
     .map(p => p.name.trim());
@@ -109,8 +106,8 @@
       .filter((_, i) => playerTeams[i] === 1 && picks[i].name.trim())
       .map(p => ({ name: p.name.trim(), profileId: p.profileId }));
     return [
-      { label: tA.length === 1 ? tA[0].name : get(t)('pool.teamA'), players: tA },
-      { label: tB.length === 1 ? tB[0].name : get(t)('pool.teamB'), players: tB },
+      { label: tA.length === 1 ? tA[0].name : get(t)('blackball.teamA'), players: tA },
+      { label: tB.length === 1 ? tB[0].name : get(t)('blackball.teamB'), players: tB },
     ];
   }
 
@@ -120,11 +117,9 @@
     const allNamed = picks.every(p => p.name.trim());
 
     if (!allNamed) {
-      // Compte les joueurs nommés déjà affectés à chaque équipe
       let countA = picks.filter((p, i) => p.name.trim() && playerTeams[i] === 0).length;
       let countB = picks.filter((p, i) => p.name.trim() && playerTeams[i] === 1).length;
 
-      // Applique les noms par défaut et distribue les joueurs sans nom pour équilibrer
       const newTeams = [...playerTeams];
       picks = picks.map((p, i) => {
         if (p.name.trim()) return p;
@@ -134,11 +129,10 @@
       });
       playerTeams = newTeams;
     } else {
-      // Tous les joueurs sont nommés : on vérifie que les deux équipes existent
       const tA = picks.filter((_, i) => playerTeams[i] === 0);
       const tB = picks.filter((_, i) => playerTeams[i] === 1);
       if (tA.length === 0 || tB.length === 0) {
-        showToast(_t('pool.toast.onePlayerPerTeam'));
+        showToast(_t('blackball.toast.onePlayerPerTeam'));
         return;
       }
     }
@@ -148,7 +142,7 @@
     picksMap = Object.fromEntries(picks.map(p => [p.name.trim(), p.profileId]));
 
     if (matchMode) {
-      startMatch('pool', gameTeams.map(t => t.label), matchTotalGames);
+      startMatch('blackball', gameTeams.map(t => t.label), matchTotalGames);
     }
 
     startGame(randomizeOrder ? null : 0);
@@ -158,7 +152,7 @@
     state = createInitialState(gameTeams, gameBreakOrder, initialBreakerIndex);
     winTeamIndex = null;
     phase = 'game';
-    showToast(get(t)('pool.toast.break', { values: { team: state.teams[state.breakerTeamIndex].label } }));
+    showToast(get(t)('blackball.toast.break', { values: { team: state.teams[state.breakerTeamIndex].label } }));
   }
 
   // ── Déclarer un vainqueur ──────────────────────────────
@@ -171,7 +165,7 @@
     const winners = state.teams[teamIndex].players.map(p => p.name);
 
     recordHistory({
-      gameId: 'pool',
+      gameId: 'blackball',
       players: allPlayers.map(p => ({ name: p.name, profileId: picksMap[p.name] ?? null })),
       winners,
       scores: Object.fromEntries(allPlayers.map(p => [p.name, null])),
@@ -209,8 +203,8 @@
     const _t = get(t);
     const ok = await askConfirm(_t('confirm.leaveGame'), {
       confirmLabel: _t('confirm.abandonLabel'),
-      cancelLabel: _t('confirm.continueLabel'),
-      iconImage: `${base}/assets/home.png`,
+      cancelLabel:  _t('confirm.continueLabel'),
+      iconImage:    `${base}/assets/home.png`,
     });
     if (ok) {
       if (matchMode) endMatch();
@@ -242,7 +236,7 @@
     const _t = get(t);
     const ok = await askConfirm(_t('confirm.leaveMatch'), {
       confirmLabel: _t('confirm.abandonLabel'),
-      cancelLabel: _t('confirm.continueLabel'),
+      cancelLabel:  _t('confirm.continueLabel'),
     });
     if (!ok) return;
     showMatchRecap = false;
@@ -253,7 +247,7 @@
   function onMatchPlayAgain() {
     const savedTotal = $matchStore.totalGames;
     endMatch();
-    startMatch('pool', gameTeams.map(t => t.label), savedTotal);
+    startMatch('blackball', gameTeams.map(t => t.label), savedTotal);
     matchAbandoned = false;
     showMatchSummary = false;
     winTeamIndex = null;
@@ -275,18 +269,19 @@
   $: winName = winnerTeam?.label ?? '';
   $: winSub = winnerTeam && winnerTeam.players.length > 1
     ? winnerTeam.players.map(p => p.name).join(' & ')
-    : $t('pool.winSub');
+    : $t('blackball.winSub');
 
   $: matchRecapGameNumber = $matchStore.currentGame - 1;
   $: matchRecapWinners = $matchStore.results?.[$matchStore.results.length - 1]?.winners ?? [];
 </script>
 
+
 <!-- ===== PHASE SETUP ===== -->
 {#if phase === 'setup'}
   <div class="setup">
     <h1>
-      <img src="{base}/assets/bille_8.png" alt="" class="icon-title" />
-      Pool
+      <img src="{base}/assets/3_billes_blackball.png" alt="" class="icon-title" />
+      Blackball
     </h1>
     <div class="setup-sub">{$t('setup.configuration')}</div>
 
@@ -316,7 +311,7 @@
                 class:team-a={playerTeams[i] === 0}
                 class:team-b={playerTeams[i] === 1}
                 on:click={() => toggleTeam(i)}
-                title={$t('pool.toggleTeam')}
+                title={$t('blackball.toggleTeam')}
               >
                 {playerTeams[i] === 0 ? 'A' : 'B'}
               </button>
@@ -327,8 +322,8 @@
 
       <!-- Aperçu des équipes + bouton randomize -->
       <div class="teams-section-header">
-        <div class="section-label" style="margin-bottom: 0">{$t('pool.teams')}</div>
-        <button class="btn-randomize" on:click={randomizeTeams}>{$t('pool.randomize')}</button>
+        <div class="section-label" style="margin-bottom: 0">{$t('blackball.teams')}</div>
+        <button class="btn-randomize" on:click={randomizeTeams}>{$t('blackball.randomize')}</button>
       </div>
       <div class="team-preview">
         <div class="team-preview-col">
@@ -356,13 +351,14 @@
   </div>
 {/if}
 
+
 <!-- ===== PHASE GAME ===== -->
 {#if phase === 'game' && state}
   <div class="game">
     <GameLayout
-      title="POOL"
-      icon="{base}/assets/bille_8.png"
-      gameId="pool"
+      title="BLACK BALL"
+      icon="{base}/assets/3_billes_blackball.png"
+      gameId="blackball"
       canUndo={false}
       on:home={confirmGoHome}
       on:rules={() => (rulesOpen = true)}
@@ -378,7 +374,7 @@
             class:team-card-breaker={state.breakerTeamIndex === i}
           >
             {#if state.breakerTeamIndex === i}
-              <div class="break-badge">{$t('pool.breakBadge')}</div>
+              <div class="break-badge">{$t('blackball.breakBadge')}</div>
             {/if}
             <div
               class="team-label"
@@ -400,18 +396,18 @@
       <div class="reminders">
         {#if state.teams.some(t => t.players.length > 1)}
           <div class="reminder-item">
-            {@html $t('pool.reminderTeam')}
+            {@html $t('blackball.reminderTeam')}
             <ul class="reminder-list">
-              <li>{$t('pool.reminderTeamRule1')}</li>
-              <li>{$t('pool.reminderTeamRule2')}</li>
+              <li>{$t('blackball.reminderTeamRule1')}</li>
+              <li>{$t('blackball.reminderTeamRule2')}</li>
             </ul>
           </div>
         {/if}
         <div class="reminder-item">
-          {@html $t('pool.reminderFault')}
+          {@html $t('blackball.reminderFault')}
         </div>
         <div class="reminder-item">
-          {@html $t('pool.reminderBlack')}
+          {@html $t('blackball.reminderBlack')}
         </div>
       </div>
 
@@ -436,6 +432,7 @@
   </div>
 {/if}
 
+
 <!-- ===== OVERLAY VICTOIRE ===== -->
 <WinOverlay
   open={phase === 'win' && winTeamIndex !== null}
@@ -447,6 +444,7 @@
   on:replay={replay}
   on:newGame={newGame}
 />
+
 
 <!-- ===== OVERLAY RÉCAP MATCH ===== -->
 {#if showMatchRecap}
@@ -464,12 +462,13 @@
   />
 {/if}
 
+
 <!-- ===== OVERLAY RÉCAP FINAL MATCH ===== -->
 {#if showMatchSummary}
   <MatchSummaryOverlay
     matchScores={$matchStore.matchScores}
     results={$matchStore.results}
-    gameId="pool"
+    gameId="blackball"
     totalGames={$matchStore.totalGames}
     abandoned={matchAbandoned}
     onPlayAgain={onMatchPlayAgain}
@@ -477,8 +476,9 @@
   />
 {/if}
 
+
 <!-- ===== OVERLAY RÈGLES ===== -->
-<RulesViewer gameId="pool" open={rulesOpen} on:close={() => (rulesOpen = false)} />
+<RulesViewer gameId="blackball" open={rulesOpen} on:close={() => (rulesOpen = false)} />
 
 
 <style>
@@ -507,7 +507,6 @@
     text-align: center;
   }
 
-  /* ── Joueurs ── */
   .players-list {
     display: flex;
     flex-direction: column;
@@ -634,7 +633,7 @@
     word-break: break-word;
   }
 
-  /* ── Ordre de casse ── */
+  /* ── Équipes (section header) ── */
   .section-sep {
     height: 1px;
     background: rgba(255, 255, 255, 0.1);
