@@ -42,6 +42,7 @@
       "cutthroat": "Éliminez-les tous",
       "chicago": "Premier à 61 points",
       "pool": "Pleines ou Rayées ?",
+      "nineball": "La 9 est ta seule cible",
       "straightpool": "Empochez-les toutes !",
       "casin": "Le français revisité",
       "fiveball": "On vise 0 pile !",
@@ -387,6 +388,23 @@
     "faultNone": "Aucune bille à remettre en jeu.",
     "toast": {
       "ball": "🎱 Bille {n} empochée"
+    }
+  },
+  "nineball": {
+    "winSub": "Félicitations !",
+    "playOrder": "Ordre de jeu",
+    "randomOrder": "🔀 Ordre aléatoire",
+    "breakOrder": "Ordre de casse",
+    "breakAlternate": "🔄 Casse alternée",
+    "breakWinner": "🏆 Le vainqueur casse",
+    "breakBadge": "🎱 Casse",
+    "declareWinner": "🏆 Le vainqueur est…",
+    "chooseWinner": "Qui a gagné ?",
+    "reminderLowest": "⚡ <strong>Plus basse en premier</strong> : toucher la bille au numéro le plus bas présente sur la table",
+    "reminderNine": "🎯 <strong>La 9 gagne</strong> : elle peut être empochée à tout moment sur un coup légal — directement, en combinaison ou sur la casse",
+    "reminderFault": "⚠️ <strong>Faute</strong> : bille en main n'importe où sur la table pour le joueur suivant",
+    "toast": {
+      "break": "🎱 {name} casse !"
     }
   },
   "pool": {

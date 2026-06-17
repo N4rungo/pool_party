@@ -70,6 +70,16 @@ export const GAMES = [
     maxPlayers: 8,
   },
   {
+    id: 'nineball',
+    name: '9 Ball',
+    tagline: 'La 9 est ta seule cible',
+    icon: '/assets/bille_9.png',
+    category: 'americain',
+    tableTypes: ['americain'],
+    minPlayers: 2,
+    maxPlayers: 6,
+  },
+  {
     id: 'straightpool',
     name: '14-1',
     tagline: 'Empochez les toutes !',
