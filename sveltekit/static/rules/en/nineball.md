@@ -1,6 +1,6 @@
-# 🎱 9-Ball — Pool
+# 🎱 9-Ball
 
-> The 9 is your only target.
+> Only one target: the 9!
 
 ## 🎯 Objective
 Legally pocket the **9 ball**. It doesn't matter how — directly, by combo, or on the break —

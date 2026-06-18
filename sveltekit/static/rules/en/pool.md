@@ -1,4 +1,4 @@
-# 🎱 Pool — 8-Ball
+# 🎱 8-Ball
 > Pocket your 7 balls, then the black.
 
 ## 🎯 Objective

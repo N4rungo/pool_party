@@ -1,4 +1,4 @@
-# 🎱 Pool — Billard américain
+# 🎱 Billard américain
 > Empoche tes 7 billes, puis la noire.
 
 ## 🎯 But du jeu

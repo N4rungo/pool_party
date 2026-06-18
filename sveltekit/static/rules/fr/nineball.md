@@ -1,6 +1,6 @@
-# 🎱 9-Ball — Billard américain
+# 🎱 9-Ball
 
-> La 9 est ta seule cible.
+> Une seule cible : la 9 !
 
 ## 🎯 But du jeu
 Empocher légalement la **bille 9**. Peu importe comment — direct, en combinaison ou sur la casse —

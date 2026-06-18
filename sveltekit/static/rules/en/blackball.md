@@ -1,4 +1,4 @@
-# 🎱 Blackball — English Pool
+# 🎱 Blackball
 
 > Pot your balls, then the black.
 

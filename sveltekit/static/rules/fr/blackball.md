@@ -1,5 +1,4 @@
-# 🎱 Blackball — Billard anglais
-
+# 🎱 Billard anglais
 > Empoche tes billes, puis la noire.
 
 ## 🎯 But du jeu
