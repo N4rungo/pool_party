@@ -433,6 +433,19 @@
       "break": "🎱 {name} casse !"
     }
   },
+  "tenball": {
+    "winSub": "Félicitations !",
+    "breakBadge": "🎱 Casse",
+    "declareWinner": "🏆 Le vainqueur est…",
+    "chooseWinner": "Qui a gagné ?",
+    "reminderLowest": "⚡ <strong>Plus basse en premier</strong> : toucher la bille au numéro le plus bas présente sur la table",
+    "reminderCall": "📢 <strong>Annonce obligatoire</strong> : déclarer la bille visée et le trou avant chaque coup",
+    "reminderTen": "🎯 <strong>La 10 gagne</strong> : elle peut être empochée à tout moment sur un coup légal annoncé",
+    "reminderFault": "⚠️ <strong>Faute</strong> : bille en main n'importe où sur la table pour le joueur suivant",
+    "toast": {
+      "break": "🎱 {name} casse !"
+    }
+  },
   "pool": {
     "winSub": "Félicitations !",
     "teamA": "Équipe A",

@@ -433,6 +433,19 @@
       "break": "🎱 {name} breaks!"
     }
   },
+  "tenball": {
+    "winSub": "Congratulations!",
+    "breakBadge": "🎱 Break",
+    "declareWinner": "🏆 Declare winner…",
+    "chooseWinner": "Who won?",
+    "reminderLowest": "⚡ <strong>Lowest first</strong>: always hit the lowest-numbered ball on the table first",
+    "reminderCall": "📢 <strong>Called shots</strong>: declare the intended ball and pocket before every shot",
+    "reminderTen": "🎯 <strong>The 10 wins</strong>: it can be pocketed at any time on a legal called shot",
+    "reminderFault": "⚠️ <strong>Foul</strong>: ball in hand anywhere on the table for the next player",
+    "toast": {
+      "break": "🎱 {name} breaks!"
+    }
+  },
   "pool": {
     "winSub": "Congratulations!",
     "teamA": "Team A",
