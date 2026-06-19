@@ -104,6 +104,7 @@
     "defaultPlayer": "Joueur {n}",
     "configuration": "Configuration",
     "general": "Général",
+    "teamMode": "👥 Mode équipe",
     "step": "Étape {n} / {total}",
     "playerNames": "Noms des joueurs",
     "recap": "Récapitulatif",

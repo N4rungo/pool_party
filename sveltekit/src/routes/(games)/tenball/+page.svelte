@@ -2,13 +2,19 @@
   Page complète du jeu 10-Ball.
 
   Phases :
-   - 'setup' → saisie des joueurs, ordre de jeu, ordre de casse, mode match
-   - 'game'  → ordre de jeu avec casseur mis en avant, rappels de règles,
-                bouton(s) victoire
-   - 'win'   → overlay de victoire (partie simple)
+   - 'setup' → joueurs, mode équipe optionnel (3+ joueurs), ordre de casse, mode match
+   - 'game'  → ordre de jeu (mode individuel) ou cartes équipes (mode équipe)
+   - 'win'   → overlay de victoire
 
   Différence vs 9-Ball : annonce obligatoire (bille + trou) avant chaque coup.
-  La logique pure vit dans $lib/games/tenball.js (re-export de nineball.js).
+
+  2 joueurs  : toujours individuel, 2 boutons dorés
+  3+ joueurs : toggle mode équipe (défaut OFF)
+    OFF → chacun pour soi, 1 bouton → overlay de sélection
+    ON  → équipes A/B, 2 boutons colorés + rappel de passage de main
+
+  Logique individuelle : $lib/games/tenball.js  (state.players / state.breakerIndex)
+  Logique équipes      : $lib/games/pool.js       (state.teams / state.breakerTeamIndex)
 -->
 <script>
   import { goto } from '$app/navigation';
@@ -27,7 +33,16 @@
   import { get } from 'svelte/store';
   import { matchStore, startMatch, recordResult, endMatch, undoResult } from '$lib/stores/match.js';
   import { recordHistory } from '$lib/stores/history.js';
-  import { createInitialState, declareWinner, undo } from '$lib/games/tenball.js';
+  import {
+    createInitialState as createIndividualState,
+    declareWinner as declareIndividualWinner,
+    undo as undoIndividual,
+  } from '$lib/games/tenball.js';
+  import {
+    createInitialState as createTeamState,
+    declareWinner as declareTeamWinner,
+    undo as undoTeam,
+  } from '$lib/games/pool.js';
 
   // ── Phase courante ─────────────────────────────────────
   let phase = 'setup';
@@ -39,6 +54,8 @@
     { name: '', profileId: null },
     { name: '', profileId: null },
   ];
+  let playerTeams = [0, 1];
+  let teamMode = false;
   let randomOrder = true;
   let breakOrder = 'alternate';
   let matchMode = false;
@@ -49,23 +66,70 @@
     if (playerCount > _prevCount) {
       for (let i = _prevCount; i < playerCount; i++) {
         picks = [...picks, { name: '', profileId: null }];
+        playerTeams = [...playerTeams, i % 2];
       }
     } else {
       picks = picks.slice(0, playerCount);
+      playerTeams = playerTeams.slice(0, playerCount);
     }
+    // Désactiver le mode équipe si on repasse à 2 joueurs
+    if (playerCount === 2) teamMode = false;
     _prevCount = playerCount;
   }
 
   $: selectedIds   = picks.map(p => p.profileId).filter(Boolean);
   $: selectedNames = picks.map(p => p.name.trim().toLowerCase()).filter(Boolean);
 
+  // ── Gestion des équipes ────────────────────────────────
+  function toggleTeam(i) {
+    playerTeams = playerTeams.map((t, j) => (j === i ? 1 - t : t));
+  }
+
+  function randomizeTeams() {
+    const n = picks.length;
+    const indices = Array.from({ length: n }, (_, i) => i);
+    for (let i = n - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [indices[i], indices[j]] = [indices[j], indices[i]];
+    }
+    const half = Math.round(n / 2);
+    const newTeams = new Array(n).fill(1);
+    indices.slice(0, half).forEach(i => (newTeams[i] = 0));
+    playerTeams = newTeams;
+  }
+
+  $: teamAPreview = picks
+    .filter((_, i) => playerTeams[i] === 0 && picks[i].name.trim())
+    .map(p => p.name.trim());
+  $: teamBPreview = picks
+    .filter((_, i) => playerTeams[i] === 1 && picks[i].name.trim())
+    .map(p => p.name.trim());
+
+  function buildTeams() {
+    const _t = get(t);
+    const tA = picks
+      .filter((_, i) => playerTeams[i] === 0 && picks[i].name.trim())
+      .map(p => ({ name: p.name.trim(), profileId: p.profileId }));
+    const tB = picks
+      .filter((_, i) => playerTeams[i] === 1 && picks[i].name.trim())
+      .map(p => ({ name: p.name.trim(), profileId: p.profileId }));
+    return [
+      { label: tA.length === 1 ? tA[0].name : _t('pool.teamA'), players: tA },
+      { label: tB.length === 1 ? tB[0].name : _t('pool.teamB'), players: tB },
+    ];
+  }
+
   // ── État de partie ─────────────────────────────────────
   let state = null;
-  let gamePlayers = null;
+  let gamePlayers = null;  // mode individuel
+  let gameTeams   = null;  // mode équipe
   let gameBreakOrder = null;
   let picksMap = {};
+  // Victoire individuelle
   let winnerIndex = null;
   let winnerPickOpen = false;
+  // Victoire équipe
+  let winTeamIndex = null;
 
   // ── Match ──────────────────────────────────────────────
   let showMatchRecap = false;
@@ -75,39 +139,70 @@
   // ── Lancement ──────────────────────────────────────────
   function handleLaunch() {
     const _t = get(t);
-
-    let finalPicks = picks.map((p, i) =>
-      p.name.trim() ? p : { ...p, name: _t('setup.defaultPlayer', { values: { n: i + 1 } }) }
-    );
-
-    if (randomOrder) {
-      for (let i = finalPicks.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [finalPicks[i], finalPicks[j]] = [finalPicks[j], finalPicks[i]];
-      }
-    }
-
-    gamePlayers    = finalPicks;
     gameBreakOrder = breakOrder;
-    picksMap       = Object.fromEntries(finalPicks.map(p => [p.name, p.profileId]));
 
-    if (matchMode) {
-      startMatch('tenball', finalPicks.map(p => p.name), matchTotalGames);
+    if (teamMode) {
+      // ── Mode équipe ──
+      const allNamed = picks.every(p => p.name.trim());
+      if (!allNamed) {
+        let countA = picks.filter((p, i) => p.name.trim() && playerTeams[i] === 0).length;
+        let countB = picks.filter((p, i) => p.name.trim() && playerTeams[i] === 1).length;
+        const newTeams = [...playerTeams];
+        picks = picks.map((p, i) => {
+          if (p.name.trim()) return p;
+          if (countA <= countB) { newTeams[i] = 0; countA++; }
+          else { newTeams[i] = 1; countB++; }
+          return { ...p, name: _t('setup.defaultPlayer', { values: { n: i + 1 } }) };
+        });
+        playerTeams = newTeams;
+      } else {
+        const tA = picks.filter((_, i) => playerTeams[i] === 0);
+        const tB = picks.filter((_, i) => playerTeams[i] === 1);
+        if (tA.length === 0 || tB.length === 0) {
+          showToast(_t('pool.toast.onePlayerPerTeam'));
+          return;
+        }
+      }
+      gameTeams = buildTeams();
+      picksMap  = Object.fromEntries(picks.map(p => [p.name.trim(), p.profileId]));
+      if (matchMode) startMatch('tenball', gameTeams.map(t => t.label), matchTotalGames);
+      startTeamGame(randomOrder ? null : 0);
+
+    } else {
+      // ── Mode individuel ──
+      let finalPicks = picks.map((p, i) =>
+        p.name.trim() ? p : { ...p, name: _t('setup.defaultPlayer', { values: { n: i + 1 } }) }
+      );
+      if (randomOrder) {
+        for (let i = finalPicks.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [finalPicks[i], finalPicks[j]] = [finalPicks[j], finalPicks[i]];
+        }
+      }
+      gamePlayers = finalPicks;
+      picksMap    = Object.fromEntries(finalPicks.map(p => [p.name, p.profileId]));
+      if (matchMode) startMatch('tenball', finalPicks.map(p => p.name), matchTotalGames);
+      startIndividualGame();
     }
-
-    startGame();
   }
 
-  function startGame(initialBreakerIndex = null) {
-    state          = createInitialState(gamePlayers, gameBreakOrder, initialBreakerIndex);
+  function startIndividualGame(initialBreakerIndex = null) {
+    state          = createIndividualState(gamePlayers, gameBreakOrder, initialBreakerIndex);
     winnerIndex    = null;
     winnerPickOpen = false;
     phase          = 'game';
     showToast(get(t)('tenball.toast.break', { values: { name: state.players[state.breakerIndex].name } }));
   }
 
-  // ── Ordre de jeu affiché (commence au casseur) ─────────
-  $: playOrder = state
+  function startTeamGame(initialBreakerIndex = null) {
+    state        = createTeamState(gameTeams, gameBreakOrder, initialBreakerIndex);
+    winTeamIndex = null;
+    phase        = 'game';
+    showToast(get(t)('pool.toast.break', { values: { team: state.teams[state.breakerTeamIndex].label } }));
+  }
+
+  // ── Ordre de jeu affiché (mode individuel) ─────────────
+  $: playOrder = !teamMode && state
     ? Array.from({ length: state.players.length }, (_, i) => ({
         ...state.players[(state.breakerIndex + i) % state.players.length],
         isBreaker: i === 0,
@@ -116,38 +211,64 @@
 
   // ── Déclarer un vainqueur ──────────────────────────────
   function onDeclareWinner(idx) {
-    const { newState, outcome } = declareWinner(state, idx);
-    state          = newState;
-    winnerIndex    = idx;
-    winnerPickOpen = false;
+    if (teamMode) {
+      const { newState, outcome } = declareTeamWinner(state, idx);
+      state        = newState;
+      winTeamIndex = idx;
 
-    recordHistory({
-      gameId: 'tenball',
-      players: gamePlayers.map(p => ({ name: p.name, profileId: picksMap[p.name] ?? null })),
-      winners: [outcome.winner.name],
-      scores:  Object.fromEntries(gamePlayers.map(p => [p.name, null])),
-    });
+      const allPlayers = [...state.teams[0].players, ...state.teams[1].players];
+      recordHistory({
+        gameId: 'tenball',
+        players: allPlayers.map(p => ({ name: p.name, profileId: picksMap[p.name] ?? null })),
+        winners: state.teams[idx].players.map(p => p.name),
+        scores:  Object.fromEntries(allPlayers.map(p => [p.name, null])),
+      });
 
-    if ($matchStore.isActive) {
-      const allScores = gamePlayers.map(p => ({ name: p.name, score: null }));
-      recordResult([outcome.winner.name], allScores);
-      showMatchRecap = true;
+      if ($matchStore.isActive) {
+        recordResult([state.teams[idx].label], state.teams.map(t => ({ name: t.label, score: null })));
+        showMatchRecap = true;
+      } else {
+        phase = 'win';
+      }
     } else {
-      phase = 'win';
+      const { newState, outcome } = declareIndividualWinner(state, idx);
+      state          = newState;
+      winnerIndex    = idx;
+      winnerPickOpen = false;
+
+      recordHistory({
+        gameId: 'tenball',
+        players: gamePlayers.map(p => ({ name: p.name, profileId: picksMap[p.name] ?? null })),
+        winners: [outcome.winner.name],
+        scores:  Object.fromEntries(gamePlayers.map(p => [p.name, null])),
+      });
+
+      if ($matchStore.isActive) {
+        recordResult([outcome.winner.name], gamePlayers.map(p => ({ name: p.name, score: null })));
+        showMatchRecap = true;
+      } else {
+        phase = 'win';
+      }
     }
   }
 
   // ── Undo depuis l'overlay de victoire ─────────────────
   function onUndoFromWin() {
-    state       = undo(state);
-    winnerIndex = null;
-    phase       = 'game';
+    if (teamMode) {
+      state        = undoTeam(state);
+      winTeamIndex = null;
+    } else {
+      state       = undoIndividual(state);
+      winnerIndex = null;
+    }
+    phase = 'game';
     showToast(get(t)('toast.winCancelled'));
   }
 
   // ── Rejouer / nouveau jeu ──────────────────────────────
   function replay() {
-    startGame(state.breakerIndex);
+    if (teamMode) startTeamGame(state.breakerTeamIndex);
+    else startIndividualGame(state.breakerIndex);
   }
 
   function newGame() {
@@ -172,8 +293,8 @@
   // ── Handlers match ─────────────────────────────────────
   function onMatchNext() {
     showMatchRecap = false;
-    winnerIndex    = null;
-    startGame(state.breakerIndex);
+    if (teamMode) { winTeamIndex = null; startTeamGame(state.breakerTeamIndex); }
+    else          { winnerIndex = null;  startIndividualGame(state.breakerIndex); }
   }
 
   function onMatchViewFinal() {
@@ -183,8 +304,8 @@
 
   function onMatchUndo() {
     undoResult();
-    state          = undo(state);
-    winnerIndex    = null;
+    if (teamMode) { state = undoTeam(state);       winTeamIndex = null; }
+    else          { state = undoIndividual(state);  winnerIndex  = null; }
     showMatchRecap = false;
     showToast(get(t)('toast.winCancelled'));
   }
@@ -204,11 +325,17 @@
   function onMatchPlayAgain() {
     const savedTotal = $matchStore.totalGames;
     endMatch();
-    startMatch('tenball', gamePlayers.map(p => p.name), savedTotal);
     matchAbandoned   = false;
     showMatchSummary = false;
-    winnerIndex      = null;
-    startGame();
+    if (teamMode) {
+      startMatch('tenball', gameTeams.map(t => t.label), savedTotal);
+      winTeamIndex = null;
+      startTeamGame();
+    } else {
+      startMatch('tenball', gamePlayers.map(p => p.name), savedTotal);
+      winnerIndex = null;
+      startIndividualGame();
+    }
   }
 
   function onMatchNewGame() {
@@ -221,9 +348,17 @@
   // ── Règles ─────────────────────────────────────────────
   let rulesOpen = false;
 
-  // ── Dérivés ────────────────────────────────────────────
-  $: winner  = winnerIndex !== null && state ? state.players[winnerIndex] : null;
-  $: winName = winner?.name ?? '';
+  // ── Dérivés victoire ───────────────────────────────────
+  $: winnerPlayer = !teamMode && winnerIndex !== null && state ? state.players[winnerIndex] : null;
+  $: winnerTeam   =  teamMode && winTeamIndex !== null && state ? state.teams[winTeamIndex] : null;
+  $: winName = teamMode ? (winnerTeam?.label ?? '') : (winnerPlayer?.name ?? '');
+  $: winSub  = teamMode
+    ? (winnerTeam && winnerTeam.players.length > 1
+        ? winnerTeam.players.map(p => p.name).join(' & ')
+        : $t('pool.winSub'))
+    : $t('tenball.winSub');
+  $: winOpen = phase === 'win' && (teamMode ? winTeamIndex !== null : winnerIndex !== null);
+  $: canUndoWin = state?.history?.length > 0;
 
   $: matchRecapGameNumber = $matchStore.currentGame - 1;
   $: matchRecapWinners    = $matchStore.results?.[$matchStore.results.length - 1]?.winners ?? [];
@@ -250,14 +385,70 @@
 
       <div class="players-list">
         {#each picks as pick, i (i)}
-          <PlayerPicker
-            bind:value={picks[i]}
-            index={i}
-            exclude={selectedIds.filter(id => id !== pick.profileId)}
-            excludeNames={selectedNames.filter(n => n !== pick.name.trim().toLowerCase())}
-          />
+          <div class="player-row">
+            <div class="picker-wrap">
+              <PlayerPicker
+                bind:value={picks[i]}
+                index={i}
+                exclude={selectedIds.filter(id => id !== pick.profileId)}
+                excludeNames={selectedNames.filter(n => n !== pick.name.trim().toLowerCase())}
+              />
+            </div>
+            {#if teamMode && picks[i].name}
+              <button
+                class="team-toggle"
+                class:team-a={playerTeams[i] === 0}
+                class:team-b={playerTeams[i] === 1}
+                on:click={() => toggleTeam(i)}
+                title={$t('pool.toggleTeam')}
+              >
+                {playerTeams[i] === 0 ? 'A' : 'B'}
+              </button>
+            {/if}
+          </div>
         {/each}
       </div>
+
+      <!-- Mode équipe (3+ joueurs seulement) -->
+      {#if playerCount > 2}
+        <div class="team-mode-row">
+          <span class="team-mode-label">{$t('setup.teamMode')}</span>
+          <!-- svelte-ignore a11y-click-events-have-key-events -->
+          <div
+            class="toggle-track"
+            class:on={teamMode}
+            on:click={() => teamMode = !teamMode}
+            role="switch"
+            aria-checked={teamMode}
+            tabindex="0"
+            on:keydown={(e) => (e.key === 'Enter' || e.key === ' ') && (teamMode = !teamMode)}
+          >
+            <div class="toggle-thumb"></div>
+          </div>
+        </div>
+
+        {#if teamMode}
+          <div class="teams-section-header">
+            <div class="section-label" style="margin-bottom: 0">{$t('pool.teams')}</div>
+            <button class="btn-randomize" on:click={randomizeTeams}>{$t('pool.randomize')}</button>
+          </div>
+          <div class="team-preview">
+            <div class="team-preview-col">
+              <span class="team-badge team-badge-a">A</span>
+              <span class="team-preview-names">
+                {teamAPreview.length ? teamAPreview.join(', ') : '—'}
+              </span>
+            </div>
+            <div class="team-preview-sep"></div>
+            <div class="team-preview-col">
+              <span class="team-badge team-badge-b">B</span>
+              <span class="team-preview-names">
+                {teamBPreview.length ? teamBPreview.join(', ') : '—'}
+              </span>
+            </div>
+          </div>
+        {/if}
+      {/if}
 
       <MatchSetup bind:randomizeOrder={randomOrder} bind:matchMode bind:totalGames={matchTotalGames} bind:breakOrder />
 
@@ -282,40 +473,92 @@
       on:rules={() => (rulesOpen = true)}
     >
 
-      <!-- Ordre de jeu -->
-      <div class="play-order">
-        {#each playOrder as player, i}
-          <div class="order-row" class:is-breaker={i === 0}>
-            <span class="order-num">{i + 1}</span>
-            <span class="order-name">{player.name}</span>
-            {#if i === 0}
-              <span class="break-badge-inline">{$t('tenball.breakBadge')}</span>
-            {/if}
-          </div>
-        {/each}
-      </div>
+      {#if teamMode}
+        <!-- ── Mode équipe : cartes ── -->
+        <div class="teams-container">
+          {#each state.teams as team, i}
+            <div
+              class="team-card"
+              class:team-card-a={i === 0}
+              class:team-card-b={i === 1}
+              class:team-card-breaker={state.breakerTeamIndex === i}
+            >
+              {#if state.breakerTeamIndex === i}
+                <div class="break-badge">{$t('pool.breakBadge')}</div>
+              {/if}
+              <div class="team-label" class:team-label-a={i === 0} class:team-label-b={i === 1}>
+                {team.label}
+              </div>
+              {#if team.players.length > 1}
+                <div class="team-players">{team.players.map(p => p.name).join(', ')}</div>
+              {/if}
+            </div>
+          {/each}
+        </div>
 
-      <!-- Rappels de règles -->
-      <div class="reminders">
-        <div class="reminder-item">{@html $t('tenball.reminderLowest')}</div>
-        <div class="reminder-item reminder-call">{@html $t('tenball.reminderCall')}</div>
-        <div class="reminder-item">{@html $t('tenball.reminderTen')}</div>
-        <div class="reminder-item">{@html $t('tenball.reminderFault')}</div>
-      </div>
+        <div class="reminders">
+          {#if state.teams.some(t => t.players.length > 1)}
+            <div class="reminder-item">
+              {@html $t('pool.reminderTeam')}
+              <ul class="reminder-list">
+                <li>{$t('pool.reminderTeamRule1')}</li>
+                <li>{$t('pool.reminderTeamRule2')}</li>
+              </ul>
+            </div>
+          {/if}
+          <div class="reminder-item">{@html $t('tenball.reminderLowest')}</div>
+          <div class="reminder-item reminder-call">{@html $t('tenball.reminderCall')}</div>
+          <div class="reminder-item">{@html $t('tenball.reminderTen')}</div>
+          <div class="reminder-item">{@html $t('tenball.reminderFault')}</div>
+        </div>
+
+      {:else}
+        <!-- ── Mode individuel : ordre de jeu ── -->
+        <div class="play-order">
+          {#each playOrder as player, i}
+            <div class="order-row" class:is-breaker={i === 0}>
+              <span class="order-num">{i + 1}</span>
+              <span class="order-name">{player.name}</span>
+              {#if i === 0}
+                <span class="break-badge-inline">{$t('tenball.breakBadge')}</span>
+              {/if}
+            </div>
+          {/each}
+        </div>
+
+        <div class="reminders">
+          <div class="reminder-item">{@html $t('tenball.reminderLowest')}</div>
+          <div class="reminder-item reminder-call">{@html $t('tenball.reminderCall')}</div>
+          <div class="reminder-item">{@html $t('tenball.reminderTen')}</div>
+          <div class="reminder-item">{@html $t('tenball.reminderFault')}</div>
+        </div>
+      {/if}
 
       <!-- Boutons victoire dans le footer -->
       <svelte:fragment slot="footer">
-        {#if state.players.length === 2}
+        {#if teamMode}
+          <!-- 2 boutons colorés équipe -->
           <div class="victory-buttons">
-            <button class="btn-victory" on:click={() => onDeclareWinner(0)}>
+            <button class="btn-victory btn-victory-a" on:click={() => onDeclareWinner(0)}>
+              🏆 {state.teams[0].label}
+            </button>
+            <button class="btn-victory btn-victory-b" on:click={() => onDeclareWinner(1)}>
+              🏆 {state.teams[1].label}
+            </button>
+          </div>
+        {:else if state.players.length === 2}
+          <!-- 2 joueurs : 2 boutons dorés -->
+          <div class="victory-buttons">
+            <button class="btn-victory btn-victory-gold" on:click={() => onDeclareWinner(0)}>
               🏆 {state.players[0].name}
             </button>
-            <button class="btn-victory" on:click={() => onDeclareWinner(1)}>
+            <button class="btn-victory btn-victory-gold" on:click={() => onDeclareWinner(1)}>
               🏆 {state.players[1].name}
             </button>
           </div>
         {:else}
-          <button class="btn-victory btn-declare" on:click={() => winnerPickOpen = true}>
+          <!-- 3+ joueurs individuels : bouton overlay -->
+          <button class="btn-victory btn-victory-gold btn-declare" on:click={() => winnerPickOpen = true}>
             {$t('tenball.declareWinner')}
           </button>
         {/if}
@@ -327,19 +570,19 @@
 
 <!-- ===== OVERLAY VICTOIRE ===== -->
 <WinOverlay
-  open={phase === 'win' && winnerIndex !== null}
+  open={winOpen}
   trophy="🏆"
   name={winName}
-  sub={$t('tenball.winSub')}
-  canUndo={state?.history?.length > 0}
+  sub={winSub}
+  canUndo={canUndoWin}
   on:undo={onUndoFromWin}
   on:replay={replay}
   on:newGame={newGame}
 />
 
 
-<!-- ===== OVERLAY SÉLECTION VAINQUEUR (3+ joueurs) ===== -->
-{#if winnerPickOpen && state}
+<!-- ===== OVERLAY SÉLECTION VAINQUEUR (mode individuel 3+) ===== -->
+{#if winnerPickOpen && state && !teamMode}
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   <div class="winner-overlay" on:click|self={() => winnerPickOpen = false}>
@@ -366,7 +609,7 @@
     winners={matchRecapWinners}
     matchScores={$matchStore.matchScores}
     isLastGame={matchRecapGameNumber === $matchStore.totalGames}
-    canUndo={state?.history?.length > 0}
+    canUndo={canUndoWin}
     onUndo={onMatchUndo}
     onNext={onMatchNext}
     onViewFinal={onMatchViewFinal}
@@ -427,7 +670,253 @@
     text-align: left;
   }
 
-  /* ── Ordre de jeu (game screen) ── */
+  .player-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .picker-wrap {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* Toggle équipe par joueur */
+  .team-toggle {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    border: 2px solid transparent;
+    font-size: 15px;
+    font-weight: bold;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .team-toggle.team-a {
+    background: rgba(33, 150, 243, 0.2);
+    border-color: rgba(33, 150, 243, 0.55);
+    color: #64b5f6;
+  }
+
+  .team-toggle.team-b {
+    background: rgba(229, 57, 53, 0.2);
+    border-color: rgba(229, 57, 53, 0.55);
+    color: #ef9a9a;
+  }
+
+  /* Toggle mode équipe */
+  .team-mode-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 6px 0 10px;
+  }
+
+  .team-mode-label {
+    font-size: 14px;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .toggle-track {
+    width: 46px;
+    height: 26px;
+    border-radius: 13px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    position: relative;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+  }
+
+  .toggle-track.on {
+    background: linear-gradient(145deg, var(--color-gold-light), var(--color-gold));
+    border-color: var(--color-gold);
+  }
+
+  .toggle-thumb {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+    transition: transform 0.2s;
+  }
+
+  .toggle-track.on .toggle-thumb {
+    transform: translateX(20px);
+  }
+
+  /* Aperçu équipes */
+  .section-label {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    text-align: left;
+  }
+
+  .teams-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .btn-randomize {
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    color: rgba(255, 255, 255, 0.6);
+    font-family: inherit;
+    font-size: 12px;
+    padding: 5px 12px;
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .btn-randomize:active {
+    background: rgba(255, 255, 255, 0.12);
+    color: white;
+  }
+
+  .team-preview {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 12px;
+    padding: 10px 14px;
+    margin-bottom: 4px;
+  }
+
+  .team-preview-col {
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .team-preview-sep {
+    width: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    align-self: stretch;
+    flex-shrink: 0;
+  }
+
+  .team-badge {
+    font-size: 11px;
+    font-weight: bold;
+    border-radius: 6px;
+    padding: 2px 7px;
+    flex-shrink: 0;
+    line-height: 1.6;
+  }
+
+  .team-badge-a {
+    background: rgba(33, 150, 243, 0.15);
+    border: 1px solid rgba(33, 150, 243, 0.45);
+    color: #64b5f6;
+  }
+
+  .team-badge-b {
+    background: rgba(229, 57, 53, 0.15);
+    border: 1px solid rgba(229, 57, 53, 0.45);
+    color: #ef9a9a;
+  }
+
+  .team-preview-names {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.65);
+    text-align: left;
+    word-break: break-word;
+  }
+
+  /* ── Écran de jeu : mode équipe ── */
+  .teams-container {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+    margin-top: 8px;
+  }
+
+  .team-card {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.25);
+    border: 2px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    padding: 22px 10px 14px;
+    text-align: center;
+    position: relative;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    min-height: 90px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  .team-card-breaker.team-card-a {
+    border-color: rgba(33, 150, 243, 0.65);
+    box-shadow: 0 0 18px rgba(33, 150, 243, 0.18);
+  }
+
+  .team-card-breaker.team-card-b {
+    border-color: rgba(229, 57, 53, 0.65);
+    box-shadow: 0 0 18px rgba(229, 57, 53, 0.18);
+  }
+
+  .break-badge {
+    position: absolute;
+    top: -11px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    font-weight: bold;
+    background: var(--color-pool);
+    padding: 2px 8px;
+    border-radius: 10px;
+    white-space: nowrap;
+  }
+
+  .team-card-breaker.team-card-a .break-badge { color: #64b5f6; border: 1px solid rgba(33, 150, 243, 0.4); }
+  .team-card-breaker.team-card-b .break-badge { color: #ef9a9a; border: 1px solid rgba(229, 57, 53, 0.4); }
+
+  .team-label {
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
+  .team-label-a { color: #64b5f6; }
+  .team-label-b { color: #ef9a9a; }
+
+  .team-players {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.4);
+    word-break: break-word;
+    line-height: 1.4;
+  }
+
+  /* ── Écran de jeu : mode individuel ── */
   .play-order {
     display: flex;
     flex-direction: column;
@@ -462,13 +951,9 @@
     min-width: 18px;
   }
 
-  .order-row.is-breaker .order-num {
-    color: rgba(var(--color-gold-rgb), 0.55);
-  }
+  .order-row.is-breaker .order-num { color: rgba(var(--color-gold-rgb), 0.55); }
 
-  .order-name {
-    flex: 1;
-  }
+  .order-name { flex: 1; }
 
   .break-badge-inline {
     font-size: 11px;
@@ -500,8 +985,19 @@
     line-height: 1.5;
   }
 
-  .reminder-item :global(strong) {
-    color: rgba(255, 255, 255, 0.9);
+  .reminder-item :global(strong) { color: rgba(255, 255, 255, 0.9); }
+
+  .reminder-list {
+    margin: 4px 0 0 4px;
+    padding-left: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .reminder-list li {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.55);
   }
 
   /* Le rappel "annonce" est mis en avant */
@@ -533,9 +1029,6 @@
     font-size: 14px;
     font-weight: bold;
     cursor: pointer;
-    background: linear-gradient(145deg, var(--color-gold-light), var(--color-gold));
-    color: var(--color-pool);
-    box-shadow: 0 4px 0 var(--color-gold-dark);
     transition: transform .1s, box-shadow .1s;
     -webkit-tap-highlight-color: transparent;
     white-space: nowrap;
@@ -546,6 +1039,24 @@
   .btn-victory:active {
     transform: translateY(2px);
     box-shadow: none;
+  }
+
+  .btn-victory-gold {
+    background: linear-gradient(145deg, var(--color-gold-light), var(--color-gold));
+    color: var(--color-pool);
+    box-shadow: 0 4px 0 var(--color-gold-dark);
+  }
+
+  .btn-victory-a {
+    background: linear-gradient(145deg, #2196f3, #1565c0);
+    color: white;
+    box-shadow: 0 4px 0 #0d47a1;
+  }
+
+  .btn-victory-b {
+    background: linear-gradient(145deg, #e53935, #b71c1c);
+    color: white;
+    box-shadow: 0 4px 0 #7f0000;
   }
 
   .btn-declare {
