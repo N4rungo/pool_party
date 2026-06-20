@@ -384,7 +384,7 @@
                 {player.score}<span class="fb-card-target"> / {player.target}</span>
               </div>
               <div class="fb-card-bar">
-                <div class="fb-card-fill" style="width: {Math.min(100, Math.round(player.score / player.target * 100))}%"></div>
+                <div class="fb-card-fill" style="width: {Math.min(100, Math.round((player.target - player.score) / player.target * 100))}%"></div>
               </div>
             </div>
           {/each}

@@ -347,9 +347,8 @@
               <div class="casin-card-emoji">{EMOJIS[i % EMOJIS.length]}</div>
               <div class="casin-card-name">{player.name}</div>
               <div class="casin-card-progress">
-                {doneCount(player)}<span class="casin-card-total"> / {CASIN_ACTIONS.length}</span>
+                {doneCount(player)}<span class="casin-card-total"> / {CASIN_ACTIONS.length}</span><span class="casin-card-x"> ×{player.x}</span>
               </div>
-              <div class="casin-card-x">×{player.x}</div>
               {#if blockedAction}
                 <div class="casin-blocked-badge">{$t('casin.blockedBadge', { values: { action: $t('casin.actions.' + blockedAction.id) } })}</div>
               {/if}

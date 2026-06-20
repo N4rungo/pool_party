@@ -566,13 +566,13 @@
             </button>
           </div>
         {:else if state.players.length === 2}
-          <!-- 2 joueurs : boutons colorés distincts -->
+          <!-- 2 joueurs : boutons colorés (style Pool) -->
           <div class="victory-buttons">
             <button class="btn-victory btn-victory-a" on:click={() => onDeclareWinner(0)}>
-              {PLAYER_EMOJIS[0]} {state.players[0].name}
+              🏆 {state.players[0].name}
             </button>
             <button class="btn-victory btn-victory-b" on:click={() => onDeclareWinner(1)}>
-              {PLAYER_EMOJIS[1]} {state.players[1].name}
+              🏆 {state.players[1].name}
             </button>
           </div>
         {:else}
