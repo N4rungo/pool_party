@@ -18,6 +18,7 @@
   import { goto } from '$app/navigation';
   import { base } from '$app/paths';
   import GameLayout from '$lib/components/GameLayout.svelte';
+  import Overlay from '$lib/components/Overlay.svelte';
   import RulesViewer from '$lib/components/RulesViewer.svelte';
   import WinOverlay from '$lib/components/WinOverlay.svelte';
   import NumberSelector from '$lib/components/NumberSelector.svelte';
@@ -545,13 +546,13 @@
             </button>
           </div>
         {:else if state.players.length === 2}
-          <!-- 2 joueurs : 2 boutons dorés -->
+          <!-- 2 joueurs : boutons colorés distincts -->
           <div class="victory-buttons">
-            <button class="btn-victory btn-victory-gold" on:click={() => onDeclareWinner(0)}>
-              🏆 {state.players[0].name}
+            <button class="btn-victory btn-victory-a" on:click={() => onDeclareWinner(0)}>
+              {PLAYER_EMOJIS[0]} {state.players[0].name}
             </button>
-            <button class="btn-victory btn-victory-gold" on:click={() => onDeclareWinner(1)}>
-              🏆 {state.players[1].name}
+            <button class="btn-victory btn-victory-b" on:click={() => onDeclareWinner(1)}>
+              {PLAYER_EMOJIS[1]} {state.players[1].name}
             </button>
           </div>
         {:else}
@@ -580,23 +581,19 @@
 
 
 <!-- ===== OVERLAY SÉLECTION VAINQUEUR (mode individuel 3+) ===== -->
-{#if winnerPickOpen && state && !teamMode}
-  <!-- svelte-ignore a11y-click-events-have-key-events -->
-  <!-- svelte-ignore a11y-no-static-element-interactions -->
-  <div class="winner-overlay" on:click|self={() => winnerPickOpen = false}>
-    <div class="winner-panel">
-      <div class="winner-panel-title">{$t('nineball.chooseWinner')}</div>
+<Overlay open={winnerPickOpen && !teamMode} on:close={() => winnerPickOpen = false}>
+  {#if state}
+    <h2 style="text-align:center;margin-bottom:14px;">{$t('nineball.chooseWinner')}</h2>
+    <div class="pick-list">
       {#each state.players as player, i}
-        <button class="winner-btn" on:click={() => onDeclareWinner(i)}>
-          {PLAYER_EMOJIS[i % PLAYER_EMOJIS.length]} {player.name}
+        <button class="pick-btn" on:click={() => onDeclareWinner(i)}>
+          <span class="pick-emoji">{PLAYER_EMOJIS[i % PLAYER_EMOJIS.length]}</span>
+          <span class="pick-name">{player.name}</span>
         </button>
       {/each}
-      <button class="winner-cancel" on:click={() => winnerPickOpen = false}>
-        {$t('common.cancel')}
-      </button>
     </div>
-  </div>
-{/if}
+  {/if}
+</Overlay>
 
 
 <!-- ===== OVERLAY RÉCAP MATCH ===== -->
@@ -1047,76 +1044,43 @@
     font-size: 15px;
   }
 
-  /* ── Overlay sélection vainqueur ── */
-  .winner-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.65);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 200;
-  }
-
-  .winner-panel {
-    background: linear-gradient(160deg, #1e5c34, #143d24);
-    border: 1px solid rgba(var(--color-gold-rgb), 0.5);
-    border-radius: 20px;
-    padding: 24px 20px;
-    text-align: center;
+  /* ── Picker vainqueur (liste simple) ── */
+  .pick-list {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    width: 88%;
-    max-width: 320px;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+    gap: 8px;
+    margin-bottom: 12px;
   }
 
-  .winner-panel-title {
-    font-size: 11px;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.45);
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    margin-bottom: 4px;
-  }
-
-  .winner-btn {
+  .pick-btn {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: white;
+    padding: 12px 14px;
+    border-radius: 12px;
     font-family: inherit;
     font-size: 15px;
-    font-weight: bold;
-    background: linear-gradient(145deg, var(--color-gold-light), var(--color-gold));
-    color: var(--color-pool);
-    border: none;
-    border-radius: 14px;
-    padding: 13px;
     cursor: pointer;
-    box-shadow: 0 3px 0 var(--color-gold-dark);
-    transition: transform .1s, box-shadow .1s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background .15s, border-color .15s;
     -webkit-tap-highlight-color: transparent;
   }
 
-  .winner-btn:active {
-    transform: translateY(2px);
-    box-shadow: none;
+  .pick-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(var(--color-gold-rgb), 0.5);
   }
 
-  .winner-cancel {
-    font-family: inherit;
-    font-size: 12px;
-    background: none;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    color: rgba(255, 255, 255, 0.4);
-    border-radius: 20px;
-    padding: 6px 16px;
-    cursor: pointer;
-    margin-top: 4px;
-    transition: background .15s, color .15s;
-    -webkit-tap-highlight-color: transparent;
+  .pick-emoji {
+    font-size: 18px;
+    flex-shrink: 0;
   }
 
-  .winner-cancel:hover {
-    background: rgba(255, 255, 255, 0.07);
-    color: rgba(255, 255, 255, 0.65);
+  .pick-name {
+    flex: 1;
+    text-align: left;
   }
 </style>
