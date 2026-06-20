@@ -513,18 +513,38 @@
         </div>
 
       {:else}
-        <!-- ── Mode individuel : ordre de jeu ── -->
-        <div class="play-order">
-          {#each playOrder as player, i}
-            <div class="order-row" class:is-breaker={i === 0}>
-              <span class="player-emoji">{PLAYER_EMOJIS[player.playerIndex % PLAYER_EMOJIS.length]}</span>
-              <span class="order-name">{player.name}</span>
-              {#if i === 0}
-                <span class="break-badge-inline">{$t('nineball.breakBadge')}</span>
-              {/if}
-            </div>
-          {/each}
-        </div>
+        <!-- ── Mode individuel ── -->
+        {#if state.players.length === 2}
+          <!-- 2 joueurs : cartes côte à côte (style Pool) -->
+          <div class="teams-container">
+            {#each state.players as player, i}
+              <div class="team-card"
+                class:team-card-a={i === 0}
+                class:team-card-b={i === 1}
+                class:team-card-breaker={state.breakerIndex === i}>
+                {#if state.breakerIndex === i}
+                  <div class="break-badge">{$t('nineball.breakBadge')}</div>
+                {/if}
+                <div class="team-label" class:team-label-a={i === 0} class:team-label-b={i === 1}>
+                  {player.name}
+                </div>
+              </div>
+            {/each}
+          </div>
+        {:else}
+          <!-- 3+ joueurs : ordre de jeu (liste) -->
+          <div class="play-order">
+            {#each playOrder as player, i}
+              <div class="order-row" class:is-breaker={i === 0}>
+                <span class="player-emoji">{PLAYER_EMOJIS[player.playerIndex % PLAYER_EMOJIS.length]}</span>
+                <span class="order-name">{player.name}</span>
+                {#if i === 0}
+                  <span class="break-badge-inline">{$t('nineball.breakBadge')}</span>
+                {/if}
+              </div>
+            {/each}
+          </div>
+        {/if}
 
         <div class="reminders">
           <div class="reminder-item">{@html $t('nineball.reminderLowest')}</div>

@@ -336,23 +336,45 @@
       on:rules={() => rulesOpen = true}>
 
       <!-- Scoreboard compact -->
-      <div class="casin-scoreboard" style="--tab-cols: {tabCols}">
-      {#each state.players as player, i (i)}
-        {@const isActive = i === state.currentIndex}
-        {@const blockedAction = isActive && player.lastAction && player.scores[player.lastAction] < player.x
-          ? CASIN_ACTIONS.find(a => a.id === player.lastAction)
-          : null}
-        <div class="casin-score-card" class:active={isActive}>
-          <span class="casin-score-emoji">{EMOJIS[i % EMOJIS.length]}</span>
-          <span class="casin-score-name">{player.name}</span>
-          {#if blockedAction}
-            <span class="casin-blocked-badge">{$t('casin.blockedBadge', { values: { action: $t('casin.actions.' + blockedAction.id) } })}</span>
-          {/if}
-          <span class="casin-score-progress">{doneCount(player)} / {CASIN_ACTIONS.length}</span>
-          <span class="casin-score-x">×{player.x}</span>
+      {#if state.players.length === 2}
+        <div class="casin-scores-2p">
+          {#each state.players as player, i (i)}
+            {@const isActive = i === state.currentIndex}
+            {@const blockedAction = isActive && player.lastAction && player.scores[player.lastAction] < player.x
+              ? CASIN_ACTIONS.find(a => a.id === player.lastAction)
+              : null}
+            <div class="casin-card-2p" class:casin-card-active={isActive}>
+              <div class="casin-card-emoji">{EMOJIS[i % EMOJIS.length]}</div>
+              <div class="casin-card-name">{player.name}</div>
+              <div class="casin-card-progress">
+                {doneCount(player)}<span class="casin-card-total"> / {CASIN_ACTIONS.length}</span>
+              </div>
+              <div class="casin-card-x">×{player.x}</div>
+              {#if blockedAction}
+                <div class="casin-blocked-badge">{$t('casin.blockedBadge', { values: { action: $t('casin.actions.' + blockedAction.id) } })}</div>
+              {/if}
+            </div>
+          {/each}
         </div>
-      {/each}
-    </div>
+      {:else}
+        <div class="casin-scoreboard" style="--tab-cols: {tabCols}">
+        {#each state.players as player, i (i)}
+          {@const isActive = i === state.currentIndex}
+          {@const blockedAction = isActive && player.lastAction && player.scores[player.lastAction] < player.x
+            ? CASIN_ACTIONS.find(a => a.id === player.lastAction)
+            : null}
+          <div class="casin-score-card" class:active={isActive}>
+            <span class="casin-score-emoji">{EMOJIS[i % EMOJIS.length]}</span>
+            <span class="casin-score-name">{player.name}</span>
+            {#if blockedAction}
+              <span class="casin-blocked-badge">{$t('casin.blockedBadge', { values: { action: $t('casin.actions.' + blockedAction.id) } })}</span>
+            {/if}
+            <span class="casin-score-progress">{doneCount(player)} / {CASIN_ACTIONS.length}</span>
+            <span class="casin-score-x">×{player.x}</span>
+          </div>
+        {/each}
+      </div>
+      {/if}
 
     <!-- Grille des actions -->
     <div class="casin-grid">
@@ -484,6 +506,73 @@
     height: 1px;
     background: rgba(255, 255, 255, 0.1);
     margin: 16px 0;
+  }
+
+  /* ── 2 joueurs : cartes style Chicago ── */
+  .casin-scores-2p {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .casin-card-2p {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.25);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 14px 10px 12px;
+    text-align: center;
+    transition: border-color .3s, box-shadow .3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .casin-card-2p.casin-card-active {
+    border-color: var(--color-gold);
+    box-shadow: 0 0 16px rgba(var(--color-gold-rgb), 0.25);
+  }
+
+  .casin-card-emoji {
+    font-size: 22px;
+  }
+
+  .casin-card-name {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
+  .casin-card-2p.casin-card-active .casin-card-name {
+    color: var(--color-gold);
+    font-weight: bold;
+  }
+
+  .casin-card-progress {
+    font-size: 28px;
+    font-weight: bold;
+    color: white;
+    line-height: 1;
+  }
+
+  .casin-card-2p.casin-card-active .casin-card-progress {
+    color: var(--color-gold);
+    text-shadow: 0 0 20px rgba(var(--color-gold-rgb), 0.4);
+  }
+
+  .casin-card-total {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.35);
+    font-weight: normal;
+  }
+
+  .casin-card-x {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.4);
   }
 
   /* ===== Scoreboard ===== */

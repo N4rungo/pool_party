@@ -374,19 +374,36 @@
       on:rules={() => rulesOpen = true}>
 
       <!-- Scoreboard -->
-      <div class="fb-scoreboard" style="--tab-cols: {tabCols}">
-        {#each state.players as player, i (i)}
-          <div class="fb-player-row" class:active={i === state.currentIndex}>
-            <span class="fb-player-emoji">
-              {['🟡','🔵','🔴','⚪','🟠','🟣'][i % 6]}
-            </span>
-            <span class="fb-player-name">{player.name}</span>
-            <span class="fb-player-score">
-              {player.score}<span class="fb-player-target"> / {player.target}</span>
-            </span>
-          </div>
-        {/each}
-      </div>
+      {#if state.players.length === 2}
+        <div class="fb-scores-2p">
+          {#each state.players as player, i (i)}
+            <div class="fb-card-2p" class:fb-card-active={i === state.currentIndex}>
+              <div class="fb-card-emoji">{['🟡','🔵','🔴','⚪','🟠','🟣'][i % 6]}</div>
+              <div class="fb-card-name">{player.name}</div>
+              <div class="fb-card-score">
+                {player.score}<span class="fb-card-target"> / {player.target}</span>
+              </div>
+              <div class="fb-card-bar">
+                <div class="fb-card-fill" style="width: {Math.min(100, Math.round(player.score / player.target * 100))}%"></div>
+              </div>
+            </div>
+          {/each}
+        </div>
+      {:else}
+        <div class="fb-scoreboard" style="--tab-cols: {tabCols}">
+          {#each state.players as player, i (i)}
+            <div class="fb-player-row" class:active={i === state.currentIndex}>
+              <span class="fb-player-emoji">
+                {['🟡','🔵','🔴','⚪','🟠','🟣'][i % 6]}
+              </span>
+              <span class="fb-player-name">{player.name}</span>
+              <span class="fb-player-score">
+                {player.score}<span class="fb-player-target"> / {player.target}</span>
+              </span>
+            </div>
+          {/each}
+        </div>
+      {/if}
 
       <svelte:fragment slot="footer">
         <!-- Bandeau d'info — toujours visible avec le plateau -->
@@ -521,6 +538,80 @@
     height: 1px;
     background: rgba(255, 255, 255, 0.1);
     margin: 16px 0;
+  }
+
+  /* ── 2 joueurs : cartes style Chicago ── */
+  .fb-scores-2p {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .fb-card-2p {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.25);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 14px 10px 10px;
+    text-align: center;
+    transition: border-color .3s, box-shadow .3s;
+  }
+
+  .fb-card-2p.fb-card-active {
+    border-color: var(--color-gold);
+    box-shadow: 0 0 16px rgba(var(--color-gold-rgb), 0.25);
+  }
+
+  .fb-card-emoji {
+    font-size: 22px;
+    margin-bottom: 4px;
+  }
+
+  .fb-card-name {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 6px;
+  }
+
+  .fb-card-2p.fb-card-active .fb-card-name {
+    color: var(--color-gold);
+    font-weight: bold;
+  }
+
+  .fb-card-score {
+    font-size: 36px;
+    font-weight: bold;
+    color: white;
+    line-height: 1;
+  }
+
+  .fb-card-2p.fb-card-active .fb-card-score {
+    color: var(--color-gold);
+    text-shadow: 0 0 20px rgba(var(--color-gold-rgb), 0.5);
+  }
+
+  .fb-card-target {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.35);
+    font-weight: normal;
+  }
+
+  .fb-card-bar {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    margin-top: 10px;
+    overflow: hidden;
+  }
+
+  .fb-card-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-gold), #FFA500);
+    border-radius: 4px;
+    transition: width .4s ease;
   }
 
   /* ===== Scoreboard ===== */
