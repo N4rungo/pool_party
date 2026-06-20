@@ -1,6 +1,6 @@
 # 🎱 10-Ball
 
-> Annonce ta bille, empoche la 10 !
+> Un seul objectif : la 10 !
 
 ## 🎯 But du jeu
 Empocher légalement la **bille 10**. Le premier joueur à y parvenir remporte la manche.
@@ -22,7 +22,7 @@ La bille blanche est posée derrière la **ligne de casse** par le casseur.
 - Casse invalide → le joueur suivant peut exiger un **re-rack** ou garder la position.
 
 ## 📢 Annonce obligatoire
-Avant **chaque coup** (y compris la casse), le joueur doit annoncer la bille visée et le trou dans lequel il souhaite l'empocher.
+Avant **chaque coup**, le joueur doit annoncer la bille visée et le trou dans lequel il souhaite l'empocher.
 - Un empochage **non annoncé** est un coup raté : la bille reste en poche, mais le tour passe.
 - Une bille tombée **accidentellement** (par déviation non prévue) ne compte pas.
 
@@ -52,10 +52,10 @@ Empocher la **bille 10** légalement et avec annonce — à n'importe quel momen
 ---
 
 ## 🧠 Règle expert : Push out
-Uniquement après la casse, le casseur peut annoncer un **push out** :
+Uniquement après la casse, le joueur ayant la main peut annoncer un **push out** :
 il joue librement la blanche, sans obligation de toucher la bille la plus basse
 ni de faire contact avec une bande. La bille 10 ne peut pas être empochée sur un push out.
 
 Le joueur suivant peut alors :
 - **Accepter la position** et jouer normalement
-- **Forcer le casseur** à rejouer depuis cette position
+- **Forcer le joueur** à rejouer depuis cette position

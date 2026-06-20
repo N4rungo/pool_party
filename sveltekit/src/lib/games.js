@@ -83,7 +83,7 @@ export const GAMES = [
   {
     id: 'tenball',
     name: '10 Ball',
-    tagline: 'Annonce ta bille !',
+    tagline: 'Un seul objectif : la 10 !',
     icon: '/assets/bille_10.png',
     category: 'americain',
     tableTypes: ['americain'],

@@ -47,10 +47,10 @@ Empocher la **bille 9** légalement — à n'importe quel moment du jeu.
 ---
 
 ## 🧠 Règle expert : Push out
-Uniquement après la casse, le casseur peut annoncer un **push out** :
+Uniquement après la casse, le joueur ayant la main peut annoncer un **push out** :
 il joue librement la blanche, sans obligation de toucher la bille la plus basse
 ni de faire contact avec une bande. La bille 9 ne peut pas être empochée sur un push out.
 
 Le joueur suivant peut alors :
 - **Accepter la position** et jouer normalement
-- **Forcer le casseur** à rejouer depuis cette position
+- **Forcer le joueur** à rejouer depuis cette position
