@@ -305,7 +305,7 @@
                 excludeNames={selectedNames.filter(n => n !== pick.name.trim().toLowerCase())}
               />
             </div>
-            {#if picks[i].name}
+            {#if picks[i].name && playerCount > 2}
               <button
                 class="team-toggle"
                 class:team-a={playerTeams[i] === 0}
@@ -320,26 +320,28 @@
         {/each}
       </div>
 
-      <!-- Aperçu des équipes + bouton randomize -->
-      <div class="teams-section-header">
-        <div class="section-label" style="margin-bottom: 0">{$t('blackball.teams')}</div>
-        <button class="btn-randomize" on:click={randomizeTeams}>{$t('blackball.randomize')}</button>
-      </div>
-      <div class="team-preview">
-        <div class="team-preview-col">
-          <span class="team-badge team-badge-a">A</span>
-          <span class="team-preview-names">
-            {teamAPreview.length ? teamAPreview.join(', ') : '—'}
-          </span>
+      <!-- Aperçu des équipes + bouton randomize (3+ joueurs seulement) -->
+      {#if playerCount > 2}
+        <div class="teams-section-header">
+          <div class="section-label" style="margin-bottom: 0">{$t('blackball.teams')}</div>
+          <button class="btn-randomize" on:click={randomizeTeams}>{$t('blackball.randomize')}</button>
         </div>
-        <div class="team-preview-sep"></div>
-        <div class="team-preview-col">
-          <span class="team-badge team-badge-b">B</span>
-          <span class="team-preview-names">
-            {teamBPreview.length ? teamBPreview.join(', ') : '—'}
-          </span>
+        <div class="team-preview">
+          <div class="team-preview-col">
+            <span class="team-badge team-badge-a">A</span>
+            <span class="team-preview-names">
+              {teamAPreview.length ? teamAPreview.join(', ') : '—'}
+            </span>
+          </div>
+          <div class="team-preview-sep"></div>
+          <div class="team-preview-col">
+            <span class="team-badge team-badge-b">B</span>
+            <span class="team-preview-names">
+              {teamBPreview.length ? teamBPreview.join(', ') : '—'}
+            </span>
+          </div>
         </div>
-      </div>
+      {/if}
 
       <MatchSetup bind:randomizeOrder bind:matchMode bind:totalGames={matchTotalGames} bind:breakOrder />
 

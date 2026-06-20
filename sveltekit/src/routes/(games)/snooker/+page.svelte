@@ -457,16 +457,29 @@
       on:rules={() => rulesOpen = true}>
 
       <!-- Scoreboard -->
-      <div class="snk-scoreboard" style="--tab-cols: {tabCols}">
-      {#each state.players as player, i (i)}
-        <div class="snk-score-card" class:active={i === state.currentIndex}>
-          <span class="snk-score-emoji">{EMOJIS[i % EMOJIS.length]}</span>
-          <span class="snk-score-name">{player.name}</span>
-          <span class="snk-score-pts">{player.score}</span>
-          <span class="snk-best-break" title="Meilleur break">🏆 {player.bestBreak}</span>
+      {#if state.players.length === 2}
+        <div class="snk-scores-2p">
+          {#each state.players as player, i (i)}
+            <div class="snk-card-2p" class:snk-card-active={i === state.currentIndex}>
+              <span class="snk-card-emoji">{EMOJIS[i % EMOJIS.length]}</span>
+              <span class="snk-card-name">{player.name}</span>
+              <span class="snk-card-score">{player.score}</span>
+              <span class="snk-card-break">🏅 {player.bestBreak}</span>
+            </div>
+          {/each}
         </div>
-      {/each}
-    </div>
+      {:else}
+        <div class="snk-scoreboard" style="--tab-cols: {tabCols}">
+        {#each state.players as player, i (i)}
+          <div class="snk-score-card" class:active={i === state.currentIndex}>
+            <span class="snk-score-emoji">{EMOJIS[i % EMOJIS.length]}</span>
+            <span class="snk-score-name">{player.name}</span>
+            <span class="snk-score-pts">{player.score}</span>
+            <span class="snk-best-break" title="Meilleur break">🏆 {player.bestBreak}</span>
+          </div>
+        {/each}
+      </div>
+      {/if}
 
     <!-- Bandeau actif -->
     <div class="snk-active-info">
@@ -779,6 +792,68 @@
   }
   .recap-emoji { font-size: 18px; width: 26px; text-align: center; }
   .recap-name { flex: 1; text-align: left; color: white; }
+
+  /* ── 2 joueurs : cartes style Chicago ── */
+  .snk-scores-2p {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .snk-card-2p {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.25);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 14px 10px 12px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    transition: border-color .3s, box-shadow .3s;
+  }
+
+  .snk-card-2p.snk-card-active {
+    border-color: var(--color-gold);
+    box-shadow: 0 0 16px rgba(var(--color-gold-rgb), 0.25);
+  }
+
+  .snk-card-emoji {
+    font-size: 22px;
+  }
+
+  .snk-card-name {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
+  .snk-card-2p.snk-card-active .snk-card-name {
+    color: var(--color-gold);
+    font-weight: bold;
+  }
+
+  .snk-card-score {
+    font-size: 42px;
+    font-weight: bold;
+    color: white;
+    line-height: 1;
+  }
+
+  .snk-card-2p.snk-card-active .snk-card-score {
+    color: var(--color-gold);
+    text-shadow: 0 0 20px rgba(var(--color-gold-rgb), 0.5);
+  }
+
+  .snk-card-break {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.45);
+    margin-top: 2px;
+  }
 
   /* ===== Scoreboard ===== */
   .snk-scoreboard {

@@ -81,6 +81,16 @@ export const GAMES = [
     maxPlayers: 6,
   },
   {
+    id: 'tenball',
+    name: '10 Ball',
+    tagline: 'Un seul objectif : la 10 !',
+    icon: '/assets/bille_10.png',
+    category: 'americain',
+    tableTypes: ['americain'],
+    minPlayers: 2,
+    maxPlayers: 6,
+  },
+  {
     id: 'straightpool',
     name: '14-1',
     tagline: 'Empochez les toutes !',

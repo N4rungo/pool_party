@@ -45,6 +45,7 @@
       "pool": "Solids or Stripes?",
       "blackball": "Yellows or Reds?",
       "nineball": "The 9 is your only target",
+      "tenball": "The 10 or nothing",
       "straightpool": "Pocket 'em all!",
       "casin": "French billiards, remixed",
       "fiveball": "Aim for zero!",
@@ -103,6 +104,7 @@
     "defaultPlayer": "Player {n}",
     "configuration": "Configuration",
     "general": "General",
+    "teamMode": "👥 Team mode",
     "step": "Step {n} of {total}",
     "playerNames": "Player names",
     "recap": "Summary",
@@ -428,6 +430,19 @@
     "chooseWinner": "Who won?",
     "reminderLowest": "⚡ <strong>Lowest first</strong>: always hit the lowest-numbered ball on the table",
     "reminderNine": "🎯 <strong>The 9 wins</strong>: it can be pocketed at any time on a legal shot — directly, by combo, or on the break",
+    "reminderFault": "⚠️ <strong>Foul</strong>: ball in hand anywhere on the table for the next player",
+    "toast": {
+      "break": "🎱 {name} breaks!"
+    }
+  },
+  "tenball": {
+    "winSub": "Congratulations!",
+    "breakBadge": "🎱 Break",
+    "declareWinner": "🏆 Declare winner…",
+    "chooseWinner": "Who won?",
+    "reminderLowest": "⚡ <strong>Lowest first</strong>: always hit the lowest-numbered ball on the table first",
+    "reminderCall": "📢 <strong>Called shots</strong>: declare the intended ball and pocket before every shot",
+    "reminderTen": "🎯 <strong>The 10 wins</strong>: it can be pocketed at any time on a legal called shot",
     "reminderFault": "⚠️ <strong>Foul</strong>: ball in hand anywhere on the table for the next player",
     "toast": {
       "break": "🎱 {name} breaks!"

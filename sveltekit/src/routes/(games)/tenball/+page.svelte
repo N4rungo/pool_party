@@ -1,17 +1,19 @@
 <!--
-  Page complète du jeu 9-Ball.
+  Page complète du jeu 10-Ball.
 
   Phases :
    - 'setup' → joueurs, mode équipe optionnel (3+ joueurs), ordre de casse, mode match
    - 'game'  → ordre de jeu (mode individuel) ou cartes équipes (mode équipe)
    - 'win'   → overlay de victoire
 
+  Différence vs 9-Ball : annonce obligatoire (bille + trou) avant chaque coup.
+
   2 joueurs  : toujours individuel, 2 boutons dorés
   3+ joueurs : toggle mode équipe (défaut OFF)
     OFF → chacun pour soi, 1 bouton → overlay de sélection
     ON  → équipes A/B, 2 boutons colorés + rappel de passage de main
 
-  Logique individuelle : $lib/games/nineball.js  (state.players / state.breakerIndex)
+  Logique individuelle : $lib/games/tenball.js  (state.players / state.breakerIndex)
   Logique équipes      : $lib/games/pool.js       (state.teams / state.breakerTeamIndex)
 -->
 <script>
@@ -38,7 +40,7 @@
     createInitialState as createIndividualState,
     declareWinner as declareIndividualWinner,
     undo as undoIndividual,
-  } from '$lib/games/nineball.js';
+  } from '$lib/games/tenball.js';
   import {
     createInitialState as createTeamState,
     declareWinner as declareTeamWinner,
@@ -166,7 +168,7 @@
       }
       gameTeams = buildTeams();
       picksMap  = Object.fromEntries(picks.map(p => [p.name.trim(), p.profileId]));
-      if (matchMode) startMatch('nineball', gameTeams.map(t => t.label), matchTotalGames);
+      if (matchMode) startMatch('tenball', gameTeams.map(t => t.label), matchTotalGames);
       startTeamGame(randomOrder ? null : 0);
 
     } else {
@@ -182,7 +184,7 @@
       }
       gamePlayers = finalPicks;
       picksMap    = Object.fromEntries(finalPicks.map(p => [p.name, p.profileId]));
-      if (matchMode) startMatch('nineball', finalPicks.map(p => p.name), matchTotalGames);
+      if (matchMode) startMatch('tenball', finalPicks.map(p => p.name), matchTotalGames);
       startIndividualGame();
     }
   }
@@ -192,7 +194,7 @@
     winnerIndex    = null;
     winnerPickOpen = false;
     phase          = 'game';
-    showToast(get(t)('nineball.toast.break', { values: { name: state.players[state.breakerIndex].name } }));
+    showToast(get(t)('tenball.toast.break', { values: { name: state.players[state.breakerIndex].name } }));
   }
 
   function startTeamGame(initialBreakerIndex = null) {
@@ -219,7 +221,7 @@
 
       const allPlayers = [...state.teams[0].players, ...state.teams[1].players];
       recordHistory({
-        gameId: 'nineball',
+        gameId: 'tenball',
         players: allPlayers.map(p => ({ name: p.name, profileId: picksMap[p.name] ?? null })),
         winners: state.teams[idx].players.map(p => p.name),
         scores:  Object.fromEntries(allPlayers.map(p => [p.name, null])),
@@ -238,7 +240,7 @@
       winnerPickOpen = false;
 
       recordHistory({
-        gameId: 'nineball',
+        gameId: 'tenball',
         players: gamePlayers.map(p => ({ name: p.name, profileId: picksMap[p.name] ?? null })),
         winners: [outcome.winner.name],
         scores:  Object.fromEntries(gamePlayers.map(p => [p.name, null])),
@@ -329,11 +331,11 @@
     matchAbandoned   = false;
     showMatchSummary = false;
     if (teamMode) {
-      startMatch('nineball', gameTeams.map(t => t.label), savedTotal);
+      startMatch('tenball', gameTeams.map(t => t.label), savedTotal);
       winTeamIndex = null;
       startTeamGame();
     } else {
-      startMatch('nineball', gamePlayers.map(p => p.name), savedTotal);
+      startMatch('tenball', gamePlayers.map(p => p.name), savedTotal);
       winnerIndex = null;
       startIndividualGame();
     }
@@ -357,7 +359,7 @@
     ? (winnerTeam && winnerTeam.players.length > 1
         ? winnerTeam.players.map(p => p.name).join(' & ')
         : $t('pool.winSub'))
-    : $t('nineball.winSub');
+    : $t('tenball.winSub');
   $: winOpen = phase === 'win' && (teamMode ? winTeamIndex !== null : winnerIndex !== null);
   $: canUndoWin = state?.history?.length > 0;
 
@@ -370,8 +372,8 @@
 {#if phase === 'setup'}
   <div class="setup">
     <h1>
-      <img src="{base}/assets/bille_9.png" alt="" class="icon-title" />
-      9 Ball
+      <img src="{base}/assets/bille_10.png" alt="" class="icon-title" />
+      10 Ball
     </h1>
     <div class="setup-sub">{$t('setup.configuration')}</div>
 
@@ -466,9 +468,9 @@
 {#if phase === 'game' && state}
   <div class="game">
     <GameLayout
-      title="9 BALL"
-      icon="{base}/assets/bille_9.png"
-      gameId="nineball"
+      title="10 BALL"
+      icon="{base}/assets/bille_10.png"
+      gameId="tenball"
       canUndo={false}
       on:home={confirmGoHome}
       on:rules={() => (rulesOpen = true)}
@@ -507,9 +509,10 @@
               </ul>
             </div>
           {/if}
-          <div class="reminder-item">{@html $t('nineball.reminderLowest')}</div>
-          <div class="reminder-item">{@html $t('nineball.reminderNine')}</div>
-          <div class="reminder-item">{@html $t('nineball.reminderFault')}</div>
+          <div class="reminder-item">{@html $t('tenball.reminderLowest')}</div>
+          <div class="reminder-item reminder-call">{@html $t('tenball.reminderCall')}</div>
+          <div class="reminder-item">{@html $t('tenball.reminderTen')}</div>
+          <div class="reminder-item">{@html $t('tenball.reminderFault')}</div>
         </div>
 
       {:else}
@@ -523,7 +526,7 @@
                 class:team-card-b={i === 1}
                 class:team-card-breaker={state.breakerIndex === i}>
                 {#if state.breakerIndex === i}
-                  <div class="break-badge">{$t('nineball.breakBadge')}</div>
+                  <div class="break-badge">{$t('tenball.breakBadge')}</div>
                 {/if}
                 <div class="team-label" class:team-label-a={i === 0} class:team-label-b={i === 1}>
                   {player.name}
@@ -539,7 +542,7 @@
                 <span class="player-emoji">{PLAYER_EMOJIS[player.playerIndex % PLAYER_EMOJIS.length]}</span>
                 <span class="order-name">{player.name}</span>
                 {#if i === 0}
-                  <span class="break-badge-inline">{$t('nineball.breakBadge')}</span>
+                  <span class="break-badge-inline">{$t('tenball.breakBadge')}</span>
                 {/if}
               </div>
             {/each}
@@ -547,9 +550,10 @@
         {/if}
 
         <div class="reminders">
-          <div class="reminder-item">{@html $t('nineball.reminderLowest')}</div>
-          <div class="reminder-item">{@html $t('nineball.reminderNine')}</div>
-          <div class="reminder-item">{@html $t('nineball.reminderFault')}</div>
+          <div class="reminder-item">{@html $t('tenball.reminderLowest')}</div>
+          <div class="reminder-item reminder-call">{@html $t('tenball.reminderCall')}</div>
+          <div class="reminder-item">{@html $t('tenball.reminderTen')}</div>
+          <div class="reminder-item">{@html $t('tenball.reminderFault')}</div>
         </div>
       {/if}
 
@@ -578,7 +582,7 @@
         {:else}
           <!-- 3+ joueurs individuels : bouton overlay -->
           <button class="btn-victory btn-victory-gold btn-declare" on:click={() => winnerPickOpen = true}>
-            {$t('nineball.declareWinner')}
+            {$t('tenball.declareWinner')}
           </button>
         {/if}
       </svelte:fragment>
@@ -603,7 +607,7 @@
 <!-- ===== OVERLAY SÉLECTION VAINQUEUR (mode individuel 3+) ===== -->
 <Overlay open={winnerPickOpen && !teamMode} on:close={() => winnerPickOpen = false}>
   {#if state}
-    <h2 style="text-align:center;margin-bottom:14px;">{$t('nineball.chooseWinner')}</h2>
+    <h2 style="text-align:center;margin-bottom:14px;">{$t('tenball.chooseWinner')}</h2>
     <div class="pick-list">
       {#each state.players as player, i}
         <button class="pick-btn" on:click={() => onDeclareWinner(i)}>
@@ -638,7 +642,7 @@
   <MatchSummaryOverlay
     matchScores={$matchStore.matchScores}
     results={$matchStore.results}
-    gameId="nineball"
+    gameId="tenball"
     totalGames={$matchStore.totalGames}
     abandoned={matchAbandoned}
     onPlayAgain={onMatchPlayAgain}
@@ -648,7 +652,7 @@
 
 
 <!-- ===== OVERLAY RÈGLES ===== -->
-<RulesViewer gameId="nineball" open={rulesOpen} on:close={() => (rulesOpen = false)} />
+<RulesViewer gameId="tenball" open={rulesOpen} on:close={() => (rulesOpen = false)} />
 
 
 <style>
@@ -1012,6 +1016,20 @@
   .reminder-list li {
     font-size: 13px;
     color: rgba(255, 255, 255, 0.55);
+  }
+
+  /* Le rappel "annonce" est mis en avant */
+  .reminder-call {
+    color: rgba(255, 255, 255, 0.8);
+    background: rgba(var(--color-gold-rgb), 0.07);
+    border: 1px solid rgba(var(--color-gold-rgb), 0.2);
+    border-radius: 8px;
+    padding: 6px 10px;
+    margin: -2px -4px;
+  }
+
+  .reminder-call :global(strong) {
+    color: var(--color-gold);
   }
 
   /* ── Boutons victoire ── */
