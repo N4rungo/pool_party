@@ -347,7 +347,9 @@
               <div class="casin-card-emoji">{EMOJIS[i % EMOJIS.length]}</div>
               <div class="casin-card-name">{player.name}</div>
               <div class="casin-card-progress">
-                {doneCount(player)}<span class="casin-card-total"> / {CASIN_ACTIONS.length}</span><span class="casin-card-x"> ×{player.x}</span>
+                <span class="casin-card-score-val">{doneCount(player)}</span>
+                <span class="casin-card-total">/ {CASIN_ACTIONS.length}</span>
+                <span class="casin-card-x">×{player.x}</span>
               </div>
               {#if blockedAction}
                 <div class="casin-blocked-badge">{$t('casin.blockedBadge', { values: { action: $t('casin.actions.' + blockedAction.id) } })}</div>
@@ -552,13 +554,20 @@
   }
 
   .casin-card-progress {
-    font-size: 28px;
-    font-weight: bold;
-    color: white;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 3px;
     line-height: 1;
   }
 
-  .casin-card-2p.casin-card-active .casin-card-progress {
+  .casin-card-score-val {
+    font-size: 28px;
+    font-weight: bold;
+    color: white;
+  }
+
+  .casin-card-2p.casin-card-active .casin-card-score-val {
     color: var(--color-gold);
     text-shadow: 0 0 20px rgba(var(--color-gold-rgb), 0.4);
   }
@@ -572,6 +581,7 @@
   .casin-card-x {
     font-size: 12px;
     color: rgba(255, 255, 255, 0.4);
+    margin-left: 2px;
   }
 
   /* ===== Scoreboard ===== */
