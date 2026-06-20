@@ -33,6 +33,8 @@
   import { get } from 'svelte/store';
   import { matchStore, startMatch, recordResult, endMatch, undoResult } from '$lib/stores/match.js';
   import { recordHistory } from '$lib/stores/history.js';
+  const PLAYER_EMOJIS = ['🟡', '🔵', '🔴', '⚪', '🟠', '🟣'];
+
   import {
     createInitialState as createIndividualState,
     declareWinner as declareIndividualWinner,
@@ -203,10 +205,10 @@
 
   // ── Ordre de jeu affiché (mode individuel) ─────────────
   $: playOrder = !teamMode && state
-    ? Array.from({ length: state.players.length }, (_, i) => ({
-        ...state.players[(state.breakerIndex + i) % state.players.length],
-        isBreaker: i === 0,
-      }))
+    ? Array.from({ length: state.players.length }, (_, i) => {
+        const pi = (state.breakerIndex + i) % state.players.length;
+        return { ...state.players[pi], isBreaker: i === 0, playerIndex: pi };
+      })
     : [];
 
   // ── Déclarer un vainqueur ──────────────────────────────
@@ -517,7 +519,7 @@
         <div class="play-order">
           {#each playOrder as player, i}
             <div class="order-row" class:is-breaker={i === 0}>
-              <span class="order-num">{i + 1}</span>
+              <span class="player-emoji">{PLAYER_EMOJIS[player.playerIndex % PLAYER_EMOJIS.length]}</span>
               <span class="order-name">{player.name}</span>
               {#if i === 0}
                 <span class="break-badge-inline">{$t('tenball.breakBadge')}</span>
@@ -590,7 +592,7 @@
       <div class="winner-panel-title">{$t('tenball.chooseWinner')}</div>
       {#each state.players as player, i}
         <button class="winner-btn" on:click={() => onDeclareWinner(i)}>
-          🏆 {player.name}
+          {PLAYER_EMOJIS[i % PLAYER_EMOJIS.length]} {player.name}
         </button>
       {/each}
       <button class="winner-cancel" on:click={() => winnerPickOpen = false}>
@@ -945,13 +947,12 @@
     box-shadow: 0 0 14px rgba(var(--color-gold-rgb), 0.15);
   }
 
-  .order-num {
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.3);
-    min-width: 18px;
+  .player-emoji {
+    font-size: 16px;
+    width: 22px;
+    text-align: center;
+    flex-shrink: 0;
   }
-
-  .order-row.is-breaker .order-num { color: rgba(var(--color-gold-rgb), 0.55); }
 
   .order-name { flex: 1; }
 
