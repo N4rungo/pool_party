@@ -47,10 +47,10 @@ Legally pocket the **9 ball** — at any point during the game.
 ---
 
 ## 🧠 Expert rule: Push out
-Immediately after the break, the breaking player may call a **push out**:
+Immediately after the break, the player at the table may call a **push out**:
 they play the cue ball freely, with no obligation to hit the lowest ball
 or make rail contact. The 9 ball cannot be pocketed on a push out.
 
 The next player may then:
 - **Accept the position** and play normally
-- **Force the breaker** to replay from that position
+- **Force the player** to replay from that position
