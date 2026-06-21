@@ -20,6 +20,7 @@
   import MatchRecapOverlay from '$lib/components/MatchRecapOverlay.svelte';
   import MatchSummaryOverlay from '$lib/components/MatchSummaryOverlay.svelte';
   import PlayerPicker from '$lib/components/PlayerPicker.svelte';
+  import ShuffleIcon from '$lib/components/ShuffleIcon.svelte';
   import { showToast } from '$lib/stores/toast.js';
   import { askConfirm } from '$lib/stores/confirm.js';
   import { t } from 'svelte-i18n';
@@ -318,30 +319,15 @@
             {/if}
           </div>
         {/each}
+        {#if playerCount > 2}
+          <div class="player-row shuffle-row">
+            <div class="picker-wrap"></div>
+            <button class="btn-shuffle" on:click={randomizeTeams} title={$t('blackball.randomize')}>
+              <ShuffleIcon size={18} />
+            </button>
+          </div>
+        {/if}
       </div>
-
-      <!-- Aperçu des équipes + bouton randomize (3+ joueurs seulement) -->
-      {#if playerCount > 2}
-        <div class="teams-section-header">
-          <div class="section-label" style="margin-bottom: 0">{$t('blackball.teams')}</div>
-          <button class="btn-randomize" on:click={randomizeTeams}>{$t('blackball.randomize')}</button>
-        </div>
-        <div class="team-preview">
-          <div class="team-preview-col">
-            <span class="team-badge team-badge-a">A</span>
-            <span class="team-preview-names">
-              {teamAPreview.length ? teamAPreview.join(', ') : '—'}
-            </span>
-          </div>
-          <div class="team-preview-sep"></div>
-          <div class="team-preview-col">
-            <span class="team-badge team-badge-b">B</span>
-            <span class="team-preview-names">
-              {teamBPreview.length ? teamBPreview.join(', ') : '—'}
-            </span>
-          </div>
-        </div>
-      {/if}
 
       <MatchSetup bind:randomizeOrder bind:matchMode bind:totalGames={matchTotalGames} bind:breakOrder />
 
@@ -554,57 +540,31 @@
     color: #ef9a9a;
   }
 
-  /* ── Section équipes ── */
-  .teams-section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 8px;
+  /* ── Bouton shuffle ── */
+  .shuffle-row {
+    justify-content: flex-end;
   }
 
-  .btn-randomize {
-    background: rgba(255, 255, 255, 0.07);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 20px;
+  .btn-shuffle {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.08);
     color: rgba(255, 255, 255, 0.6);
-    font-family: inherit;
-    font-size: 12px;
-    padding: 5px 12px;
     cursor: pointer;
-    transition: background 0.12s, color 0.12s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s, border-color 0.15s;
     -webkit-tap-highlight-color: transparent;
   }
 
-  .btn-randomize:active {
-    background: rgba(255, 255, 255, 0.12);
+  .btn-shuffle:active {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.35);
     color: white;
-  }
-
-  /* ── Aperçu équipes ── */
-  .team-preview {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.07);
-    border-radius: 12px;
-    padding: 10px 14px;
-    margin-bottom: 4px;
-  }
-
-  .team-preview-col {
-    flex: 1;
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-    min-width: 0;
-  }
-
-  .team-preview-sep {
-    width: 1px;
-    background: rgba(255, 255, 255, 0.1);
-    align-self: stretch;
-    flex-shrink: 0;
   }
 
   .team-badge {
@@ -626,13 +586,6 @@
     background: rgba(229, 57, 53, 0.15);
     border: 1px solid rgba(229, 57, 53, 0.45);
     color: #ef9a9a;
-  }
-
-  .team-preview-names {
-    font-size: 13px;
-    color: rgba(255, 255, 255, 0.65);
-    text-align: left;
-    word-break: break-word;
   }
 
   /* ── Équipes (section header) ── */
