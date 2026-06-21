@@ -63,7 +63,7 @@
         <div class="match-col-label">{$t('match.boFormat')}</div>
         <div class="match-stepper">
           <button class="stepper-btn" on:click={() => totalGames = Math.max(3, totalGames - 2)}>−</button>
-          <span class="stepper-val">BO {totalGames}</span>
+          <span class="stepper-val">{totalGames} {$t('match.boUnit')}</span>
           <button class="stepper-btn" on:click={() => totalGames = Math.min(9, totalGames + 2)}>+</button>
         </div>
       </div>
