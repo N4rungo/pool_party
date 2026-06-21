@@ -387,6 +387,13 @@
         step={1}
         label={$t('setup.playerCount')} />
 
+      {#if teamMode && playerCount > 2}
+        <div class="shuffle-above">
+          <button class="btn-shuffle" on:click={randomizeTeams} title={$t('pool.randomize')}>
+            <ShuffleIcon size={18} />
+          </button>
+        </div>
+      {/if}
       <div class="players-list">
         {#each picks as pick, i (i)}
           <div class="player-row">
@@ -411,14 +418,6 @@
             {/if}
           </div>
         {/each}
-        {#if teamMode && playerCount > 2}
-          <div class="player-row shuffle-row">
-            <div class="picker-wrap"></div>
-            <button class="btn-shuffle" on:click={randomizeTeams} title={$t('pool.randomize')}>
-              <ShuffleIcon size={18} />
-            </button>
-          </div>
-        {/if}
       </div>
 
       <!-- Mode équipe (3+ joueurs seulement) -->
@@ -774,8 +773,10 @@
   }
 
   /* ── Bouton shuffle ── */
-  .shuffle-row {
+  .shuffle-above {
+    display: flex;
     justify-content: flex-end;
+    margin-bottom: 6px;
   }
 
   .btn-shuffle {
