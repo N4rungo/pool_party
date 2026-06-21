@@ -28,6 +28,7 @@
   import MatchRecapOverlay from '$lib/components/MatchRecapOverlay.svelte';
   import MatchSummaryOverlay from '$lib/components/MatchSummaryOverlay.svelte';
   import PlayerPicker from '$lib/components/PlayerPicker.svelte';
+  import ShuffleIcon from '$lib/components/ShuffleIcon.svelte';
   import { showToast } from '$lib/stores/toast.js';
   import { askConfirm } from '$lib/stores/confirm.js';
   import { t } from 'svelte-i18n';
@@ -379,12 +380,19 @@
 
     <div class="popup-box setup-box">
 
-      <NumberSelector
-        bind:value={playerCount}
-        min={2}
-        max={6}
-        step={1}
-        label={$t('setup.playerCount')} />
+      <div class="number-row">
+        <NumberSelector
+          bind:value={playerCount}
+          min={2}
+          max={6}
+          step={1}
+          label={$t('setup.playerCount')} />
+        {#if teamMode && playerCount > 2}
+          <button class="btn-shuffle btn-shuffle-inline" on:click={randomizeTeams} title={$t('pool.randomize')}>
+            <ShuffleIcon size={18} />
+          </button>
+        {/if}
+      </div>
 
       <div class="players-list">
         {#each picks as pick, i (i)}
@@ -430,27 +438,6 @@
           </div>
         </div>
 
-        {#if teamMode}
-          <div class="teams-section-header">
-            <div class="section-label" style="margin-bottom: 0">{$t('pool.teams')}</div>
-            <button class="btn-randomize" on:click={randomizeTeams}>{$t('pool.randomize')}</button>
-          </div>
-          <div class="team-preview">
-            <div class="team-preview-col">
-              <span class="team-badge team-badge-a">A</span>
-              <span class="team-preview-names">
-                {teamAPreview.length ? teamAPreview.join(', ') : '—'}
-              </span>
-            </div>
-            <div class="team-preview-sep"></div>
-            <div class="team-preview-col">
-              <span class="team-badge team-badge-b">B</span>
-              <span class="team-preview-names">
-                {teamBPreview.length ? teamBPreview.join(', ') : '—'}
-              </span>
-            </div>
-          </div>
-        {/if}
       {/if}
 
       <MatchSetup bind:randomizeOrder={randomOrder} bind:matchMode bind:totalGames={matchTotalGames} bind:breakOrder />
@@ -785,55 +772,40 @@
     text-align: left;
   }
 
-  .teams-section-header {
+  /* ── Bouton shuffle ── */
+  .number-row {
+    position: relative;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 8px;
+    justify-content: center;
   }
 
-  .btn-randomize {
-    background: rgba(255, 255, 255, 0.07);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 20px;
+  .btn-shuffle-inline {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .btn-shuffle {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.08);
     color: rgba(255, 255, 255, 0.6);
-    font-family: inherit;
-    font-size: 12px;
-    padding: 5px 12px;
     cursor: pointer;
-    transition: background 0.12s, color 0.12s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s, border-color 0.15s;
     -webkit-tap-highlight-color: transparent;
   }
 
-  .btn-randomize:active {
-    background: rgba(255, 255, 255, 0.12);
+  .btn-shuffle:active {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.35);
     color: white;
-  }
-
-  .team-preview {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.07);
-    border-radius: 12px;
-    padding: 10px 14px;
-    margin-bottom: 4px;
-  }
-
-  .team-preview-col {
-    flex: 1;
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-    min-width: 0;
-  }
-
-  .team-preview-sep {
-    width: 1px;
-    background: rgba(255, 255, 255, 0.1);
-    align-self: stretch;
-    flex-shrink: 0;
   }
 
   .team-badge {
@@ -855,13 +827,6 @@
     background: rgba(229, 57, 53, 0.15);
     border: 1px solid rgba(229, 57, 53, 0.45);
     color: #ef9a9a;
-  }
-
-  .team-preview-names {
-    font-size: 13px;
-    color: rgba(255, 255, 255, 0.65);
-    text-align: left;
-    word-break: break-word;
   }
 
   /* ── Écran de jeu : mode équipe ── */
