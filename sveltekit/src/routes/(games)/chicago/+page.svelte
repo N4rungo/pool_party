@@ -49,6 +49,7 @@
   // ── Mode match ────────────────────────────────────────
   let matchMode = false;
   let matchTotalGames = 3;
+  let breakOrder = 'alternate';
   let showMatchRecap = false;
   let showMatchSummary = false;
   let matchAbandoned = false;
@@ -253,7 +254,7 @@
         exclude={pick1.profileId ? [pick1.profileId] : []}
         excludeNames={pick1.name.trim() ? [pick1.name.trim().toLowerCase()] : []} />
 
-      <MatchSetup bind:matchMode bind:totalGames={matchTotalGames} />
+      <MatchSetup bind:matchMode bind:totalGames={matchTotalGames} bind:breakOrder />
 
       <button class="btn-main btn-gold" on:click={handleLaunch}>
         {matchMode ? $t('setup.launchMatch') : $t('setup.launchGame')}
