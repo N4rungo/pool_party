@@ -54,7 +54,8 @@
     isBustRemaining,
     toggleBall,
     validateTurn,
-    undo
+    undo,
+    findHintBalls
   } from '$lib/games/fiveball.js';
 
   // ── Phase courante ────────────────────────────────────
@@ -273,6 +274,7 @@
   }
 
   // ── Helpers réactifs ──────────────────────────────────
+  $: hintBalls = state ? findHintBalls(state) : null;
   $: cue = state ? activeCueBall(state) : null;
   $: cueLabel = cue ? $t('fiveball.balls.' + cue) : '';
   $: total = state ? selectedTotal(state) : 0;
@@ -445,6 +447,7 @@
                 size={boardBallSize}
                 disabled={isCue}
                 selected={state.selected.includes(ballId)}
+                hint={!!hintBalls?.has(ballId)}
                 on:click={() => onToggleBall(ballId)} />
             </div>
           {/each}

@@ -210,3 +210,44 @@ export function undo(state) {
     history:      newHistory,
   };
 }
+
+// ─── Hint : combinaison optimale pour atteindre 0 ────────────────────────────
+
+function _combinations(arr, k) {
+  if (k === 0) return [[]];
+  if (arr.length < k) return [];
+  const [first, ...rest] = arr;
+  return [
+    ..._combinations(rest, k - 1).map(c => [first, ...c]),
+    ..._combinations(rest, k),
+  ];
+}
+
+/**
+ * Renvoie le Set d'ids des billes à viser pour terminer à 0 en un seul coup,
+ * ou null si c'est impossible (score trop élevé, aucune combinaison valide,
+ * ou une sélection est déjà en cours).
+ *
+ * On préfère toujours la combinaison la plus courte (2 < 3 < 4 billes).
+ * En cas d'engagement (premier tour), la rouge doit être incluse.
+ */
+export function findHintBalls(state) {
+  if (!state || state.selected.length > 0) return null;
+
+  const player = state.players[state.currentIndex];
+  const score  = player.score;
+  if (score <= 0 || score > 13) return null;
+
+  const cue = activeCueBall(state);
+  const selectableIds = Object.keys(FIVE_BALL_BALLS).filter(id => id !== cue);
+
+  for (let size = 2; size <= selectableIds.length; size++) {
+    for (const combo of _combinations(selectableIds, size)) {
+      const sum = combo.reduce((acc, id) => acc + FIVE_BALL_BALLS[id].value, 0);
+      if (sum !== score) continue;
+      if (state.isFirstTurn && !combo.includes('red')) continue;
+      return new Set(combo);
+    }
+  }
+  return null;
+}
