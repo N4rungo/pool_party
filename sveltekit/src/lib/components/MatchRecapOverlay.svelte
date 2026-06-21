@@ -20,6 +20,10 @@
   $: winnerText = winners.length === 1
     ? winners[0]
     : winners.join(' & ');
+
+  $: winTarget = Math.ceil(totalGames / 2);
+  $: matchWinner = sortedPlayers.find(p => p.pts >= winTarget)?.name ?? null;
+  $: isMatchClinched = matchWinner !== null;
 </script>
 
 <Overlay open={true} dismissOnBackdrop={false} showClose={false}>
@@ -33,6 +37,10 @@
       <span class="recap-winner-name">{winnerText}</span>
     </div>
     <div class="recap-winner-sub">{$t('match.winsGame')}</div>
+
+    {#if isMatchClinched && !isLastGame}
+      <div class="recap-match-won">{$t('match.matchWon', { values: { name: matchWinner } })}</div>
+    {/if}
 
     <div class="recap-standings-label">{$t('match.standingsLabel')}</div>
     <div class="standings-table">
@@ -56,6 +64,13 @@
     {#if isLastGame}
       <button class="btn-main btn-gold" on:click={onViewFinal}>
         {$t('match.viewFinal')}
+      </button>
+    {:else if isMatchClinched}
+      <button class="btn-main btn-gold" on:click={onViewFinal}>
+        {$t('match.endMatch')}
+      </button>
+      <button class="btn-main btn-gray" on:click={onNext}>
+        {$t('match.continueForFun')}
       </button>
     {:else}
       <button class="btn-main btn-gold" on:click={onNext}>
@@ -106,6 +121,17 @@
     font-size: 13px;
     color: rgba(255, 255, 255, 0.5);
     margin-bottom: 14px;
+  }
+
+  .recap-match-won {
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--color-gold);
+    background: rgba(var(--color-gold-rgb), 0.1);
+    border: 1px solid rgba(var(--color-gold-rgb), 0.3);
+    border-radius: 10px;
+    padding: 7px 14px;
+    margin-bottom: 10px;
   }
 
   .recap-standings-label {

@@ -14,6 +14,8 @@
     .map(([name, pts]) => ({ name, pts }))
     .sort((a, b) => b.pts - a.pts);
 
+  $: gamesPlayed = results.length;
+
   $: maxPts = sortedPlayers.length > 0 ? sortedPlayers[0].pts : 0;
   $: matchWinners = sortedPlayers.filter(p => p.pts === maxPts).map(p => p.name);
   $: isTie = matchWinners.length > 1;
@@ -48,25 +50,25 @@
           <span class="standings-rank">{i + 1}</span>
           <span class="standings-name">{player.name}</span>
           <span class="standings-pts">
-            {$t('match.wins', { values: { count: player.pts } })} / {totalGames}
+            {player.pts} / {gamesPlayed}
           </span>
         </div>
       {/each}
     </div>
 
     {#if results.length > 0 && players.length > 0}
-      <div class="section-label">{$t('match.gamesDetail')}</div>
+      <div class="section-label">{$t('match.gamesDetail')} <span class="bo-tag">BO {totalGames}</span></div>
       <div class="game-grid">
         <div class="grid-header">
           <div class="grid-name-cell"></div>
-          {#each Array(totalGames) as _, g}
+          {#each Array(gamesPlayed) as _, g}
             <div class="grid-game-cell">P{g + 1}</div>
           {/each}
         </div>
         {#each players as name}
           <div class="grid-row">
             <div class="grid-name-cell">{name}</div>
-            {#each Array(totalGames) as _, g}
+            {#each Array(gamesPlayed) as _, g}
               <div class="grid-game-cell" class:win-cell={wonGame(name, g + 1)}>
                 {wonGame(name, g + 1) ? '✓' : '·'}
               </div>
@@ -192,6 +194,15 @@
   .standings-pts-label {
     font-weight: normal;
     font-size: 11px;
+  }
+
+  .bo-tag {
+    font-size: 10px;
+    color: rgba(var(--color-gold-rgb), 0.7);
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    vertical-align: middle;
+    margin-left: 4px;
   }
 
   .game-grid {

@@ -149,3 +149,16 @@ export const isLastGame = derived(
   _store,
   $s => $s.isActive && $s.currentGame === $s.totalGames
 );
+
+/**
+ * Store dérivé : true dès qu'un joueur a atteint la cible de victoires (BO X).
+ * winTarget = Math.ceil(totalGames / 2) → ex. BO3 = 2 victoires, BO5 = 3.
+ */
+export const isMatchClinched = derived(
+  _store,
+  $s => {
+    if (!$s.isActive) return false;
+    const target = Math.ceil($s.totalGames / 2);
+    return Object.values($s.matchScores).some(pts => pts >= target);
+  }
+);

@@ -60,11 +60,11 @@
     <div class="match-options" class:two-col={breakOrder !== undefined}>
 
       <div class="match-col">
-        <div class="match-col-label">{$t('match.gamesCount')}</div>
+        <div class="match-col-label">{$t('match.boFormat')}</div>
         <div class="match-stepper">
-          <button class="stepper-btn" on:click={() => totalGames = Math.max(2, totalGames - 1)}>−</button>
-          <span class="stepper-val">{totalGames}</span>
-          <button class="stepper-btn" on:click={() => totalGames = Math.min(10, totalGames + 1)}>+</button>
+          <button class="stepper-btn" on:click={() => totalGames = Math.max(3, totalGames - 2)}>−</button>
+          <span class="stepper-val">BO {totalGames}</span>
+          <button class="stepper-btn" on:click={() => totalGames = Math.min(9, totalGames + 2)}>+</button>
         </div>
       </div>
 
