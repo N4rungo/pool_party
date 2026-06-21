@@ -380,20 +380,20 @@
 
     <div class="popup-box setup-box">
 
-      <NumberSelector
-        bind:value={playerCount}
-        min={2}
-        max={6}
-        step={1}
-        label={$t('setup.playerCount')} />
-
-      {#if teamMode && playerCount > 2}
-        <div class="shuffle-above">
-          <button class="btn-shuffle" on:click={randomizeTeams} title={$t('pool.randomize')}>
+      <div class="number-row">
+        <NumberSelector
+          bind:value={playerCount}
+          min={2}
+          max={6}
+          step={1}
+          label={$t('setup.playerCount')} />
+        {#if teamMode && playerCount > 2}
+          <button class="btn-shuffle btn-shuffle-inline" on:click={randomizeTeams} title={$t('pool.randomize')}>
             <ShuffleIcon size={18} />
           </button>
-        </div>
-      {/if}
+        {/if}
+      </div>
+
       <div class="players-list">
         {#each picks as pick, i (i)}
           <div class="player-row">
@@ -773,10 +773,17 @@
   }
 
   /* ── Bouton shuffle ── */
-  .shuffle-above {
+  .number-row {
+    position: relative;
     display: flex;
-    justify-content: flex-end;
-    margin-bottom: 6px;
+    justify-content: center;
+  }
+
+  .btn-shuffle-inline {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
   }
 
   .btn-shuffle {
