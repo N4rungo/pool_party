@@ -86,6 +86,7 @@
   let count = FIVE_BALL_DEFAULT_PLAYERS;
   let defaultTarget = FIVE_BALL_DEFAULT_TARGET;
   let randomizeOrder = true;
+  let breakOrder = 'alternate';
   let setupPlayers = [];
 
   function gotoSetup2() {
@@ -124,9 +125,22 @@
   let state = null;
   let winnerName = null;
 
+  function resolveBreakOrder() {
+    if (!$matchStore.isActive || $matchStore.results.length === 0) {
+      return randomizeOrder ? shuffle([...setupPlayers]) : [...setupPlayers];
+    }
+    if (breakOrder === 'winner') {
+      const lastName = $matchStore.results[$matchStore.results.length - 1]?.winners[0];
+      const idx = setupPlayers.findIndex(p => p.name === lastName);
+      return idx > 0 ? [...setupPlayers.slice(idx), ...setupPlayers.slice(0, idx)] : [...setupPlayers];
+    }
+    const offset = ($matchStore.currentGame - 1) % setupPlayers.length;
+    return [...setupPlayers.slice(offset), ...setupPlayers.slice(0, offset)];
+  }
+
   function startGame() {
     picksMap = Object.fromEntries(picks.map(p => [p.name.trim() || p.name, p.profileId]));
-    const players = randomizeOrder ? shuffle(setupPlayers) : setupPlayers;
+    const players = resolveBreakOrder();
     state = createInitialState(players);
     winnerName = null;
     phase = 'game';
@@ -351,7 +365,7 @@
           on:change={(e) => updatePlayerTarget(i, e.detail)} />
       </RecapList>
 
-      <MatchSetup bind:randomizeOrder bind:matchMode bind:totalGames={matchTotalGames} />
+      <MatchSetup bind:randomizeOrder bind:matchMode bind:totalGames={matchTotalGames} bind:breakOrder />
 
       <button class="btn-main btn-gold" on:click={() => { if (matchMode) startMatch('fiveball', setupPlayers.map(p => p.name), matchTotalGames); startGame(); }}>
         {matchMode ? $t('setup.launchMatch') : $t('setup.launchGame')}

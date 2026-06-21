@@ -87,6 +87,7 @@
   let count = SNOOKER_DEFAULT_PLAYERS;
   let mode = 'simple';
   let randomizeOrder = true;
+  let breakOrder = 'alternate';
   let setupPlayers = [];
 
   function gotoSetup2() {
@@ -116,9 +117,22 @@
   let winnerBreak = 0;
   let finalRanking = [];
 
+  function resolveBreakOrder() {
+    if (!$matchStore.isActive || $matchStore.results.length === 0) {
+      return randomizeOrder ? shuffle([...setupPlayers]) : [...setupPlayers];
+    }
+    if (breakOrder === 'winner') {
+      const lastName = $matchStore.results[$matchStore.results.length - 1]?.winners[0];
+      const idx = setupPlayers.findIndex(p => p.name === lastName);
+      return idx > 0 ? [...setupPlayers.slice(idx), ...setupPlayers.slice(0, idx)] : [...setupPlayers];
+    }
+    const offset = ($matchStore.currentGame - 1) % setupPlayers.length;
+    return [...setupPlayers.slice(offset), ...setupPlayers.slice(0, offset)];
+  }
+
   function startGame() {
     picksMap = Object.fromEntries(picks.map(p => [p.name.trim() || p.name, p.profileId]));
-    const players = randomizeOrder ? shuffle(setupPlayers) : setupPlayers;
+    const players = resolveBreakOrder();
     state = createInitialState(players, mode);
     winnerName = null;
     finalRanking = [];
@@ -434,7 +448,7 @@
         {/each}
       </div>
 
-      <MatchSetup bind:randomizeOrder bind:matchMode bind:totalGames={matchTotalGames} />
+      <MatchSetup bind:randomizeOrder bind:matchMode bind:totalGames={matchTotalGames} bind:breakOrder />
 
       <button class="btn-main btn-gold" on:click={() => { if (matchMode) startMatch('snooker', setupPlayers.map(p => p.name), matchTotalGames); startGame(); }}>
         {matchMode ? $t('setup.launchMatch') : $t('setup.launchGame')}

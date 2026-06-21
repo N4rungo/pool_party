@@ -54,6 +54,7 @@
   let showMatchRecap = false;
   let showMatchSummary = false;
   let matchAbandoned = false;
+  let breakOrder = 'alternate';
   let picks = [];
   let picksMap = {};
 
@@ -106,9 +107,22 @@
   let state = null;
   let winnerName = null;
 
+  function resolveBreakOrder() {
+    if (!$matchStore.isActive || $matchStore.results.length === 0) {
+      return randomizeOrder ? shuffle([...setupPlayers]) : [...setupPlayers];
+    }
+    if (breakOrder === 'winner') {
+      const lastName = $matchStore.results[$matchStore.results.length - 1]?.winners[0];
+      const idx = setupPlayers.findIndex(p => p.name === lastName);
+      return idx > 0 ? [...setupPlayers.slice(idx), ...setupPlayers.slice(0, idx)] : [...setupPlayers];
+    }
+    const offset = ($matchStore.currentGame - 1) % setupPlayers.length;
+    return [...setupPlayers.slice(offset), ...setupPlayers.slice(0, offset)];
+  }
+
   function startGame() {
     picksMap = Object.fromEntries(picks.map(p => [p.name.trim() || p.name, p.profileId]));
-    const players = randomizeOrder ? shuffle(setupPlayers) : setupPlayers;
+    const players = resolveBreakOrder();
     state = createInitialState(players);
     winnerName = null;
     phase = 'game';
@@ -313,7 +327,7 @@
           on:change={(e) => updatePlayerX(i, e.detail)} />
       </RecapList>
 
-      <MatchSetup bind:randomizeOrder bind:matchMode bind:totalGames={matchTotalGames} />
+      <MatchSetup bind:randomizeOrder bind:matchMode bind:totalGames={matchTotalGames} bind:breakOrder />
 
       <button class="btn-main btn-gold" on:click={() => { if (matchMode) startMatch('casin', setupPlayers.map(p => p.name), matchTotalGames); startGame(); }}>
         {matchMode ? $t('setup.launchMatch') : $t('setup.launchGame')}
@@ -349,7 +363,6 @@
               <div class="casin-card-progress">
                 <span class="casin-card-score-val">{doneCount(player)}</span>
                 <span class="casin-card-total">/ {CASIN_ACTIONS.length}</span>
-                <span class="casin-card-x">×{player.x}</span>
               </div>
               {#if blockedAction}
                 <div class="casin-blocked-badge">{$t('casin.blockedBadge', { values: { action: $t('casin.actions.' + blockedAction.id) } })}</div>
@@ -371,7 +384,6 @@
               <span class="casin-blocked-badge">{$t('casin.blockedBadge', { values: { action: $t('casin.actions.' + blockedAction.id) } })}</span>
             {/if}
             <span class="casin-score-progress">{doneCount(player)} / {CASIN_ACTIONS.length}</span>
-            <span class="casin-score-x">×{player.x}</span>
           </div>
         {/each}
       </div>
@@ -578,12 +590,6 @@
     font-weight: normal;
   }
 
-  .casin-card-x {
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.4);
-    margin-left: 2px;
-  }
-
   /* ===== Scoreboard ===== */
   .casin-scoreboard {
     display: flex;
@@ -640,11 +646,6 @@
   .casin-score-progress {
     font-weight: bold;
     color: white;
-  }
-
-  .casin-score-x {
-    font-size: 11px;
-    color: rgba(255, 255, 255, 0.4);
   }
 
   .casin-blocked-badge {
