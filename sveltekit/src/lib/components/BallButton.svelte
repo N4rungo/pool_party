@@ -27,6 +27,7 @@
   export let pocketed = false;
   export let selected = false;
   export let disabled = false;
+  export let hint = false;
 
   const dispatch = createEventDispatcher();
 
@@ -39,6 +40,7 @@
   class:pocketed
   class:selected
   class:disabled
+  class:hint
   disabled={isInactive}
   on:click={() => dispatch('click')}
   aria-label={alt}>
@@ -84,5 +86,14 @@
   .ball.selected img {
     filter: drop-shadow(0 0 4px var(--color-gold))
             drop-shadow(0 0 2px var(--color-gold));
+  }
+
+  @keyframes hint-pulse {
+    0%, 100% { filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.55)); opacity: 1; }
+    50%       { filter: drop-shadow(0 0 9px rgba(255, 255, 255, 0.9)) drop-shadow(0 0 4px rgba(200, 220, 255, 0.6)); opacity: 0.82; }
+  }
+
+  .ball.hint:not(.disabled):not(.pocketed) img {
+    animation: hint-pulse 1.3s ease-in-out infinite;
   }
 </style>
