@@ -6,6 +6,7 @@
   import { t, locale } from 'svelte-i18n';
   import { get } from 'svelte/store';
   import { setLang } from '$lib/i18n/index.js';
+  import { themeStore, THEMES } from '$lib/stores/theme.js';
 
   const LANGS = [
     { id: 'fr', label: 'Français' },
@@ -56,6 +57,23 @@
     }
   }
 
+  // ── Accordéons ───────────────────────────────────────────────────────
+  let themeOpen = false;
+  let langOpen  = false;
+
+  function selectTheme(id) {
+    themeStore.set(id);
+    themeOpen = false;
+  }
+
+  function selectLang(id) {
+    setLang(id);
+    langOpen = false;
+  }
+
+  $: currentTheme = THEMES.find(t => t.id === $themeStore) ?? THEMES[0];
+  $: currentLang  = LANGS.find(l => l.id === $locale) ?? LANGS[0];
+
   $: PERIOD_SHORT = {
     '7d': $t('stats.periods.7d'), '30d': $t('stats.periods.30d'),
     '6m': $t('stats.periods.6m'), 'all': $t('stats.periods.all'),
@@ -95,28 +113,76 @@
 
   <!-- ── Thèmes ── -->
   <div class="section-label" style="margin-top: 12px">{$t('settings.themes')}</div>
-  <div class="setting-block setting-block-soon">
-    <span class="soon-icon">🎨</span>
-    <span class="soon-text">{$t('settings.comingSoon')}</span>
+
+  <div class="setting-block setting-block-picker" class:open={themeOpen}>
+    {#if !themeOpen}
+      <!-- Thème actif — clic pour ouvrir -->
+      <button
+        class="picker-current"
+        on:click={() => themeOpen = true}
+        aria-label="Changer de thème"
+      >
+        <span class="color-rect" style="background:{currentTheme.pool}"></span>
+        <span class="picker-label">{$t(`settings.themeNames.${currentTheme.id}`)}</span>
+        <span class="picker-chevron">›</span>
+      </button>
+    {:else}
+      <!-- Grille de tous les thèmes -->
+      <div class="color-grid">
+        {#each THEMES as theme}
+          <button
+            class="color-tile"
+            class:selected={theme.id === $themeStore}
+            on:click={() => selectTheme(theme.id)}
+            aria-label={$t(`settings.themeNames.${theme.id}`)}
+            style="background:{theme.pool}"
+          >
+            {#if theme.id === $themeStore}
+              <span class="tile-check">✓</span>
+            {/if}
+            <span class="tile-label">{$t(`settings.themeNames.${theme.id}`)}</span>
+          </button>
+        {/each}
+      </div>
+      <button class="btn-action close-btn" on:click={() => themeOpen = false}>✕</button>
+    {/if}
   </div>
 
   <!-- ── Langue ── -->
   <div class="section-label">{$t('settings.language')}</div>
-  <div class="setting-block setting-block-lang">
-    {#each LANGS as lang}
+
+  <div class="setting-block setting-block-picker" class:open={langOpen}>
+    {#if !langOpen}
+      <!-- Langue active — clic pour ouvrir -->
       <button
-        class="lang-row"
-        class:active={$locale === lang.id}
-        on:click={() => setLang(lang.id)}
-        aria-pressed={$locale === lang.id}
+        class="picker-current"
+        on:click={() => langOpen = true}
+        aria-label="Changer de langue"
       >
-        <FlagIcon lang={lang.id} size={40} />
-        <span class="lang-name">{lang.label}</span>
-        {#if $locale === lang.id}
-          <span class="lang-check">✓</span>
-        {/if}
+        <FlagIcon lang={currentLang.id} size={32} />
+        <span class="picker-label">{currentLang.label}</span>
+        <span class="picker-chevron">›</span>
       </button>
-    {/each}
+    {:else}
+      <!-- Toutes les langues -->
+      <div class="lang-list">
+        {#each LANGS as lang}
+          <button
+            class="lang-row"
+            class:active={$locale === lang.id}
+            on:click={() => selectLang(lang.id)}
+            aria-pressed={$locale === lang.id}
+          >
+            <FlagIcon lang={lang.id} size={36} />
+            <span class="lang-name">{lang.label}</span>
+            {#if $locale === lang.id}
+              <span class="lang-check">✓</span>
+            {/if}
+          </button>
+        {/each}
+      </div>
+      <button class="btn-action close-btn" on:click={() => langOpen = false}>✕</button>
+    {/if}
   </div>
 
 </div>
@@ -155,13 +221,147 @@
     background: rgba(255, 80, 80, 0.05);
   }
 
-  .setting-block-soon {
-    flex-direction: row;
-    align-items: center;
-    gap: 10px;
-    opacity: 0.5;
+  /* ── Picker (thèmes & langue) ── */
+  .setting-block-picker {
+    padding: 10px;
   }
 
+  .picker-current {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    color: white;
+    padding: 4px 2px;
+    -webkit-tap-highlight-color: transparent;
+    text-align: left;
+  }
+
+  .picker-label {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .picker-chevron {
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.35);
+    line-height: 1;
+    transition: transform 0.2s;
+  }
+
+  /* ── Thèmes : rectangle de couleur unique (collapsed) ── */
+  .color-rect {
+    width: 48px;
+    height: 32px;
+    border-radius: 8px;
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  }
+
+  /* ── Thèmes : grille de tuiles (expanded) ── */
+  .color-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .color-tile {
+    position: relative;
+    height: 64px;
+    border-radius: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding-bottom: 6px;
+    overflow: hidden;
+    transition: border-color 0.15s, transform 0.1s;
+    -webkit-tap-highlight-color: transparent;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  }
+
+  .color-tile.selected {
+    border-color: var(--color-gold);
+    border-width: 2.5px;
+  }
+
+  .color-tile:active { transform: scale(0.95); }
+
+  .tile-check {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--color-gold);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+  }
+
+  .tile-label {
+    font-size: 11px;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.85);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+
+  /* ── Langue ── */
+  .lang-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .lang-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.15);
+    border: 1.5px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 10px 12px;
+    cursor: pointer;
+    font-family: inherit;
+    color: rgba(255, 255, 255, 0.6);
+    transition: background 0.12s, border-color 0.12s, color 0.12s;
+    -webkit-tap-highlight-color: transparent;
+    text-align: left;
+  }
+
+  .lang-row.active {
+    background: rgba(var(--color-gold-rgb), 0.12);
+    border-color: rgba(var(--color-gold-rgb), 0.5);
+    color: var(--color-gold);
+  }
+
+  .lang-row:not(.active):hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .lang-name {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .lang-check {
+    font-size: 16px;
+    color: var(--color-gold);
+  }
+
+  /* ── Commun ── */
   .setting-desc {
     font-size: 13px;
     color: rgba(255, 255, 255, 0.6);
@@ -211,6 +411,11 @@
 
   .btn-action:hover { background: rgba(255, 255, 255, 0.12); }
 
+  .close-btn {
+    align-self: center;
+    margin-top: 2px;
+  }
+
   .btn-danger {
     width: 100%;
     background: rgba(255, 80, 80, 0.15);
@@ -227,57 +432,4 @@
   }
 
   .btn-danger:hover { background: rgba(255, 80, 80, 0.22); }
-
-  .soon-icon { font-size: 20px; }
-  .soon-text {
-    font-size: 14px;
-    color: rgba(255, 255, 255, 0.5);
-    font-style: italic;
-  }
-
-  /* ── Langue ── */
-  .setting-block-lang {
-    gap: 6px;
-    padding: 10px;
-  }
-
-  .lang-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    width: 100%;
-    background: rgba(0, 0, 0, 0.15);
-    border: 1.5px solid rgba(255, 255, 255, 0.08);
-    border-radius: 10px;
-    padding: 10px 12px;
-    cursor: pointer;
-    font-family: inherit;
-    color: rgba(255, 255, 255, 0.6);
-    transition: background 0.12s, border-color 0.12s, color 0.12s;
-    -webkit-tap-highlight-color: transparent;
-    text-align: left;
-  }
-
-  .lang-row.active {
-    background: rgba(var(--color-gold-rgb), 0.12);
-    border-color: rgba(var(--color-gold-rgb), 0.5);
-    color: var(--color-gold);
-  }
-
-  .lang-row:not(.active):hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.15);
-    color: rgba(255, 255, 255, 0.85);
-  }
-
-  .lang-name {
-    flex: 1;
-    font-size: 15px;
-    font-weight: 600;
-  }
-
-  .lang-check {
-    font-size: 16px;
-    color: var(--color-gold);
-  }
 </style>

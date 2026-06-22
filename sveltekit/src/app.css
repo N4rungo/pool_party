@@ -6,8 +6,11 @@
   --color-gold-dark:   #B8960C;
   --color-gold-rgb:    255, 215, 0;
 
-  /* Vert tapis de billard (fond) */
-  --color-pool:        #1a472a;
+  /* Tapis de billard — fond + variantes sombre/claire (surchargés par le thème choisi) */
+  --color-pool:         #1a472a;
+  --color-pool-mid:     #1e5c34;
+  --color-pool-dark:    #143d24;
+  --color-pool-dark-rgb: 16, 50, 28;
 
   /* Largeur du contenu principal (mobile par défaut) */
   --content-w:   92%;

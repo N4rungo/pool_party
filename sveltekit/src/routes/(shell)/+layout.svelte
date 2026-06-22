@@ -2,8 +2,12 @@
   import { page } from '$app/stores';
   import { base } from '$app/paths';
   import { goto } from '$app/navigation';
+  import { onMount } from 'svelte';
   import Overlay from '$lib/components/Overlay.svelte';
   import { t } from 'svelte-i18n';
+  import { themeStore, applyTheme } from '$lib/stores/theme.js';
+
+  onMount(() => applyTheme($themeStore));
 
   const version = __APP_VERSION__;
 
@@ -121,7 +125,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(20, 60, 34, 0.94);
+    background: rgba(var(--color-pool-dark-rgb), 0.94);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.07);
@@ -233,7 +237,7 @@
     padding-bottom: env(safe-area-inset-bottom, 0px);
     display: flex;
     align-items: stretch;
-    background: rgba(16, 50, 28, 0.96);
+    background: rgba(var(--color-pool-dark-rgb), 0.96);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-top: 1px solid rgba(255, 255, 255, 0.08);
