@@ -275,7 +275,7 @@
     position: relative;
     height: 64px;
     border-radius: 10px;
-    border: 2px solid rgba(var(--color-text-rgb), 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.15);
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -301,15 +301,15 @@
     right: 8px;
     font-size: 14px;
     font-weight: bold;
-    color: var(--color-gold);
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+    color: white;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 1);
   }
 
   .tile-label {
     font-size: 11px;
     font-weight: bold;
-    color: rgba(var(--color-text-rgb), 0.85);
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
+    color: rgba(255, 255, 255, 0.92);
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 1), 0 0 8px rgba(0, 0, 0, 0.8);
     letter-spacing: 0.3px;
     text-transform: uppercase;
   }

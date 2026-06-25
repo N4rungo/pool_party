@@ -330,7 +330,7 @@
   }
 
   .filter-panel {
-    background: linear-gradient(160deg, #1e5c34, #143d24);
+    background: linear-gradient(160deg, var(--color-pool-mid), var(--color-pool-dark));
     border: 1px solid rgba(var(--color-gold-rgb), 0.5);
     border-radius: 20px;
     padding: 24px 28px;
