@@ -46,10 +46,15 @@ export const THEMES = [
   },
   {
     id: 'camel',
-    pool:       '#a07830',
-    mid:        '#c49440',
-    dark:       '#7a5c22',
-    darkRgb:    '122, 92, 34',
+    pool:       '#D0BA91',
+    mid:        '#DECDA9',
+    dark:       '#B8A074',
+    darkRgb:    '140, 116, 72',
+    textRgb:    '56, 36, 10',
+    gold:       '#7a4e0a',
+    goldLight:  '#9a6218',
+    goldDark:   '#5a3808',
+    goldRgb:    '122, 78, 10',
   },
 ];
 
@@ -63,6 +68,11 @@ export function applyTheme(id) {
   r.style.setProperty('--color-pool-mid',      theme.mid);
   r.style.setProperty('--color-pool-dark',     theme.dark);
   r.style.setProperty('--color-pool-dark-rgb', theme.darkRgb);
+  r.style.setProperty('--color-text-rgb',      theme.textRgb    ?? '255, 255, 255');
+  r.style.setProperty('--color-gold',          theme.gold       ?? '#FFD700');
+  r.style.setProperty('--color-gold-light',    theme.goldLight  ?? '#FFE44D');
+  r.style.setProperty('--color-gold-dark',     theme.goldDark   ?? '#B8960C');
+  r.style.setProperty('--color-gold-rgb',      theme.goldRgb    ?? '255, 215, 0');
 }
 
 function createThemeStore() {
