@@ -484,7 +484,7 @@
   }
 
   .setup-box {
-    background: linear-gradient(160deg, #1e5c34, #143d24);
+    background: linear-gradient(160deg, var(--color-pool-mid), var(--color-pool-dark));
     border: 2px solid var(--color-gold);
     border-radius: 20px;
     padding: 22px;

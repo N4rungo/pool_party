@@ -18,10 +18,10 @@ export const THEMES = [
   },
   {
     id: 'blue',
-    pool:       '#0f2d6e',
-    mid:        '#14398a',
-    dark:       '#0a2054',
-    darkRgb:    '10, 32, 84',
+    pool:       '#1252a0',
+    mid:        '#1a68c8',
+    dark:       '#0d3d78',
+    darkRgb:    '13, 61, 120',
   },
   {
     id: 'gray',
@@ -46,10 +46,10 @@ export const THEMES = [
   },
   {
     id: 'camel',
-    pool:       '#7a5820',
-    mid:        '#9a7028',
-    dark:       '#5a4018',
-    darkRgb:    '90, 64, 24',
+    pool:       '#a07830',
+    mid:        '#c49440',
+    dark:       '#7a5c22',
+    darkRgb:    '122, 92, 34',
   },
 ];
 
