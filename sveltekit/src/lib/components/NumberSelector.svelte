@@ -58,7 +58,7 @@
 
   .ns-label {
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(var(--color-text-rgb), 0.5);
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 8px;

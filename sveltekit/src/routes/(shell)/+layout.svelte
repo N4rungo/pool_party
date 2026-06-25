@@ -124,7 +124,7 @@
     background: rgba(var(--color-pool-dark-rgb), 0.94);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    border-bottom: 1px solid rgba(var(--color-text-rgb), 0.07);
     overflow: hidden;
   }
 
@@ -236,7 +236,7 @@
     background: rgba(var(--color-pool-dark-rgb), 0.96);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: 1px solid rgba(var(--color-text-rgb), 0.08);
   }
 
   .nav-item {
@@ -249,7 +249,7 @@
     background: none;
     border: none;
     cursor: pointer;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(var(--color-text-rgb), 0.4);
     font-family: inherit;
     transition: color 0.15s;
     -webkit-tap-highlight-color: transparent;
@@ -284,7 +284,7 @@
     margin-left: auto;
     font-size: 12px;
     font-weight: normal;
-    color: rgba(255, 255, 255, 0.3);
+    color: rgba(var(--color-text-rgb), 0.3);
     letter-spacing: 0.5px;
     font-family: monospace;
     align-self: center;
@@ -292,14 +292,14 @@
 
   .info-tagline {
     font-size: 14px;
-    color: rgba(255, 255, 255, 0.65);
+    color: rgba(var(--color-text-rgb), 0.65);
     line-height: 1.5;
     margin-bottom: 20px;
     font-style: italic;
   }
 
   .info-section {
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid rgba(var(--color-text-rgb), 0.1);
     padding-top: 16px;
   }
 
@@ -312,14 +312,14 @@
 
   .info-section p {
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(var(--color-text-rgb), 0.6);
     line-height: 1.5;
     margin-bottom: 14px;
   }
 
   .install-step {
     background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(var(--color-text-rgb), 0.08);
     border-radius: 12px;
     padding: 12px 14px;
     margin-bottom: 8px;
@@ -328,7 +328,7 @@
   .install-platform {
     font-size: 13px;
     font-weight: bold;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(var(--color-text-rgb), 0.5);
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 4px;
@@ -336,7 +336,7 @@
 
   .install-instructions {
     font-size: 14px;
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(var(--color-text-rgb), 0.85);
     line-height: 1.5;
   }
 

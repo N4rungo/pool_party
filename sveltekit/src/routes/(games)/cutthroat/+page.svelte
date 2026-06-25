@@ -500,7 +500,7 @@
   .setup-sub {
     text-align: center;
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(var(--color-text-rgb), 0.4);
     letter-spacing: 1px;
     text-transform: uppercase;
     margin-bottom: 18px;
@@ -532,7 +532,7 @@
 
   .ct-section-label {
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(var(--color-text-rgb), 0.5);
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 8px;
@@ -709,7 +709,7 @@
 
   .ct-player-card {
     background: rgba(0, 0, 0, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(var(--color-text-rgb), 0.07);
     border-radius: 14px;
     padding: 10px 14px;
     transition: opacity .3s, border-color .2s;
@@ -731,7 +731,7 @@
 
   .ct-player-name {
     font-size: 15px;
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(var(--color-text-rgb), 0.9);
     font-weight: bold;
     margin-bottom: 8px;
     display: flex;
@@ -802,8 +802,8 @@
 
   .ct-fault-btn {
     width: 100%;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(var(--color-text-rgb), 0.08);
+    border: 1px solid rgba(var(--color-text-rgb), 0.15);
     color: white;
     padding: 12px 14px;
     border-radius: 12px;
@@ -814,7 +814,7 @@
     transition: background .15s, border-color .15s;
   }
   .ct-fault-btn:hover {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(var(--color-text-rgb), 0.15);
     border-color: rgba(var(--color-gold-rgb), 0.5);
   }
 </style>

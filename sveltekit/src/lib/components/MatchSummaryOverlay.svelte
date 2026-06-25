@@ -98,7 +98,7 @@
 
   .summary-header {
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.55);
+    color: rgba(var(--color-text-rgb), 0.55);
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 10px;
@@ -112,7 +112,7 @@
 
   .summary-winner-label {
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(var(--color-text-rgb), 0.5);
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 4px;
@@ -128,7 +128,7 @@
 
   .section-label {
     font-size: 11px;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(var(--color-text-rgb), 0.4);
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 8px;
@@ -147,7 +147,7 @@
     align-items: center;
     gap: 10px;
     background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(var(--color-text-rgb), 0.06);
     border-radius: 10px;
     padding: 8px 12px;
     font-size: 14px;
@@ -160,7 +160,7 @@
 
   .standings-rank {
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(var(--color-text-rgb), 0.4);
     width: 18px;
     text-align: center;
     flex-shrink: 0;
@@ -182,7 +182,7 @@
 
   .standings-pts {
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(var(--color-text-rgb), 0.7);
     white-space: nowrap;
     font-weight: bold;
   }
@@ -207,7 +207,7 @@
 
   .game-grid {
     background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(var(--color-text-rgb), 0.08);
     border-radius: 12px;
     overflow: hidden;
     font-size: 13px;
@@ -217,7 +217,7 @@
   .grid-row {
     display: flex;
     align-items: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(var(--color-text-rgb), 0.05);
   }
 
   .grid-row:last-child { border-bottom: none; }
@@ -227,7 +227,7 @@
     flex: 1;
     padding: 8px 10px;
     text-align: left;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(var(--color-text-rgb), 0.6);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -235,7 +235,7 @@
   }
 
   .grid-header .grid-name-cell {
-    color: rgba(255, 255, 255, 0.35);
+    color: rgba(var(--color-text-rgb), 0.35);
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -246,12 +246,12 @@
     flex-shrink: 0;
     padding: 8px 4px;
     text-align: center;
-    color: rgba(255, 255, 255, 0.25);
+    color: rgba(var(--color-text-rgb), 0.25);
     font-size: 12px;
   }
 
   .grid-header .grid-game-cell {
-    color: rgba(255, 255, 255, 0.35);
+    color: rgba(var(--color-text-rgb), 0.35);
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 1px;

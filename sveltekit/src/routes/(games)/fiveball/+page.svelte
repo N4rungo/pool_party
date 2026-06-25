@@ -530,7 +530,7 @@
   .setup-sub {
     text-align: center;
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(var(--color-text-rgb), 0.4);
     letter-spacing: 1px;
     text-transform: uppercase;
     margin-bottom: 18px;
@@ -546,14 +546,14 @@
 
   .setup-tip {
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(var(--color-text-rgb), 0.5);
     margin: 6px 0 4px;
     font-style: italic;
   }
 
   .sep {
     height: 1px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(var(--color-text-rgb), 0.1);
     margin: 16px 0;
   }
 
@@ -567,7 +567,7 @@
   .fb-card-2p {
     flex: 1;
     background: rgba(0, 0, 0, 0.25);
-    border: 2px solid rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(var(--color-text-rgb), 0.1);
     border-radius: 16px;
     padding: 14px 10px 10px;
     text-align: center;
@@ -586,7 +586,7 @@
 
   .fb-card-name {
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(var(--color-text-rgb), 0.6);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -612,13 +612,13 @@
 
   .fb-card-target {
     font-size: 14px;
-    color: rgba(255, 255, 255, 0.35);
+    color: rgba(var(--color-text-rgb), 0.35);
     font-weight: normal;
   }
 
   .fb-card-bar {
     height: 4px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(var(--color-text-rgb), 0.1);
     border-radius: 4px;
     margin-top: 10px;
     overflow: hidden;
@@ -644,7 +644,7 @@
     align-items: center;
     gap: 10px;
     background: rgba(0, 0, 0, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(var(--color-text-rgb), 0.06);
     border-radius: 12px;
     padding: 6px 10px;
     transition: border-color .2s, box-shadow .2s;
@@ -665,7 +665,7 @@
   .fb-player-name {
     flex: 1;
     font-size: 14px;
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(var(--color-text-rgb), 0.85);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -689,7 +689,7 @@
 
   .fb-player-target {
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(var(--color-text-rgb), 0.4);
     font-weight: normal;
   }
 
@@ -734,7 +734,7 @@
   /* ===== Bandeau info ===== */
   .fb-banner {
     background: rgba(0, 0, 0, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(var(--color-text-rgb), 0.07);
     border-radius: 14px;
     padding: 8px 14px;
     margin-bottom: 12px;
@@ -743,11 +743,11 @@
 
   .fb-banner-line {
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.75);
+    color: rgba(var(--color-text-rgb), 0.75);
   }
 
   .fb-banner-cue {
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(var(--color-text-rgb), 0.5);
   }
 
   .fb-banner-engagement {
@@ -770,7 +770,7 @@
     border-radius: 18px;
     padding: 0;
     margin: 0 auto 12px;
-    border: 1px solid rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(var(--color-text-rgb), 0.07);
     max-width: 280px;
   }
 
@@ -791,7 +791,7 @@
     justify-content: center;
   }
 
-  .fb-preview-muted { color: rgba(255, 255, 255, 0.45); font-size: 13px; }
+  .fb-preview-muted { color: rgba(var(--color-text-rgb), 0.45); font-size: 13px; }
   .fb-preview-bust  { color: #ff7a7a; font-size: 13px; font-weight: bold; }
   .fb-preview-ok    { color: var(--color-gold); font-size: 14px; font-weight: bold; }
   .fb-preview-win   { color: var(--color-gold-light); font-size: 14px; font-weight: bold; }

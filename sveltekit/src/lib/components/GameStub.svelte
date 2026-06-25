@@ -39,10 +39,10 @@
 
   .stub-msg {
     background: rgba(0, 0, 0, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(var(--color-text-rgb), 0.1);
     border-radius: 16px;
     padding: 24px;
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(var(--color-text-rgb), 0.7);
     line-height: 1.6;
     margin-bottom: 20px;
   }

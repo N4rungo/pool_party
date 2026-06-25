@@ -98,7 +98,7 @@
 
   .sep {
     height: 1px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(var(--color-text-rgb), 0.1);
     margin: 16px 0;
   }
 
@@ -114,7 +114,7 @@
   .option-label {
     font-size: 14px;
     font-weight: bold;
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(var(--color-text-rgb), 0.85);
   }
 
   /* Toggle switch */
@@ -122,8 +122,8 @@
     width: 46px;
     height: 26px;
     border-radius: 13px;
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(var(--color-text-rgb), 0.15);
+    border: 1px solid rgba(var(--color-text-rgb), 0.25);
     position: relative;
     flex-shrink: 0;
     cursor: pointer;
@@ -157,7 +157,7 @@
     display: flex;
     align-items: stretch;
     background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(var(--color-text-rgb), 0.07);
     border-radius: 14px;
     padding: 10px 12px;
   }
@@ -174,12 +174,12 @@
     font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: rgba(255, 255, 255, 0.35);
+    color: rgba(var(--color-text-rgb), 0.35);
   }
 
   .match-col-sep {
     width: 1px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(var(--color-text-rgb), 0.1);
     margin: 0 10px;
     align-self: stretch;
     flex-shrink: 0;
@@ -237,9 +237,9 @@
     min-width: 0;
     padding: 6px 4px;
     border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(var(--color-text-rgb), 0.15);
     background: rgba(0, 0, 0, 0.25);
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(var(--color-text-rgb), 0.5);
     font-family: inherit;
     font-size: 11px;
     cursor: pointer;

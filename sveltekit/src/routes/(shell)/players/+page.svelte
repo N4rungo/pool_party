@@ -118,7 +118,7 @@
 
   .section-label {
     font-size: 11px;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(var(--color-text-rgb), 0.4);
     text-transform: uppercase;
     letter-spacing: 1px;
   }
@@ -131,7 +131,7 @@
   .text-input {
     flex: 1;
     background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(var(--color-text-rgb), 0.15);
     border-radius: 10px;
     color: white;
     font-family: inherit;
@@ -162,7 +162,7 @@
 
   .empty-state {
     text-align: center;
-    color: rgba(255, 255, 255, 0.35);
+    color: rgba(var(--color-text-rgb), 0.35);
     font-size: 14px;
     padding: 32px 0;
     font-style: italic;
@@ -179,7 +179,7 @@
     align-items: center;
     gap: 8px;
     background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(var(--color-text-rgb), 0.07);
     border-radius: 12px;
     padding: 10px 12px;
   }

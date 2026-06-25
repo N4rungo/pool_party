@@ -294,7 +294,7 @@
     display: flex;
     align-items: center;
     background: rgba(0, 0, 0, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(var(--color-text-rgb), 0.08);
     border-radius: 16px;
     padding: 14px 20px;
     margin-bottom: 18px;
@@ -316,7 +316,7 @@
 
   .summary-label {
     font-size: 11px;
-    color: rgba(255, 255, 255, 0.45);
+    color: rgba(var(--color-text-rgb), 0.45);
     text-transform: uppercase;
     letter-spacing: 0.8px;
   }
@@ -324,7 +324,7 @@
   .summary-sep {
     width: 1px;
     height: 36px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(var(--color-text-rgb), 0.1);
     flex-shrink: 0;
   }
 
@@ -340,10 +340,10 @@
     flex: 1;
     min-width: fit-content;
     padding: 9px 8px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(var(--color-text-rgb), 0.12);
     border-radius: 12px;
     background: rgba(0, 0, 0, 0.2);
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(var(--color-text-rgb), 0.5);
     font-family: inherit;
     font-size: 12px;
     font-weight: bold;
@@ -372,7 +372,7 @@
 
   .stat-card {
     background: rgba(0, 0, 0, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(var(--color-text-rgb), 0.07);
     border-radius: 14px;
     padding: 14px 12px;
     text-align: center;
@@ -392,7 +392,7 @@
 
   .stat-label {
     font-size: 11px;
-    color: rgba(255, 255, 255, 0.45);
+    color: rgba(var(--color-text-rgb), 0.45);
     text-transform: uppercase;
     letter-spacing: 0.8px;
   }
@@ -409,7 +409,7 @@
     align-items: center;
     gap: 10px;
     background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(var(--color-text-rgb), 0.06);
     border-radius: 10px;
     padding: 9px 12px;
     font-size: 13px;
@@ -421,7 +421,7 @@
   }
 
   .history-date {
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(var(--color-text-rgb), 0.4);
     font-size: 11px;
     white-space: nowrap;
     flex-shrink: 0;
@@ -430,11 +430,11 @@
 
   .history-game {
     flex: 1;
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(var(--color-text-rgb), 0.8);
   }
 
   .history-score {
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(var(--color-text-rgb), 0.5);
     font-size: 12px;
   }
 
@@ -446,12 +446,12 @@
   }
 
   .result-win  { color: var(--color-gold); font-weight: bold; }
-  .result-loss { color: rgba(255, 255, 255, 0.2); }
+  .result-loss { color: rgba(var(--color-text-rgb), 0.2); }
 
   /* ── Empty state ── */
   .empty-state {
     text-align: center;
-    color: rgba(255, 255, 255, 0.35);
+    color: rgba(var(--color-text-rgb), 0.35);
     font-size: 14px;
     padding: 32px 0;
     font-style: italic;

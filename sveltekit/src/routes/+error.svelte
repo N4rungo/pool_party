@@ -50,7 +50,7 @@
 
   .error-message {
     font-size: 18px;
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(var(--color-text-rgb), 0.7);
     margin: 0;
   }
 

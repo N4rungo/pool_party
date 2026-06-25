@@ -91,7 +91,7 @@
 
   .recap-header {
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.55);
+    color: rgba(var(--color-text-rgb), 0.55);
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 10px;
@@ -119,7 +119,7 @@
 
   .recap-winner-sub {
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(var(--color-text-rgb), 0.5);
     margin-bottom: 14px;
   }
 
@@ -136,7 +136,7 @@
 
   .recap-standings-label {
     font-size: 11px;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(var(--color-text-rgb), 0.4);
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 6px;
@@ -153,7 +153,7 @@
     align-items: center;
     gap: 10px;
     background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(var(--color-text-rgb), 0.06);
     border-radius: 10px;
     padding: 8px 12px;
     font-size: 14px;
@@ -166,7 +166,7 @@
 
   .standings-rank {
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(var(--color-text-rgb), 0.4);
     width: 18px;
     text-align: center;
     flex-shrink: 0;
@@ -188,7 +188,7 @@
 
   .standings-pts {
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(var(--color-text-rgb), 0.7);
     white-space: nowrap;
   }
 
@@ -200,10 +200,10 @@
   .btn-undo {
     display: block;
     width: 100%;
-    background: rgba(255, 255, 255, 0.07);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(var(--color-text-rgb), 0.07);
+    border: 1px solid rgba(var(--color-text-rgb), 0.15);
     border-radius: 12px;
-    color: rgba(255, 255, 255, 0.65);
+    color: rgba(var(--color-text-rgb), 0.65);
     font-family: inherit;
     font-size: 14px;
     cursor: pointer;
@@ -213,14 +213,14 @@
   }
 
   .btn-undo:hover {
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(var(--color-text-rgb), 0.12);
     color: white;
   }
 
   .btn-abandon {
     background: none;
     border: none;
-    color: rgba(255, 255, 255, 0.35);
+    color: rgba(var(--color-text-rgb), 0.35);
     font-family: inherit;
     font-size: 13px;
     cursor: pointer;
@@ -231,6 +231,6 @@
   }
 
   .btn-abandon:hover {
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(var(--color-text-rgb), 0.6);
   }
 </style>

@@ -200,7 +200,7 @@
 
   .section-label {
     font-size: 11px;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(var(--color-text-rgb), 0.4);
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-top: 4px;
@@ -208,7 +208,7 @@
 
   .setting-block {
     background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(var(--color-text-rgb), 0.07);
     border-radius: 14px;
     padding: 14px;
     display: flex;
@@ -249,7 +249,7 @@
 
   .picker-chevron {
     font-size: 20px;
-    color: rgba(255, 255, 255, 0.35);
+    color: rgba(var(--color-text-rgb), 0.35);
     line-height: 1;
     transition: transform 0.2s;
   }
@@ -259,7 +259,7 @@
     width: 48px;
     height: 32px;
     border-radius: 8px;
-    border: 2px solid rgba(255, 255, 255, 0.25);
+    border: 2px solid rgba(var(--color-text-rgb), 0.25);
     flex-shrink: 0;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
   }
@@ -275,7 +275,7 @@
     position: relative;
     height: 64px;
     border-radius: 10px;
-    border: 2px solid rgba(255, 255, 255, 0.15);
+    border: 2px solid rgba(var(--color-text-rgb), 0.15);
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -308,7 +308,7 @@
   .tile-label {
     font-size: 11px;
     font-weight: bold;
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(var(--color-text-rgb), 0.85);
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
     letter-spacing: 0.3px;
     text-transform: uppercase;
@@ -327,12 +327,12 @@
     gap: 12px;
     width: 100%;
     background: rgba(0, 0, 0, 0.15);
-    border: 1.5px solid rgba(255, 255, 255, 0.08);
+    border: 1.5px solid rgba(var(--color-text-rgb), 0.08);
     border-radius: 10px;
     padding: 10px 12px;
     cursor: pointer;
     font-family: inherit;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(var(--color-text-rgb), 0.6);
     transition: background 0.12s, border-color 0.12s, color 0.12s;
     -webkit-tap-highlight-color: transparent;
     text-align: left;
@@ -345,9 +345,9 @@
   }
 
   .lang-row:not(.active):hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.15);
-    color: rgba(255, 255, 255, 0.85);
+    background: rgba(var(--color-text-rgb), 0.05);
+    border-color: rgba(var(--color-text-rgb), 0.15);
+    color: rgba(var(--color-text-rgb), 0.85);
   }
 
   .lang-name {
@@ -364,7 +364,7 @@
   /* ── Commun ── */
   .setting-desc {
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(var(--color-text-rgb), 0.6);
   }
 
   .pill-group {
@@ -377,9 +377,9 @@
   .pill {
     padding: 6px 10px;
     border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(var(--color-text-rgb), 0.15);
     background: rgba(0, 0, 0, 0.25);
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(var(--color-text-rgb), 0.6);
     font-family: inherit;
     font-size: 12px;
     cursor: pointer;
@@ -397,10 +397,10 @@
 
   .btn-action {
     align-self: flex-start;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(var(--color-text-rgb), 0.08);
+    border: 1px solid rgba(var(--color-text-rgb), 0.15);
     border-radius: 10px;
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(var(--color-text-rgb), 0.7);
     font-family: inherit;
     font-size: 13px;
     padding: 8px 16px;
@@ -409,7 +409,7 @@
     -webkit-tap-highlight-color: transparent;
   }
 
-  .btn-action:hover { background: rgba(255, 255, 255, 0.12); }
+  .btn-action:hover { background: rgba(var(--color-text-rgb), 0.12); }
 
   .close-btn {
     align-self: center;

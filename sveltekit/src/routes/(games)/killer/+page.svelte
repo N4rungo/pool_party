@@ -621,7 +621,7 @@
   .setup-sub {
     text-align: center;
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(var(--color-text-rgb), 0.4);
     letter-spacing: 1px;
     text-transform: uppercase;
     margin-bottom: 18px;
@@ -644,13 +644,13 @@
 
   .sep {
     height: 1px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(var(--color-text-rgb), 0.1);
     margin: 16px 0;
   }
 
   .ns-label {
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(var(--color-text-rgb), 0.5);
     text-transform: uppercase;
     letter-spacing: 1px;
   }
@@ -668,7 +668,7 @@
     flex: 1;
     border: none;
     background: transparent;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(var(--color-text-rgb), 0.6);
     padding: 10px 12px;
     border-radius: 50px;
     cursor: pointer;
@@ -816,7 +816,7 @@
 
   .killer-player-card {
     background: rgba(0, 0, 0, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(var(--color-text-rgb), 0.07);
     border-radius: 14px;
     padding: 10px 14px;
     transition: border-color .2s, opacity .3s, box-shadow .2s;
@@ -849,7 +849,7 @@
 
   .kp-name {
     font-size: 14px;
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(var(--color-text-rgb), 0.9);
     font-weight: bold;
     display: flex;
     align-items: center;
@@ -913,7 +913,7 @@
 
   .kp-joker-counter {
     font-size: 11px;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(var(--color-text-rgb), 0.5);
     flex-shrink: 0;
   }
   .kp-joker-counter.maxed {
@@ -933,7 +933,7 @@
   /* ===== Section actions ===== */
   .killer-action-section {
     background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(var(--color-text-rgb), 0.08);
     border-radius: 16px;
     padding: 14px;
   }
@@ -941,7 +941,7 @@
   .killer-action-title {
     text-align: center;
     font-size: 14px;
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(var(--color-text-rgb), 0.85);
     margin-bottom: 10px;
   }
 
@@ -998,8 +998,8 @@
   /* ===== Overlay joker ===== */
   .joker-choice-btn {
     width: 100%;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(var(--color-text-rgb), 0.06);
+    border: 1px solid rgba(var(--color-text-rgb), 0.15);
     color: white;
     padding: 12px 14px;
     border-radius: 14px;
@@ -1013,7 +1013,7 @@
     transition: background .15s, border-color .15s;
   }
   .joker-choice-btn:hover:not(:disabled) {
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(var(--color-text-rgb), 0.12);
     border-color: rgba(var(--color-gold-rgb), 0.5);
   }
   .joker-choice-btn:disabled {
@@ -1025,7 +1025,7 @@
   }
   .jc-desc {
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.55);
+    color: rgba(var(--color-text-rgb), 0.55);
     margin-top: 2px;
   }
 
@@ -1037,8 +1037,8 @@
   }
   .target-btn {
     width: 100%;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(var(--color-text-rgb), 0.06);
+    border: 1px solid rgba(var(--color-text-rgb), 0.15);
     color: white;
     padding: 12px 14px;
     border-radius: 14px;
@@ -1051,7 +1051,7 @@
     transition: background .15s, border-color .15s;
   }
   .target-btn:hover {
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(var(--color-text-rgb), 0.12);
     border-color: rgba(var(--color-gold-rgb), 0.5);
   }
   .target-name {

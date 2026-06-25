@@ -375,7 +375,7 @@
   .setup-sub {
     text-align: center;
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(var(--color-text-rgb), 0.4);
     letter-spacing: 1px;
     text-transform: uppercase;
     margin-bottom: 18px;
@@ -405,8 +405,8 @@
 
   .name-input-wrap input {
     flex: 1;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(var(--color-text-rgb), 0.08);
+    border: 1px solid rgba(var(--color-text-rgb), 0.2);
     border-radius: 10px;
     color: #fff;
     font-family: inherit;
@@ -419,7 +419,7 @@
     border-color: rgba(var(--color-gold-rgb), 0.6);
   }
   .name-input-wrap input::placeholder {
-    color: rgba(255, 255, 255, 0.3);
+    color: rgba(var(--color-text-rgb), 0.3);
   }
   .player-emoji {
     font-size: 22px;
@@ -440,7 +440,7 @@
   .chicago-score-card {
     flex: 1;
     background: rgba(0, 0, 0, 0.25);
-    border: 2px solid rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(var(--color-text-rgb), 0.1);
     border-radius: 16px;
     padding: 14px 10px 10px;
     text-align: center;
@@ -454,7 +454,7 @@
 
   .chicago-player-name {
     font-size: 14px;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(var(--color-text-rgb), 0.6);
     margin-bottom: 6px;
     white-space: nowrap;
     overflow: hidden;
@@ -478,13 +478,13 @@
 
   .chicago-target {
     font-size: 11px;
-    color: rgba(255, 255, 255, 0.3);
+    color: rgba(var(--color-text-rgb), 0.3);
     margin-top: 4px;
   }
 
   .chicago-progress-bar {
     height: 4px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(var(--color-text-rgb), 0.1);
     border-radius: 4px;
     margin-top: 8px;
     overflow: hidden;
@@ -502,7 +502,7 @@
     border-radius: 18px;
     padding: 18px 10px;
     margin-bottom: 14px;
-    border: 1px solid rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(var(--color-text-rgb), 0.07);
   }
 
   .chicago-row {

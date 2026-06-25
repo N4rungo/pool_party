@@ -62,7 +62,7 @@
 
   .confirm-message {
     font-size: 16px;
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(var(--color-text-rgb), 0.9);
     line-height: 1.5;
     margin-bottom: 18px;
   }
