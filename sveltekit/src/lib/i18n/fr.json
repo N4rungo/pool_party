@@ -189,13 +189,13 @@
     "deleteAll": "💥 Effacer tout l'historique",
     "themes": "Thèmes",
     "themeNames": {
-      "green":    "Vert",
-      "red":      "Rouge",
-      "blue":     "Bleu",
-      "gray":     "Gris",
-      "burgundy": "Bordeaux",
-      "black":    "Noir",
-      "camel":    "Camel"
+      "green":  "Vert",
+      "red":    "Rouge",
+      "blue":   "Bleu",
+      "gray":   "Gris",
+      "violet": "Violet",
+      "black":  "Noir",
+      "camel":  "Camel"
     },
     "language": "Langue",
     "comingSoon": "Bientôt disponible",

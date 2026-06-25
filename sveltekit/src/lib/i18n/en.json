@@ -189,13 +189,13 @@
     "deleteAll": "💥 Clear all history",
     "themes": "Themes",
     "themeNames": {
-      "green":    "Green",
-      "red":      "Red",
-      "blue":     "Blue",
-      "gray":     "Gray",
-      "burgundy": "Burgundy",
-      "black":    "Black",
-      "camel":    "Camel"
+      "green":  "Green",
+      "red":    "Red",
+      "blue":   "Blue",
+      "gray":   "Gray",
+      "violet": "Violet",
+      "black":  "Black",
+      "camel":  "Camel"
     },
     "language": "Language",
     "comingSoon": "Coming soon",

@@ -2,12 +2,8 @@
   import { page } from '$app/stores';
   import { base } from '$app/paths';
   import { goto } from '$app/navigation';
-  import { onMount } from 'svelte';
   import Overlay from '$lib/components/Overlay.svelte';
   import { t } from 'svelte-i18n';
-  import { themeStore, applyTheme } from '$lib/stores/theme.js';
-
-  onMount(() => applyTheme($themeStore));
 
   const version = __APP_VERSION__;
 

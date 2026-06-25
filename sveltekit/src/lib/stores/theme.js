@@ -11,17 +11,17 @@ export const THEMES = [
   },
   {
     id: 'red',
-    pool:       '#4a1820',
-    mid:        '#5e1f28',
-    dark:       '#3a0e18',
-    darkRgb:    '35, 10, 14',
+    pool:       '#6b1219',
+    mid:        '#8a1820',
+    dark:       '#520e14',
+    darkRgb:    '82, 14, 20',
   },
   {
     id: 'blue',
-    pool:       '#0f2d4a',
-    mid:        '#143a5e',
-    dark:       '#0a2038',
-    darkRgb:    '8, 20, 36',
+    pool:       '#0f2d6e',
+    mid:        '#14398a',
+    dark:       '#0a2054',
+    darkRgb:    '10, 32, 84',
   },
   {
     id: 'gray',
@@ -31,11 +31,11 @@ export const THEMES = [
     darkRgb:    '18, 20, 26',
   },
   {
-    id: 'burgundy',
-    pool:       '#3c0d1a',
-    mid:        '#4d1225',
-    dark:       '#2e0812',
-    darkRgb:    '28, 6, 12',
+    id: 'violet',
+    pool:       '#2d1260',
+    mid:        '#3d1878',
+    dark:       '#1e0c46',
+    darkRgb:    '30, 12, 70',
   },
   {
     id: 'black',
@@ -46,10 +46,10 @@ export const THEMES = [
   },
   {
     id: 'camel',
-    pool:       '#4a3520',
-    mid:        '#5c4428',
-    dark:       '#3a2a16',
-    darkRgb:    '35, 24, 12',
+    pool:       '#7a5820',
+    mid:        '#9a7028',
+    dark:       '#5a4018',
+    darkRgb:    '90, 64, 24',
   },
 ];
 
