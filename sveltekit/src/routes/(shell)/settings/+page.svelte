@@ -217,8 +217,8 @@
   }
 
   .setting-block-danger {
-    border-color: rgba(255, 80, 80, 0.2);
-    background: rgba(255, 80, 80, 0.05);
+    border-color: rgba(255, 80, 80, 0.45);
+    background: rgba(255, 80, 80, 0.15);
   }
 
   /* ── Picker (thèmes & langue) ── */
