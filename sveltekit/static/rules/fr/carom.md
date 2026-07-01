@@ -1,27 +1,29 @@
 # 🎱 Carambole
-> Faites toucher vos deux adversaires en un coup.
+> Touchez les deux billes objectifs en un seul coup.
 
 ## 🎯 But du jeu
-Atteindre un **score cible** avant les autres en réussissant des caramboles.
-Une carambole = la bille blanche touche **les deux autres billes** en un seul coup → **1 point**.
+Atteindre un **score cible** en réussissant des caramboles.
+Une carambole = la bille blanche touche **la rouge ET la jaune** (ou blanche pointée) en un seul coup → **1 point**.
 
 ## 🎱 Mise en place
 - **2 à 6 joueurs**
-- Score cible commun (par défaut **20 points**, configurable de 5 à 200, par pas de 5)
-- Score modifiable individuellement à l'étape 3 (handicap pour mixer niveaux)
-- Table française avec 3 billes : 1 blanche (cue ball), 1 rouge, 1 blanche adverse
+- 3 billes sur la table : la **blanche** (cue ball), la **rouge** et la **jaune** (ou blanche pointée)
+- Score cible configurable, modifiable par joueur (handicap pour mixer les niveaux)
 
 ## ▶️ Comment jouer
 La carambole se joue par **breaks** : à votre tour, enchaînez autant de caramboles que possible.
-- ✅ Vous réussissez une carambole (la blanche touche les 2 autres billes) → +1 dans le break en cours, vous continuez.
-- ❌ Vous ratez → vous validez la fin de votre break dans l'app : votre score grimpe d'autant, la main passe.
+- ✅ Carambole réussie → +1 dans le break en cours, vous continuez.
+- ❌ Coup raté → le break est terminé, la main passe au joueur suivant.
 
-### ⚠️ Pas de faute
-En carambole classique, il n'y a pas de pénalité en cas de faute. Un coup raté = la main passe, c'est tout.
+### ⚠️ Pas de faute pénalisante
+En carambole classique, un coup irrégulier ne retire pas de points — la main passe, c'est tout.
+
+## 🎮 Variantes
+Le jeu se décline en plusieurs disciplines selon la contrainte imposée à la blanche :
+
+- **Libre** — aucune contrainte, la blanche peut toucher les billes dans n'importe quel ordre et trajectoire.
+- **1 bande** — la blanche doit toucher au moins 1 bande avant (ou entre) les contacts avec les deux billes objectifs.
+- **3 bandes** — la blanche doit toucher au moins 3 bandes avant de compléter la carambole. La discipline reine du billard français.
 
 ## 🏆 Victoire
 Le premier joueur qui atteint **son** score cible gagne. 🥳
-
-## 💡 Exemple
-Julie est à 8 points, son objectif est 20. Elle réussit 5 caramboles d'affilée puis rate.
-Elle valide → break de 5, score total 13. La main passe à Marc.
