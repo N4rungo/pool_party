@@ -47,6 +47,7 @@
       "nineball": "La 9 est ta seule cible",
       "tenball": "La 10 et rien d'autre !",
       "straightpool": "Empochez-les toutes !",
+      "carom": "Touchez les deux billes !",
       "casin": "Le français revisité",
       "fiveball": "On vise 0 pile !",
       "snooker": "Objectif : 147 points"
@@ -174,6 +175,7 @@
       "killer": "Vies restantes",
       "straightpool": "Billes empochées",
       "snooker": "Points de frame",
+      "carom": "Caramboles",
       "casin": "Score",
       "fiveball": "Score",
       "default": "Score"
@@ -305,6 +307,20 @@
       "faultPass": "⚠️ Faute (+{value} pts) — main passe",
       "freeball": "🎱 Free ball activée pour {name}",
       "freeballPlayed": "🎱 Free ball jouée"
+    }
+  },
+  "carom": {
+    "winSub": "Score atteint !",
+    "setupTip": "Chaque carambole réussie = 1 point.",
+    "currentTurn": "Tour de {name}",
+    "currentBreakLabel": "Break en cours",
+    "breakHint": "+ à chaque carambole. − pour corriger.",
+    "bestBreak": "🏆 Meilleur break : {n}",
+    "targetPerPlayer": "Score cible par joueur",
+    "targetPerPlayerSub": "Ajustez pour équilibrer les niveaux",
+    "nextBtn": "Suivant →",
+    "toast": {
+      "starts": "🎯 Tour de {name}"
     }
   },
   "casin": {

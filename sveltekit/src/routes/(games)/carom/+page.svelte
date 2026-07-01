@@ -1,17 +1,16 @@
 <!--
-  Page complète du Casin.
+  Page complète de la Carambole (billard français).
 
   Phases :
-   - 'setup1' → nb joueurs + X global
+   - 'setup1' → nb joueurs + score commun
    - 'setup2' → noms
-   - 'setup3' → recap avec X individuel
-   - 'game'   → scoreboard + grille des 9 actions cliquables
-   - 'win'    → WinOverlay
+   - 'setup3' → recap avec score modifiable individuellement
+   - 'game'   → scoreboard + sélecteur de break + bouton Suivant
+   - 'win'    → WinOverlay avec ranking final dans le slot
 -->
 <script>
   import { goto } from '$app/navigation';
   import { base } from '$app/paths';
-  import { shuffle } from '$lib/utils.js';
   import { onMount } from 'svelte';
   import GameLayout from '$lib/components/GameLayout.svelte';
   import RulesViewer from '$lib/components/RulesViewer.svelte';
@@ -19,6 +18,7 @@
   import NumberSelector from '$lib/components/NumberSelector.svelte';
   import PlayerSetupList from '$lib/components/PlayerSetupList.svelte';
   import RecapList from '$lib/components/RecapList.svelte';
+  import { shuffle } from '$lib/utils.js';
   import MatchSetup from '$lib/components/MatchSetup.svelte';
   import MatchRecapOverlay from '$lib/components/MatchRecapOverlay.svelte';
   import MatchSummaryOverlay from '$lib/components/MatchSummaryOverlay.svelte';
@@ -29,19 +29,19 @@
   import { matchStore, startMatch, recordResult, endMatch, undoResult, isLastGame } from '$lib/stores/match.js';
   import { recordHistory } from '$lib/stores/history.js';
   import {
-    CASIN_ACTIONS,
-    CASIN_MIN_PLAYERS,
-    CASIN_MAX_PLAYERS,
-    CASIN_DEFAULT_X,
-    CASIN_MIN_X,
-    CASIN_MAX_X,
+    CAROM_MIN_PLAYERS,
+    CAROM_MAX_PLAYERS,
+    CAROM_DEFAULT_TARGET,
+    CAROM_MIN_TARGET,
+    CAROM_MAX_TARGET,
+    CAROM_TARGET_STEP,
     createInitialState,
-    doAction,
-    neutralShot,
-    nextPlayer,
+    incBreak,
+    decBreak,
+    passTurn,
     undo,
-    doneCount
-  } from '$lib/games/casin.js';
+    rankedPlayers
+  } from '$lib/games/carom.js';
 
   const EMOJIS = ['🟡', '🔵', '🔴', '⚪', '🟠', '🟣', '🟤', '🟢'];
 
@@ -54,15 +54,14 @@
   let showMatchRecap = false;
   let showMatchSummary = false;
   let matchAbandoned = false;
-  let breakOrder = 'alternate';
   let picks = [];
   let picksMap = {};
 
   onMount(() => {
-    if ($matchStore.isActive && $matchStore.gameId === 'casin') {
+    if ($matchStore.isActive && $matchStore.gameId === 'carom') {
       const p = $matchStore.players;
       count = p.length;
-      setupPlayers = p.map(name => ({ name, x: CASIN_DEFAULT_X }));
+      setupPlayers = p.map(name => ({ name, target: CAROM_DEFAULT_TARGET }));
       matchMode = true;
       matchTotalGames = $matchStore.totalGames;
       picks = p.map(name => ({ name, profileId: null }));
@@ -70,16 +69,16 @@
     }
   });
 
-  // Setup
-  let count = CASIN_MIN_PLAYERS;
-  let globalX = CASIN_DEFAULT_X;
+  let count = 2;
+  let defaultTarget = CAROM_DEFAULT_TARGET;
   let randomizeOrder = true;
+  let breakOrder = 'alternate';
   let setupPlayers = [];
 
   function gotoSetup2() {
     setupPlayers = Array.from({ length: count }, (_, i) => ({
-      name: setupPlayers[i]?.name ?? '',
-      x:    setupPlayers[i]?.x ?? globalX,
+      name:   setupPlayers[i]?.name ?? '',
+      target: setupPlayers[i]?.target ?? defaultTarget,
     }));
     picks = Array.from({ length: count }, (_, i) => ({
       name:      picks[i]?.name      ?? setupPlayers[i]?.name ?? '',
@@ -89,23 +88,22 @@
   }
 
   function gotoSetup3() {
-    const _t = get(t);
     setupPlayers = setupPlayers.map((p, i) => ({
       ...p,
-      name: picks[i]?.name?.trim() || _t('setup.defaultPlayer', { values: { n: i + 1 } }),
+      name: picks[i]?.name?.trim() || get(t)('setup.defaultPlayer', { values: { n: i + 1 } }),
     }));
     phase = 'setup3';
   }
 
-  function updatePlayerX(i, newX) {
+  function updatePlayerTarget(i, newTarget) {
     setupPlayers = setupPlayers.map((p, idx) =>
-      idx === i ? { ...p, x: newX } : p
+      idx === i ? { ...p, target: newTarget } : p
     );
   }
 
-  // Game state
   let state = null;
   let winnerName = null;
+  let winnerRanking = [];
 
   function resolveBreakOrder() {
     if (!$matchStore.isActive || $matchStore.results.length === 0) {
@@ -125,48 +123,40 @@
     const players = resolveBreakOrder();
     state = createInitialState(players);
     winnerName = null;
+    winnerRanking = [];
     phase = 'game';
-    showToast(get(t)('casin.toast.turn', { values: { name: state.players[0].name } }));
+    showToast(get(t)('carom.toast.starts', { values: { name: state.players[0].name } }));
   }
 
-  function onDoAction(actionId) {
-    const { newState, outcome } = doAction(state, actionId);
+  function onIncBreak() {
+    const { newState, outcome } = incBreak(state);
     state = newState;
-
-    if (outcome.kind === 'closed') {
-      showToast(get(t)('casin.alreadyDone'));
-    } else if (outcome.kind === 'win') {
+    if (outcome.kind === 'win') {
       winnerName = outcome.winner.name;
+      winnerRanking = rankedPlayers(state);
       recordHistory({
-        gameId: 'casin',
+        gameId: 'carom',
         players: state.players.map(p => ({ name: p.name, profileId: picksMap[p.name] ?? null })),
         winners: [outcome.winner.name],
-        scores: Object.fromEntries(state.players.map(p => [p.name, doneCount(p)])),
+        scores: Object.fromEntries(state.players.map(p => [p.name, p.score])),
+        extras: Object.fromEntries(state.players.map(p => [p.name, { breakMax: p.bestBreak }])),
       });
       if ($matchStore.isActive) {
-        const allScores = state.players.map(p => ({ name: p.name, score: doneCount(p) }));
+        const allScores = state.players.map(p => ({ name: p.name, score: p.score }));
         recordResult([outcome.winner.name], allScores);
         showMatchRecap = true;
       } else {
         phase = 'win';
       }
-    } else if (outcome.kind === 'scored') {
-      showToast(get(t)('casin.actionDone', { values: { label: get(t)('casin.actions.' + outcome.actionId) } }));
     }
   }
 
-  function onNeutralShot() {
-    const { newState, outcome } = neutralShot(state);
-    state = newState;
-    if (outcome.kind === 'reset') {
-      showToast(get(t)('casin.neutralResetToast'));
-    } else {
-      showToast(get(t)('casin.neutralNoneToast'));
-    }
+  function onDecBreak() {
+    state = decBreak(state);
   }
 
-  function onNextPlayer() {
-    state = nextPlayer(state);
+  function onPassTurn() {
+    state = passTurn(state);
     showToast(get(t)('toast.yourTurn', { values: { name: state.players[state.currentIndex].name } }));
   }
 
@@ -178,6 +168,7 @@
   function onUndoFromWin() {
     state = undo(state);
     winnerName = null;
+    winnerRanking = [];
     phase = 'game';
     showToast(get(t)('toast.finalShotCancelled'));
   }
@@ -207,6 +198,7 @@
   function onMatchNext() {
     showMatchRecap = false;
     winnerName = null;
+    winnerRanking = [];
     startGame();
   }
   function onMatchViewFinal() {
@@ -217,6 +209,7 @@
     undoResult();
     state = undo(state);
     winnerName = null;
+    winnerRanking = [];
     showMatchRecap = false;
     showToast(get(t)('toast.winCancelled'));
   }
@@ -235,10 +228,11 @@
     const savedPlayers = $matchStore.players;
     const savedTotal = $matchStore.totalGames;
     endMatch();
-    startMatch('casin', savedPlayers, savedTotal);
+    startMatch('carom', savedPlayers, savedTotal);
     matchAbandoned = false;
     showMatchSummary = false;
     winnerName = null;
+    winnerRanking = [];
     startGame();
   }
   function onMatchNewGame() {
@@ -248,9 +242,13 @@
     goto(base || '/');
   }
 
-  // Helpers réactifs
-  $: activePlayer = state ? state.players[state.currentIndex] : null;
+  $: progressPct = (i) => {
+    if (!state) return 0;
+    const p = state.players[i];
+    return Math.min(100, Math.max(0, (p.score / p.target) * 100));
+  };
   $: tabCols = state ? (state.players.length >= 5 ? 3 : 2) : 1;
+  $: activePlayer = state ? state.players[state.currentIndex] : null;
   $: matchRecapGameNumber = $matchStore.currentGame - 1;
   $: matchRecapWinners = $matchStore.results?.[$matchStore.results.length - 1]?.winners ?? [];
 </script>
@@ -259,28 +257,27 @@
 {#if phase === 'setup1'}
   <div class="setup">
     <h1>
-      <img src="{base}/assets/3_billes_check.png" alt="" class="icon-title" />
-      Casin
+      <img src="{base}/assets/3_billes.png" alt="" class="icon-title" />
+      Carambole
     </h1>
     <div class="setup-sub">{$t('setup.step', { values: { n: 1, total: 3 } })} — {$t('setup.general')}</div>
 
     <div class="popup-box setup-box">
       <NumberSelector
         bind:value={count}
-        min={CASIN_MIN_PLAYERS}
-        max={CASIN_MAX_PLAYERS}
+        min={CAROM_MIN_PLAYERS}
+        max={CAROM_MAX_PLAYERS}
         label={$t('setup.playerCount')} />
 
       <div class="sep"></div>
 
       <NumberSelector
-        bind:value={globalX}
-        min={CASIN_MIN_X}
-        max={CASIN_MAX_X}
-        label={$t('casin.repetitionsLabel')} />
-      <div class="setup-tip">
-        {$t('casin.repetitionsTip')}
-      </div>
+        bind:value={defaultTarget}
+        min={CAROM_MIN_TARGET}
+        max={CAROM_MAX_TARGET}
+        step={CAROM_TARGET_STEP}
+        label={$t('setup.targetScore')} />
+      <div class="setup-tip">{$t('carom.setupTip')}</div>
 
       <button class="btn-main btn-gold" on:click={gotoSetup2}>{$t('setup.next')}</button>
       <button class="btn-main btn-gray" on:click={() => goto(base || '/')}>{$t('setup.back')}</button>
@@ -292,8 +289,8 @@
 {#if phase === 'setup2'}
   <div class="setup">
     <h1>
-      <img src="{base}/assets/3_billes_check.png" alt="" class="icon-title" />
-      Casin
+      <img src="{base}/assets/3_billes.png" alt="" class="icon-title" />
+      Carambole
     </h1>
     <div class="setup-sub">{$t('setup.step', { values: { n: 2, total: 3 } })} — {$t('setup.playerNames')}</div>
 
@@ -310,26 +307,27 @@
 {#if phase === 'setup3'}
   <div class="setup">
     <h1>
-      <img src="{base}/assets/3_billes_check.png" alt="" class="icon-title" />
-      Casin
+      <img src="{base}/assets/3_billes.png" alt="" class="icon-title" />
+      Carambole
     </h1>
     <div class="setup-sub">{$t('setup.step', { values: { n: 3, total: 3 } })} — {$t('setup.recap')}</div>
 
     <div class="popup-box setup-box">
-      <div class="casin-target-title">{$t('casin.targetPerPlayer')}</div>
-      <div class="casin-target-sub">{$t('casin.targetPerPlayerSub')}</div>
+      <div class="sp-target-title">{$t('carom.targetPerPlayer')}</div>
+      <div class="sp-target-sub">{$t('carom.targetPerPlayerSub')}</div>
 
       <RecapList players={setupPlayers} let:player let:i>
         <NumberSelector
-          value={player.x}
-          min={CASIN_MIN_X}
-          max={CASIN_MAX_X}
-          on:change={(e) => updatePlayerX(i, e.detail)} />
+          value={player.target}
+          min={CAROM_MIN_TARGET}
+          max={CAROM_MAX_TARGET}
+          step={CAROM_TARGET_STEP}
+          on:change={(e) => updatePlayerTarget(i, e.detail)} />
       </RecapList>
 
       <MatchSetup bind:randomizeOrder bind:matchMode bind:totalGames={matchTotalGames} bind:breakOrder />
 
-      <button class="btn-main btn-gold" on:click={() => { if (matchMode) startMatch('casin', setupPlayers.map(p => p.name), matchTotalGames); startGame(); }}>
+      <button class="btn-main btn-gold" on:click={() => { if (matchMode) startMatch('carom', setupPlayers.map(p => p.name), matchTotalGames); startGame(); }}>
         {matchMode ? $t('setup.launchMatch') : $t('setup.launchGame')}
       </button>
       <button class="btn-main btn-gray" on:click={() => phase = 'setup2'}>{$t('setup.back')}</button>
@@ -338,102 +336,85 @@
 {/if}
 
 <!-- ============== GAME ============== -->
-{#if phase === 'game' && state && activePlayer}
+{#if phase === 'game' && state}
   <div class="game">
     <GameLayout
-      title="CASIN"
-      icon="{base}/assets/3_billes_check.png"
-      gameId="casin"
+      title="CARAMBOLE"
+      icon="{base}/assets/3_billes.png"
+      gameId="carom"
       canUndo={state.history.length > 0}
       on:home={confirmGoHome}
       on:undo={onUndo}
       on:rules={() => rulesOpen = true}>
 
-      <!-- Scoreboard compact -->
-      {#if state.players.length === 2}
-        <div class="casin-scores-2p">
-          {#each state.players as player, i (i)}
-            {@const isActive = i === state.currentIndex}
-            {@const blockedAction = isActive && player.lastAction && player.scores[player.lastAction] < player.x
-              ? CASIN_ACTIONS.find(a => a.id === player.lastAction)
-              : null}
-            <div class="casin-card-2p" class:casin-card-active={isActive}>
-              <div class="casin-card-emoji">{EMOJIS[i % EMOJIS.length]}</div>
-              <div class="casin-card-name">{player.name}</div>
-              <div class="casin-card-progress">
-                <span class="casin-card-score-val">{doneCount(player)}</span>
-                <span class="casin-card-total">/ {CASIN_ACTIONS.length}</span>
-              </div>
-              {#if blockedAction}
-                <div class="casin-blocked-badge">{$t('casin.blockedBadge', { values: { action: $t('casin.actions.' + blockedAction.id) } })}</div>
+      <!-- Liste des joueurs -->
+      <div class="sp-players" style="--tab-cols: {tabCols}">
+      {#each state.players as player, i (i)}
+        <div class="sp-player-card" class:active={i === state.currentIndex}>
+          <div class="sp-card-top">
+            <div class="sp-player-name">
+              {EMOJIS[i % EMOJIS.length]} {player.name}
+              {#if i === state.currentIndex}
+                <span class="sp-badge-active">EN JEU</span>
               {/if}
             </div>
-          {/each}
+            <div class="sp-score">
+              {player.score} <span class="sp-target-label">/ {player.target}</span>
+            </div>
+          </div>
+          <div class="sp-progress-bar">
+            <div class="sp-progress-fill" style="width: {progressPct(i)}%"></div>
+          </div>
+          <div class="sp-best-break">{$t('carom.bestBreak', { values: { n: player.bestBreak } })}</div>
         </div>
-      {:else}
-        <div class="casin-scoreboard" style="--tab-cols: {tabCols}">
-        {#each state.players as player, i (i)}
-          {@const isActive = i === state.currentIndex}
-          {@const blockedAction = isActive && player.lastAction && player.scores[player.lastAction] < player.x
-            ? CASIN_ACTIONS.find(a => a.id === player.lastAction)
-            : null}
-          <div class="casin-score-card" class:active={isActive}>
-            <span class="casin-score-emoji">{EMOJIS[i % EMOJIS.length]}</span>
-            <span class="casin-score-name">{player.name}</span>
-            {#if blockedAction}
-              <span class="casin-blocked-badge">{$t('casin.blockedBadge', { values: { action: $t('casin.actions.' + blockedAction.id) } })}</span>
-            {/if}
-            <span class="casin-score-progress">{doneCount(player)} / {CASIN_ACTIONS.length}</span>
-          </div>
-        {/each}
-      </div>
-      {/if}
-
-    <!-- Grille des actions -->
-    <div class="casin-grid">
-      {#each CASIN_ACTIONS as action (action.id)}
-        {@const count = activePlayer.scores[action.id]}
-        {@const closed = count >= activePlayer.x}
-        {@const blocked = activePlayer.lastAction === action.id}
-        {@const disabled = closed || blocked}
-        <button
-          class="casin-action-btn"
-          class:closed
-          class:blocked
-          {disabled}
-          title={$t('casin.actions.' + action.id + 'Desc')}
-          on:click={() => onDoAction(action.id)}>
-          <span class="casin-action-icon">{action.icon}</span>
-          <span class="casin-action-label">{$t('casin.actions.' + action.id)}</span>
-          <div class="casin-pips">
-            {#each Array(activePlayer.x) as _, h}
-              <span class="casin-pip" class:filled={h < count}></span>
-            {/each}
-          </div>
-        </button>
       {/each}
     </div>
 
       <svelte:fragment slot="footer">
+        <div class="sp-action-title">{$t('carom.currentTurn', { values: { name: activePlayer.name } })}</div>
+        <!-- Sélecteur de break courant -->
+        <div class="sp-break-section">
+          <div class="sp-break-label">{$t('carom.currentBreakLabel')}</div>
+          <div class="sp-break-selector">
+            <button class="sp-break-btn" on:click={onDecBreak} disabled={state.currentBreak === 0}>−</button>
+            <span class="sp-break-value">{state.currentBreak}</span>
+            <button class="sp-break-btn" on:click={onIncBreak}>+</button>
+          </div>
+          <div class="sp-break-hint">{$t('carom.breakHint')}</div>
+        </div>
         <div class="game-bottombar">
-          <button class="btn-neutral" on:click={onNeutralShot}>{$t('casin.neutralShot')}</button>
-          <button class="btn-next" on:click={onNextPlayer}>{$t('setup.next')}</button>
+          <button class="btn-next" on:click={onPassTurn}>{$t('carom.nextBtn')}</button>
         </div>
       </svelte:fragment>
     </GameLayout>
   </div>
 {/if}
 
-<!-- ============== WIN ============== -->
+<!-- ============== WIN avec ranking ============== -->
 <WinOverlay
   open={phase === 'win'}
   trophy="🏆"
   name={winnerName}
-  sub={$t('casin.winSub')}
+  sub={$t('carom.winSub')}
   canUndo={state?.history?.length > 0}
   on:undo={onUndoFromWin}
   on:replay={replay}
-  on:newGame={newGame} />
+  on:newGame={newGame}>
+  {#if winnerRanking.length > 0}
+    <div class="sp-ranking">
+      {#each winnerRanking as p (p.name)}
+        {@const idx = state.players.indexOf(p)}
+        {@const isWin = p.name === winnerName}
+        <div class="sp-ranking-row" class:winner={isWin}>
+          <span class="sp-rank-emoji">{EMOJIS[idx % EMOJIS.length]}</span>
+          <span class="sp-rank-name">{p.name}</span>
+          <span class="sp-rank-score">{p.score} pts</span>
+          <span class="sp-rank-break">🏅 {p.bestBreak}</span>
+        </div>
+      {/each}
+    </div>
+  {/if}
+</WinOverlay>
 
 <!-- ============== OVERLAY RÉCAP MATCH ============== -->
 {#if showMatchRecap}
@@ -455,7 +436,7 @@
   <MatchSummaryOverlay
     matchScores={$matchStore.matchScores}
     results={$matchStore.results}
-    gameId="casin"
+    gameId="carom"
     totalGames={$matchStore.totalGames}
     abandoned={matchAbandoned}
     onPlayAgain={onMatchPlayAgain}
@@ -463,7 +444,7 @@
 {/if}
 
 <!-- ============== RULES ============== -->
-<RulesViewer gameId="casin" open={rulesOpen} on:close={() => rulesOpen = false} />
+<RulesViewer gameId="carom" open={rulesOpen} on:close={() => rulesOpen = false} />
 
 
 <style>
@@ -491,14 +472,7 @@
     text-align: center;
   }
 
-  .setup-tip {
-    font-size: 12px;
-    color: rgba(var(--color-gold-rgb), 0.85);
-    margin: 6px 0 4px;
-    font-style: italic;
-  }
-
-  .casin-target-title {
+  .sp-target-title {
     font-size: 22px;
     color: var(--color-gold);
     text-shadow: 0 0 10px rgba(var(--color-gold-rgb), 0.4);
@@ -506,7 +480,7 @@
     margin-bottom: 4px;
   }
 
-  .casin-target-sub {
+  .sp-target-sub {
     font-size: 12px;
     color: rgba(255, 255, 255, 0.5);
     text-transform: uppercase;
@@ -515,249 +489,197 @@
     margin-bottom: 12px;
   }
 
+  .setup-tip {
+    font-size: 12px;
+    color: rgba(var(--color-gold-rgb), 0.85);
+    margin: 6px 0 4px;
+    font-style: italic;
+  }
+
   .sep {
     height: 1px;
     background: rgba(255, 255, 255, 0.1);
     margin: 16px 0;
   }
 
-  /* ── 2 joueurs : cartes style Chicago ── */
-  .casin-scores-2p {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 10px;
-  }
-
-  .casin-card-2p {
-    flex: 1;
-    background: rgba(0, 0, 0, 0.25);
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    padding: 14px 10px 12px;
-    text-align: center;
-    transition: border-color .3s, box-shadow .3s;
+  /* ===== Cartes joueurs ===== */
+  .sp-players {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 4px;
-  }
-
-  .casin-card-2p.casin-card-active {
-    border-color: var(--color-gold);
-    box-shadow: 0 0 16px rgba(var(--color-gold-rgb), 0.25);
-  }
-
-  .casin-card-emoji {
-    font-size: 22px;
-  }
-
-  .casin-card-name {
-    font-size: 13px;
-    color: rgba(255, 255, 255, 0.6);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%;
-  }
-
-  .casin-card-2p.casin-card-active .casin-card-name {
-    color: var(--color-gold);
-    font-weight: bold;
-  }
-
-  .casin-card-progress {
-    display: flex;
-    align-items: baseline;
-    justify-content: center;
-    gap: 3px;
-    line-height: 1;
-  }
-
-  .casin-card-score-val {
-    font-size: 28px;
-    font-weight: bold;
-    color: white;
-  }
-
-  .casin-card-2p.casin-card-active .casin-card-score-val {
-    color: var(--color-gold);
-    text-shadow: 0 0 20px rgba(var(--color-gold-rgb), 0.4);
-  }
-
-  .casin-card-total {
-    font-size: 13px;
-    color: rgba(255, 255, 255, 0.35);
-    font-weight: normal;
-  }
-
-  /* ===== Scoreboard ===== */
-  .casin-scoreboard {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    margin-bottom: 10px;
+    gap: 10px;
+    margin-bottom: 16px;
   }
 
   @media (min-width: 700px) {
-    .casin-scoreboard {
+    .sp-players {
       display: grid;
       grid-template-columns: repeat(var(--tab-cols, 1), 1fr);
-      gap: 6px;
+      gap: 10px;
+    }
+    .sp-player-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
 
-  .casin-score-card {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  .sp-player-card {
     background: rgba(0, 0, 0, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 10px;
-    padding: 6px 10px;
-    font-size: 13px;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 14px;
+    padding: 12px 14px;
     transition: border-color .2s, box-shadow .2s;
   }
 
-  .casin-score-card.active {
+  .sp-player-card.active {
     border-color: var(--color-gold);
-    box-shadow: 0 0 12px rgba(var(--color-gold-rgb), 0.2);
+    box-shadow: 0 0 16px rgba(var(--color-gold-rgb), 0.2);
   }
 
-  .casin-score-emoji {
-    font-size: 16px;
-    width: 22px;
-    text-align: center;
-    flex-shrink: 0;
-  }
-
-  .casin-score-name {
-    flex: 1;
-    color: rgba(255, 255, 255, 0.85);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .casin-score-card.active .casin-score-name {
-    color: var(--color-gold);
-    font-weight: bold;
-  }
-
-  .casin-score-progress {
-    font-weight: bold;
-    color: white;
-  }
-
-  .casin-blocked-badge {
-    font-size: 11px;
-    color: #ff8a8a;
-    background: rgba(255, 100, 100, 0.12);
-    border-radius: 6px;
-    padding: 2px 6px;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-
-  /* ===== Grille 9 actions ===== */
-  .casin-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-    margin-bottom: 14px;
-  }
-
-  .casin-action-btn {
-    background: rgba(0, 0, 0, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 14px;
-    padding: 10px 6px 8px;
-    color: white;
-    font-family: inherit;
-    cursor: pointer;
+  .sp-card-top {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 4px;
-    transition: transform .1s, border-color .15s, box-shadow .15s, opacity .2s;
-    -webkit-tap-highlight-color: transparent;
+    justify-content: space-between;
+    margin-bottom: 8px;
   }
 
-  .casin-action-btn:active:not(:disabled) {
-    transform: scale(0.97);
+  .sp-player-name {
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
 
-  .casin-action-btn:not(:disabled):hover {
-    border-color: rgba(var(--color-gold-rgb), 0.6);
-    box-shadow: 0 0 10px rgba(var(--color-gold-rgb), 0.15);
+  .sp-player-card.active .sp-player-name {
+    color: var(--color-gold);
   }
 
-  .casin-action-btn.closed {
-    opacity: 0.45;
-    cursor: default;
-    background: rgba(var(--color-gold-rgb), 0.1);
-    border-color: rgba(var(--color-gold-rgb), 0.4);
+  .sp-badge-active {
+    font-size: 10px;
+    background: var(--color-gold);
+    color: var(--color-pool);
+    padding: 2px 8px;
+    border-radius: 8px;
+    letter-spacing: 1px;
   }
 
-  .casin-action-btn.blocked {
-    opacity: 0.35;
-    cursor: not-allowed;
-    background: rgba(255, 100, 100, 0.1);
-    border-color: rgba(255, 100, 100, 0.3);
-  }
-
-  .casin-action-icon {
-    font-size: 24px;
+  .sp-score {
+    font-size: 22px;
+    font-weight: bold;
+    color: white;
     line-height: 1;
   }
 
-  .casin-action-label {
+  .sp-player-card.active .sp-score {
+    color: var(--color-gold);
+  }
+
+  .sp-target-label {
     font-size: 12px;
-    font-weight: bold;
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.4);
+    font-weight: normal;
+  }
+
+  .sp-progress-bar {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 4px 0 6px;
+  }
+
+  .sp-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-gold), #FFA500);
+    border-radius: 4px;
+    transition: width .4s ease;
+  }
+
+  .sp-best-break {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  /* ===== Section break courant ===== */
+  .sp-action-title {
+    text-align: center;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 8px;
+  }
+
+  .sp-break-section {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 14px;
+    margin-bottom: 14px;
     text-align: center;
   }
 
-  .casin-pips {
-    display: flex;
-    gap: 3px;
-    margin-top: 2px;
+  .sp-break-label {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
   }
 
-  .casin-pip {
-    width: 7px;
-    height: 7px;
+  .sp-break-selector {
+    display: inline-flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .sp-break-value {
+    font-size: 48px;
+    font-weight: bold;
+    color: var(--color-gold);
+    text-shadow: 0 0 20px rgba(var(--color-gold-rgb), 0.4);
+    min-width: 64px;
+    text-align: center;
+    line-height: 1;
+  }
+
+  .sp-break-btn {
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    transition: background .2s;
+    border: none;
+    background: linear-gradient(145deg, var(--color-gold-light), var(--color-gold));
+    color: var(--color-pool);
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 0 var(--color-gold-dark);
+    transition: transform .1s, box-shadow .1s, opacity .15s;
+    line-height: 1;
   }
 
-  .casin-pip.filled {
-    background: var(--color-gold);
-    border-color: var(--color-gold-light);
-    box-shadow: 0 0 4px rgba(var(--color-gold-rgb), 0.6);
+  .sp-break-btn:active:not(:disabled) {
+    transform: translateY(2px);
+    box-shadow: none;
   }
 
-  /* ===== Bottombar ===== */
+  .sp-break-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  .sp-break-hint {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.4);
+    margin-top: 8px;
+    font-style: italic;
+  }
+
+  /* ===== Boutons bottombar ===== */
   .game-bottombar {
     display: flex;
     gap: 10px;
   }
-
-  .btn-neutral {
-    flex: 1;
-    padding: 14px;
-    background: rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.85);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 50px;
-    font-family: inherit;
-    font-size: 15px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background .15s;
-  }
-  .btn-neutral:hover { background: rgba(255, 255, 255, 0.15); }
 
   .btn-next {
     flex: 1;
@@ -776,5 +698,51 @@
   .btn-next:active {
     transform: translateY(2px);
     box-shadow: none;
+  }
+
+  /* ===== Ranking final dans WinOverlay ===== */
+  .sp-ranking {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+
+  .sp-ranking-row {
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+  }
+
+  .sp-ranking-row.winner {
+    background: rgba(var(--color-gold-rgb), 0.15);
+    border: 1px solid var(--color-gold);
+  }
+
+  .sp-rank-emoji {
+    font-size: 18px;
+  }
+
+  .sp-rank-name {
+    flex: 1;
+    text-align: left;
+    color: white;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .sp-rank-score {
+    font-weight: bold;
+    color: var(--color-gold);
+  }
+
+  .sp-rank-break {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
   }
 </style>
