@@ -30,11 +30,15 @@ Installable comme PWA sur Android et iOS — fonctionne hors ligne.
 | **Carambole** | Touchez les deux billes adverses avec la bille blanche. |
 | **Casin** | Le français revisité — scoring matriciel par actions. |
 
+### Billard français (suite)
+| Jeu | Principe |
+|---|---|
+| **5-Ball** | 5 billes, score à descendre à 0 pile. Logique fléchettes : bust à 1, 2 ou 4. |
+
 ### Snooker
 | Jeu | Principe |
 |---|---|
 | **Snooker** | Objectif 147 points. Modes simple et expert (avec free ball). |
-| **5-Ball** | 5 billes, score à descendre à 0 pile. Logique fléchettes : bust à 1, 2 ou 4. |
 
 ---
 
