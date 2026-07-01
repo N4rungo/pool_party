@@ -310,7 +310,6 @@
     }
   },
   "carom": {
-    "name": "Carambole",
     "winSub": "Score atteint !",
     "setupTip": "Chaque carambole réussie = 1 point.",
     "currentTurn": "Tour de {name}",

@@ -258,7 +258,7 @@
   <div class="setup">
     <h1>
       <img src="{base}/assets/3_billes.png" alt="" class="icon-title" />
-      {$t('carom.name')}
+      Carambole
     </h1>
     <div class="setup-sub">{$t('setup.step', { values: { n: 1, total: 3 } })} — {$t('setup.general')}</div>
 
@@ -290,7 +290,7 @@
   <div class="setup">
     <h1>
       <img src="{base}/assets/3_billes.png" alt="" class="icon-title" />
-      {$t('carom.name')}
+      Carambole
     </h1>
     <div class="setup-sub">{$t('setup.step', { values: { n: 2, total: 3 } })} — {$t('setup.playerNames')}</div>
 
@@ -308,7 +308,7 @@
   <div class="setup">
     <h1>
       <img src="{base}/assets/3_billes.png" alt="" class="icon-title" />
-      {$t('carom.name')}
+      Carambole
     </h1>
     <div class="setup-sub">{$t('setup.step', { values: { n: 3, total: 3 } })} — {$t('setup.recap')}</div>
 
@@ -339,7 +339,7 @@
 {#if phase === 'game' && state}
   <div class="game">
     <GameLayout
-      title={$t('carom.name').toUpperCase()}
+      title="CARAMBOLE"
       icon="{base}/assets/3_billes.png"
       gameId="carom"
       canUndo={state.history.length > 0}
