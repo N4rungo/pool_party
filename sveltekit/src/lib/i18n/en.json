@@ -310,6 +310,7 @@
     }
   },
   "carom": {
+    "name": "Carom",
     "winSub": "Target reached!",
     "setupTip": "Each successful carom = 1 point.",
     "currentTurn": "{name}'s turn",
