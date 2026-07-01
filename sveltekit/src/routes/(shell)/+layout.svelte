@@ -4,14 +4,18 @@
   import { goto } from '$app/navigation';
   import Overlay from '$lib/components/Overlay.svelte';
   import { t } from 'svelte-i18n';
+  import NavIconGames    from '$lib/components/icons/NavIconGames.svelte';
+  import NavIconPlayers  from '$lib/components/icons/NavIconPlayers.svelte';
+  import NavIconStats    from '$lib/components/icons/NavIconStats.svelte';
+  import NavIconSettings from '$lib/components/icons/NavIconSettings.svelte';
 
   const version = __APP_VERSION__;
 
   $: NAV = [
-    { id: 'jeux',     path: '/',         label: $t('nav.games'),    title: $t('nav.games'),       icon: '🎱' },
-    { id: 'joueurs',  path: '/players',  label: $t('nav.players'),  title: $t('nav.players'),     icon: '👥' },
-    { id: 'stats',    path: '/stats',    label: $t('nav.stats'),    title: $t('nav.statsTitle'),  icon: '🥇' },
-    { id: 'reglages', path: '/settings', label: $t('nav.settings'), title: $t('nav.settings'),    icon: '⚙️' },
+    { id: 'jeux',     path: '/',         label: $t('nav.games'),    title: $t('nav.games'),       icon: NavIconGames    },
+    { id: 'joueurs',  path: '/players',  label: $t('nav.players'),  title: $t('nav.players'),     icon: NavIconPlayers  },
+    { id: 'stats',    path: '/stats',    label: $t('nav.stats'),    title: $t('nav.statsTitle'),  icon: NavIconStats    },
+    { id: 'reglages', path: '/settings', label: $t('nav.settings'), title: $t('nav.settings'),    icon: NavIconSettings },
   ];
 
   $: rawPath = $page.url.pathname.replace(base, '') || '/';
@@ -74,7 +78,9 @@
       on:click={() => goto(`${base}${item.path}`)}
       aria-label={item.label}
     >
-      <span class="nav-icon">{item.icon}</span>
+      <span class="nav-icon">
+        <svelte:component this={item.icon} width="24" height="24" />
+      </span>
       <span class="nav-label">{item.label}</span>
     </button>
   {/each}
@@ -258,7 +264,13 @@
 
   .nav-item.active { color: var(--color-gold); }
 
-  .nav-icon  { font-size: 22px; line-height: 1; }
+  .nav-icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   .nav-label {
     font-size: 10px;
     font-weight: bold;
