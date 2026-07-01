@@ -50,7 +50,7 @@
   }
   .win-sub {
     font-size: 14px;
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(var(--color-text-rgb), 0.7);
     margin-bottom: 16px;
   }
   .win-undo:disabled {

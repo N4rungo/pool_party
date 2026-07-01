@@ -143,10 +143,10 @@
   .tab-btn {
     flex: 1;
     padding: 10px 6px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(var(--color-text-rgb), 0.12);
     border-radius: 12px;
     background: rgba(0, 0, 0, 0.2);
-    color: rgba(255, 255, 255, 0.55);
+    color: rgba(var(--color-text-rgb), 0.55);
     font-family: inherit;
     font-size: 13px;
     font-weight: bold;
@@ -179,9 +179,9 @@
   .pill {
     padding: 6px 10px;
     border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(var(--color-text-rgb), 0.15);
     background: rgba(0, 0, 0, 0.25);
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(var(--color-text-rgb), 0.6);
     font-family: inherit;
     font-size: 12px;
     cursor: pointer;
@@ -209,7 +209,7 @@
     gap: 10px;
     width: 100%;
     background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(var(--color-text-rgb), 0.07);
     border-radius: 12px;
     padding: 12px 14px;
     cursor: pointer;
@@ -224,7 +224,7 @@
 
   .lb-rank {
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.35);
+    color: rgba(var(--color-text-rgb), 0.35);
     width: 20px;
     text-align: center;
     flex-shrink: 0;
@@ -232,12 +232,12 @@
 
   .lb-rank.lb-rank-top { color: var(--color-gold); font-weight: bold; }
   .lb-name  { flex: 1; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .lb-stat  { font-size: 13px; color: rgba(255, 255, 255, 0.6); white-space: nowrap; }
-  .lb-arrow { font-size: 16px; color: rgba(255, 255, 255, 0.25); flex-shrink: 0; }
+  .lb-stat  { font-size: 13px; color: rgba(var(--color-text-rgb), 0.6); white-space: nowrap; }
+  .lb-arrow { font-size: 16px; color: rgba(var(--color-text-rgb), 0.25); flex-shrink: 0; }
 
   .empty-state {
     text-align: center;
-    color: rgba(255, 255, 255, 0.35);
+    color: rgba(var(--color-text-rgb), 0.35);
     font-size: 14px;
     padding: 32px 0;
     font-style: italic;

@@ -195,9 +195,9 @@
     gap: 7px;
     height: 32px;
     padding: 0 12px 0 10px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    color: rgba(255, 255, 255, 0.35);
+    background: rgba(var(--color-text-rgb), 0.05);
+    border: 1px solid rgba(var(--color-text-rgb), 0.12);
+    color: rgba(var(--color-text-rgb), 0.35);
     border-radius: 20px;
     cursor: pointer;
     transition: background .15s, color .15s, border-color .15s;
@@ -211,8 +211,8 @@
     white-space: nowrap;
   }
   .filter-chip:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.65);
+    background: rgba(var(--color-text-rgb), 0.1);
+    color: rgba(var(--color-text-rgb), 0.65);
   }
   .filter-chip.active {
     background: rgba(var(--color-gold-rgb), 0.1);
@@ -249,7 +249,7 @@
 
   .section-label {
     font-size: 11px;
-    color: rgba(255, 255, 255, 0.35);
+    color: rgba(var(--color-text-rgb), 0.35);
     text-transform: uppercase;
     letter-spacing: 2px;
     font-weight: 600;
@@ -259,7 +259,7 @@
     content: '';
     flex: 1;
     height: 1px;
-    background: rgba(255, 255, 255, 0.07);
+    background: rgba(var(--color-text-rgb), 0.07);
   }
 
   /* ── Liste de jeux ── */
@@ -280,8 +280,8 @@
   /* ── Carte "Bientôt" ── */
   .game-card.unavailable {
     margin-top: 24px;
-    background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.2));
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: linear-gradient(145deg, rgba(var(--color-text-rgb), 0.05), rgba(0, 0, 0, 0.2));
+    border: 1px solid rgba(var(--color-text-rgb), 0.1);
     border-radius: 20px;
     padding: 20px 22px;
     display: flex;
@@ -302,19 +302,19 @@
   .game-card.unavailable .game-name {
     font-size: 20px;
     font-weight: bold;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(var(--color-text-rgb), 0.6);
     margin-bottom: 4px;
   }
 
   .game-card.unavailable .game-tagline {
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(var(--color-text-rgb), 0.4);
     font-style: italic;
   }
 
   .game-card.unavailable .game-arrow {
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.25);
+    color: rgba(var(--color-text-rgb), 0.25);
     font-style: italic;
   }
 
@@ -330,7 +330,7 @@
   }
 
   .filter-panel {
-    background: linear-gradient(160deg, #1e5c34, #143d24);
+    background: linear-gradient(160deg, var(--color-pool-mid), var(--color-pool-dark));
     border: 1px solid rgba(var(--color-gold-rgb), 0.5);
     border-radius: 20px;
     padding: 24px 28px;
@@ -345,7 +345,7 @@
 
   .fp-section-title {
     font-size: 11px;
-    color: rgba(255, 255, 255, 0.45);
+    color: rgba(var(--color-text-rgb), 0.45);
     text-transform: uppercase;
     letter-spacing: 1.5px;
     font-weight: 600;
@@ -396,7 +396,7 @@
     transition: color .15s;
   }
   .fp-value.muted {
-    color: rgba(255, 255, 255, 0.25);
+    color: rgba(var(--color-text-rgb), 0.25);
     text-shadow: none;
   }
 
@@ -404,7 +404,7 @@
   .fp-divider {
     width: 100%;
     height: 1px;
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(var(--color-text-rgb), 0.08);
   }
 
   /* Type de table */
@@ -419,9 +419,9 @@
     font-family: inherit;
     font-size: 12px;
     font-weight: 600;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    color: rgba(255, 255, 255, 0.55);
+    background: rgba(var(--color-text-rgb), 0.06);
+    border: 1px solid rgba(var(--color-text-rgb), 0.14);
+    color: rgba(var(--color-text-rgb), 0.55);
     border-radius: 20px;
     padding: 6px 14px;
     cursor: pointer;
@@ -429,8 +429,8 @@
     -webkit-tap-highlight-color: transparent;
   }
   .fp-type-chip:hover {
-    background: rgba(255, 255, 255, 0.12);
-    color: rgba(255, 255, 255, 0.85);
+    background: rgba(var(--color-text-rgb), 0.12);
+    color: rgba(var(--color-text-rgb), 0.85);
   }
   .fp-type-chip.active {
     background: rgba(var(--color-gold-rgb), 0.15);
@@ -463,8 +463,8 @@
     font-family: inherit;
     font-size: 12px;
     background: none;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    color: rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(var(--color-text-rgb), 0.15);
+    color: rgba(var(--color-text-rgb), 0.4);
     border-radius: 20px;
     padding: 5px 16px;
     cursor: pointer;
@@ -472,7 +472,7 @@
     -webkit-tap-highlight-color: transparent;
   }
   .fp-reset:hover {
-    background: rgba(255, 255, 255, 0.08);
-    color: rgba(255, 255, 255, 0.7);
+    background: rgba(var(--color-text-rgb), 0.08);
+    color: rgba(var(--color-text-rgb), 0.7);
   }
 </style>

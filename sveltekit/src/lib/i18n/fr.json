@@ -188,6 +188,15 @@
     "delete": "Supprimer",
     "deleteAll": "💥 Effacer tout l'historique",
     "themes": "Thèmes",
+    "themeNames": {
+      "green":  "Vert",
+      "red":    "Rouge",
+      "blue":   "Bleu",
+      "gray":   "Gris",
+      "violet": "Violet",
+      "black":  "Noir",
+      "camel":  "Camel"
+    },
     "language": "Langue",
     "comingSoon": "Bientôt disponible",
     "confirmDeleteBefore": "Supprimer {count} partie(s) datant de plus de {period} ?",

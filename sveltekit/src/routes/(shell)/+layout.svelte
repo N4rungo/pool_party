@@ -4,14 +4,18 @@
   import { goto } from '$app/navigation';
   import Overlay from '$lib/components/Overlay.svelte';
   import { t } from 'svelte-i18n';
+  import NavIconGames    from '$lib/components/icons/NavIconGames.svelte';
+  import NavIconPlayers  from '$lib/components/icons/NavIconPlayers.svelte';
+  import NavIconStats    from '$lib/components/icons/NavIconStats.svelte';
+  import NavIconSettings from '$lib/components/icons/NavIconSettings.svelte';
 
   const version = __APP_VERSION__;
 
   $: NAV = [
-    { id: 'jeux',     path: '/',         label: $t('nav.games'),    title: $t('nav.games'),       icon: '🎱' },
-    { id: 'joueurs',  path: '/players',  label: $t('nav.players'),  title: $t('nav.players'),     icon: '👥' },
-    { id: 'stats',    path: '/stats',    label: $t('nav.stats'),    title: $t('nav.statsTitle'),  icon: '🥇' },
-    { id: 'reglages', path: '/settings', label: $t('nav.settings'), title: $t('nav.settings'),    icon: '⚙️' },
+    { id: 'jeux',     path: '/',         label: $t('nav.games'),    title: $t('nav.games'),       icon: NavIconGames    },
+    { id: 'joueurs',  path: '/players',  label: $t('nav.players'),  title: $t('nav.players'),     icon: NavIconPlayers  },
+    { id: 'stats',    path: '/stats',    label: $t('nav.stats'),    title: $t('nav.statsTitle'),  icon: NavIconStats    },
+    { id: 'reglages', path: '/settings', label: $t('nav.settings'), title: $t('nav.settings'),    icon: NavIconSettings },
   ];
 
   $: rawPath = $page.url.pathname.replace(base, '') || '/';
@@ -74,7 +78,9 @@
       on:click={() => goto(`${base}${item.path}`)}
       aria-label={item.label}
     >
-      <span class="nav-icon">{item.icon}</span>
+      <span class="nav-icon">
+        <svelte:component this={item.icon} width="24" height="24" />
+      </span>
       <span class="nav-label">{item.label}</span>
     </button>
   {/each}
@@ -121,10 +127,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(20, 60, 34, 0.94);
+    background: rgba(var(--color-pool-dark-rgb), 0.94);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    border-bottom: 1px solid rgba(var(--color-text-rgb), 0.07);
     overflow: hidden;
   }
 
@@ -233,10 +239,10 @@
     padding-bottom: env(safe-area-inset-bottom, 0px);
     display: flex;
     align-items: stretch;
-    background: rgba(16, 50, 28, 0.96);
+    background: rgba(var(--color-pool-dark-rgb), 0.96);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: 1px solid rgba(var(--color-text-rgb), 0.08);
   }
 
   .nav-item {
@@ -249,7 +255,7 @@
     background: none;
     border: none;
     cursor: pointer;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(255, 255, 255, 0.45);
     font-family: inherit;
     transition: color 0.15s;
     -webkit-tap-highlight-color: transparent;
@@ -258,7 +264,13 @@
 
   .nav-item.active { color: var(--color-gold); }
 
-  .nav-icon  { font-size: 22px; line-height: 1; }
+  .nav-icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   .nav-label {
     font-size: 10px;
     font-weight: bold;
@@ -284,7 +296,7 @@
     margin-left: auto;
     font-size: 12px;
     font-weight: normal;
-    color: rgba(255, 255, 255, 0.3);
+    color: rgba(var(--color-text-rgb), 0.3);
     letter-spacing: 0.5px;
     font-family: monospace;
     align-self: center;
@@ -292,14 +304,14 @@
 
   .info-tagline {
     font-size: 14px;
-    color: rgba(255, 255, 255, 0.65);
+    color: rgba(var(--color-text-rgb), 0.65);
     line-height: 1.5;
     margin-bottom: 20px;
     font-style: italic;
   }
 
   .info-section {
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid rgba(var(--color-text-rgb), 0.1);
     padding-top: 16px;
   }
 
@@ -312,14 +324,14 @@
 
   .info-section p {
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(var(--color-text-rgb), 0.6);
     line-height: 1.5;
     margin-bottom: 14px;
   }
 
   .install-step {
     background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(var(--color-text-rgb), 0.08);
     border-radius: 12px;
     padding: 12px 14px;
     margin-bottom: 8px;
@@ -328,7 +340,7 @@
   .install-platform {
     font-size: 13px;
     font-weight: bold;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(var(--color-text-rgb), 0.5);
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 4px;
@@ -336,7 +348,7 @@
 
   .install-instructions {
     font-size: 14px;
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(var(--color-text-rgb), 0.85);
     line-height: 1.5;
   }
 

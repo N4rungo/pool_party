@@ -188,6 +188,15 @@
     "delete": "Delete",
     "deleteAll": "💥 Clear all history",
     "themes": "Themes",
+    "themeNames": {
+      "green":  "Green",
+      "red":    "Red",
+      "blue":   "Blue",
+      "gray":   "Gray",
+      "violet": "Violet",
+      "black":  "Black",
+      "camel":  "Camel"
+    },
     "language": "Language",
     "comingSoon": "Coming soon",
     "confirmDeleteBefore": "Delete {count} game(s) older than {period}?",

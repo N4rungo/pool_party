@@ -62,7 +62,7 @@
   .rules-error {
     text-align: center;
     padding: 40px 12px;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(var(--color-text-rgb), 0.6);
   }
   .rules-error { color: #ff8a8a; }
 
@@ -80,7 +80,7 @@
     border-left: 3px solid var(--color-gold);
     padding: 4px 0 4px 12px;
     margin: 8px 0 16px;
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(var(--color-text-rgb), 0.7);
     font-style: italic;
   }
   .rules-content :global(h2) {
@@ -92,13 +92,13 @@
   .rules-content :global(h3) {
     font-size: 15px;
     margin: 14px 0 6px;
-    color: rgba(255, 255, 255, 0.95);
+    color: rgba(var(--color-text-rgb), 0.95);
   }
   .rules-content :global(p) {
     font-size: 14px;
     line-height: 1.5;
     margin: 6px 0;
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(var(--color-text-rgb), 0.85);
   }
   .rules-content :global(ul),
   .rules-content :global(ol) {
@@ -109,10 +109,10 @@
     font-size: 14px;
     line-height: 1.5;
     margin: 4px 0;
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(var(--color-text-rgb), 0.85);
   }
   .rules-content :global(strong) { color: white; }
-  .rules-content :global(em)     { color: rgba(255, 255, 255, 0.7); }
+  .rules-content :global(em)     { color: rgba(var(--color-text-rgb), 0.7); }
   .rules-content :global(code) {
     background: rgba(0, 0, 0, 0.35);
     padding: 1px 6px;
@@ -128,7 +128,7 @@
   .rules-content :global(th),
   .rules-content :global(td) {
     padding: 6px 8px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    border-bottom: 1px solid rgba(var(--color-text-rgb), 0.12);
     text-align: left;
     vertical-align: top;
   }

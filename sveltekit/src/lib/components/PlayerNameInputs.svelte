@@ -63,8 +63,8 @@
 
   .player-name-input {
     flex: 1;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(var(--color-text-rgb), 0.08);
+    border: 1px solid rgba(var(--color-text-rgb), 0.2);
     border-radius: 10px;
     color: #fff;
     font-family: inherit;
@@ -79,6 +79,6 @@
   }
 
   .player-name-input::placeholder {
-    color: rgba(255, 255, 255, 0.3);
+    color: rgba(var(--color-text-rgb), 0.3);
   }
 </style>

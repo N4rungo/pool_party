@@ -1,13 +1,19 @@
 /* ===== DESIGN TOKENS — partagés par toute l'app ===== */
 :root {
-  /* Or (couleur d'accent principale) */
+  /* Or (couleur d'accent principale — surchargeable par le thème) */
   --color-gold:        #FFD700;
   --color-gold-light:  #FFE44D;
   --color-gold-dark:   #B8960C;
   --color-gold-rgb:    255, 215, 0;
 
-  /* Vert tapis de billard (fond) */
-  --color-pool:        #1a472a;
+  /* Tapis de billard — fond + variantes sombre/claire (surchargés par le thème choisi) */
+  --color-pool:         #1a472a;
+  --color-pool-mid:     #1e5c34;
+  --color-pool-dark:    #143d24;
+  --color-pool-dark-rgb: 16, 50, 28;
+
+  /* Texte (RVB, pour rgba() — blanc par défaut, sombre sur thèmes clairs) */
+  --color-text-rgb:    255, 255, 255;
 
   /* Largeur du contenu principal (mobile par défaut) */
   --content-w:   92%;
@@ -43,7 +49,7 @@ body {
     repeating-linear-gradient(45deg,
       rgba(0, 0, 0, 0.03) 0px, rgba(0, 0, 0, 0.03) 2px,
       transparent 2px, transparent 8px);
-  color: white;
+  color: rgb(var(--color-text-rgb));
   font-family: 'Arial Rounded MT Bold', Arial, sans-serif;
   min-height: 100vh;
   display: flex;
@@ -108,9 +114,9 @@ h1 {
 }
 
 .btn-gray {
-  background: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(var(--color-text-rgb), 0.1);
+  color: rgba(var(--color-text-rgb), 0.7);
+  border: 1px solid rgba(var(--color-text-rgb), 0.2);
 }
 
 /* ===== Setup — case à cocher ordre aléatoire ===== */
@@ -123,7 +129,7 @@ h1 {
   padding: 10px 14px;
   cursor: pointer;
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(var(--color-text-rgb), 0.85);
   user-select: none;
   margin-bottom: 4px;
   gap: 10px;

@@ -68,7 +68,7 @@
 <style>
   .game-card {
     position: relative;
-    background: linear-gradient(145deg, rgba(255, 255, 255, 0.07), rgba(0, 0, 0, 0.2));
+    background: linear-gradient(145deg, rgba(var(--color-text-rgb), 0.07), rgba(0, 0, 0, 0.2));
     border: 1px solid rgba(var(--color-gold-rgb), 0.3);
     border-radius: 20px;
     /* padding-right : étoile (34px) à right:5px → zone 39px, bouton règles laisse 6px de séparation */
@@ -136,7 +136,7 @@
 
   .game-tagline {
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(var(--color-text-rgb), 0.5);
     font-style: italic;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -163,13 +163,13 @@
     cursor: pointer;
     transition: transform .1s, box-shadow .1s;
     -webkit-tap-highlight-color: transparent;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    color: rgba(255, 255, 255, 0.85);
+    background: rgba(var(--color-text-rgb), 0.08);
+    border: 1px solid rgba(var(--color-text-rgb), 0.15);
+    color: rgba(var(--color-text-rgb), 0.85);
     box-shadow: 0 3px 0 rgba(0, 0, 0, 0.3);
     padding: 0 12px;
   }
-  .btn-card-rules:hover { background: rgba(255, 255, 255, 0.14); }
+  .btn-card-rules:hover { background: rgba(var(--color-text-rgb), 0.14); }
   .btn-card-rules:active {
     transform: translateY(3px);
     box-shadow: none;
@@ -188,7 +188,7 @@
     background: none;
     border: none;
     font-size: 25px;
-    color: rgba(255, 255, 255, 0.2);
+    color: rgba(var(--color-text-rgb), 0.2);
     cursor: pointer;
     padding: 0;
     line-height: 1;

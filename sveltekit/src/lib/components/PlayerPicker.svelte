@@ -195,7 +195,7 @@
 <style>
   .player-picker {
     background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(var(--color-text-rgb), 0.08);
     border-radius: 14px;
     padding: 12px 14px;
     display: flex;
@@ -220,7 +220,7 @@
 
   .player-num {
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.35);
+    color: rgba(var(--color-text-rgb), 0.35);
     text-transform: uppercase;
     letter-spacing: 1px;
     flex-shrink: 0;
@@ -252,16 +252,16 @@
   .badge-guest {
     font-size: 10px;
     padding: 2px 7px;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    color: rgba(255, 255, 255, 0.45);
+    background: rgba(var(--color-text-rgb), 0.06);
+    border: 1px solid rgba(var(--color-text-rgb), 0.12);
+    color: rgba(var(--color-text-rgb), 0.45);
   }
 
   .btn-change {
-    background: rgba(255, 255, 255, 0.07);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(var(--color-text-rgb), 0.07);
+    border: 1px solid rgba(var(--color-text-rgb), 0.12);
     border-radius: 8px;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(var(--color-text-rgb), 0.5);
     padding: 6px 10px;
     font-size: 14px;
     cursor: pointer;
@@ -277,7 +277,7 @@
 
   .picker-label {
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(var(--color-text-rgb), 0.4);
     text-transform: uppercase;
     letter-spacing: 1px;
   }
@@ -286,8 +286,8 @@
   .search-input {
     width: 100%;
     box-sizing: border-box;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(var(--color-text-rgb), 0.06);
+    border: 1px solid rgba(var(--color-text-rgb), 0.12);
     border-radius: 10px;
     color: white;
     font-size: 15px;
@@ -298,10 +298,10 @@
 
   .search-input:focus {
     border-color: rgba(var(--color-gold-rgb), 0.4);
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(var(--color-text-rgb), 0.08);
   }
 
-  .search-input::placeholder { color: rgba(255, 255, 255, 0.25); }
+  .search-input::placeholder { color: rgba(var(--color-text-rgb), 0.25); }
 
   /* ── Liste déroulante ── */
   .profile-list {
@@ -316,8 +316,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.07);
+    background: rgba(var(--color-text-rgb), 0.04);
+    border: 1px solid rgba(var(--color-text-rgb), 0.07);
     border-radius: 9px;
     padding: 9px 12px;
     cursor: pointer;
@@ -332,11 +332,11 @@
   }
 
   .profile-item-name { flex: 1; }
-  .profile-item-badge { font-size: 12px; color: rgba(255, 255, 255, 0.35); }
+  .profile-item-badge { font-size: 12px; color: rgba(var(--color-text-rgb), 0.35); }
 
   .empty-hint {
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.3);
+    color: rgba(var(--color-text-rgb), 0.3);
     text-align: center;
     padding: 8px 0;
   }
@@ -349,10 +349,10 @@
 
   .btn-action {
     flex: 1;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(var(--color-text-rgb), 0.06);
+    border: 1px solid rgba(var(--color-text-rgb), 0.1);
     border-radius: 10px;
-    color: rgba(255, 255, 255, 0.65);
+    color: rgba(var(--color-text-rgb), 0.65);
     font-size: 13px;
     padding: 8px 10px;
     cursor: pointer;
@@ -366,7 +366,7 @@
     cursor: default;
   }
 
-  .btn-guest { color: rgba(255, 255, 255, 0.45); }
+  .btn-guest { color: rgba(var(--color-text-rgb), 0.45); }
 
   /* ── Hint contextuel ── */
   .hint {

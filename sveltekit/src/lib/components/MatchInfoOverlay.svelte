@@ -81,7 +81,7 @@
 
   .info-header {
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.55);
+    color: rgba(var(--color-text-rgb), 0.55);
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 4px;
@@ -96,7 +96,7 @@
 
   .section-label {
     font-size: 11px;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(var(--color-text-rgb), 0.4);
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 8px;
@@ -115,7 +115,7 @@
     align-items: center;
     gap: 10px;
     background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(var(--color-text-rgb), 0.06);
     border-radius: 10px;
     padding: 8px 12px;
     font-size: 14px;
@@ -128,7 +128,7 @@
 
   .standings-rank {
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(var(--color-text-rgb), 0.4);
     width: 18px;
     text-align: center;
     flex-shrink: 0;
@@ -150,7 +150,7 @@
 
   .standings-pts {
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(var(--color-text-rgb), 0.7);
     white-space: nowrap;
   }
 
@@ -177,7 +177,7 @@
   .grid-name-cell {
     flex: 1;
     text-align: left;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(var(--color-text-rgb), 0.6);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -187,13 +187,13 @@
   .grid-game-cell {
     width: 28px;
     text-align: center;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(var(--color-text-rgb), 0.4);
     flex-shrink: 0;
   }
 
   .grid-header .grid-game-cell {
     font-size: 11px;
-    color: rgba(255, 255, 255, 0.35);
+    color: rgba(var(--color-text-rgb), 0.35);
   }
 
   .win-cell {

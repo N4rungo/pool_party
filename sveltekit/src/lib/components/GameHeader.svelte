@@ -79,8 +79,8 @@
     margin: 0;
     white-space: nowrap;
     justify-self: start;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(var(--color-text-rgb), 0.08);
+    border: 1px solid rgba(var(--color-text-rgb), 0.15);
     border-radius: 12px;
     color: white;
     padding: 8px 10px;
@@ -149,9 +149,9 @@
   }
 
   .btn-undo {
-    background: rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(var(--color-text-rgb), 0.1);
+    color: rgba(var(--color-text-rgb), 0.7);
+    border: 1px solid rgba(var(--color-text-rgb), 0.2);
     border-radius: 12px;
     padding: 8px 14px;
     cursor: pointer;
@@ -163,6 +163,6 @@
     cursor: not-allowed;
   }
   .btn-undo:not(:disabled):hover {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(var(--color-text-rgb), 0.15);
   }
 </style>

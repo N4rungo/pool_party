@@ -728,14 +728,14 @@
   .setup-sub {
     text-align: center;
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(var(--color-text-rgb), 0.4);
     letter-spacing: 1px;
     text-transform: uppercase;
     margin-bottom: 18px;
   }
 
   .setup-box {
-    background: linear-gradient(160deg, #1e5c34, #143d24);
+    background: linear-gradient(160deg, var(--color-pool-mid), var(--color-pool-dark));
     border: 2px solid var(--color-gold);
     border-radius: 20px;
     padding: 22px;
@@ -751,13 +751,13 @@
 
   .sep {
     height: 1px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(var(--color-text-rgb), 0.1);
     margin: 16px 0;
   }
 
   .ns-label {
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(var(--color-text-rgb), 0.5);
     text-transform: uppercase;
     letter-spacing: 1px;
   }
@@ -775,7 +775,7 @@
     flex: 1;
     border: none;
     background: transparent;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(var(--color-text-rgb), 0.6);
     padding: 10px 12px;
     border-radius: 50px;
     cursor: pointer;
@@ -817,7 +817,7 @@
   .snk-card-2p {
     flex: 1;
     background: rgba(0, 0, 0, 0.25);
-    border: 2px solid rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(var(--color-text-rgb), 0.1);
     border-radius: 16px;
     padding: 14px 10px 12px;
     text-align: center;
@@ -839,7 +839,7 @@
 
   .snk-card-name {
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(var(--color-text-rgb), 0.6);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -865,7 +865,7 @@
 
   .snk-card-break {
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.45);
+    color: rgba(var(--color-text-rgb), 0.45);
     margin-top: 2px;
   }
 
@@ -890,7 +890,7 @@
     align-items: center;
     gap: 8px;
     background: rgba(0, 0, 0, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(var(--color-text-rgb), 0.06);
     border-radius: 10px;
     padding: 6px 10px;
     font-size: 13px;
@@ -910,7 +910,7 @@
 
   .snk-score-name {
     flex: 1;
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(var(--color-text-rgb), 0.85);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -933,7 +933,7 @@
 
   .snk-best-break {
     font-size: 11px;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(var(--color-text-rgb), 0.5);
   }
 
   /* ===== Bandeau actif ===== */
@@ -954,13 +954,13 @@
 
   .snk-break-now {
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(var(--color-text-rgb), 0.85);
     margin-top: 2px;
   }
 
   .snk-phase-label {
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.55);
+    color: rgba(var(--color-text-rgb), 0.55);
     margin-top: 4px;
   }
 
@@ -970,7 +970,7 @@
     border-radius: 16px;
     padding: 14px;
     margin-bottom: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(var(--color-text-rgb), 0.07);
   }
 
   .snk-red-wrap {
@@ -988,7 +988,7 @@
 
   .snk-ball-btn {
     background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(var(--color-text-rgb), 0.1);
     border-radius: 14px;
     padding: 8px 4px;
     color: white;
@@ -1010,7 +1010,7 @@
 
   .snk-ball-btn span {
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(var(--color-text-rgb), 0.7);
     font-weight: bold;
   }
 
@@ -1041,8 +1041,8 @@
   .btn-multired {
     width: 100%;
     padding: 12px;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(var(--color-text-rgb), 0.08);
+    border: 1px solid rgba(var(--color-text-rgb), 0.2);
     border-radius: 12px;
     color: white;
     font-family: inherit;
@@ -1051,7 +1051,7 @@
     transition: background .15s;
   }
   .btn-multired:hover:not(:disabled) {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(var(--color-text-rgb), 0.15);
   }
   .btn-multired:disabled {
     opacity: 0.35;
@@ -1068,7 +1068,7 @@
   }
   .snk-multi-label {
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.55);
+    color: rgba(var(--color-text-rgb), 0.55);
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 6px;
@@ -1090,7 +1090,7 @@
     text-align: center;
     font-size: 16px;
     margin: 12px 0;
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(var(--color-text-rgb), 0.85);
   }
   .snk-multi-total strong {
     color: var(--color-gold);
@@ -1212,6 +1212,6 @@
   }
   .snk-rank-break {
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(var(--color-text-rgb), 0.6);
   }
 </style>

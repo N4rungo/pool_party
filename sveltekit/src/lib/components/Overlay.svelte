@@ -47,7 +47,7 @@
   }
 
   .popup-box {
-    background: linear-gradient(160deg, #1e5c34, #143d24);
+    background: linear-gradient(160deg, var(--color-pool-mid), var(--color-pool-dark));
     border: 2px solid var(--color-gold);
     border-radius: 20px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
@@ -74,7 +74,7 @@
     margin-bottom: 8px;
     display: block;
     background: rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(var(--color-text-rgb), 0.2);
     color: white;
     width: 32px;
     height: 32px;
@@ -89,7 +89,7 @@
   .popup-footer {
     flex-shrink: 0;
     padding: 12px 22px 22px;
-    background: #143d24;
+    background: var(--color-pool-dark);
     position: relative;
     z-index: 1;
     text-align: center;
@@ -102,7 +102,7 @@
     left: 0;
     right: 0;
     height: 24px;
-    background: linear-gradient(to bottom, transparent, #143d24);
+    background: linear-gradient(to bottom, transparent, var(--color-pool-dark));
     pointer-events: none;
   }
 </style>

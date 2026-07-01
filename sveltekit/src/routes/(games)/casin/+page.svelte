@@ -477,14 +477,14 @@
   .setup-sub {
     text-align: center;
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(var(--color-text-rgb), 0.4);
     letter-spacing: 1px;
     text-transform: uppercase;
     margin-bottom: 18px;
   }
 
   .setup-box {
-    background: linear-gradient(160deg, #1e5c34, #143d24);
+    background: linear-gradient(160deg, var(--color-pool-mid), var(--color-pool-dark));
     border: 2px solid var(--color-gold);
     border-radius: 20px;
     padding: 22px;
@@ -508,7 +508,7 @@
 
   .casin-target-sub {
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(var(--color-text-rgb), 0.5);
     text-transform: uppercase;
     letter-spacing: 1px;
     text-align: center;
@@ -517,7 +517,7 @@
 
   .sep {
     height: 1px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(var(--color-text-rgb), 0.1);
     margin: 16px 0;
   }
 
@@ -531,7 +531,7 @@
   .casin-card-2p {
     flex: 1;
     background: rgba(0, 0, 0, 0.25);
-    border: 2px solid rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(var(--color-text-rgb), 0.1);
     border-radius: 16px;
     padding: 14px 10px 12px;
     text-align: center;
@@ -553,7 +553,7 @@
 
   .casin-card-name {
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(var(--color-text-rgb), 0.6);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -586,7 +586,7 @@
 
   .casin-card-total {
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.35);
+    color: rgba(var(--color-text-rgb), 0.35);
     font-weight: normal;
   }
 
@@ -611,7 +611,7 @@
     align-items: center;
     gap: 8px;
     background: rgba(0, 0, 0, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(var(--color-text-rgb), 0.06);
     border-radius: 10px;
     padding: 6px 10px;
     font-size: 13px;
@@ -632,7 +632,7 @@
 
   .casin-score-name {
     flex: 1;
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(var(--color-text-rgb), 0.85);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -668,7 +668,7 @@
 
   .casin-action-btn {
     background: rgba(0, 0, 0, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(var(--color-text-rgb), 0.08);
     border-radius: 14px;
     padding: 10px 6px 8px;
     color: white;
@@ -713,7 +713,7 @@
   .casin-action-label {
     font-size: 12px;
     font-weight: bold;
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(var(--color-text-rgb), 0.9);
     text-align: center;
   }
 
@@ -727,8 +727,8 @@
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(var(--color-text-rgb), 0.15);
+    border: 1px solid rgba(var(--color-text-rgb), 0.2);
     transition: background .2s;
   }
 
@@ -747,9 +747,9 @@
   .btn-neutral {
     flex: 1;
     padding: 14px;
-    background: rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.85);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(var(--color-text-rgb), 0.1);
+    color: rgba(var(--color-text-rgb), 0.85);
+    border: 1px solid rgba(var(--color-text-rgb), 0.2);
     border-radius: 50px;
     font-family: inherit;
     font-size: 15px;
@@ -757,7 +757,7 @@
     cursor: pointer;
     transition: background .15s;
   }
-  .btn-neutral:hover { background: rgba(255, 255, 255, 0.15); }
+  .btn-neutral:hover { background: rgba(var(--color-text-rgb), 0.15); }
 
   .btn-next {
     flex: 1;

@@ -480,14 +480,14 @@
   .setup-sub {
     text-align: center;
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(var(--color-text-rgb), 0.4);
     letter-spacing: 1px;
     text-transform: uppercase;
     margin-bottom: 18px;
   }
 
   .setup-box {
-    background: linear-gradient(160deg, #1e5c34, #143d24);
+    background: linear-gradient(160deg, var(--color-pool-mid), var(--color-pool-dark));
     border: 2px solid var(--color-gold);
     border-radius: 20px;
     padding: 22px;
@@ -558,9 +558,9 @@
     height: 44px;
     flex-shrink: 0;
     border-radius: 12px;
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    background: rgba(255, 255, 255, 0.08);
-    color: rgba(255, 255, 255, 0.6);
+    border: 2px solid rgba(var(--color-text-rgb), 0.2);
+    background: rgba(var(--color-text-rgb), 0.08);
+    color: rgba(var(--color-text-rgb), 0.6);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -570,8 +570,8 @@
   }
 
   .btn-shuffle:active {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.35);
+    background: rgba(var(--color-text-rgb), 0.15);
+    border-color: rgba(var(--color-text-rgb), 0.35);
     color: white;
   }
 
@@ -599,13 +599,13 @@
   /* ── Équipes (section header) ── */
   .section-sep {
     height: 1px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(var(--color-text-rgb), 0.1);
     margin: 16px 0 12px;
   }
 
   .section-label {
     font-size: 11px;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(var(--color-text-rgb), 0.4);
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 8px;
@@ -623,7 +623,7 @@
   .team-card {
     flex: 1;
     background: rgba(0, 0, 0, 0.25);
-    border: 2px solid rgba(255, 255, 255, 0.08);
+    border: 2px solid rgba(var(--color-text-rgb), 0.08);
     border-radius: 18px;
     padding: 22px 10px 14px;
     text-align: center;
@@ -685,7 +685,7 @@
 
   .team-players {
     font-size: 11px;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(var(--color-text-rgb), 0.4);
     word-break: break-word;
     line-height: 1.4;
   }
@@ -693,7 +693,7 @@
   /* ── Rappels ── */
   .reminders {
     background: rgba(0, 0, 0, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(var(--color-text-rgb), 0.1);
     border-radius: 14px;
     padding: 12px 16px;
     display: flex;
@@ -704,13 +704,13 @@
 
   .reminder-item {
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.65);
+    color: rgba(var(--color-text-rgb), 0.65);
     text-align: left;
     line-height: 1.5;
   }
 
   .reminder-item strong {
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(var(--color-text-rgb), 0.9);
   }
 
   .reminder-list {
@@ -723,7 +723,7 @@
 
   .reminder-list li {
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.55);
+    color: rgba(var(--color-text-rgb), 0.55);
   }
 
   /* ── Boutons victoire ── */

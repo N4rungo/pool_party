@@ -650,14 +650,14 @@
   .setup-sub {
     text-align: center;
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(var(--color-text-rgb), 0.4);
     letter-spacing: 1px;
     text-transform: uppercase;
     margin-bottom: 18px;
   }
 
   .setup-box {
-    background: linear-gradient(160deg, #1e5c34, #143d24);
+    background: linear-gradient(160deg, var(--color-pool-mid), var(--color-pool-dark));
     border: 2px solid var(--color-gold);
     border-radius: 20px;
     padding: 22px;
@@ -722,15 +722,15 @@
   .team-mode-label {
     font-size: 14px;
     font-weight: bold;
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(var(--color-text-rgb), 0.85);
   }
 
   .toggle-track {
     width: 46px;
     height: 26px;
     border-radius: 13px;
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(var(--color-text-rgb), 0.15);
+    border: 1px solid rgba(var(--color-text-rgb), 0.25);
     position: relative;
     flex-shrink: 0;
     cursor: pointer;
@@ -761,7 +761,7 @@
   /* Aperçu équipes */
   .section-label {
     font-size: 11px;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(var(--color-text-rgb), 0.4);
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 8px;
@@ -787,9 +787,9 @@
     height: 44px;
     flex-shrink: 0;
     border-radius: 12px;
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    background: rgba(255, 255, 255, 0.08);
-    color: rgba(255, 255, 255, 0.6);
+    border: 2px solid rgba(var(--color-text-rgb), 0.2);
+    background: rgba(var(--color-text-rgb), 0.08);
+    color: rgba(var(--color-text-rgb), 0.6);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -799,8 +799,8 @@
   }
 
   .btn-shuffle:active {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.35);
+    background: rgba(var(--color-text-rgb), 0.15);
+    border-color: rgba(var(--color-text-rgb), 0.35);
     color: white;
   }
 
@@ -836,7 +836,7 @@
   .team-card {
     flex: 1;
     background: rgba(0, 0, 0, 0.25);
-    border: 2px solid rgba(255, 255, 255, 0.08);
+    border: 2px solid rgba(var(--color-text-rgb), 0.08);
     border-radius: 18px;
     padding: 22px 10px 14px;
     text-align: center;
@@ -891,7 +891,7 @@
 
   .team-players {
     font-size: 11px;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(var(--color-text-rgb), 0.4);
     word-break: break-word;
     line-height: 1.4;
   }
@@ -910,10 +910,10 @@
     align-items: center;
     gap: 10px;
     background: rgba(0, 0, 0, 0.25);
-    border: 2px solid rgba(255, 255, 255, 0.08);
+    border: 2px solid rgba(var(--color-text-rgb), 0.08);
     border-radius: 14px;
     padding: 12px 14px;
-    color: rgba(255, 255, 255, 0.65);
+    color: rgba(var(--color-text-rgb), 0.65);
     font-size: 15px;
     transition: border-color .3s, box-shadow .3s;
   }
@@ -948,7 +948,7 @@
   /* ── Rappels ── */
   .reminders {
     background: rgba(0, 0, 0, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(var(--color-text-rgb), 0.1);
     border-radius: 14px;
     padding: 12px 16px;
     display: flex;
@@ -959,12 +959,12 @@
 
   .reminder-item {
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.65);
+    color: rgba(var(--color-text-rgb), 0.65);
     text-align: left;
     line-height: 1.5;
   }
 
-  .reminder-item :global(strong) { color: rgba(255, 255, 255, 0.9); }
+  .reminder-item :global(strong) { color: rgba(var(--color-text-rgb), 0.9); }
 
   .reminder-list {
     margin: 4px 0 0 4px;
@@ -976,7 +976,7 @@
 
   .reminder-list li {
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.55);
+    color: rgba(var(--color-text-rgb), 0.55);
   }
 
   /* ── Boutons victoire ── */
@@ -1039,8 +1039,8 @@
 
   .pick-btn {
     width: 100%;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(var(--color-text-rgb), 0.08);
+    border: 1px solid rgba(var(--color-text-rgb), 0.15);
     color: white;
     padding: 12px 14px;
     border-radius: 12px;
@@ -1055,7 +1055,7 @@
   }
 
   .pick-btn:hover {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(var(--color-text-rgb), 0.15);
     border-color: rgba(var(--color-gold-rgb), 0.5);
   }
 
