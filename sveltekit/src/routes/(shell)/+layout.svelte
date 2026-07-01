@@ -258,24 +258,12 @@
 
   .nav-item.active { color: var(--color-gold); }
 
-  .nav-icon {
-    font-size: 22px;
-    line-height: 1;
-    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.55))
-            drop-shadow(0 1px 2px rgba(0, 0, 0, 0.8));
-  }
-
-  .nav-item.active .nav-icon {
-    filter: drop-shadow(0 0 6px rgba(var(--color-gold-rgb), 0.9))
-            drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6));
-  }
-
+  .nav-icon  { font-size: 22px; line-height: 1; }
   .nav-label {
     font-size: 10px;
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
   }
 
   /* ══ INFO OVERLAY ══ */
