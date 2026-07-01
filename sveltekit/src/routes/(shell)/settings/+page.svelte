@@ -217,8 +217,8 @@
   }
 
   .setting-block-danger {
-    border-color: rgba(255, 80, 80, 0.45);
-    background: rgba(255, 80, 80, 0.15);
+    border-color: rgba(200, 30, 30, 0.55);
+    background: rgba(200, 30, 30, 0.18);
   }
 
   /* ── Picker (thèmes & langue) ── */
@@ -418,10 +418,10 @@
 
   .btn-danger {
     width: 100%;
-    background: rgba(255, 80, 80, 0.15);
-    border: 1px solid rgba(255, 80, 80, 0.35);
+    background: rgba(200, 30, 30, 0.25);
+    border: 1.5px solid rgba(200, 30, 30, 0.55);
     border-radius: 10px;
-    color: #ff6b6b;
+    color: #d43030;
     font-family: inherit;
     font-size: 14px;
     font-weight: bold;
@@ -431,5 +431,5 @@
     -webkit-tap-highlight-color: transparent;
   }
 
-  .btn-danger:hover { background: rgba(255, 80, 80, 0.22); }
+  .btn-danger:hover { background: rgba(200, 30, 30, 0.35); }
 </style>

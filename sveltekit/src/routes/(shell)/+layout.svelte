@@ -249,7 +249,7 @@
     background: none;
     border: none;
     cursor: pointer;
-    color: rgba(var(--color-text-rgb), 0.4);
+    color: rgba(255, 255, 255, 0.45);
     font-family: inherit;
     transition: color 0.15s;
     -webkit-tap-highlight-color: transparent;
