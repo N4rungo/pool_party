@@ -47,6 +47,7 @@
       "nineball": "The 9 is your only target",
       "tenball": "The 10 or nothing",
       "straightpool": "Pocket 'em all!",
+      "carom": "Hit both balls!",
       "casin": "French billiards, remixed",
       "fiveball": "Aim for zero!",
       "snooker": "Target: 147 points"
@@ -174,6 +175,7 @@
       "killer": "Lives left",
       "straightpool": "Balls potted",
       "snooker": "Frame score",
+      "carom": "Caroms",
       "casin": "Score",
       "fiveball": "Score",
       "default": "Score"
@@ -305,6 +307,20 @@
       "faultPass": "⚠️ Foul (+{value} pts) — next player",
       "freeball": "🎱 Free ball for {name}",
       "freeballPlayed": "🎱 Free ball played"
+    }
+  },
+  "carom": {
+    "winSub": "Target reached!",
+    "setupTip": "Each successful carom = 1 point.",
+    "currentTurn": "{name}'s turn",
+    "currentBreakLabel": "Current break",
+    "breakHint": "+ for each carom. − to correct.",
+    "bestBreak": "🏆 Best break: {n}",
+    "targetPerPlayer": "Target per player",
+    "targetPerPlayerSub": "Adjust to balance skill levels",
+    "nextBtn": "Next →",
+    "toast": {
+      "starts": "🎯 {name}'s turn"
     }
   },
   "casin": {
