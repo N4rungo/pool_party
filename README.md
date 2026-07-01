@@ -1,111 +1,136 @@
 # 🎱 Pool Party
 
-Application web de scoring pour différentes variantes de jeu de billard, pensée pour une soirée entre amis avec **un seul téléphone partagé**.
+Application web de scoring pour différentes variantes de billard, pensée pour **une soirée entre amis avec un seul téléphone partagé**.
 
-## 🚀 Lancer l'application
+Installable comme PWA sur Android et iOS — fonctionne hors ligne.
 
-Aucune dépendance, aucun build : c'est du HTML/CSS/JS vanilla.
-
-```bash
-# Méthode 1 : ouvrir directement
-open index.html
-
-# Méthode 2 : via un petit serveur local (recommandé)
-python3 -m http.server 8000
-# puis http://localhost:8000
-```
+---
 
 ## 🎮 Jeux disponibles
 
+### Billard américain
 | Jeu | Principe |
 |---|---|
-| **Killer** | Chaque joueur a des vies, perd une vie à chaque manque. Dernier survivant gagne. Mode jokers `random` ou `choice`. |
-| **Cutthroat** | Trois groupes de billes, élimination progressive, dernier groupe avec billes restantes gagne. |
+| **Killer** | Chaque joueur a des vies — perd une vie à chaque manque. Dernier survivant gagne. |
+| **Cutthroat** | Trois groupes de billes, élimination progressive. |
 | **Chicago** | Premier à 61 points. |
-| **14‑1 Continu** | Score cible par joueur, suivi des breaks. |
-| **Casin** | Le français revisité, scoring matriciel par actions. |
-| **Snooker** | Objectif 147 points, modes `simple` et `expert` (avec free ball). |
-| **5-Ball** | 5 billes, score à atteindre (51 / 101 / 151) à descendre à 0 pile. Logique fléchettes : bust à 1, 2 ou 4. |
+| **Pool** | Pleines ou Rayées — empochez votre groupe puis la 8. |
+| **9 Ball** | La 9 est votre seule cible ; ordre croissant obligatoire. |
+| **10 Ball** | Même principe que le 9 Ball avec 10 billes. |
+| **14-1 Continu** | Score cible par joueur, suivi des breaks. |
 
-## 🗂️ Structure du projet
+### Billard anglais
+| Jeu | Principe |
+|---|---|
+| **Blackball** | Jaunes ou Rouges — empochez votre groupe puis la noire. |
+
+### Billard français
+| Jeu | Principe |
+|---|---|
+| **Carambole** | Touchez les deux billes adverses avec la bille blanche. |
+| **Casin** | Le français revisité — scoring matriciel par actions. |
+
+### Snooker
+| Jeu | Principe |
+|---|---|
+| **Snooker** | Objectif 147 points. Modes simple et expert (avec free ball). |
+| **5-Ball** | 5 billes, score à descendre à 0 pile. Logique fléchettes : bust à 1, 2 ou 4. |
+
+---
+
+## ✨ Fonctionnalités
+
+- **Gestion des joueurs** — carnet persistant, réutilisable d'une partie à l'autre
+- **Historique & statistiques** — suivi des parties par joueur et par jeu
+- **Favoris** — épinglez vos jeux préférés en haut de la liste
+- **Filtres** — filtrez par nombre de joueurs et type de table
+- **Règles intégrées** — fiche de règles accessible depuis chaque jeu
+- **7 thèmes de tapis** — vert, rouge, bleu, gris, violet, noir, camel
+- **Bilingue FR / EN** — interface et règles disponibles en français et anglais
+- **PWA** — installable sur l'écran d'accueil, fonctionne hors ligne
+
+---
+
+## 🛠️ Stack technique
+
+- **SvelteKit** (Svelte 5) — framework front-end
+- **svelte-i18n** — internationalisation (fichiers `src/lib/i18n/fr.json` / `en.json`)
+- **localStorage** — persistance des joueurs, historique, favoris, thème et langue
+- **Vite** + `@sveltejs/adapter-static` — build en site statique
+
+---
+
+## 🚀 Développement
+
+```bash
+cd sveltekit
+npm install
+npm run dev        # http://localhost:5173
+```
+
+```bash
+npm run build      # génère le site statique dans build/
+npm run preview    # prévisualise le build
+```
+
+---
+
+## 🗂️ Structure
 
 ```
-pool_party/
-├── index.html              # Point d'entrée + tous les overlays
-├── assets/                 # Images des billes et icônes
-├── css/
-│   ├── base.css            # Reset, body, design tokens (CSS variables)
-│   ├── components.css      # Overlays, boutons, inputs, recap
-│   └── <jeu>.css           # Styles spécifiques par jeu
-└── js/
-    ├── main.js             # Registre GAMES + showLauncher / launchGame
-    ├── shared/
-    │   ├── utils.js        # closeOverlay, showToast, bindEnterKey, shuffleArray
-    │   └── playerSetup.js  # Helpers réutilisables pour la saisie de joueurs
-    └── <jeu>/
-        ├── constants.js
-        ├── state.js        # <jeu>Setup et <jeu>State
-        ├── setup.js        # <jeu>Launch() + écrans de configuration
-        └── game.js         # Logique de partie
+sveltekit/src/
+├── app.css                        # Design tokens CSS (couleurs, thèmes)
+├── lib/
+│   ├── games.js                   # Registre des jeux (GAMES, CATEGORIES, TABLE_TYPES)
+│   ├── games/                     # Logique métier par jeu (killer.js, pool.js, …)
+│   ├── components/
+│   │   ├── icons/                 # Icônes SVG de la barre de navigation
+│   │   └── *.svelte               # Composants partagés (GameCard, Overlay, …)
+│   ├── i18n/
+│   │   ├── fr.json
+│   │   └── en.json
+│   └── stores/
+│       ├── theme.js               # Thème actif + applyTheme()
+│       ├── favorites.js           # Jeux favoris
+│       ├── history.js             # Historique des parties
+│       └── match.js               # Partie en cours
+└── routes/
+    ├── +layout.svelte             # Racine : init i18n + thème
+    ├── (shell)/                   # Pages avec nav bar (accueil, joueurs, stats, réglages)
+    │   ├── +layout.svelte
+    │   ├── +page.svelte           # Launcher (liste des jeux)
+    │   ├── players/
+    │   ├── stats/
+    │   └── settings/
+    └── (games)/                   # Pages de jeu (sans nav bar)
+        ├── killer/
+        ├── pool/
+        └── …
 ```
 
-## 🎨 Design tokens
+---
 
-Couleurs centralisées en variables CSS dans `css/base.css` :
+## ➕ Ajouter un jeu
 
-```css
-:root {
-  --color-gold:        #FFD700;
-  --color-gold-light:  #FFE44D;
-  --color-gold-dark:   #B8960C;
-  --color-gold-rgb:    255, 215, 0;   /* pour les rgba */
-  --color-pool:        #1a472a;
-}
+1. Créer `src/lib/games/mon-jeu.js` avec la logique de partie.
+2. Enregistrer le jeu dans `src/lib/games.js` (tableau `GAMES`) avec `id`, `name`, `tagline`, `category`, `minPlayers`, `maxPlayers`, `tableTypes`.
+3. Créer la page `src/routes/(games)/mon-jeu/+page.svelte`.
+4. Ajouter les clés i18n dans `fr.json` et `en.json`.
+5. Ajouter les fichiers de règles `static/rules/fr/mon-jeu.md` et `static/rules/en/mon-jeu.md`.
+
+---
+
+## 🎨 Thèmes
+
+Les thèmes sont définis dans `src/lib/stores/theme.js`. Chaque thème surcharge les CSS custom properties de `app.css` via `document.documentElement.style.setProperty()` :
+
+```js
+// Variables concernées
+--color-pool          // fond principal (tapis)
+--color-pool-mid      // fond intermédiaire (cards, overlays)
+--color-pool-dark     // fond sombre (header, nav)
+--color-pool-dark-rgb // variante RGB pour rgba()
+--color-text-rgb      // texte (255,255,255 par défaut — inversé sur thème clair)
+--color-gold          // couleur d'accent
+--color-gold-rgb      // variante RGB pour rgba()
 ```
-
-## ➕ Ajouter un nouveau jeu
-
-1. Créer le dossier `js/mon-jeu/` avec `constants.js`, `state.js`, `setup.js`, `game.js`.
-2. Dans `state.js`, déclarer les variables d'état préfixées : `monJeuSetup`, `monJeuState`.
-3. Dans `setup.js`, exposer la fonction d'entrée :
-   ```js
-   function monJeuLaunch() {
-     document.getElementById('launcher').classList.add('hidden');
-     // afficher le premier overlay de configuration
-   }
-   ```
-4. Ajouter une carte dans le launcher (`index.html`) :
-   ```html
-   <div class="game-card available" onclick="launchGame('monjeu')">
-     <div class="game-icon">…</div>
-     <div class="game-info">
-       <div class="game-name">Mon Jeu</div>
-       <div class="game-tagline">Tagline accrocheuse</div>
-     </div>
-     <div class="game-arrow">›</div>
-   </div>
-   ```
-5. Ajouter l'écran de jeu (avec la classe `game-screen` !) et les overlays (avec la classe `overlay`) dans `index.html`. Cette classe garantit qu'ils sont masqués au retour à l'accueil sans config supplémentaire.
-6. Charger les scripts dans `index.html` :
-   ```html
-   <script src="js/mon-jeu/constants.js"></script>
-   <script src="js/mon-jeu/state.js"></script>
-   <script src="js/mon-jeu/setup.js"></script>
-   <script src="js/mon-jeu/game.js"></script>
-   ```
-7. Enregistrer le jeu dans `js/main.js` :
-   ```js
-   const GAMES = {
-     // …
-     monjeu: monJeuLaunch,
-   };
-   ```
-8. Ajouter `css/mon-jeu.css` (et le lier dans `index.html`).
-
-## 📐 Conventions
-
-- **Variables d'état globales** : préfixées par l'identifiant du jeu (`killerSetup`, `chicagoState`, …).
-- **Fonction d'entrée** : `<jeu>Launch()` (matche l'id passé à `launchGame`).
-- **Écrans de jeu** : doivent porter la classe `game-screen` pour être masqués automatiquement.
-- **Overlays** : doivent porter la classe `overlay`.
-- **Helpers partagés** : dans `js/shared/`, jamais dans un module de jeu.
