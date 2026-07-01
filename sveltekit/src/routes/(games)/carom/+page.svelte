@@ -458,14 +458,14 @@
   .setup-sub {
     text-align: center;
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(var(--color-text-rgb), 0.4);
     letter-spacing: 1px;
     text-transform: uppercase;
     margin-bottom: 18px;
   }
 
   .setup-box {
-    background: linear-gradient(160deg, #1e5c34, #143d24);
+    background: linear-gradient(160deg, var(--color-pool-mid), var(--color-pool-dark));
     border: 2px solid var(--color-gold);
     border-radius: 20px;
     padding: 22px;
@@ -482,7 +482,7 @@
 
   .sp-target-sub {
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(var(--color-text-rgb), 0.5);
     text-transform: uppercase;
     letter-spacing: 1px;
     text-align: center;
@@ -498,7 +498,7 @@
 
   .sep {
     height: 1px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(var(--color-text-rgb), 0.1);
     margin: 16px 0;
   }
 
@@ -525,7 +525,7 @@
 
   .sp-player-card {
     background: rgba(0, 0, 0, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(var(--color-text-rgb), 0.07);
     border-radius: 14px;
     padding: 12px 14px;
     transition: border-color .2s, box-shadow .2s;
@@ -545,7 +545,7 @@
 
   .sp-player-name {
     font-size: 15px;
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(var(--color-text-rgb), 0.9);
     font-weight: bold;
     display: flex;
     align-items: center;
@@ -578,13 +578,13 @@
 
   .sp-target-label {
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(var(--color-text-rgb), 0.4);
     font-weight: normal;
   }
 
   .sp-progress-bar {
     height: 4px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(var(--color-text-rgb), 0.1);
     border-radius: 4px;
     overflow: hidden;
     margin: 4px 0 6px;
@@ -599,20 +599,20 @@
 
   .sp-best-break {
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(var(--color-text-rgb), 0.5);
   }
 
   /* ===== Section break courant ===== */
   .sp-action-title {
     text-align: center;
     font-size: 14px;
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(var(--color-text-rgb), 0.85);
     margin-bottom: 8px;
   }
 
   .sp-break-section {
     background: rgba(0, 0, 0, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(var(--color-text-rgb), 0.08);
     border-radius: 16px;
     padding: 14px;
     margin-bottom: 14px;
@@ -621,7 +621,7 @@
 
   .sp-break-label {
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(var(--color-text-rgb), 0.5);
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 8px;
@@ -670,7 +670,7 @@
 
   .sp-break-hint {
     font-size: 11px;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(var(--color-text-rgb), 0.4);
     margin-top: 8px;
     font-style: italic;
   }
@@ -743,6 +743,6 @@
 
   .sp-rank-break {
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(var(--color-text-rgb), 0.6);
   }
 </style>
