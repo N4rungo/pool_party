@@ -19,6 +19,7 @@
 <script>
   import { base } from '$app/paths';
   import { createEventDispatcher } from 'svelte';
+  import TrophyIcon from './TrophyIcon.svelte';
   import { t } from 'svelte-i18n';
 
   export let title;
@@ -43,7 +44,7 @@
   </h1>
   {#if showMatchInfo}
     <button class="btn-match" on:click={() => dispatch('matchInfo')} aria-label={$t('header.matchInfo')}>
-      🏆
+      <TrophyIcon size="16px" color="var(--color-gold)" />
     </button>
   {:else}
     <span></span>
@@ -103,7 +104,6 @@
     color: var(--color-gold);
     padding: 8px 10px;
     cursor: pointer;
-    font-size: 16px;
     line-height: 1;
     display: inline-flex;
     align-items: center;

@@ -14,6 +14,7 @@
 <script>
   import { base } from '$app/paths';
   import { createEventDispatcher } from 'svelte';
+  import StarIcon from './StarIcon.svelte';
   import { t } from 'svelte-i18n';
 
   export let game;
@@ -39,7 +40,7 @@
     class:is-favorite={isFavorite}
     on:click={toggleFavorite}
     aria-label={isFavorite ? $t('games.card.removeFavorite') : $t('games.card.addFavorite')}>
-    {isFavorite ? '★' : '☆'}
+    <StarIcon filled={isFavorite} size="22px" />
   </button>
 
   <!-- Zone cliquable gauche → lance le jeu -->
@@ -187,7 +188,6 @@
     justify-content: center;
     background: none;
     border: none;
-    font-size: 25px;
     color: rgba(var(--color-text-rgb), 0.2);
     cursor: pointer;
     padding: 0;

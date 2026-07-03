@@ -34,6 +34,7 @@
   import { matchStore, startMatch, recordResult, endMatch, undoResult } from '$lib/stores/match.js';
   import { recordHistory } from '$lib/stores/history.js';
   import BallIcon from '$lib/components/BallIcon.svelte';
+  import TrophyIcon from '$lib/components/TrophyIcon.svelte';
   import { BALL_COLORS } from '$lib/constants/balls.js';
 
   import {
@@ -547,20 +548,20 @@
           <!-- 2 boutons colorés équipe -->
           <div class="victory-buttons">
             <button class="btn-victory btn-victory-a" on:click={() => onDeclareWinner(0)}>
-              🏆 {state.teams[0].label}
+              <TrophyIcon size="1em" /> {state.teams[0].label}
             </button>
             <button class="btn-victory btn-victory-b" on:click={() => onDeclareWinner(1)}>
-              🏆 {state.teams[1].label}
+              <TrophyIcon size="1em" /> {state.teams[1].label}
             </button>
           </div>
         {:else if state.players.length === 2}
           <!-- 2 joueurs : boutons colorés (style Pool) -->
           <div class="victory-buttons">
             <button class="btn-victory btn-victory-a" on:click={() => onDeclareWinner(0)}>
-              🏆 {state.players[0].name}
+              <TrophyIcon size="1em" /> {state.players[0].name}
             </button>
             <button class="btn-victory btn-victory-b" on:click={() => onDeclareWinner(1)}>
-              🏆 {state.players[1].name}
+              <TrophyIcon size="1em" /> {state.players[1].name}
             </button>
           </div>
         {:else}

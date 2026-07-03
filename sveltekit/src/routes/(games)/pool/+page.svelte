@@ -15,6 +15,7 @@
   import GameLayout from '$lib/components/GameLayout.svelte';
   import RulesViewer from '$lib/components/RulesViewer.svelte';
   import WinOverlay from '$lib/components/WinOverlay.svelte';
+  import TrophyIcon from '$lib/components/TrophyIcon.svelte';
   import NumberSelector from '$lib/components/NumberSelector.svelte';
   import MatchSetup from '$lib/components/MatchSetup.svelte';
   import MatchRecapOverlay from '$lib/components/MatchRecapOverlay.svelte';
@@ -409,13 +410,13 @@
             class="btn-victory btn-victory-a"
             on:click={() => onDeclareWinner(0)}
           >
-            🏆 {state.teams[0].label}
+            <TrophyIcon size="1em" /> {state.teams[0].label}
           </button>
           <button
             class="btn-victory btn-victory-b"
             on:click={() => onDeclareWinner(1)}
           >
-            🏆 {state.teams[1].label}
+            <TrophyIcon size="1em" /> {state.teams[1].label}
           </button>
         </div>
       </svelte:fragment>

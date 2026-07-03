@@ -1,6 +1,7 @@
 <script>
   import { createEventDispatcher } from 'svelte';
   import Overlay from './Overlay.svelte';
+  import TrophyIcon from './TrophyIcon.svelte';
   import { t } from 'svelte-i18n';
 
   export let open = false;
@@ -14,7 +15,9 @@
 
 <Overlay {open} dismissOnBackdrop={false} showClose={false}>
   <div class="win-content">
-    <div class="win-trophy">{trophy}</div>
+    <div class="win-trophy">
+      {#if trophy === '🏆'}<TrophyIcon size="48px" color="var(--color-gold)" />{:else}{trophy}{/if}
+    </div>
     <div class="win-name">{name}</div>
     {#if sub}<div class="win-sub">{sub}</div>{/if}
 
@@ -38,9 +41,12 @@
     text-align: center;
   }
   .win-trophy {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
     font-size: 48px;
     line-height: 1;
-    margin-bottom: 8px;
   }
   .win-name {
     font-size: 26px;

@@ -54,6 +54,7 @@
   } from '$lib/games/killer.js';
   import BallIcon from '$lib/components/BallIcon.svelte';
   import HeartIcon from '$lib/components/HeartIcon.svelte';
+  import SkullIcon from '$lib/components/SkullIcon.svelte';
   import { BALL_COLORS } from '$lib/constants/balls.js';
 
   // ── Phase courante ────────────────────────────────────
@@ -442,7 +443,7 @@
             </div>
             <div class="kp-hearts">
               {#if player.eliminated}
-                💀
+                <SkullIcon size="20px" color="rgba(255,255,255,0.5)" />
               {:else}
                 {#each Array(KILLER_MAX_LIVES) as _, h}
                   <HeartIcon filled={h < player.lives} />

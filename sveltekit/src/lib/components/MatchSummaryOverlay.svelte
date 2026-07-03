@@ -1,5 +1,6 @@
 <script>
   import Overlay from './Overlay.svelte';
+  import TrophyIcon from './TrophyIcon.svelte';
   import { t } from 'svelte-i18n';
 
   export let matchScores = {};
@@ -37,7 +38,9 @@
   <div class="summary-content">
     <div class="summary-header">{abandoned ? $t('match.matchAbandoned') : $t('match.matchFinished')}</div>
 
-    <div class="summary-trophy">{abandoned ? '🚪' : '🏆'}</div>
+    <div class="summary-trophy">
+      {#if abandoned}🚪{:else}<TrophyIcon size="40px" color="var(--color-gold)" />{/if}
+    </div>
     <div class="summary-winner-label">
       {#if isTie}{$t('match.tie')}{:else}{$t('match.winner')}{/if}
     </div>
@@ -105,6 +108,9 @@
   }
 
   .summary-trophy {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 40px;
     line-height: 1;
     margin-bottom: 6px;

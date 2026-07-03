@@ -57,6 +57,7 @@
     undo
   } from '$lib/games/snooker.js';
   import BallIcon from '$lib/components/BallIcon.svelte';
+  import TrophyIcon from '$lib/components/TrophyIcon.svelte';
   import { BALL_COLORS } from '$lib/constants/balls.js';
 
   let phase = 'setup1';
@@ -489,7 +490,7 @@
             <span class="snk-score-emoji"><BallIcon color={BALL_COLORS[i % BALL_COLORS.length]} /></span>
             <span class="snk-score-name">{player.name}</span>
             <span class="snk-score-pts">{player.score}</span>
-            <span class="snk-best-break" title="Meilleur break">🏆 {player.bestBreak}</span>
+            <span class="snk-best-break" title="Meilleur break"><TrophyIcon size="0.9em" /> {player.bestBreak}</span>
           </div>
         {/each}
       </div>
@@ -677,7 +678,7 @@
     <div class="snk-final-ranking">
       {#each finalRanking as p, i (p.name)}
         <div class="snk-ranking-row" class:winner={i === 0}>
-          {#if i === 0}<span>🏆</span>{:else}<BallIcon color={BALL_COLORS[state.players.indexOf(p) % BALL_COLORS.length]} size="18px" />{/if}
+          {#if i === 0}<TrophyIcon size="18px" color="var(--color-gold)" />{:else}<BallIcon color={BALL_COLORS[state.players.indexOf(p) % BALL_COLORS.length]} size="18px" />{/if}
           <span class="snk-rank-name">{p.name}</span>
           <span class="snk-rank-score">{p.score} pts</span>
           <span class="snk-rank-break">🏅 {p.bestBreak}</span>

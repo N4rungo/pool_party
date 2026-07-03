@@ -1,5 +1,6 @@
 <script>
   import Overlay from './Overlay.svelte';
+  import TrophyIcon from './TrophyIcon.svelte';
   import { t } from 'svelte-i18n';
 
   export let gameNumber = 1;
@@ -33,7 +34,7 @@
     </div>
 
     <div class="recap-winner-row">
-      <span class="recap-winner-trophy">🏆</span>
+      <span class="recap-winner-trophy"><TrophyIcon size="28px" color="var(--color-gold)" /></span>
       <span class="recap-winner-name">{winnerText}</span>
     </div>
     <div class="recap-winner-sub">{$t('match.winsGame')}</div>
@@ -106,7 +107,8 @@
   }
 
   .recap-winner-trophy {
-    font-size: 28px;
+    display: flex;
+    align-items: center;
     line-height: 1;
   }
 
