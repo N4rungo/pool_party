@@ -33,7 +33,8 @@
   import { get } from 'svelte/store';
   import { matchStore, startMatch, recordResult, endMatch, undoResult } from '$lib/stores/match.js';
   import { recordHistory } from '$lib/stores/history.js';
-  const PLAYER_EMOJIS = ['🟡', '🔵', '🔴', '⚪', '🟠', '🟣'];
+  import BallIcon from '$lib/components/BallIcon.svelte';
+  import { BALL_COLORS } from '$lib/constants/balls.js';
 
   import {
     createInitialState as createIndividualState,
@@ -523,7 +524,7 @@
           <div class="play-order">
             {#each playOrder as player, i}
               <div class="order-row" class:is-breaker={i === 0}>
-                <span class="player-emoji">{PLAYER_EMOJIS[player.playerIndex % PLAYER_EMOJIS.length]}</span>
+                <span class="player-emoji"><BallIcon color={BALL_COLORS[player.playerIndex % BALL_COLORS.length]} /></span>
                 <span class="order-name">{player.name}</span>
                 {#if i === 0}
                   <span class="break-badge-inline">{$t('nineball.breakBadge')}</span>
@@ -594,7 +595,7 @@
     <div class="pick-list">
       {#each state.players as player, i}
         <button class="pick-btn" on:click={() => onDeclareWinner(i)}>
-          <span class="pick-emoji">{PLAYER_EMOJIS[i % PLAYER_EMOJIS.length]}</span>
+          <span class="pick-emoji"><BallIcon color={BALL_COLORS[i % BALL_COLORS.length]} /></span>
           <span class="pick-name">{player.name}</span>
         </button>
       {/each}
@@ -926,9 +927,10 @@
   }
 
   .player-emoji {
-    font-size: 16px;
     width: 22px;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
   }
 
@@ -1060,8 +1062,9 @@
   }
 
   .pick-emoji {
-    font-size: 18px;
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
   }
 
   .pick-name {

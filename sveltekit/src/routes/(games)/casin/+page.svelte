@@ -42,8 +42,8 @@
     undo,
     doneCount
   } from '$lib/games/casin.js';
-
-  const EMOJIS = ['🟡', '🔵', '🔴', '⚪', '🟠', '🟣', '🟤', '🟢'];
+  import BallIcon from '$lib/components/BallIcon.svelte';
+  import { BALL_COLORS } from '$lib/constants/balls.js';
 
   let phase = 'setup1';
   $: phase, typeof window !== 'undefined' && window.scrollTo({ top: 0, behavior: 'instant' });
@@ -358,7 +358,7 @@
               ? CASIN_ACTIONS.find(a => a.id === player.lastAction)
               : null}
             <div class="casin-card-2p" class:casin-card-active={isActive}>
-              <div class="casin-card-emoji">{EMOJIS[i % EMOJIS.length]}</div>
+              <div class="casin-card-emoji"><BallIcon color={BALL_COLORS[i % BALL_COLORS.length]} size="22px" /></div>
               <div class="casin-card-name">{player.name}</div>
               <div class="casin-card-progress">
                 <span class="casin-card-score-val">{doneCount(player)}</span>
@@ -378,7 +378,7 @@
             ? CASIN_ACTIONS.find(a => a.id === player.lastAction)
             : null}
           <div class="casin-score-card" class:active={isActive}>
-            <span class="casin-score-emoji">{EMOJIS[i % EMOJIS.length]}</span>
+            <span class="casin-score-emoji"><BallIcon color={BALL_COLORS[i % BALL_COLORS.length]} /></span>
             <span class="casin-score-name">{player.name}</span>
             {#if blockedAction}
               <span class="casin-blocked-badge">{$t('casin.blockedBadge', { values: { action: $t('casin.actions.' + blockedAction.id) } })}</span>
@@ -548,7 +548,9 @@
   }
 
   .casin-card-emoji {
-    font-size: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .casin-card-name {
@@ -624,9 +626,10 @@
   }
 
   .casin-score-emoji {
-    font-size: 16px;
     width: 22px;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
   }
 

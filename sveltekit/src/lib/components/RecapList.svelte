@@ -18,21 +18,20 @@
 
   Props :
    - players : tableau [{ name, ... }]
-   - emojis  : tableau d'emojis (par défaut, on utilise la liste EMOJIS standard)
+   - colors : utilise BALL_COLORS par défaut (non configurable, SVG BallIcon)
 -->
 <script>
   import { t } from 'svelte-i18n';
-
-  const DEFAULT_EMOJIS = ['🟡', '🔵', '🔴', '⚪', '🟠', '🟣', '🟤', '🟢'];
+  import BallIcon from '$lib/components/BallIcon.svelte';
+  import { BALL_COLORS } from '$lib/constants/balls.js';
 
   export let players = [];
-  export let emojis = DEFAULT_EMOJIS;
 </script>
 
 <div class="recap-list">
   {#each players as player, i (i)}
     <div class="recap-row">
-      <span class="recap-emoji">{emojis[i % emojis.length]}</span>
+      <span class="recap-emoji"><BallIcon color={BALL_COLORS[i % BALL_COLORS.length]} size="20px" /></span>
       <span class="recap-name">{player.name || $t('setup.defaultPlayer', { values: { n: i + 1 } })}</span>
       <div class="recap-extra">
         <slot {player} {i}>
@@ -62,10 +61,11 @@
   }
 
   .recap-emoji {
-    font-size: 20px;
     width: 28px;
     flex-shrink: 0;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .recap-name {

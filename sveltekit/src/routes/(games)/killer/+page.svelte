@@ -52,9 +52,9 @@
     targetCandidates,
     undo
   } from '$lib/games/killer.js';
-
-  const EMOJIS = ['🟡', '🔵', '🔴', '⚪', '🟠', '🟣', '🟤', '🟢',
-                  '🟦', '🟥', '🟨', '🟩', '🟧', '🟪', '🟫', '⚫'];
+  import BallIcon from '$lib/components/BallIcon.svelte';
+  import HeartIcon from '$lib/components/HeartIcon.svelte';
+  import { BALL_COLORS } from '$lib/constants/balls.js';
 
   // ── Phase courante ────────────────────────────────────
   let phase = 'setup1';
@@ -400,7 +400,7 @@
               class:filled={h < player.lives}
               on:click={() => updatePlayerLives(i, h + 1)}
               aria-label="{h + 1} vie{h > 0 ? 's' : ''}">
-              {h < player.lives ? '❤️' : '🖤'}
+              <HeartIcon filled={h < player.lives} size="18px" />
             </button>
           {/each}
         </div>
@@ -437,7 +437,7 @@
 
           <div class="kp-top">
             <div class="kp-name">
-              <span class="kp-emoji">{EMOJIS[i % EMOJIS.length]}</span>
+              <span class="kp-emoji"><BallIcon color={BALL_COLORS[i % BALL_COLORS.length]} size="16px" /></span>
               <span class="kp-name-text">{player.name}</span>
             </div>
             <div class="kp-hearts">
@@ -445,7 +445,7 @@
                 💀
               {:else}
                 {#each Array(KILLER_MAX_LIVES) as _, h}
-                  <span>{h < player.lives ? '❤️' : '🖤'}</span>
+                  <HeartIcon filled={h < player.lives} />
                 {/each}
               {/if}
             </div>
@@ -555,11 +555,11 @@
     <div class="target-list">
       {#each targetCandidates(state) as p (p.index)}
         <button class="target-btn" on:click={() => onSelectTarget(p.index)}>
-          <span>{EMOJIS[p.index % EMOJIS.length]}</span>
+          <BallIcon color={BALL_COLORS[p.index % BALL_COLORS.length]} size="18px" />
           <span class="target-name">{p.name}</span>
           <span class="target-hearts">
             {#each Array(KILLER_MAX_LIVES) as _, h}
-              <span>{h < p.lives ? '❤️' : '🖤'}</span>
+              <HeartIcon filled={h < p.lives} />
             {/each}
           </span>
         </button>
@@ -692,8 +692,9 @@
     border: none;
     cursor: pointer;
     padding: 2px;
-    font-size: 18px;
     line-height: 1;
+    display: flex;
+    align-items: center;
     -webkit-tap-highlight-color: transparent;
   }
   .heart-btn.filled {

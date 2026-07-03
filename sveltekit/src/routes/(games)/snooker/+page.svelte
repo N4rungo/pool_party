@@ -56,8 +56,8 @@
     rankedPlayers,
     undo
   } from '$lib/games/snooker.js';
-
-  const EMOJIS = ['🟡', '🔵', '🔴', '⚪'];
+  import BallIcon from '$lib/components/BallIcon.svelte';
+  import { BALL_COLORS } from '$lib/constants/balls.js';
 
   let phase = 'setup1';
   $: phase, typeof window !== 'undefined' && window.scrollTo({ top: 0, behavior: 'instant' });
@@ -442,7 +442,7 @@
       <div class="recap-list">
         {#each setupPlayers as p, i (i)}
           <div class="recap-row">
-            <span class="recap-emoji">{EMOJIS[i % EMOJIS.length]}</span>
+            <span class="recap-emoji"><BallIcon color={BALL_COLORS[i % BALL_COLORS.length]} size="18px" /></span>
             <span class="recap-name">{p.name}</span>
           </div>
         {/each}
@@ -475,7 +475,7 @@
         <div class="snk-scores-2p">
           {#each state.players as player, i (i)}
             <div class="snk-card-2p" class:snk-card-active={i === state.currentIndex}>
-              <span class="snk-card-emoji">{EMOJIS[i % EMOJIS.length]}</span>
+              <span class="snk-card-emoji"><BallIcon color={BALL_COLORS[i % BALL_COLORS.length]} size="22px" /></span>
               <span class="snk-card-name">{player.name}</span>
               <span class="snk-card-score">{player.score}</span>
               <span class="snk-card-break">🏅 {player.bestBreak}</span>
@@ -486,7 +486,7 @@
         <div class="snk-scoreboard" style="--tab-cols: {tabCols}">
         {#each state.players as player, i (i)}
           <div class="snk-score-card" class:active={i === state.currentIndex}>
-            <span class="snk-score-emoji">{EMOJIS[i % EMOJIS.length]}</span>
+            <span class="snk-score-emoji"><BallIcon color={BALL_COLORS[i % BALL_COLORS.length]} /></span>
             <span class="snk-score-name">{player.name}</span>
             <span class="snk-score-pts">{player.score}</span>
             <span class="snk-best-break" title="Meilleur break">🏆 {player.bestBreak}</span>
@@ -677,7 +677,7 @@
     <div class="snk-final-ranking">
       {#each finalRanking as p, i (p.name)}
         <div class="snk-ranking-row" class:winner={i === 0}>
-          <span>{i === 0 ? '🏆' : EMOJIS[state.players.indexOf(p) % EMOJIS.length]}</span>
+          {#if i === 0}<span>🏆</span>{:else}<BallIcon color={BALL_COLORS[state.players.indexOf(p) % BALL_COLORS.length]} size="18px" />{/if}
           <span class="snk-rank-name">{p.name}</span>
           <span class="snk-rank-score">{p.score} pts</span>
           <span class="snk-rank-break">🏅 {p.bestBreak}</span>
@@ -804,7 +804,7 @@
     gap: 10px;
     font-size: 14px;
   }
-  .recap-emoji { font-size: 18px; width: 26px; text-align: center; }
+  .recap-emoji { width: 26px; display: flex; align-items: center; justify-content: center; }
   .recap-name { flex: 1; text-align: left; color: white; }
 
   /* ── 2 joueurs : cartes style Chicago ── */
@@ -834,7 +834,9 @@
   }
 
   .snk-card-emoji {
-    font-size: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .snk-card-name {
@@ -903,9 +905,10 @@
   }
 
   .snk-score-emoji {
-    font-size: 16px;
     width: 22px;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .snk-score-name {

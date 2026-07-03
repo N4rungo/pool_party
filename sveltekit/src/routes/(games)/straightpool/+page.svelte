@@ -43,8 +43,8 @@
     undo,
     rankedPlayers
   } from '$lib/games/straightpool.js';
-
-  const EMOJIS = ['🟡', '🔵', '🔴', '⚪', '🟠', '🟣', '🟤', '🟢'];
+  import BallIcon from '$lib/components/BallIcon.svelte';
+  import { BALL_COLORS } from '$lib/constants/balls.js';
 
   let phase = 'setup1';
   $: phase, typeof window !== 'undefined' && window.scrollTo({ top: 0, behavior: 'instant' });
@@ -359,7 +359,7 @@
         <div class="sp-player-card" class:active={i === state.currentIndex}>
           <div class="sp-card-top">
             <div class="sp-player-name">
-              {EMOJIS[i % EMOJIS.length]} {player.name}
+              <BallIcon color={BALL_COLORS[i % BALL_COLORS.length]} size="18px" /> {player.name}
               {#if i === state.currentIndex}
                 <span class="sp-badge-active">EN JEU</span>
               {/if}
@@ -413,7 +413,7 @@
         {@const idx = state.players.indexOf(p)}
         {@const isWin = p.name === winnerName}
         <div class="sp-ranking-row" class:winner={isWin}>
-          <span class="sp-rank-emoji">{EMOJIS[idx % EMOJIS.length]}</span>
+          <span class="sp-rank-emoji"><BallIcon color={BALL_COLORS[idx % BALL_COLORS.length]} /></span>
           <span class="sp-rank-name">{p.name}</span>
           <span class="sp-rank-score">{p.score} pts</span>
           <span class="sp-rank-break">🏅 {p.bestBreak}</span>
@@ -750,7 +750,9 @@
   }
 
   .sp-rank-emoji {
-    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .sp-rank-name {

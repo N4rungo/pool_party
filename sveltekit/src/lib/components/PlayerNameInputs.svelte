@@ -19,8 +19,8 @@
   (ce composant ne crée pas le tableau ; il rend N inputs pour N joueurs).
 -->
 <script>
-  // Liste des emojis pour pastiller chaque joueur (cohérent avec EMOJIS du vanilla)
-  const EMOJIS = ['🟡', '🔵', '🔴', '⚪', '🟠', '🟣', '🟤', '🟢'];
+  import BallIcon from '$lib/components/BallIcon.svelte';
+  import { BALL_COLORS } from '$lib/constants/balls.js';
 
   export let players = [];
   export let maxLength = 16;
@@ -30,7 +30,7 @@
 <div class="player-name-inputs">
   {#each players as player, i (i)}
     <div class="player-name-row">
-      <span class="player-name-emoji">{EMOJIS[i % EMOJIS.length]}</span>
+      <span class="player-name-emoji"><BallIcon color={BALL_COLORS[i % BALL_COLORS.length]} size="22px" /></span>
       <input
         type="text"
         class="player-name-input"
@@ -55,9 +55,10 @@
   }
 
   .player-name-emoji {
-    font-size: 22px;
     width: 30px;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
   }
 

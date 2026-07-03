@@ -43,9 +43,8 @@
     applyFault,
     undo
   } from '$lib/games/cutthroat.js';
-
-  const EMOJIS = ['🟡', '🔵', '🔴', '⚪', '🟠', '🟣', '🟤', '🟢',
-                  '🟦', '🟥', '🟨', '🟩', '🟧', '🟪', '🟫'];
+  import BallIcon from '$lib/components/BallIcon.svelte';
+  import { BALL_COLORS } from '$lib/constants/balls.js';
 
   // ── Phase courante ────────────────────────────────────
   let phase = 'setup1';
@@ -329,7 +328,7 @@
       <div class="recap-list">
         {#each setupPlayers as player, i (i)}
           <div class="recap-row">
-            <span class="recap-emoji">{EMOJIS[i % EMOJIS.length]}</span>
+            <span class="recap-emoji"><BallIcon color={BALL_COLORS[i % BALL_COLORS.length]} size="18px" /></span>
             <span class="recap-name">{player.name || $t('setup.defaultPlayer', { values: { n: i + 1 } })}</span>
             <div class="ct-balls-row-recap">
               {#each previewDistribution.groups[i] as b}
@@ -370,7 +369,7 @@
         {#each state.players as player, i (i)}
           <div class="ct-player-card" class:eliminated={player.eliminated}>
             <div class="ct-player-name">
-              <span class="ct-player-emoji">{EMOJIS[i % EMOJIS.length]}</span>
+              <span class="ct-player-emoji"><BallIcon color={BALL_COLORS[i % BALL_COLORS.length]} size="18px" /></span>
               <span class="ct-name-text">{player.name}</span>
               {#if player.eliminated}
                 <span class="ct-badge-eliminated">{$t('cutthroat.eliminated')}</span>
@@ -410,7 +409,7 @@
       {#each state.players as player, i (i)}
         {#if !player.eliminated}
           <button class="ct-fault-btn" on:click={() => selectFaulter(i)}>
-            {EMOJIS[i % EMOJIS.length]} {player.name}
+            <BallIcon color={BALL_COLORS[i % BALL_COLORS.length]} size="16px" /> {player.name}
           </button>
         {/if}
       {/each}
@@ -429,7 +428,7 @@
       <div class="recap-list">
         {#each faultResult.returns as r (r.ball)}
           <div class="recap-row">
-            <span class="recap-emoji">{EMOJIS[r.playerIdx % EMOJIS.length]}</span>
+            <span class="recap-emoji"><BallIcon color={BALL_COLORS[r.playerIdx % BALL_COLORS.length]} size="18px" /></span>
             <span class="recap-name">{state.players[r.playerIdx].name}</span>
             <span style="font-size:13px;color:rgba(255,255,255,0.5);">{$t('cutthroat.faultPutsBack')}</span>
             <img src="{base}/assets/bille_{r.ball}.png" class="ball-mini" alt={String(r.ball)} />
@@ -567,10 +566,11 @@
   }
 
   .recap-emoji {
-    font-size: 18px;
     width: 24px;
     flex-shrink: 0;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .recap-name {
@@ -741,6 +741,8 @@
 
   .ct-player-emoji {
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
   }
 
   .ct-name-text {

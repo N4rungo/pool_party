@@ -57,6 +57,8 @@
     undo,
     findHintBalls
   } from '$lib/games/fiveball.js';
+  import BallIcon from '$lib/components/BallIcon.svelte';
+  import { BALL_COLORS } from '$lib/constants/balls.js';
 
   // ── Phase courante ────────────────────────────────────
   let phase = 'setup1';
@@ -394,7 +396,7 @@
         <div class="fb-scores-2p">
           {#each state.players as player, i (i)}
             <div class="fb-card-2p" class:fb-card-active={i === state.currentIndex}>
-              <div class="fb-card-emoji">{['🟡','🔵','🔴','⚪','🟠','🟣'][i % 6]}</div>
+              <div class="fb-card-emoji"><BallIcon color={BALL_COLORS[i % BALL_COLORS.length]} size="22px" /></div>
               <div class="fb-card-name">{player.name}</div>
               <div class="fb-card-score">
                 {player.score}<span class="fb-card-target"> / {player.target}</span>
@@ -410,7 +412,7 @@
           {#each state.players as player, i (i)}
             <div class="fb-player-row" class:active={i === state.currentIndex}>
               <span class="fb-player-emoji">
-                {['🟡','🔵','🔴','⚪','🟠','🟣'][i % 6]}
+                <BallIcon color={BALL_COLORS[i % BALL_COLORS.length]} />
               </span>
               <span class="fb-player-name">{player.name}</span>
               <span class="fb-player-score">
@@ -580,7 +582,9 @@
   }
 
   .fb-card-emoji {
-    font-size: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-bottom: 4px;
   }
 
@@ -656,9 +660,10 @@
   }
 
   .fb-player-emoji {
-    font-size: 18px;
     width: 26px;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
   }
 
@@ -708,8 +713,7 @@
       gap: 4px;
     }
     .fb-player-emoji {
-      font-size: 24px;
-      width: auto;
+      width: 24px;
     }
     .fb-player-name {
       font-size: 14px;
