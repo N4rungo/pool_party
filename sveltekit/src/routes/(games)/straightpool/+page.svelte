@@ -15,6 +15,7 @@
   import GameLayout from '$lib/components/GameLayout.svelte';
   import RulesViewer from '$lib/components/RulesViewer.svelte';
   import WinOverlay from '$lib/components/WinOverlay.svelte';
+  import TrophyIcon from '$lib/components/TrophyIcon.svelte';
   import NumberSelector from '$lib/components/NumberSelector.svelte';
   import PlayerSetupList from '$lib/components/PlayerSetupList.svelte';
   import RecapList from '$lib/components/RecapList.svelte';
@@ -334,7 +335,7 @@
       <MatchSetup bind:randomizeOrder bind:matchMode bind:totalGames={matchTotalGames} bind:breakOrder />
 
       <button class="btn-main btn-gold" on:click={() => { if (matchMode) startMatch('straightpool', setupPlayers.map(p => p.name), matchTotalGames); startGame(); }}>
-        {matchMode ? $t('setup.launchMatch') : $t('setup.launchGame')}
+        {#if matchMode}<TrophyIcon size="1em" /> {$t('setup.launchMatch')}{:else}{$t('setup.launchGame')}{/if}
       </button>
       <button class="btn-main btn-gray" on:click={() => phase = 'setup2'}>{$t('setup.back')}</button>
     </div>
@@ -371,7 +372,7 @@
           <div class="sp-progress-bar">
             <div class="sp-progress-fill" style="width: {progressPct(i)}%"></div>
           </div>
-          <div class="sp-best-break">{$t('straightpool.bestBreak', { values: { n: player.bestBreak } })}</div>
+          <div class="sp-best-break"><TrophyIcon size="0.85em" /> {$t('straightpool.bestBreak', { values: { n: player.bestBreak } })}</div>
         </div>
       {/each}
     </div>

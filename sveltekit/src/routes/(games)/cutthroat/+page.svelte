@@ -19,6 +19,7 @@
   import GameLayout from '$lib/components/GameLayout.svelte';
   import RulesViewer from '$lib/components/RulesViewer.svelte';
   import WinOverlay from '$lib/components/WinOverlay.svelte';
+  import TrophyIcon from '$lib/components/TrophyIcon.svelte';
   import Overlay from '$lib/components/Overlay.svelte';
   import BallButton from '$lib/components/BallButton.svelte';
   import NumberSelector from '$lib/components/NumberSelector.svelte';
@@ -342,7 +343,7 @@
       <MatchSetup bind:matchMode bind:totalGames={matchTotalGames} />
 
       <button class="btn-main btn-gold" on:click={() => { if (matchMode) startMatch('cutthroat', setupPlayers.map(p => p.name), matchTotalGames); startGame(); }}>
-        {matchMode ? $t('setup.launchMatch') : $t('setup.launchGame')}
+        {#if matchMode}<TrophyIcon size="1em" /> {$t('setup.launchMatch')}{:else}{$t('setup.launchGame')}{/if}
       </button>
       <button class="btn-main btn-gray" on:click={() => phase = 'setup2'}>{$t('setup.back')}</button>
     </div>

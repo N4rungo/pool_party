@@ -337,7 +337,7 @@
       <MatchSetup bind:randomizeOrder bind:matchMode bind:totalGames={matchTotalGames} bind:breakOrder />
 
       <button class="btn-main btn-gold" on:click={handleLaunch}>
-        {matchMode ? $t('setup.launchMatch') : $t('setup.launchGame')}
+        {#if matchMode}<TrophyIcon size="1em" /> {$t('setup.launchMatch')}{:else}{$t('setup.launchGame')}{/if}
       </button>
       <button class="btn-main btn-gray" on:click={() => goto(base || '/')}>{$t('setup.back')}</button>
     </div>

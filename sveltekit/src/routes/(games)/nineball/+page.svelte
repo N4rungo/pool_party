@@ -443,7 +443,7 @@
       <MatchSetup bind:randomizeOrder={randomOrder} bind:matchMode bind:totalGames={matchTotalGames} bind:breakOrder />
 
       <button class="btn-main btn-gold" on:click={handleLaunch}>
-        {matchMode ? $t('setup.launchMatch') : $t('setup.launchGame')}
+        {#if matchMode}<TrophyIcon size="1em" /> {$t('setup.launchMatch')}{:else}{$t('setup.launchGame')}{/if}
       </button>
       <button class="btn-main btn-gray" on:click={() => goto(base || '/')}>{$t('setup.back')}</button>
     </div>
@@ -567,7 +567,7 @@
         {:else}
           <!-- 3+ joueurs individuels : bouton overlay -->
           <button class="btn-victory btn-victory-gold btn-declare" on:click={() => winnerPickOpen = true}>
-            {$t('nineball.declareWinner')}
+            <TrophyIcon size="1em" /> {$t('nineball.declareWinner')}
           </button>
         {/if}
       </svelte:fragment>

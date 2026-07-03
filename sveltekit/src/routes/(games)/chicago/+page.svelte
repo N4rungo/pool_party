@@ -16,6 +16,7 @@
   import GameLayout from '$lib/components/GameLayout.svelte';
   import RulesViewer from '$lib/components/RulesViewer.svelte';
   import WinOverlay from '$lib/components/WinOverlay.svelte';
+  import TrophyIcon from '$lib/components/TrophyIcon.svelte';
   import BallButton from '$lib/components/BallButton.svelte';
   import MatchSetup from '$lib/components/MatchSetup.svelte';
   import MatchRecapOverlay from '$lib/components/MatchRecapOverlay.svelte';
@@ -257,7 +258,7 @@
       <MatchSetup bind:matchMode bind:totalGames={matchTotalGames} bind:breakOrder />
 
       <button class="btn-main btn-gold" on:click={handleLaunch}>
-        {matchMode ? $t('setup.launchMatch') : $t('setup.launchGame')}
+        {#if matchMode}<TrophyIcon size="1em" /> {$t('setup.launchMatch')}{:else}{$t('setup.launchGame')}{/if}
       </button>
       <button class="btn-main btn-gray" on:click={() => goto(base || '/')}>{$t('setup.back')}</button>
     </div>

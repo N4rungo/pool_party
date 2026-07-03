@@ -55,6 +55,7 @@
   import BallIcon from '$lib/components/BallIcon.svelte';
   import HeartIcon from '$lib/components/HeartIcon.svelte';
   import SkullIcon from '$lib/components/SkullIcon.svelte';
+  import TrophyIcon from '$lib/components/TrophyIcon.svelte';
   import { BALL_COLORS } from '$lib/constants/balls.js';
 
   // ── Phase courante ────────────────────────────────────
@@ -410,7 +411,7 @@
       <MatchSetup bind:randomizeOrder bind:matchMode bind:totalGames={matchTotalGames} />
 
       <button class="btn-main btn-gold" on:click={() => { if (matchMode) startMatch('killer', setupPlayers.map(p => p.name), matchTotalGames); startGame(); }}>
-        {matchMode ? $t('setup.launchMatch') : $t('setup.launchGame')}
+        {#if matchMode}<TrophyIcon size="1em" /> {$t('setup.launchMatch')}{:else}{$t('setup.launchGame')}{/if}
       </button>
       <button class="btn-main btn-gray" on:click={() => phase = 'setup2'}>{$t('setup.back')}</button>
     </div>
