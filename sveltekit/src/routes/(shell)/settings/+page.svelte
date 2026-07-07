@@ -7,6 +7,8 @@
   import { get } from 'svelte/store';
   import { setLang } from '$lib/i18n/index.js';
   import { themeStore, THEMES } from '$lib/stores/theme.js';
+  import { goto } from '$app/navigation';
+  import { base } from '$app/paths';
 
   const LANGS = [
     { id: 'fr', label: 'Français' },
@@ -183,6 +185,16 @@
       </div>
       <button class="btn-action close-btn" on:click={() => langOpen = false}>✕</button>
     {/if}
+  </div>
+
+  <!-- ── Politique de confidentialité ── -->
+  <div class="section-label" style="margin-top: 12px">{$t('settings.legal') ?? 'Légal'}</div>
+  <div class="setting-block setting-block-picker">
+    <button class="picker-current" on:click={() => goto(`${base}/privacy`)}>
+      <span class="privacy-icon">🔒</span>
+      <span class="picker-label">{$t('privacy.title')}</span>
+      <span class="picker-chevron">›</span>
+    </button>
   </div>
 
 </div>
@@ -414,6 +426,13 @@
   .close-btn {
     align-self: center;
     margin-top: 2px;
+  }
+
+  .privacy-icon {
+    font-size: 20px;
+    width: 32px;
+    text-align: center;
+    flex-shrink: 0;
   }
 
   .btn-danger {

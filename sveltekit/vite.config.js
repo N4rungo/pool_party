@@ -18,31 +18,66 @@ const config = {
       registerType: 'autoUpdate',
 
       manifest: {
+        id: '/pool_party/',
         name: 'Pool Party',
         short_name: 'Pool Party',
-        description: 'Scores de billard pour soirées',
+        description: 'Application de scoring pour soirées billard entre amis. Supporte 12 variantes : Killer, 8-Ball, 9-Ball, 10-Ball, 14-1, Cutthroat, Chicago, Blackball, Carambole, Casin, 5-Ball et Snooker. Fonctionne entièrement hors ligne, sans compte ni publicité.',
         theme_color: '#1a472a',
         background_color: '#1a472a',
         display: 'standalone',
         orientation: 'portrait',
         scope: '/pool_party/',
         start_url: '/pool_party/',
+        categories: ['games', 'sports'],
+        lang: 'fr',
         icons: [
           {
             src: '/pool_party/assets/icons/icon-192.png',
             sizes: '192x192',
-            type: 'image/png'
+            type: 'image/png',
+            purpose: 'any'
           },
           {
             src: '/pool_party/assets/icons/icon-512.png',
             sizes: '512x512',
-            type: 'image/png'
+            type: 'image/png',
+            purpose: 'any'
           },
           {
             src: '/pool_party/assets/icons/icon-512-maskable.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'maskable'
+          }
+        ],
+        screenshots: [
+          {
+            src: '/pool_party/assets/screenshots/home.webp',
+            sizes: '390x844',
+            type: 'image/webp',
+            form_factor: 'narrow',
+            label: 'Accueil — sélection du jeu'
+          },
+          {
+            src: '/pool_party/assets/screenshots/players.webp',
+            sizes: '390x844',
+            type: 'image/webp',
+            form_factor: 'narrow',
+            label: 'Gestion des joueurs'
+          },
+          {
+            src: '/pool_party/assets/screenshots/game.webp',
+            sizes: '390x844',
+            type: 'image/webp',
+            form_factor: 'narrow',
+            label: 'Partie en cours'
+          },
+          {
+            src: '/pool_party/assets/screenshots/stats.webp',
+            sizes: '390x844',
+            type: 'image/webp',
+            form_factor: 'narrow',
+            label: 'Statistiques'
           }
         ]
       },

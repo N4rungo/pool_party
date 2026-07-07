@@ -517,5 +517,21 @@
   "langPicker": {
     "title": "Choose your language",
     "subtitle": "Vous pourrez changer ça dans les Réglages"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: July 2025",
+    "intro": "Pool Party is an offline scoring app. It does not collect, transmit, or share any personal data.",
+    "s1title": "Data stored",
+    "s1body": "All data (player names, match history, statistics, preferences) is stored exclusively on your device using the browser's local storage (localStorage). This data never leaves your device.",
+    "s2title": "Data not collected",
+    "s2body": "We do not collect names, email addresses, location data, advertising identifiers, or any other personal information. The app contains no ads, analytics, or third-party tracking.",
+    "s3title": "Network",
+    "s3body": "The app runs entirely offline after the first install. No network requests are made during use.",
+    "s4title": "Deleting your data",
+    "s4body": "You can delete all your data at any time from the Settings page. Uninstalling the app also removes all local data.",
+    "s5title": "Contact",
+    "s5body": "For any questions: narungo@proton.me",
+    "backToSettings": "← Settings"
   }
 }

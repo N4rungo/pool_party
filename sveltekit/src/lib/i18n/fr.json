@@ -517,5 +517,21 @@
   "langPicker": {
     "title": "Choisissez votre langue",
     "subtitle": "You can change this later in Settings"
+  },
+  "privacy": {
+    "title": "Politique de confidentialité",
+    "lastUpdated": "Dernière mise à jour : juillet 2025",
+    "intro": "Pool Party est une application de scoring hors ligne. Elle ne collecte, ne transmet et ne partage aucune donnée personnelle.",
+    "s1title": "Données stockées",
+    "s1body": "Toutes les données (noms des joueurs, historique des parties, statistiques, préférences) sont stockées uniquement sur votre appareil, dans le stockage local du navigateur (localStorage). Ces données ne quittent jamais votre appareil.",
+    "s2title": "Données non collectées",
+    "s2body": "Nous ne collectons pas de nom, d'adresse e-mail, de données de localisation, d'identifiant publicitaire ni aucune autre information personnelle. L'application ne contient ni publicité, ni analytique, ni suivi tiers.",
+    "s3title": "Réseau",
+    "s3body": "L'application fonctionne entièrement hors ligne après la première installation. Aucune requête réseau n'est effectuée pendant l'utilisation.",
+    "s4title": "Suppression des données",
+    "s4body": "Vous pouvez supprimer toutes vos données à tout moment depuis la page Réglages. Désinstaller l'application supprime également toutes les données locales.",
+    "s5title": "Contact",
+    "s5body": "Pour toute question : narungo@proton.me",
+    "backToSettings": "← Réglages"
   }
 }

@@ -25,6 +25,7 @@
     if (rawPath.startsWith('/players'))  return 'joueurs';
     if (rawPath.startsWith('/stats'))    return 'stats';
     if (rawPath.startsWith('/settings')) return 'reglages';
+    if (rawPath.startsWith('/privacy'))  return 'reglages';
     return 'jeux';
   })();
 
