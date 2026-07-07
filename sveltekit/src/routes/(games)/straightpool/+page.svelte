@@ -335,7 +335,7 @@
       <MatchSetup bind:randomizeOrder bind:matchMode bind:totalGames={matchTotalGames} bind:breakOrder />
 
       <button class="btn-main btn-gold" on:click={() => { if (matchMode) startMatch('straightpool', setupPlayers.map(p => p.name), matchTotalGames); startGame(); }}>
-        {#if matchMode}<TrophyIcon size="1em" /> {$t('setup.launchMatch')}{:else}{$t('setup.launchGame')}{/if}
+        {#if matchMode}<TrophyIcon size="1.3em" /> {$t('setup.launchMatch')}{:else}{$t('setup.launchGame')}{/if}
       </button>
       <button class="btn-main btn-gray" on:click={() => phase = 'setup2'}>{$t('setup.back')}</button>
     </div>
@@ -372,7 +372,7 @@
           <div class="sp-progress-bar">
             <div class="sp-progress-fill" style="width: {progressPct(i)}%"></div>
           </div>
-          <div class="sp-best-break"><TrophyIcon size="0.85em" /> {$t('straightpool.bestBreak', { values: { n: player.bestBreak } })}</div>
+          <div class="sp-best-break"><TrophyIcon size="1.1em" /> {$t('straightpool.bestBreak', { values: { n: player.bestBreak } })}</div>
         </div>
       {/each}
     </div>

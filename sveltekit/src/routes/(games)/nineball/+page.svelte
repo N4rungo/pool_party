@@ -443,7 +443,7 @@
       <MatchSetup bind:randomizeOrder={randomOrder} bind:matchMode bind:totalGames={matchTotalGames} bind:breakOrder />
 
       <button class="btn-main btn-gold" on:click={handleLaunch}>
-        {#if matchMode}<TrophyIcon size="1em" /> {$t('setup.launchMatch')}{:else}{$t('setup.launchGame')}{/if}
+        {#if matchMode}<TrophyIcon size="1.3em" /> {$t('setup.launchMatch')}{:else}{$t('setup.launchGame')}{/if}
       </button>
       <button class="btn-main btn-gray" on:click={() => goto(base || '/')}>{$t('setup.back')}</button>
     </div>
@@ -548,26 +548,26 @@
           <!-- 2 boutons colorés équipe -->
           <div class="victory-buttons">
             <button class="btn-victory btn-victory-a" on:click={() => onDeclareWinner(0)}>
-              <TrophyIcon size="1em" /> {state.teams[0].label}
+              <TrophyIcon size="1.3em" /> {state.teams[0].label}
             </button>
             <button class="btn-victory btn-victory-b" on:click={() => onDeclareWinner(1)}>
-              <TrophyIcon size="1em" /> {state.teams[1].label}
+              <TrophyIcon size="1.3em" /> {state.teams[1].label}
             </button>
           </div>
         {:else if state.players.length === 2}
           <!-- 2 joueurs : boutons colorés (style Pool) -->
           <div class="victory-buttons">
             <button class="btn-victory btn-victory-a" on:click={() => onDeclareWinner(0)}>
-              <TrophyIcon size="1em" /> {state.players[0].name}
+              <TrophyIcon size="1.3em" /> {state.players[0].name}
             </button>
             <button class="btn-victory btn-victory-b" on:click={() => onDeclareWinner(1)}>
-              <TrophyIcon size="1em" /> {state.players[1].name}
+              <TrophyIcon size="1.3em" /> {state.players[1].name}
             </button>
           </div>
         {:else}
           <!-- 3+ joueurs individuels : bouton overlay -->
           <button class="btn-victory btn-victory-gold btn-declare" on:click={() => winnerPickOpen = true}>
-            <TrophyIcon size="1em" /> {$t('nineball.declareWinner')}
+            <TrophyIcon size="1.3em" /> {$t('nineball.declareWinner')}
           </button>
         {/if}
       </svelte:fragment>

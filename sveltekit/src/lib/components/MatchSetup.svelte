@@ -43,7 +43,7 @@
   {/if}
 
   <label class="option-row">
-    <span class="option-label"><TrophyIcon size="0.9em" /> {$t('match.matchMode')}</span>
+    <span class="option-label"><TrophyIcon size="1.2em" /> {$t('match.matchMode')}</span>
     <div
       class="toggle-track"
       class:on={matchMode}
@@ -83,7 +83,7 @@
               class="break-chip"
               class:active={breakOrder === 'winner'}
               on:click={() => breakOrder = 'winner'}
-            ><TrophyIcon size="0.85em" /> {$t('match.breakWinner')}</button>
+            ><TrophyIcon size="1.1em" /> {$t('match.breakWinner')}</button>
           </div>
         </div>
       {/if}
