@@ -188,7 +188,7 @@
   </div>
 
   <!-- ── Politique de confidentialité ── -->
-  <div class="section-label" style="margin-top: 12px">{$t('settings.legal') ?? 'Légal'}</div>
+  <div class="section-label" style="margin-top: 12px">{$t('privacy.sectionLabel')}</div>
   <div class="setting-block setting-block-picker">
     <button class="picker-current" on:click={() => goto(`${base}/privacy`)}>
       <span class="privacy-icon">🔒</span>
@@ -433,6 +433,10 @@
     width: 32px;
     text-align: center;
     flex-shrink: 0;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .btn-danger {
