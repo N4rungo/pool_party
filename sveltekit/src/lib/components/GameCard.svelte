@@ -15,6 +15,7 @@
   import { base } from '$app/paths';
   import { createEventDispatcher } from 'svelte';
   import StarIcon from './StarIcon.svelte';
+  import BookIcon from './BookIcon.svelte';
   import { t } from 'svelte-i18n';
 
   export let game;
@@ -62,7 +63,7 @@
 
   <!-- Bouton règles -->
   <div class="game-card-actions">
-    <button class="btn-card-rules" on:click={openRules} aria-label={$t('games.card.rules')}>📖</button>
+    <button class="btn-card-rules" on:click={openRules} aria-label={$t('games.card.rules')}><BookIcon size="18px" /></button>
   </div>
 </div>
 

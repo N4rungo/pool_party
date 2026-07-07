@@ -14,6 +14,7 @@
 <script>
   import { tick } from 'svelte';
   import { profilesStore, createProfile } from '$lib/stores/profiles.js';
+  import SaveIcon from './SaveIcon.svelte';
   import { t } from 'svelte-i18n';
 
   export let value        = { name: '', profileId: null };
@@ -120,7 +121,7 @@
         <span class="player-num">{$t('picker.playerShort')}{index + 1}</span>
         <span class="player-name">{value.name}</span>
         {#if value.profileId}
-          <span class="badge-profile">💾</span>
+          <span class="badge-profile"><SaveIcon size="0.85em" /></span>
         {:else}
           <span class="badge-guest">{$t('picker.guest')}</span>
         {/if}

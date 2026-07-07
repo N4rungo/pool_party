@@ -9,6 +9,7 @@
     globalStats, gameStats, playedGameIds,
   } from '$lib/utils/stats.js';
   import { GAMES } from '$lib/games.js';
+  import PencilIcon from '$lib/components/PencilIcon.svelte';
   import { t } from 'svelte-i18n';
 
   const MAX_NAME = 16;
@@ -108,7 +109,7 @@
       <button class="icon-btn" on:click={cancelRename} title={$t('players.cancel')}>✕</button>
     {:else}
       <span class="player-name">{profile.name}</span>
-      <button class="icon-btn" on:click={startRename} title={$t('players.rename')}>✏️</button>
+      <button class="icon-btn" on:click={startRename} title={$t('players.rename')}><PencilIcon size="1em" /></button>
     {/if}
   </div>
 

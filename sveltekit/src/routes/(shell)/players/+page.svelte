@@ -6,6 +6,7 @@
   import { askConfirm } from '$lib/stores/confirm.js';
   import { t } from 'svelte-i18n';
   import { get } from 'svelte/store';
+  import PencilIcon from '$lib/components/PencilIcon.svelte';
 
   const MAX_NAME = 16;
 
@@ -95,7 +96,7 @@
             <button class="profile-name-btn" on:click={() => goto(`${base}/stats/${profile.id}`)}>
               {profile.name}
             </button>
-            <button class="icon-btn" on:click={() => startEdit(profile)} title={$t('players.rename')}>✏️</button>
+            <button class="icon-btn" on:click={() => startEdit(profile)} title={$t('players.rename')}><PencilIcon size="1em" /></button>
             <button class="icon-btn icon-btn-red" on:click={() => handleDelete(profile)} title={$t('players.delete')}>🗑️</button>
           </div>
         {/if}

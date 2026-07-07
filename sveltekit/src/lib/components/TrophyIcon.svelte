@@ -1,6 +1,6 @@
 <script>
   export let size = '1em';
-  export let color = 'currentColor';
+  export let color = 'var(--color-gold)';
 </script>
 
 <svg

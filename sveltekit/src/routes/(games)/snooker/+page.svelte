@@ -58,6 +58,7 @@
   } from '$lib/games/snooker.js';
   import BallIcon from '$lib/components/BallIcon.svelte';
   import TrophyIcon from '$lib/components/TrophyIcon.svelte';
+  import MedalIcon from '$lib/components/MedalIcon.svelte';
   import { BALL_COLORS } from '$lib/constants/balls.js';
 
   let phase = 'setup1';
@@ -452,7 +453,7 @@
       <MatchSetup bind:randomizeOrder bind:matchMode bind:totalGames={matchTotalGames} bind:breakOrder />
 
       <button class="btn-main btn-gold" on:click={() => { if (matchMode) startMatch('snooker', setupPlayers.map(p => p.name), matchTotalGames); startGame(); }}>
-        {#if matchMode}<TrophyIcon size="1.3em" /> {$t('setup.launchMatch')}{:else}{$t('setup.launchGame')}{/if}
+        {#if matchMode}<TrophyIcon size="1.3em" color="currentColor" /> {$t('setup.launchMatch')}{:else}{$t('setup.launchGame')}{/if}
       </button>
       <button class="btn-main btn-gray" on:click={() => phase = 'setup2'}>{$t('setup.back')}</button>
     </div>
@@ -479,7 +480,7 @@
               <span class="snk-card-emoji"><BallIcon color={BALL_COLORS[i % BALL_COLORS.length]} size="22px" /></span>
               <span class="snk-card-name">{player.name}</span>
               <span class="snk-card-score">{player.score}</span>
-              <span class="snk-card-break">🏅 {player.bestBreak}</span>
+              <span class="snk-card-break"><MedalIcon size="1em" /> {player.bestBreak}</span>
             </div>
           {/each}
         </div>
@@ -681,7 +682,7 @@
           {#if i === 0}<TrophyIcon size="18px" color="var(--color-gold)" />{:else}<BallIcon color={BALL_COLORS[state.players.indexOf(p) % BALL_COLORS.length]} size="18px" />{/if}
           <span class="snk-rank-name">{p.name}</span>
           <span class="snk-rank-score">{p.score} pts</span>
-          <span class="snk-rank-break">🏅 {p.bestBreak}</span>
+          <span class="snk-rank-break"><MedalIcon size="1em" /> {p.bestBreak}</span>
         </div>
       {/each}
     </div>

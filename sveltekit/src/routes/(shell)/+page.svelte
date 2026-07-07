@@ -2,6 +2,7 @@
   import { base } from '$app/paths';
   import GameCard from '$lib/components/GameCard.svelte';
   import RulesViewer from '$lib/components/RulesViewer.svelte';
+  import StarIcon from '$lib/components/StarIcon.svelte';
   import { GAMES, CATEGORIES, TABLE_TYPES } from '$lib/games.js';
   import { favorites } from '$lib/stores/favorites.js';
   import { t } from 'svelte-i18n';
@@ -99,7 +100,7 @@
   <!-- Section Favoris -->
   {#if favGames.length > 0}
     <div class="section-header">
-      <span class="section-icon">★</span>
+      <span class="section-icon"><StarIcon filled={true} size="1em" /></span>
       <span class="section-label">{$t('home.favorites')}</span>
     </div>
     <div class="games-list">

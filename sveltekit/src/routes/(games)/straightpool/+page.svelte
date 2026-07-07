@@ -16,6 +16,7 @@
   import RulesViewer from '$lib/components/RulesViewer.svelte';
   import WinOverlay from '$lib/components/WinOverlay.svelte';
   import TrophyIcon from '$lib/components/TrophyIcon.svelte';
+  import MedalIcon from '$lib/components/MedalIcon.svelte';
   import NumberSelector from '$lib/components/NumberSelector.svelte';
   import PlayerSetupList from '$lib/components/PlayerSetupList.svelte';
   import RecapList from '$lib/components/RecapList.svelte';
@@ -335,7 +336,7 @@
       <MatchSetup bind:randomizeOrder bind:matchMode bind:totalGames={matchTotalGames} bind:breakOrder />
 
       <button class="btn-main btn-gold" on:click={() => { if (matchMode) startMatch('straightpool', setupPlayers.map(p => p.name), matchTotalGames); startGame(); }}>
-        {#if matchMode}<TrophyIcon size="1.3em" /> {$t('setup.launchMatch')}{:else}{$t('setup.launchGame')}{/if}
+        {#if matchMode}<TrophyIcon size="1.3em" color="currentColor" /> {$t('setup.launchMatch')}{:else}{$t('setup.launchGame')}{/if}
       </button>
       <button class="btn-main btn-gray" on:click={() => phase = 'setup2'}>{$t('setup.back')}</button>
     </div>
@@ -417,7 +418,7 @@
           <span class="sp-rank-emoji"><BallIcon color={BALL_COLORS[idx % BALL_COLORS.length]} /></span>
           <span class="sp-rank-name">{p.name}</span>
           <span class="sp-rank-score">{p.score} pts</span>
-          <span class="sp-rank-break">🏅 {p.bestBreak}</span>
+          <span class="sp-rank-break"><MedalIcon size="1em" /> {p.bestBreak}</span>
         </div>
       {/each}
     </div>
