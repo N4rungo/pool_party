@@ -386,7 +386,7 @@
 
     <div class="popup-box setup-box">
       <div class="setup-tip" style="margin-bottom:2px;">
-        {jokerMode === 'random' ? $t('killer.jokerRandom') : $t('killer.jokerChoice')}
+        {jokerMode === 'random' ? $t('killer.jokerRandomRecap') : $t('killer.jokerChoiceRecap')}
       </div>
       <div class="setup-tip" style="margin-bottom:8px;">
         {$t('killer.adjustLivesTip')}

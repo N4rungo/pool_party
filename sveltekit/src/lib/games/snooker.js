@@ -115,7 +115,7 @@ function endgameLabel(state) {
 
 export function phaseLabel(state) {
   if (state.phase === 'red')   return '🔴 Jouer une rouge';
-  if (state.phase === 'color') return '🎱 Jouer une couleur';
+  if (state.phase === 'color') return '🔵 Jouer une couleur';
   if (state.phase === 'endgame') {
     const b = endgameLabel(state);
     return `Phase finale — jouer : ${b.label} (${b.points} pts)`;

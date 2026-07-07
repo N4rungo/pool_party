@@ -436,7 +436,7 @@
 
     <div class="popup-box setup-box">
       <div class="setup-tip" style="margin-bottom:10px;">
-        {mode === 'simple' ? $t('snooker.modeSimple') : $t('snooker.modeExpert')}
+        {$t('snooker.faultRulesLabel')} {mode === 'simple' ? $t('snooker.modeSimple') : $t('snooker.modeExpert')}
       </div>
 
       <div class="recap-list">
