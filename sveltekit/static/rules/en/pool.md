@@ -13,6 +13,17 @@ Two players (or teams) compete. One plays **solids** (balls 1–7), the other pl
 
 Groups are determined by the **first ball pocketed after the break**, regardless of who pockets it.
 
+## 🔢 Setup
+The 15 balls are racked in a **triangle** at the foot of the table:
+- The **8 ball** goes in the **centre** of the triangle.
+- The **back two corners** of the triangle must each hold one **solid** and one **stripe** — never two balls of the same group.
+- The **front ball** (apex, on the foot spot) can be either a solid or a stripe.
+- All other balls are placed randomly.
+
+![8-ball rack setup]({{base}}/assets/8ball_rack.png)
+
+The cue ball is placed anywhere behind the **head string** by the breaking player.
+
 ## 🎱 The break
 - The breaking player must strike the rack and **spread the balls**.
 - If a ball drops, they continue their turn. Otherwise, the opponent plays from where the balls came to rest.
