@@ -33,7 +33,7 @@
         r = await fetch(`${base}/rules/fr/${id}.md`);
       }
       if (!r.ok) throw new Error(`${r.status}`);
-      const md = await r.text();
+      const md = (await r.text()).replaceAll('{{base}}', base);
       html = marked.parse(md);
     } catch (e) {
       error = e.message;
@@ -110,6 +110,13 @@
     line-height: 1.5;
     margin: 4px 0;
     color: rgba(var(--color-text-rgb), 0.85);
+  }
+  .rules-content :global(img) {
+    display: block;
+    max-width: 80%;
+    height: auto;
+    margin: 8px auto;
+    border-radius: 8px;
   }
   .rules-content :global(strong) { color: white; }
   .rules-content :global(em)     { color: rgba(var(--color-text-rgb), 0.7); }
