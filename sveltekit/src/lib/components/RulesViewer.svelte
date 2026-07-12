@@ -113,9 +113,9 @@
   }
   .rules-content :global(img) {
     display: block;
-    max-width: 100%;
+    max-width: 65%;
     height: auto;
-    margin: 12px auto;
+    margin: 4px auto;
     border-radius: 8px;
   }
   .rules-content :global(strong) { color: white; }
