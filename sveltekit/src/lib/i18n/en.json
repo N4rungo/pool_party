@@ -50,7 +50,8 @@
       "carom": "Hit both balls!",
       "casin": "French billiards, remixed",
       "fiveball": "Aim for zero!",
-      "snooker": "Target: 147 points"
+      "snooker": "Target: 147 points",
+      "rds": "Solo training, 16 levels"
     },
     "card": {
       "rules": "Rules",
@@ -520,5 +521,60 @@
   "langPicker": {
     "title": "Choose your language",
     "subtitle": "Vous pourrez changer ça dans les Réglages"
+  },
+  "rds": {
+    "subtitle": "Runout Drill System",
+    "guestWarning": "⚠️ As a guest, your progress won't be saved.",
+    "levelSelect": "Starting level",
+    "currentLevel": "Level",
+    "bestLevel": "Best",
+    "attempts": "Attempts",
+    "validate": "✅ Rack made",
+    "miss": "❌ Rack missed",
+    "rule": {
+      "breakRack": "Break a rack of {count} balls.",
+      "noCueBall": "Remove the cue ball, then pocket each ball directly, in any order.",
+      "bihEveryShot": "Take cue ball in hand for every shot.",
+      "bihBreakOnly": "Take cue ball in hand after the break only.",
+      "bihExtra": "Take cue ball in hand after the break, plus {count} more time(s) during the run.",
+      "anyOrder": "Pocket each ball in any order.",
+      "inOrder": "Pocket the balls in rotation, always hitting the lowest-numbered ball first.",
+      "eightBallGroups": "Pocket all the stripes or all the solids, then the 8 ball.",
+      "nineBallRules": "9-ball rules: always hit the lowest-numbered ball first — win by pocketing the 9.",
+      "remainingInOrder": "Then pocket the remaining balls in rotation, lowest first."
+    },
+    "outcome": {
+      "levelUpTitle": "2 out of 3 racks!",
+      "levelUpBody": "You can move up to level {level}.",
+      "next": "⬆️ Next level",
+      "finish": "🏁 Finish here",
+      "replay": "🔄 Replay this level",
+      "stayTitle": "1 out of 3 racks",
+      "stayBody": "You stay at this level. Give it another try!",
+      "acknowledge": "OK, let's go",
+      "downTitle": "0 out of 3 racks",
+      "downBody": "You drop to level {level}.",
+      "acceptDown": "OK, I'll drop a level",
+      "stayAnyway": "Stay at this level",
+      "sessionEndSub": "Ending level: {level} — {rating}"
+    },
+    "ratings": {
+      "1": "lower novice",
+      "2": "mid novice",
+      "3": "upper novice",
+      "4": "lower beginner (D-)",
+      "5": "mid beginner (D)",
+      "6": "upper beginner (D+)",
+      "7": "lower intermediate (C-)",
+      "8": "mid intermediate (C)",
+      "9": "upper intermediate (C+)",
+      "10": "lower advanced (B-)",
+      "11": "mid advanced (B)",
+      "12": "upper advanced (B+)",
+      "13": "lower shortstop (A-)",
+      "14": "upper shortstop (A)",
+      "15": "semipro / pro (A+/AA)",
+      "16": "world class pro (A++/AAA)"
+    }
   }
 }
