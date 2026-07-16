@@ -154,7 +154,7 @@ export const GAMES = [
     id: 'rds',
     name: 'RDS',
     tagline: 'Entraînement solo, 16 niveaux',
-    icon: '/assets/bille_1.png',
+    icon: '/assets/rds.png',
     category: 'americain',
     tableTypes: ['americain'],
     minPlayers: 1,

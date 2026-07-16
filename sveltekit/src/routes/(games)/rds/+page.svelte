@@ -168,7 +168,7 @@
 {#if phase === 'setup'}
   <div class="setup">
     <h1>
-      <img src="{base}/assets/bille_1.png" alt="" class="icon-title" />
+      <img src="{base}/assets/rds.png" alt="" class="icon-title" />
       RDS
     </h1>
     <div class="setup-sub">{$t('rds.subtitle')}</div>
@@ -198,7 +198,7 @@
 <!-- ===== PHASE GAME ===== -->
 {#if phase === 'game'}
   <div class="game">
-    <GameLayout title="RDS" icon="{base}/assets/bille_1.png" gameId="rds" canUndo={false}
+    <GameLayout title="RDS" icon="{base}/assets/rds.png" gameId="rds" canUndo={false}
                 on:home={confirmGoHome} on:rules={() => (rulesOpen = true)}>
 
       <div class="player-card">
