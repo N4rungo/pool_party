@@ -19,7 +19,7 @@ groups remain unassigned.
 
 ## 🔢 Setup
 The 15 balls are racked in a **triangle** at the foot of the table:
-- The **black ball** goes in the **centre** of the triangle.
+- The **black ball** goes in the **centre** of the triangle, on the **foot spot**.
 - The other balls follow the layout shown below.
 
 ![Blackball rack setup]({{base}}/assets/blackball_rack.png)
