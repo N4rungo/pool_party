@@ -17,6 +17,15 @@ Groups are determined by the **first ball legally pocketed during normal play**
 (not on the break). If a ball is pocketed on the break, the player continues but
 groups remain unassigned.
 
+## 🔢 Setup
+The 15 balls are racked in a **triangle** at the foot of the table:
+- The **black ball** goes in the **centre** of the triangle.
+- The other balls follow the layout shown below.
+
+![Blackball rack setup]({{base}}/assets/blackball_rack.png)
+
+The cue ball is placed anywhere behind the **baulk line** by the breaking player.
+
 ## 🎱 The break
 - The breaking player shoots from the **D** (baulk semi-circle).
 - If the **black ball** is pocketed on the break: **re-rack**.

@@ -16,6 +16,15 @@ La répartition est fixée par la **première bille empochée lors d'un tour nor
 (pas sur la casse). Si la casse empoche une bille, le joueur continue mais les groupes
 ne sont toujours pas assignés.
 
+## 🔢 Mise en place
+Les 15 billes sont disposées en **triangle**, à l'opposé de la ligne de casse :
+- La **bille noire** se place au **centre** du triangle.
+- Les autres billes suivent la disposition illustrée ci-dessous.
+
+![Mise en place du triangle]({{base}}/assets/blackball_rack.png)
+
+La bille blanche est posée n'importe où derrière la **ligne de casse** par le joueur qui casse.
+
 ## 🎱 La casse
 - Le casseur joue depuis le **D** (demi-cercle de la zone de renvoi).
 - Si la **bille noire** est empochée sur la casse : **re-rack**.
