@@ -17,10 +17,10 @@ La répartition est fixée par la **première bille empochée après la casse**,
 quel que soit le joueur qui l'empoche.
 
 ## 🔢 Mise en place
-Les 15 billes sont disposées en **triangle** au pied de la table :
+Les 15 billes sont disposées en **triangle**, en bas de la table :
 - La **bille 8** se place au **centre** du triangle.
 - Les **deux coins arrière** du triangle doivent chacun contenir une bille **pleine** et une bille **rayée** — jamais deux billes du même groupe.
-- La **bille de tête** (au sommet, sur le point de casse) peut être une pleine ou une rayée.
+- La **bille de tête** (au sommet, posée sur **la mouche**) peut être une pleine ou une rayée.
 - Les autres billes sont placées librement.
 
 ![Mise en place du triangle]({{base}}/assets/8ball_rack.png)
