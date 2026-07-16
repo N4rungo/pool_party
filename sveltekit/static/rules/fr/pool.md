@@ -18,9 +18,9 @@ quel que soit le joueur qui l'empoche.
 
 ## 🔢 Mise en place
 Les 15 billes sont disposées en **triangle**, en bas de la table :
-- La **bille 8** se place au **centre** du triangle.
+- La **bille 8** se place au **centre** du triangle, sur **la mouche**.
 - Les **deux coins arrière** du triangle doivent chacun contenir une bille **pleine** et une bille **rayée** — jamais deux billes du même groupe.
-- La **bille de tête** (au sommet, posée sur **la mouche**) peut être une pleine ou une rayée.
+- La **bille de tête** (au sommet) peut être une pleine ou une rayée.
 - Les autres billes sont placées librement.
 
 ![Mise en place du triangle]({{base}}/assets/8ball_rack.png)

@@ -18,8 +18,7 @@ ne sont toujours pas assignés.
 
 ## 🔢 Mise en place
 Les 15 billes sont disposées en **triangle**, en bas de la table :
-- La **bille noire** se place au **centre** du triangle.
-- La **bille de tête** (au sommet) est posée sur **la mouche**.
+- La **bille noire** se place au **centre** du triangle, sur **la mouche**.
 - Les autres billes suivent la disposition illustrée ci-dessous.
 
 ![Mise en place du triangle]({{base}}/assets/blackball_rack.png)

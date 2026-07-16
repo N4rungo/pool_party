@@ -15,9 +15,9 @@ Groups are determined by the **first ball pocketed after the break**, regardless
 
 ## 🔢 Setup
 The 15 balls are racked in a **triangle** at the foot of the table:
-- The **8 ball** goes in the **centre** of the triangle.
+- The **8 ball** goes in the **centre** of the triangle, on the **foot spot**.
 - The **back two corners** of the triangle must each hold one **solid** and one **stripe** — never two balls of the same group.
-- The **front ball** (apex, on the foot spot) can be either a solid or a stripe.
+- The **front ball** (apex) can be either a solid or a stripe.
 - All other balls are placed randomly.
 
 ![8-ball rack setup]({{base}}/assets/8ball_rack.png)
