@@ -201,34 +201,41 @@
     <GameLayout title="RDS" icon="{base}/assets/rds.png" gameId="rds" canUndo={false}
                 on:home={confirmGoHome} on:rules={() => (rulesOpen = true)}>
 
-      <div class="player-card">
+      <div class="zone player-card">
         <div class="player-name">{playerName}</div>
         <div class="level-row">
           <div class="level-current">
+            <span class="level-label">{$t('rds.currentLevel')}</span>
             <span class="level-num">{level}</span>
-            <span class="level-rating">{ratingLabel}</span>
           </div>
+          <span class="level-rating">{ratingLabel}</span>
           <div class="level-max">{$t('rds.bestLevel')}: {maxLevel}</div>
         </div>
       </div>
 
-      <div class="restrictions">
+      <div class="zone restrictions">
         {#each restrictionKeys as r}
           <div class="restriction-item">• {$t(r.key, r.values ? { values: r.values } : undefined)}</div>
         {/each}
       </div>
 
-      <RackLayout shape={levelDef.shape} balls={levelDef.balls} />
+      <div class="zone rack-wrap">
+        <RackLayout shape={levelDef.shape} special={levelDef.special} />
+      </div>
 
-      <svelte:fragment slot="footer">
+      <div class="zone attempts-card">
+        <div class="attempts-label">{$t('rds.attempts')}</div>
         <div class="attempts-row">
           {#each [0, 1, 2] as i}
             <span class="attempt-dot" class:success={attempts[i] === true} class:fail={attempts[i] === false}>
               {#if attempts[i] === true}✅{:else if attempts[i] === false}❌{:else}⚪{/if}
             </span>
           {/each}
-          <span class="attempts-label">{attempts.length}/3</span>
+          <span class="attempts-count">{attempts.length}/3</span>
         </div>
+      </div>
+
+      <svelte:fragment slot="footer">
         <div class="victory-buttons">
           <button class="btn-victory btn-victory-a" on:click={() => recordAttempt(true)}>
             {$t('rds.validate')}
@@ -346,10 +353,18 @@
     padding: 8px 12px;
   }
 
+  /* ── Zones délimitées (même traitement visuel que les autres jeux) ── */
+  .zone {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(var(--color-text-rgb), 0.1);
+    border-radius: 16px;
+    margin-bottom: 12px;
+  }
+
   /* ── Carte joueur ── */
   .player-card {
     text-align: center;
-    margin: 8px 0 16px;
+    padding: 14px 10px 12px;
   }
 
   .player-name {
@@ -370,7 +385,15 @@
   .level-current {
     display: flex;
     align-items: baseline;
-    gap: 10px;
+    gap: 8px;
+  }
+
+  .level-label {
+    font-size: 14px;
+    font-weight: bold;
+    color: rgba(var(--color-text-rgb), 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
 
   .level-num {
@@ -390,18 +413,15 @@
   .level-max {
     font-size: 12px;
     color: rgba(var(--color-text-rgb), 0.4);
+    margin-top: 4px;
   }
 
   /* ── Restrictions ── */
   .restrictions {
-    background: rgba(0, 0, 0, 0.25);
-    border: 1px solid rgba(var(--color-text-rgb), 0.1);
-    border-radius: 14px;
     padding: 12px 16px;
     display: flex;
     flex-direction: column;
     gap: 6px;
-    margin-bottom: 16px;
   }
 
   .restriction-item {
@@ -411,13 +431,30 @@
     line-height: 1.5;
   }
 
+  /* ── Rack ── */
+  .rack-wrap {
+    padding: 18px 10px;
+  }
+
   /* ── Tentatives ── */
+  .attempts-card {
+    padding: 12px 16px 14px;
+    text-align: center;
+  }
+
+  .attempts-label {
+    font-size: 11px;
+    color: rgba(var(--color-text-rgb), 0.4);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+  }
+
   .attempts-row {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    margin-bottom: 10px;
   }
 
   .attempt-dot {
@@ -425,7 +462,7 @@
     line-height: 1;
   }
 
-  .attempts-label {
+  .attempts-count {
     font-size: 13px;
     color: rgba(var(--color-text-rgb), 0.5);
     margin-left: 6px;

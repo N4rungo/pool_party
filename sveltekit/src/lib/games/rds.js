@@ -9,51 +9,56 @@
  *  - 1 rack réussi        → reste au niveau
  *  - 0 rack réussi         → descend de niveau
  *
- * Voir static/rules/en/rds.md pour le détail des règles.
+ * Voir static/rules/en/rds.md pour le détail des règles, et le PDF source
+ * (static/rules/en/rds_system.pdf) pour les schémas de rack officiels dont
+ * SHAPES/LEVELS ci-dessous sont une transcription fidèle.
  */
 
 // ── Formes de rack ────────────────────────────────────────────────────────
-// slotCount : nombre d'emplacements (dans l'ordre "apex en premier")
-// centerIndex : emplacement central (où placer la bille 8/9 quand imposé), ou null
-// frontIndex  : emplacement de l'apex (où placer la bille 1 quand imposé)
+// Chaque forme est une liste d'emplacements (dans l'ordre "apex en premier").
+// centerIndex / frontIndex pointent vers les emplacements clés utilisés pour
+// placer des billes précises (8, 9, 1, catégorie...).
 export const SHAPES = {
-  triangle6:  { slotCount: 6,  centerIndex: null, frontIndex: 0 },
-  hex7:       { slotCount: 7,  centerIndex: 6,    frontIndex: 0 },
-  diamond9:   { slotCount: 9,  centerIndex: 4,    frontIndex: 0 },
-  triangle15: { slotCount: 15, centerIndex: 4,    frontIndex: 0 },
+  // Triangle de 6 billes (rangées 1-2-3)
+  triangle6:  { slotCount: 6,  frontIndex: 0, centerIndex: 4 },
+  // "Flèche" de 7 billes (rangées 1-2-3-1) — niveau 6
+  arrow7:     { slotCount: 7,  frontIndex: 0, centerIndex: 4 },
+  // Losange de 9 billes (rangées 1-2-3-2-1)
+  diamond9:   { slotCount: 9,  frontIndex: 0, centerIndex: 4 },
+  // Triangle complet de 15 billes (rangées 1-2-3-4-5)
+  triangle15: { slotCount: 15, frontIndex: 0, centerIndex: 4 },
 };
 
-const SIX  = [1, 2, 3, 4, 5, 6];
-const FIFTEEN_SEQ = Array.from({ length: 15 }, (_, i) => i + 1);
-
-// 9 billes, 1 à l'apex, 9 au centre, 2-8 dans les autres emplacements (diamond9)
-const NINEBALL_RACK = [1, 2, 3, 4, 9, 5, 6, 7, 8];
-
-// 9 billes, 4 pleines + 4 rayées + la 8 au centre (diamond9)
-const EIGHTBALL_9_RACK = [1, 9, 2, 10, 8, 3, 11, 4, 12];
-
-// 15 billes, 7 pleines + 7 rayées + la 8 au centre (triangle15)
-const EIGHTBALL_15_RACK = [1, 9, 2, 10, 8, 3, 11, 4, 12, 5, 13, 6, 14, 7, 15];
+// Billes représentatives utilisées pour illustrer "une pleine" / "une rayée"
+// dans les racks 8-ball (le PDF ne fixe pas de numéro précis, seulement la
+// catégorie : on choisit une bille de chaque).
+export const SOLID_SAMPLE = 1;
+export const STRIPE_SAMPLE = 9;
 
 // bihMode : 'none' (niveau 1, pas de bille de touche) | 'everyShot' | nombre de BIH
 //           supplémentaires autorisés pendant la remontée (en plus de celle après la casse)
+//
+// special : { [slotIndex]: '8' | 'solid' | 'stripe' | <numéro de bille> }
+//           emplacements dont la bille est imposée par les règles ; tous les
+//           autres emplacements sont remplis avec une bille grise neutre
+//           (la position exacte n'a pas d'importance pour ces niveaux).
 export const LEVELS = [
-  { level: 1,  ballCount: 6,  shape: 'triangle6',  balls: SIX,               bihMode: 'none',      inOrder: false, eightBallRules: false, nineBallRules: false, remainingInOrder: false, noCueBall: true  },
-  { level: 2,  ballCount: 6,  shape: 'triangle6',  balls: SIX,               bihMode: 'everyShot',  inOrder: false, eightBallRules: false, nineBallRules: false, remainingInOrder: false, noCueBall: false },
-  { level: 3,  ballCount: 6,  shape: 'triangle6',  balls: SIX,               bihMode: 3,            inOrder: false, eightBallRules: false, nineBallRules: false, remainingInOrder: false, noCueBall: false },
-  { level: 4,  ballCount: 6,  shape: 'triangle6',  balls: SIX,               bihMode: 2,            inOrder: false, eightBallRules: false, nineBallRules: false, remainingInOrder: false, noCueBall: false },
-  { level: 5,  ballCount: 6,  shape: 'triangle6',  balls: SIX,               bihMode: 1,            inOrder: false, eightBallRules: false, nineBallRules: false, remainingInOrder: false, noCueBall: false },
-  { level: 6,  ballCount: 7,  shape: 'hex7',       balls: [1, 2, 3, 9, 10, 11, 8], bihMode: 1,       inOrder: false, eightBallRules: true,  nineBallRules: false, remainingInOrder: false, noCueBall: false },
-  { level: 7,  ballCount: 9,  shape: 'diamond9',   balls: NINEBALL_RACK,     bihMode: 1,            inOrder: false, eightBallRules: false, nineBallRules: false, remainingInOrder: false, noCueBall: false },
-  { level: 8,  ballCount: 9,  shape: 'diamond9',   balls: EIGHTBALL_9_RACK,  bihMode: 1,            inOrder: false, eightBallRules: true,  nineBallRules: false, remainingInOrder: false, noCueBall: false },
-  { level: 9,  ballCount: 15, shape: 'triangle15', balls: FIFTEEN_SEQ,       bihMode: 2,            inOrder: false, eightBallRules: false, nineBallRules: false, remainingInOrder: false, noCueBall: false },
-  { level: 10, ballCount: 6,  shape: 'triangle6',  balls: SIX,               bihMode: 0,            inOrder: true,  eightBallRules: false, nineBallRules: false, remainingInOrder: false, noCueBall: false },
-  { level: 11, ballCount: 15, shape: 'triangle15', balls: FIFTEEN_SEQ,       bihMode: 0,            inOrder: false, eightBallRules: false, nineBallRules: false, remainingInOrder: false, noCueBall: false },
-  { level: 12, ballCount: 15, shape: 'triangle15', balls: EIGHTBALL_15_RACK, bihMode: 0,            inOrder: false, eightBallRules: true,  nineBallRules: false, remainingInOrder: false, noCueBall: false },
-  { level: 13, ballCount: 9,  shape: 'diamond9',   balls: EIGHTBALL_9_RACK,  bihMode: 0,            inOrder: false, eightBallRules: true,  nineBallRules: false, remainingInOrder: true,  noCueBall: false },
-  { level: 14, ballCount: 9,  shape: 'diamond9',   balls: NINEBALL_RACK,     bihMode: 0,            inOrder: false, eightBallRules: false, nineBallRules: true,  remainingInOrder: false, noCueBall: false },
-  { level: 15, ballCount: 15, shape: 'triangle15', balls: EIGHTBALL_15_RACK, bihMode: 0,            inOrder: false, eightBallRules: true,  nineBallRules: false, remainingInOrder: true,  noCueBall: false },
-  { level: 16, ballCount: 15, shape: 'triangle15', balls: FIFTEEN_SEQ,       bihMode: 0,            inOrder: true,  eightBallRules: false, nineBallRules: false, remainingInOrder: false, noCueBall: false },
+  { level: 1,  ballCount: 6,  shape: 'triangle6',  special: {},                                          bihMode: 'none',     inOrder: false, eightBallRules: false, nineBallRules: false, remainingInOrder: false, noCueBall: true  },
+  { level: 2,  ballCount: 6,  shape: 'triangle6',  special: {},                                          bihMode: 'everyShot', inOrder: false, eightBallRules: false, nineBallRules: false, remainingInOrder: false, noCueBall: false },
+  { level: 3,  ballCount: 6,  shape: 'triangle6',  special: {},                                          bihMode: 3,           inOrder: false, eightBallRules: false, nineBallRules: false, remainingInOrder: false, noCueBall: false },
+  { level: 4,  ballCount: 6,  shape: 'triangle6',  special: {},                                          bihMode: 2,           inOrder: false, eightBallRules: false, nineBallRules: false, remainingInOrder: false, noCueBall: false },
+  { level: 5,  ballCount: 6,  shape: 'triangle6',  special: {},                                          bihMode: 1,           inOrder: false, eightBallRules: false, nineBallRules: false, remainingInOrder: false, noCueBall: false },
+  { level: 6,  ballCount: 7,  shape: 'arrow7',     special: { 4: '8', 3: 'stripe', 5: 'solid' },          bihMode: 1,           inOrder: false, eightBallRules: true,  nineBallRules: false, remainingInOrder: false, noCueBall: false },
+  { level: 7,  ballCount: 9,  shape: 'diamond9',   special: {},                                          bihMode: 1,           inOrder: false, eightBallRules: false, nineBallRules: false, remainingInOrder: false, noCueBall: false },
+  { level: 8,  ballCount: 9,  shape: 'diamond9',   special: { 4: '8', 3: 'stripe', 5: 'solid' },          bihMode: 1,           inOrder: false, eightBallRules: true,  nineBallRules: false, remainingInOrder: false, noCueBall: false },
+  { level: 9,  ballCount: 15, shape: 'triangle15', special: {},                                          bihMode: 2,           inOrder: false, eightBallRules: false, nineBallRules: false, remainingInOrder: false, noCueBall: false },
+  { level: 10, ballCount: 6,  shape: 'triangle6',  special: { 0: 1, 4: 6 },                               bihMode: 0,           inOrder: true,  eightBallRules: false, nineBallRules: false, remainingInOrder: false, noCueBall: false },
+  { level: 11, ballCount: 15, shape: 'triangle15', special: {},                                          bihMode: 0,           inOrder: false, eightBallRules: false, nineBallRules: false, remainingInOrder: false, noCueBall: false },
+  { level: 12, ballCount: 15, shape: 'triangle15', special: { 4: '8', 10: 'stripe', 14: 'solid' },        bihMode: 0,           inOrder: false, eightBallRules: true,  nineBallRules: false, remainingInOrder: false, noCueBall: false },
+  { level: 13, ballCount: 9,  shape: 'diamond9',   special: { 4: '8', 3: 'stripe', 5: 'solid' },          bihMode: 0,           inOrder: false, eightBallRules: true,  nineBallRules: false, remainingInOrder: true,  noCueBall: false },
+  { level: 14, ballCount: 9,  shape: 'diamond9',   special: { 0: 1, 4: 9 },                               bihMode: 0,           inOrder: false, eightBallRules: false, nineBallRules: true,  remainingInOrder: false, noCueBall: false },
+  { level: 15, ballCount: 15, shape: 'triangle15', special: { 4: '8', 10: 'stripe', 14: 'solid' },        bihMode: 0,           inOrder: false, eightBallRules: true,  nineBallRules: false, remainingInOrder: true,  noCueBall: false },
+  { level: 16, ballCount: 15, shape: 'triangle15', special: { 0: 1 },                                     bihMode: 0,           inOrder: true,  eightBallRules: false, nineBallRules: false, remainingInOrder: false, noCueBall: false },
 ];
 
 export const MIN_LEVEL = 1;
