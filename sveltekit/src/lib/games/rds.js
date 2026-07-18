@@ -107,7 +107,7 @@ export function buildRestrictionKeys(levelDef) {
  * @returns {{
  *   successes: number,
  *   decided: boolean,           // une décision doit être proposée au joueur
- *   canFinishEarly: boolean,    // "terminer le niveau" n'a de sens qu'ici
+ *   canFinishEarly: boolean,    // "continuer" (jouer le 3e rack) n'a de sens qu'ici
  *   outcome: 'levelUp' | 'stay' | 'levelDown' | null,
  * }}
  */

@@ -52,15 +52,14 @@
 
   // ── Overlays de résultat ────────────────────────────────
   let outcomeOpen = null; // 'levelUp' | 'stay' | 'levelDown'
-  let canFinishEarly = false;
-  let sessionEndOpen = false;
+  let canContinue = false;
 
   // ── Historique (annulation) ─────────────────────────────
   const RDS_MAX_HISTORY = 50;
   let history = [];
 
   function snapshot() {
-    return { level, maxLevel, attempts: [...attempts], outcomeOpen, canFinishEarly, sessionEndOpen };
+    return { level, maxLevel, attempts: [...attempts], outcomeOpen, canContinue };
   }
 
   function pushHistory() {
@@ -71,12 +70,11 @@
     if (history.length === 0) return;
     const prev = history[history.length - 1];
     history = history.slice(0, -1);
-    level          = prev.level;
-    maxLevel       = prev.maxLevel;
-    attempts       = prev.attempts;
-    outcomeOpen    = prev.outcomeOpen;
-    canFinishEarly = prev.canFinishEarly;
-    sessionEndOpen = prev.sessionEndOpen;
+    level       = prev.level;
+    maxLevel    = prev.maxLevel;
+    attempts    = prev.attempts;
+    outcomeOpen = prev.outcomeOpen;
+    canContinue = prev.canContinue;
     persist();
   }
 
@@ -94,13 +92,12 @@
     maxLevel   = prog ? Math.max(prog.maxLevel, level) : level;
     attempts   = [];
     outcomeOpen = null;
-    sessionEndOpen = false;
     history = [];
     phase = 'game';
   }
 
   function recordAttempt(success) {
-    if (outcomeOpen || sessionEndOpen) return;
+    if (outcomeOpen) return;
     pushHistory();
     attempts = [...attempts, success];
     const result = evaluateAttempts(attempts);
@@ -108,7 +105,7 @@
 
     if (result.outcome === 'levelUp') {
       maxLevel = Math.max(maxLevel, level);
-      canFinishEarly = result.canFinishEarly || level >= MAX_LEVEL;
+      canContinue = result.canFinishEarly;
       persist();
       outcomeOpen = 'levelUp';
     } else if (result.outcome === 'stay') {
@@ -129,11 +126,12 @@
     persist();
   }
 
-  function onFinishLevel() {
+  // "Continuer" : joue le 3ème rack au lieu de valider tout de suite le
+  // passage de niveau — la décision (suivant / rejouer) sera reproposée une
+  // fois les 3 tentatives épuisées.
+  function onContinueLevel() {
     pushHistory();
-    persist();
     outcomeOpen = null;
-    sessionEndOpen = true;
   }
 
   function onReplayLevel() {
@@ -165,17 +163,6 @@
     attempts = [];
     outcomeOpen = null;
     persist();
-  }
-
-  // ── Fin de session ──────────────────────────────────────
-  function backToHome() {
-    goto(base || '/');
-  }
-
-  function newSession() {
-    sessionEndOpen = false;
-    phase = 'setup';
-    hasStartLevelChoice = false;
   }
 
   // ── Confirmation retour accueil ────────────────────────
@@ -298,8 +285,8 @@
     {#if level < MAX_LEVEL}
       <button class="btn-main btn-gold" on:click={onNextLevel}>{$t('rds.outcome.next')}</button>
     {/if}
-    {#if canFinishEarly}
-      <button class="btn-main btn-gray" on:click={onFinishLevel}>{$t('rds.outcome.finish')}</button>
+    {#if canContinue}
+      <button class="btn-main btn-gray" on:click={onContinueLevel}>{$t('rds.outcome.continueLevel')}</button>
     {/if}
     <button class="btn-main btn-gray" on:click={onReplayLevel}>{$t('rds.outcome.replay')}</button>
   </svelte:fragment>
@@ -332,19 +319,6 @@
   </svelte:fragment>
 </Overlay>
 
-
-<!-- ===== OVERLAY : fin de session ===== -->
-<Overlay open={sessionEndOpen} dismissOnBackdrop={false} showClose={false}>
-  <div class="outcome-content">
-    <div class="outcome-trophy">🏁</div>
-    <div class="outcome-title">{playerName}</div>
-    <div class="outcome-body">{$t('rds.outcome.sessionEndSub', { values: { level, rating: ratingLabel } })}</div>
-  </div>
-  <svelte:fragment slot="footer">
-    <button class="btn-main btn-gold" on:click={newSession}>{$t('win.replay')}</button>
-    <button class="btn-main btn-gray" on:click={backToHome}>{$t('win.newGame')}</button>
-  </svelte:fragment>
-</Overlay>
 
 
 <!-- ===== OVERLAY RÈGLES ===== -->

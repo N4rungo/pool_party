@@ -546,7 +546,7 @@
       "levelUpTitle": "2 out of 3 racks!",
       "levelUpBody": "You can move up to level {level}.",
       "next": "⬆️ Next level",
-      "finish": "🏁 Finish here",
+      "continueLevel": "▶️ Continue",
       "replay": "🔄 Replay this level",
       "stayTitle": "1 out of 3 racks",
       "stayBody": "You stay at this level. Give it another try!",
@@ -554,8 +554,7 @@
       "downTitle": "0 out of 3 racks",
       "downBody": "You drop to level {level}.",
       "acceptDown": "OK, I'll drop a level",
-      "stayAnyway": "Stay at this level",
-      "sessionEndSub": "Ending level: {level} — {rating}"
+      "stayAnyway": "Stay at this level"
     },
     "ratings": {
       "1": "lower novice",
