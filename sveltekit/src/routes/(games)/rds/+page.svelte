@@ -202,14 +202,16 @@
                 on:home={confirmGoHome} on:rules={() => (rulesOpen = true)}>
 
       <div class="zone player-card">
-        <div class="player-name">{playerName}</div>
-        <div class="level-row">
-          <div class="level-current">
+        <div class="player-card-row">
+          <span class="player-name">{playerName}</span>
+          <span class="level-max">🏆 {$t('rds.bestLevel')}: {maxLevel}</span>
+        </div>
+        <div class="player-card-row">
+          <span class="level-current">
             <span class="level-label">{$t('rds.currentLevel')}</span>
             <span class="level-num">{level}</span>
-          </div>
+          </span>
           <span class="level-rating">{ratingLabel}</span>
-          <div class="level-max">{$t('rds.bestLevel')}: {maxLevel}</div>
         </div>
       </div>
 
@@ -361,35 +363,41 @@
     margin-bottom: 12px;
   }
 
-  /* ── Carte joueur ── */
+  /* ── Carte joueur (2 lignes, large plutôt que haute) ── */
   .player-card {
-    text-align: center;
-    padding: 14px 10px 12px;
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .player-card-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
   }
 
   .player-name {
     font-size: 15px;
-    color: rgba(var(--color-text-rgb), 0.6);
+    font-weight: bold;
+    color: white;
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin-bottom: 4px;
-  }
-
-  .level-row {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .level-current {
     display: flex;
     align-items: baseline;
     gap: 8px;
+    flex-shrink: 0;
   }
 
   .level-label {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: bold;
     color: rgba(var(--color-text-rgb), 0.5);
     text-transform: uppercase;
@@ -397,23 +405,28 @@
   }
 
   .level-num {
-    font-size: 44px;
+    font-size: 30px;
     font-weight: bold;
     color: var(--color-gold);
-    text-shadow: 0 0 20px rgba(var(--color-gold-rgb), 0.4);
+    text-shadow: 0 0 16px rgba(var(--color-gold-rgb), 0.4);
     line-height: 1;
   }
 
   .level-rating {
-    font-size: 14px;
+    font-size: 13px;
     color: rgba(var(--color-text-rgb), 0.6);
     font-style: italic;
+    text-align: right;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .level-max {
     font-size: 12px;
     color: rgba(var(--color-text-rgb), 0.4);
-    margin-top: 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 
   /* ── Restrictions ── */
