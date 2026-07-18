@@ -7,7 +7,11 @@
    - special : { [slotIndex]: '8' | 'solid' | 'stripe' | number }
                billes imposées par les règles (voir $lib/games/rds.js).
                Tous les autres emplacements affichent une bille grise neutre.
-   - size    : taille d'une bille en px (34 par défaut)
+
+  Les billes sont positionnées et dimensionnées en % du conteneur (et non en
+  px) : leur taille s'adapte donc à la fois à la largeur disponible et au
+  nombre de billes du rack (un rack de 6 billes affiche des billes bien plus
+  grosses qu'un rack de 15, à zone de jeu égale).
 -->
 <script>
   import { base } from '$app/paths';
@@ -15,36 +19,34 @@
 
   export let shape;
   export let special = {};
-  export let size = 34;
 
-  // Coordonnées en % (x, y) de chaque emplacement, apex en premier (ligne de casse en haut).
-  const POSITIONS = {
-    triangle6: [
-      [50, 8],
-      [39, 34], [61, 34],
-      [28, 60], [50, 60], [72, 60],
-    ],
+  // Coordonnées en % (x, y) de chaque emplacement (apex en premier, ligne de
+  // casse en haut) + diamètre en % du conteneur — calculés pour que les
+  // billes se touchent et remplissent au maximum le conteneur carré, quelle
+  // que soit la forme.
+  const SHAPES = {
+    triangle6: {
+      diameter: 32,
+      positions: [[50, 22.3], [34, 50], [66, 50], [18, 77.7], [50, 77.7], [82, 77.7]],
+    },
     // "Flèche" : rangée 1 - 2 - 3 - 1 (tête large au milieu, pointe en bas)
-    arrow7: [
-      [50, 6],
-      [39, 28], [61, 28],
-      [28, 50], [50, 50], [72, 50],
-      [50, 72],
-    ],
-    diamond9: [
-      [50, 5],
-      [39, 24], [61, 24],
-      [28, 43], [50, 43], [72, 43],
-      [39, 62], [61, 62],
-      [50, 81],
-    ],
-    triangle15: [
-      [50, 4],
-      [42, 20], [58, 20],
-      [34, 36], [50, 36], [66, 36],
-      [26, 52], [42, 52], [58, 52], [74, 52],
-      [18, 68], [34, 68], [50, 68], [66, 68], [82, 68],
-    ],
+    arrow7: {
+      diameter: 26.7,
+      positions: [[50, 15.3], [36.7, 38.4], [63.3, 38.4], [23.3, 61.6], [50, 61.6], [76.7, 61.6], [50, 84.7]],
+    },
+    diamond9: {
+      diameter: 21.5,
+      positions: [[50, 12.8], [39.2, 31.4], [60.8, 31.4], [28.5, 50], [50, 50], [71.5, 50], [39.2, 68.6], [60.8, 68.6], [50, 87.2]],
+    },
+    triangle15: {
+      diameter: 19.2,
+      positions: [
+        [50, 16.7], [40.4, 33.4], [59.6, 33.4],
+        [30.8, 50], [50, 50], [69.2, 50],
+        [21.2, 66.6], [40.4, 66.6], [59.6, 66.6], [78.8, 66.6],
+        [11.6, 83.3], [30.8, 83.3], [50, 83.3], [69.2, 83.3], [88.4, 83.3],
+      ],
+    },
   };
 
   function assetFor(value) {
@@ -55,16 +57,16 @@
     return `${base}/assets/grise.png`;
   }
 
-  $: positions = POSITIONS[shape] ?? [];
+  $: shapeDef = SHAPES[shape] ?? { diameter: 20, positions: [] };
 </script>
 
 <div class="rack-layout">
-  {#each positions as pos, i}
+  {#each shapeDef.positions as pos, i}
     <img
       class="rack-ball"
       src={assetFor(special[i])}
       alt=""
-      style="width:{size}px; height:{size}px; left:{pos[0]}%; top:{pos[1]}%;"
+      style="width:{shapeDef.diameter}%; height:{shapeDef.diameter}%; left:{pos[0]}%; top:{pos[1]}%;"
     />
   {/each}
 </div>
@@ -73,7 +75,7 @@
   .rack-layout {
     position: relative;
     width: 100%;
-    max-width: 240px;
+    max-width: 380px;
     aspect-ratio: 1 / 1;
     margin: 0 auto;
   }
