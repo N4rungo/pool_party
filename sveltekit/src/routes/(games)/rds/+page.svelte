@@ -55,6 +55,31 @@
   let canFinishEarly = false;
   let sessionEndOpen = false;
 
+  // ── Historique (annulation) ─────────────────────────────
+  const RDS_MAX_HISTORY = 50;
+  let history = [];
+
+  function snapshot() {
+    return { level, maxLevel, attempts: [...attempts], outcomeOpen, canFinishEarly, sessionEndOpen };
+  }
+
+  function pushHistory() {
+    history = [...history, snapshot()].slice(-RDS_MAX_HISTORY);
+  }
+
+  function onUndo() {
+    if (history.length === 0) return;
+    const prev = history[history.length - 1];
+    history = history.slice(0, -1);
+    level          = prev.level;
+    maxLevel       = prev.maxLevel;
+    attempts       = prev.attempts;
+    outcomeOpen    = prev.outcomeOpen;
+    canFinishEarly = prev.canFinishEarly;
+    sessionEndOpen = prev.sessionEndOpen;
+    persist();
+  }
+
   function persist() {
     if (!profileId) return;
     saveProgress(profileId, { lastLevel: level, maxLevel });
@@ -70,11 +95,13 @@
     attempts   = [];
     outcomeOpen = null;
     sessionEndOpen = false;
+    history = [];
     phase = 'game';
   }
 
   function recordAttempt(success) {
     if (outcomeOpen || sessionEndOpen) return;
+    pushHistory();
     attempts = [...attempts, success];
     const result = evaluateAttempts(attempts);
     if (!result.decided) return;
@@ -94,6 +121,7 @@
 
   // ── Choix après un niveau réussi ────────────────────────
   function onNextLevel() {
+    pushHistory();
     level = Math.min(MAX_LEVEL, level + 1);
     maxLevel = Math.max(maxLevel, level);
     attempts = [];
@@ -102,12 +130,14 @@
   }
 
   function onFinishLevel() {
+    pushHistory();
     persist();
     outcomeOpen = null;
     sessionEndOpen = true;
   }
 
   function onReplayLevel() {
+    pushHistory();
     attempts = [];
     outcomeOpen = null;
     persist();
@@ -115,6 +145,7 @@
 
   // ── Acquittement "reste au niveau" ──────────────────────
   function onAcknowledgeStay() {
+    pushHistory();
     attempts = [];
     outcomeOpen = null;
     persist();
@@ -122,6 +153,7 @@
 
   // ── Choix après un niveau raté ───────────────────────────
   function onAcceptLevelDown() {
+    pushHistory();
     level = Math.max(MIN_LEVEL, level - 1);
     attempts = [];
     outcomeOpen = null;
@@ -129,6 +161,7 @@
   }
 
   function onStayAnyway() {
+    pushHistory();
     attempts = [];
     outcomeOpen = null;
     persist();
@@ -198,8 +231,8 @@
 <!-- ===== PHASE GAME ===== -->
 {#if phase === 'game'}
   <div class="game">
-    <GameLayout title="RDS" icon="{base}/assets/rds.png" gameId="rds" canUndo={false}
-                on:home={confirmGoHome} on:rules={() => (rulesOpen = true)}>
+    <GameLayout title="RDS" icon="{base}/assets/rds.png" gameId="rds" canUndo={history.length > 0}
+                on:home={confirmGoHome} on:undo={onUndo} on:rules={() => (rulesOpen = true)}>
 
       <div class="zone player-card">
         <div class="player-card-row">

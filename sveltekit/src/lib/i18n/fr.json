@@ -532,7 +532,6 @@
     "validate": "✅ Rack réussi",
     "miss": "❌ Rack raté",
     "rule": {
-      "breakRack": "Casse un rack de {count} billes.",
       "noCueBall": "Retire la bille blanche, puis empoche chaque bille directement, dans l'ordre de ton choix.",
       "bihEveryShot": "Bille en main à chaque coup.",
       "bihBreakOnly": "Bille en main après la casse uniquement.",

@@ -532,7 +532,6 @@
     "validate": "✅ Rack made",
     "miss": "❌ Rack missed",
     "rule": {
-      "breakRack": "Break a rack of {count} balls.",
       "noCueBall": "Remove the cue ball, then pocket each ball directly, in any order.",
       "bihEveryShot": "Take cue ball in hand for every shot.",
       "bihBreakOnly": "Take cue ball in hand after the break only.",

@@ -76,7 +76,6 @@ export function getLevel(n) {
  */
 export function buildRestrictionKeys(levelDef) {
   const keys = [];
-  keys.push({ key: 'rds.rule.breakRack', values: { count: levelDef.ballCount } });
 
   if (levelDef.noCueBall) {
     keys.push({ key: 'rds.rule.noCueBall' });
