@@ -8,10 +8,11 @@
                billes imposées par les règles (voir $lib/games/rds.js).
                Tous les autres emplacements affichent une bille grise neutre.
 
-  Les billes sont positionnées et dimensionnées en % du conteneur (et non en
-  px) : leur taille s'adapte donc à la fois à la largeur disponible et au
-  nombre de billes du rack (un rack de 6 billes affiche des billes bien plus
-  grosses qu'un rack de 15, à zone de jeu égale).
+  Chaque forme a une taille de bille "naturelle" (en px, plus grosse pour un
+  petit rack que pour un grand — 6 billes se voient donc bien plus gros que
+  15) et le conteneur est dimensionné en conséquence. Sur un écran plus
+  étroit que cette taille naturelle, le conteneur (et donc les billes)
+  rétrécit proportionnellement pour ne jamais déborder ni forcer de scroll.
 -->
 <script>
   import { base } from '$app/paths';
@@ -20,31 +21,32 @@
   export let shape;
   export let special = {};
 
-  // Coordonnées en % (x, y) de chaque emplacement (apex en premier, ligne de
-  // casse en haut) + diamètre en % du conteneur — calculés pour que les
-  // billes se touchent et remplissent au maximum le conteneur carré, quelle
-  // que soit la forme.
+  // widthPx/heightPx : dimensions naturelles du rack (billes qui se
+  // touchent, à la taille cible ballPx). positions : [x%, y%] de chaque
+  // emplacement (apex en premier). dPctX/dPctY : diamètre d'une bille en %
+  // de la largeur/hauteur du conteneur (le conteneur n'étant pas toujours
+  // carré, les deux diffèrent).
   const SHAPES = {
     triangle6: {
-      diameter: 32,
-      positions: [[50, 22.3], [34, 50], [66, 50], [18, 77.7], [50, 77.7], [82, 77.7]],
+      widthPx: 144, heightPx: 131, dPctX: 33.3, dPctY: 36.6,
+      positions: [[50, 18.3], [33.3, 50], [66.7, 50], [16.7, 81.7], [50, 81.7], [83.3, 81.7]],
     },
     // "Flèche" : rangée 1 - 2 - 3 - 1 (tête large au milieu, pointe en bas)
     arrow7: {
-      diameter: 26.7,
-      positions: [[50, 15.3], [36.7, 38.4], [63.3, 38.4], [23.3, 61.6], [50, 61.6], [76.7, 61.6], [50, 84.7]],
+      widthPx: 126, heightPx: 151, dPctX: 33.3, dPctY: 27.8,
+      positions: [[50, 13.9], [33.3, 38], [66.7, 38], [16.7, 62], [50, 62], [83.3, 62], [50, 86.1]],
     },
     diamond9: {
-      diameter: 21.5,
-      positions: [[50, 12.8], [39.2, 31.4], [60.8, 31.4], [28.5, 50], [50, 50], [71.5, 50], [39.2, 68.6], [60.8, 68.6], [50, 87.2]],
+      widthPx: 114, heightPx: 170, dPctX: 33.3, dPctY: 22.4,
+      positions: [[50, 11.2], [33.3, 30.6], [66.7, 30.6], [16.7, 50], [50, 50], [83.3, 50], [33.3, 69.4], [66.7, 69.4], [50, 88.8]],
     },
     triangle15: {
-      diameter: 19.2,
+      widthPx: 150, heightPx: 134, dPctX: 20, dPctY: 22.4,
       positions: [
-        [50, 16.7], [40.4, 33.4], [59.6, 33.4],
-        [30.8, 50], [50, 50], [69.2, 50],
-        [21.2, 66.6], [40.4, 66.6], [59.6, 66.6], [78.8, 66.6],
-        [11.6, 83.3], [30.8, 83.3], [50, 83.3], [69.2, 83.3], [88.4, 83.3],
+        [50, 11.2], [40, 30.6], [60, 30.6],
+        [30, 50], [50, 50], [70, 50],
+        [20, 69.4], [40, 69.4], [60, 69.4], [80, 69.4],
+        [10, 88.8], [30, 88.8], [50, 88.8], [70, 88.8], [90, 88.8],
       ],
     },
   };
@@ -57,16 +59,19 @@
     return `${base}/assets/grise.png`;
   }
 
-  $: shapeDef = SHAPES[shape] ?? { diameter: 20, positions: [] };
+  $: shapeDef = SHAPES[shape] ?? { widthPx: 150, heightPx: 150, dPctX: 20, dPctY: 20, positions: [] };
 </script>
 
-<div class="rack-layout">
+<div
+  class="rack-layout"
+  style="width:min(100%, {shapeDef.widthPx}px); aspect-ratio:{shapeDef.widthPx} / {shapeDef.heightPx};"
+>
   {#each shapeDef.positions as pos, i}
     <img
       class="rack-ball"
       src={assetFor(special[i])}
       alt=""
-      style="width:{shapeDef.diameter}%; height:{shapeDef.diameter}%; left:{pos[0]}%; top:{pos[1]}%;"
+      style="width:{shapeDef.dPctX}%; height:{shapeDef.dPctY}%; left:{pos[0]}%; top:{pos[1]}%;"
     />
   {/each}
 </div>
@@ -74,9 +79,6 @@
 <style>
   .rack-layout {
     position: relative;
-    width: 100%;
-    max-width: 380px;
-    aspect-ratio: 1 / 1;
     margin: 0 auto;
   }
 
