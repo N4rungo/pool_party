@@ -30,13 +30,15 @@
       "americain": "Pool",
       "anglais": "English pool",
       "francais": "French billiards",
-      "snooker": "Snooker"
+      "snooker": "Snooker",
+      "entrainement": "Training"
     },
     "tableTypes": {
       "americain": "Pool",
       "anglais": "English",
       "francais": "French",
-      "snooker": "Snooker"
+      "snooker": "Snooker",
+      "entrainement": "Training"
     },
     "taglines": {
       "killer": "There can be only one",

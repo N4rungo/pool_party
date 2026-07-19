@@ -6,7 +6,7 @@
  *  - name       : affiché sur la carte du launcher
  *  - tagline    : phrase d'accroche sous le nom
  *  - icon       : chemin vers l'image (depuis static/, donc /assets/...)
- *  - category   : 'americain' | 'francais' | 'snooker'  — used for section grouping
+ *  - category   : 'americain' | 'anglais' | 'francais' | 'snooker' | 'entrainement'  — used for section grouping
  *  - tableTypes : string[]  — types de table compatibles (filtre)
  *  - minPlayers : nombre minimum de joueurs
  *  - maxPlayers : nombre maximum de joueurs
@@ -16,17 +16,19 @@
  */
 
 export const CATEGORIES = [
-  { id: 'americain', label: 'Billard américain' },
-  { id: 'anglais',   label: 'Billard anglais'   },
-  { id: 'francais',  label: 'Billard français'  },
-  { id: 'snooker',   label: 'Snooker'           },
+  { id: 'americain',    label: 'Billard américain' },
+  { id: 'anglais',      label: 'Billard anglais'   },
+  { id: 'francais',     label: 'Billard français'  },
+  { id: 'snooker',      label: 'Snooker'           },
+  { id: 'entrainement', label: 'Entraînement'      },
 ];
 
 export const TABLE_TYPES = [
-  { id: 'americain', label: 'Américain' },
-  { id: 'anglais',   label: 'Anglais'   },
-  { id: 'francais',  label: 'Français'  },
-  { id: 'snooker',   label: 'Snooker'   },
+  { id: 'americain',    label: 'Américain' },
+  { id: 'anglais',      label: 'Anglais'   },
+  { id: 'francais',     label: 'Français'  },
+  { id: 'snooker',      label: 'Snooker'   },
+  { id: 'entrainement', label: 'Entraînement' },
 ];
 
 export const GAMES = [
@@ -155,8 +157,8 @@ export const GAMES = [
     name: 'RDS',
     tagline: 'Entraînement solo, 16 niveaux',
     icon: '/assets/rds.png',
-    category: 'americain',
-    tableTypes: ['americain'],
+    category: 'entrainement',
+    tableTypes: ['entrainement'],
     minPlayers: 1,
     maxPlayers: 1,
   },

@@ -30,13 +30,15 @@
       "americain": "Billard américain",
       "anglais": "Billard anglais",
       "francais": "Billard français",
-      "snooker": "Snooker"
+      "snooker": "Snooker",
+      "entrainement": "Entraînement"
     },
     "tableTypes": {
       "americain": "Américain",
       "anglais": "Anglais",
       "francais": "Français",
-      "snooker": "Snooker"
+      "snooker": "Snooker",
+      "entrainement": "Entraînement"
     },
     "taglines": {
       "killer": "Il ne peut en rester qu'un",
