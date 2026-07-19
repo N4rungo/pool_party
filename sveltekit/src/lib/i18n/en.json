@@ -531,7 +531,7 @@
     "validate": "✅ Rack made",
     "miss": "❌ Rack missed",
     "rule": {
-      "noCueBall": "Remove the cue ball, then pocket each ball directly, in any order.",
+      "noCueBall": "Remove the cue ball after the break, then pocket each ball directly.",
       "bihEveryShot": "Take cue ball in hand for every shot.",
       "bihBreakOnly": "Take cue ball in hand after the break only.",
       "bihExtra": "Take cue ball in hand after the break, plus {count} more time(s) during the run.",

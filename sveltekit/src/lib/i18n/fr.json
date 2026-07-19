@@ -531,10 +531,10 @@
     "validate": "✅ Rack réussi",
     "miss": "❌ Rack raté",
     "rule": {
-      "noCueBall": "Retire la bille blanche, puis empoche chaque bille directement, dans l'ordre de ton choix.",
+      "noCueBall": "Retire la bille blanche après la casse, puis empoche les billes directement.",
       "bihEveryShot": "Bille en main à chaque coup.",
       "bihBreakOnly": "Bille en main après la casse uniquement.",
-      "bihExtra": "Bille en main après la casse, plus {count} fois supplémentaire(s) pendant la remontée.",
+      "bihExtra": "Bille en main après la casse, puis {count} fois pendant la partie.",
       "anyOrder": "Empoche chaque bille dans l'ordre de ton choix.",
       "inOrder": "Empoche les billes en rotation, en jouant toujours la bille la plus basse en premier.",
       "eightBallGroups": "Empoche toutes les rayées ou toutes les pleines, puis la 8.",
