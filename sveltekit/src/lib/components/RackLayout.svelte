@@ -28,20 +28,20 @@
   // carré, les deux diffèrent).
   const SHAPES = {
     triangle6: {
-      widthPx: 144, heightPx: 131, dPctX: 33.3, dPctY: 36.6,
+      widthPx: 301, heightPx: 274, dPctX: 33.3, dPctY: 36.6,
       positions: [[50, 18.3], [33.3, 50], [66.7, 50], [16.7, 81.7], [50, 81.7], [83.3, 81.7]],
     },
     // "Flèche" : rangée 1 - 2 - 3 - 1 (tête large au milieu, pointe en bas)
     arrow7: {
-      widthPx: 126, heightPx: 151, dPctX: 33.3, dPctY: 27.8,
+      widthPx: 229, heightPx: 274, dPctX: 33.3, dPctY: 27.8,
       positions: [[50, 13.9], [33.3, 38], [66.7, 38], [16.7, 62], [50, 62], [83.3, 62], [50, 86.1]],
     },
     diamond9: {
-      widthPx: 114, heightPx: 170, dPctX: 33.3, dPctY: 22.4,
+      widthPx: 184, heightPx: 274, dPctX: 33.3, dPctY: 22.4,
       positions: [[50, 11.2], [33.3, 30.6], [66.7, 30.6], [16.7, 50], [50, 50], [83.3, 50], [33.3, 69.4], [66.7, 69.4], [50, 88.8]],
     },
     triangle15: {
-      widthPx: 150, heightPx: 134, dPctX: 20, dPctY: 22.4,
+      widthPx: 307, heightPx: 274, dPctX: 20, dPctY: 22.4,
       positions: [
         [50, 11.2], [40, 30.6], [60, 30.6],
         [30, 50], [50, 50], [70, 50],

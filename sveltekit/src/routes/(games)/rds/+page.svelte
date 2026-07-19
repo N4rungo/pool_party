@@ -222,11 +222,11 @@
                 on:home={confirmGoHome} on:undo={onUndo} on:rules={() => (rulesOpen = true)}>
 
       <div class="zone player-card">
-        <div class="player-card-row">
+        <div class="player-card-col">
           <span class="player-name">{playerName}</span>
           <span class="level-max">🏆 {$t('rds.bestLevel')}: {maxLevel}</span>
         </div>
-        <div class="player-card-row">
+        <div class="player-card-col player-card-col-right">
           <span class="level-current">
             <span class="level-label">{$t('rds.currentLevel')}</span>
             <span class="level-num">{level}</span>
@@ -370,19 +370,25 @@
     margin-bottom: 12px;
   }
 
-  /* ── Carte joueur (2 lignes, large plutôt que haute) ── */
+  /* ── Carte joueur : 2 colonnes (pseudo+meilleur à gauche, niveau+rang à droite) ── */
   .player-card {
     padding: 12px 16px;
     display: flex;
-    flex-direction: column;
-    gap: 6px;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
   }
 
-  .player-card-row {
+  .player-card-col {
     display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 10px;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  .player-card-col-right {
+    align-items: flex-end;
+    text-align: right;
   }
 
   .player-name {
@@ -396,11 +402,16 @@
     text-overflow: ellipsis;
   }
 
+  .level-max {
+    font-size: 12px;
+    color: rgba(var(--color-text-rgb), 0.4);
+    white-space: nowrap;
+  }
+
   .level-current {
     display: flex;
     align-items: baseline;
     gap: 8px;
-    flex-shrink: 0;
   }
 
   .level-label {
@@ -423,17 +434,10 @@
     font-size: 13px;
     color: rgba(var(--color-text-rgb), 0.6);
     font-style: italic;
-    text-align: right;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
-
-  .level-max {
-    font-size: 12px;
-    color: rgba(var(--color-text-rgb), 0.4);
-    white-space: nowrap;
-    flex-shrink: 0;
+    max-width: 100%;
   }
 
   /* ── Restrictions ── */
@@ -453,7 +457,7 @@
 
   /* ── Rack ── */
   .rack-wrap {
-    padding: 18px 10px;
+    padding: 7px 4px;
   }
 
   /* ── Tentatives ── */
