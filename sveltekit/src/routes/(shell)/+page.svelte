@@ -39,10 +39,10 @@
 
   function decFilter() {
     if (playerFilter === 0) return;
-    playerFilter = playerFilter <= 2 ? 0 : playerFilter - 1;
+    playerFilter = playerFilter <= 1 ? 0 : playerFilter - 1;
   }
   function incFilter() {
-    playerFilter = playerFilter === 0 ? 2 : Math.min(15, playerFilter + 1);
+    playerFilter = playerFilter === 0 ? 1 : Math.min(15, playerFilter + 1);
   }
 
   // ── Jeux filtrés & sections ───────────────────────────

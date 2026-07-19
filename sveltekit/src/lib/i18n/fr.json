@@ -30,13 +30,15 @@
       "americain": "Billard américain",
       "anglais": "Billard anglais",
       "francais": "Billard français",
-      "snooker": "Snooker"
+      "snooker": "Snooker",
+      "entrainement": "Entraînement"
     },
     "tableTypes": {
       "americain": "Américain",
       "anglais": "Anglais",
       "francais": "Français",
-      "snooker": "Snooker"
+      "snooker": "Snooker",
+      "entrainement": "Entraînement"
     },
     "taglines": {
       "killer": "Il ne peut en rester qu'un",
@@ -50,7 +52,8 @@
       "carom": "Touchez les deux billes !",
       "casin": "Le français revisité",
       "fiveball": "On vise 0 pile !",
-      "snooker": "Objectif : 147 points"
+      "snooker": "Objectif : 147 points",
+      "rds": "Entraînement solo, 16 niveaux"
     },
     "card": {
       "rules": "Règles",
@@ -520,5 +523,57 @@
   "langPicker": {
     "title": "Choisissez votre langue",
     "subtitle": "You can change this later in Settings"
+  },
+  "rds": {
+    "subtitle": "Runout Drill System",
+    "guestWarning": "⚠️ En tant qu'invité, ta progression ne sera pas sauvegardée.",
+    "levelSelect": "Niveau de départ",
+    "currentLevel": "Niveau",
+    "bestLevel": "Meilleur",
+    "validate": "✅ Rack réussi",
+    "miss": "❌ Rack raté",
+    "rule": {
+      "noCueBall": "Retire la bille blanche après la casse, puis empoche les billes directement.",
+      "bihEveryShot": "Bille en main à chaque coup.",
+      "bihBreakOnly": "Bille en main après la casse uniquement.",
+      "bihExtra": "Bille en main après la casse, puis {count} fois pendant la partie.",
+      "anyOrder": "Empoche chaque bille dans l'ordre de ton choix.",
+      "inOrder": "Empoche les billes en rotation, en jouant toujours la bille la plus basse en premier.",
+      "eightBallGroups": "Empoche toutes les rayées ou toutes les pleines, puis la 8.",
+      "nineBallRules": "Règles du 9-ball : joue toujours la bille la plus basse en premier — la victoire s'obtient en empochant la 9.",
+      "remainingInOrder": "Puis empoche les billes restantes en rotation, la plus basse en premier."
+    },
+    "outcome": {
+      "levelUpTitle": "2 racks sur 3 !",
+      "levelUpBody": "Tu peux monter au niveau {level}.",
+      "next": "⬆️ Niveau suivant",
+      "continueLevel": "▶️ Continuer",
+      "replay": "🔄 Rejouer ce niveau",
+      "stayTitle": "1 rack sur 3",
+      "stayBody": "Tu restes à ce niveau. Retente ta chance !",
+      "acknowledge": "OK, on continue",
+      "downTitle": "0 rack sur 3",
+      "downBody": "Tu descends au niveau {level}.",
+      "acceptDown": "OK, je descends d'un niveau",
+      "stayAnyway": "Rester à ce niveau"
+    },
+    "ratings": {
+      "1": "novice débutant",
+      "2": "novice intermédiaire",
+      "3": "novice confirmé",
+      "4": "débutant bas (D-)",
+      "5": "débutant moyen (D)",
+      "6": "débutant confirmé (D+)",
+      "7": "intermédiaire bas (C-)",
+      "8": "intermédiaire moyen (C)",
+      "9": "intermédiaire confirmé (C+)",
+      "10": "avancé bas (B-)",
+      "11": "avancé moyen (B)",
+      "12": "avancé confirmé (B+)",
+      "13": "shortstop bas (A-)",
+      "14": "shortstop confirmé (A)",
+      "15": "semi-pro / pro (A+/AA)",
+      "16": "pro classe mondiale (A++/AAA)"
+    }
   }
 }
