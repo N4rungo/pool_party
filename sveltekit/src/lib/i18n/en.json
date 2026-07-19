@@ -528,7 +528,6 @@
     "levelSelect": "Starting level",
     "currentLevel": "Level",
     "bestLevel": "Best",
-    "attempts": "Attempts",
     "validate": "✅ Rack made",
     "miss": "❌ Rack missed",
     "rule": {

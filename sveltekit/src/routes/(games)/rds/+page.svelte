@@ -242,19 +242,23 @@
       </div>
 
       <div class="zone rack-wrap">
-        <RackLayout shape={levelDef.shape} special={levelDef.special} />
-      </div>
-
-      <div class="zone attempts-card">
-        <div class="attempts-label">{$t('rds.attempts')}</div>
-        <div class="attempts-row">
+        <div class="attempts-indicator">
           {#each [0, 1, 2] as i}
-            <span class="attempt-dot" class:success={attempts[i] === true} class:fail={attempts[i] === false}>
-              {#if attempts[i] === true}✅{:else if attempts[i] === false}❌{:else}⚪{/if}
+            <span class="attempt-box" class:success={attempts[i] === true} class:fail={attempts[i] === false}>
+              {#if attempts[i] === true}
+                <svg class="attempt-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="3 8.5 6.5 12 13 4" />
+                </svg>
+              {:else if attempts[i] === false}
+                <svg class="attempt-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                  <line x1="4" y1="4" x2="12" y2="12" />
+                  <line x1="12" y1="4" x2="4" y2="12" />
+                </svg>
+              {/if}
             </span>
           {/each}
-          <span class="attempts-count">{attempts.length}/3</span>
         </div>
+        <RackLayout shape={levelDef.shape} special={levelDef.special} />
       </div>
 
       <svelte:fragment slot="footer">
@@ -457,39 +461,47 @@
 
   /* ── Rack ── */
   .rack-wrap {
+    position: relative;
     padding: 7px 4px;
   }
 
-  /* ── Tentatives ── */
-  .attempts-card {
-    padding: 12px 16px 14px;
-    text-align: center;
+  /* ── Tentatives : 3 cases en coin haut-droit du rack ── */
+  .attempts-indicator {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    gap: 5px;
+    z-index: 1;
   }
 
-  .attempts-label {
-    font-size: 11px;
-    color: rgba(var(--color-text-rgb), 0.4);
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    margin-bottom: 8px;
-  }
-
-  .attempts-row {
+  .attempt-box {
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    border: 1.5px solid rgba(var(--color-text-rgb), 0.25);
+    background: rgba(0, 0, 0, 0.2);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    flex-shrink: 0;
   }
 
-  .attempt-dot {
-    font-size: 18px;
-    line-height: 1;
+  .attempt-box.success {
+    border-color: rgba(76, 175, 80, 0.7);
+    background: rgba(76, 175, 80, 0.18);
+    color: #66bb6a;
   }
 
-  .attempts-count {
-    font-size: 13px;
-    color: rgba(var(--color-text-rgb), 0.5);
-    margin-left: 6px;
+  .attempt-box.fail {
+    border-color: rgba(229, 57, 53, 0.7);
+    background: rgba(229, 57, 53, 0.18);
+    color: #ef5350;
+  }
+
+  .attempt-icon {
+    width: 13px;
+    height: 13px;
   }
 
   /* ── Boutons victoire (réutilise le style commun) ── */

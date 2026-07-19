@@ -528,7 +528,6 @@
     "levelSelect": "Niveau de départ",
     "currentLevel": "Niveau",
     "bestLevel": "Meilleur",
-    "attempts": "Tentatives",
     "validate": "✅ Rack réussi",
     "miss": "❌ Rack raté",
     "rule": {
