@@ -9,6 +9,7 @@
     globalStats, gameStats, playedGameIds,
   } from '$lib/utils/stats.js';
   import { GAMES } from '$lib/games.js';
+  import { getProgress as getRdsProgress } from '$lib/stores/rds.js';
   import { t } from 'svelte-i18n';
 
   const MAX_NAME = 16;
@@ -24,6 +25,10 @@
   $: gStats    = globalStats($historyStore, profileId);
   $: gameIds   = playedGameIds($historyStore, profileId);
   $: games     = GAMES.filter(g => gameIds.includes(g.id));
+
+  // RDS best level : simple info supplémentaire, ne compte ni comme partie
+  // jouée ni comme victoire (RDS n'est pas suivi via l'historique de match).
+  $: rdsProgress = getRdsProgress(profileId);
 
   // Default tab: first game played, or 'historique'
   let tab = 'historique';
@@ -128,6 +133,13 @@
       <div class="summary-value">{gStats.winRate} %</div>
       <div class="summary-label">{$t('stats.detail.winRateBar')}</div>
     </div>
+    {#if rdsProgress}
+      <div class="summary-sep"></div>
+      <div class="summary-item">
+        <div class="summary-value">🏆 {rdsProgress.maxLevel}</div>
+        <div class="summary-label">{$t('stats.detail.rdsBest')}</div>
+      </div>
+    {/if}
   </div>
 
   <!-- Tabs: one per game + Historique -->

@@ -171,7 +171,8 @@
       "noGames": "Aucune partie enregistrée",
       "historyTab": "Historique",
       "max": "max",
-      "avg": "moy."
+      "avg": "moy.",
+      "rdsBest": "Meilleur niveau RDS"
     },
     "gameScore": {
       "chicago": "Points",
@@ -532,6 +533,14 @@
     "bestLevel": "Meilleur",
     "validate": "✅ Rack réussi",
     "miss": "❌ Rack raté",
+    "intro": {
+      "title": "Bon à savoir",
+      "tip1": "Sauf indication contraire, les billes sont rangées de manière aléatoire.",
+      "tip2": "Sauf au niveau 1, tu joues toujours avec la bille blanche.",
+      "tip3": "Réussis 2 racks sur 3 à un niveau pour monter au suivant.",
+      "dontShowAgain": "Ne plus afficher ce message",
+      "ok": "Compris"
+    },
     "rule": {
       "noCueBall": "Retire la bille blanche après la casse, puis empoche les billes directement.",
       "bihEveryShot": "Bille en main à chaque coup.",

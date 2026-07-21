@@ -2,7 +2,7 @@
  * RDS progress store — persistance de la progression d'entraînement RDS.
  *
  * Clé localStorage : 'pool_party_rds_progress'
- * Structure : { [profileId]: { lastLevel: number, maxLevel: number } }
+ * Structure : { [profileId]: { lastLevel: number, maxLevel: number, hideIntro?: boolean } }
  *
  * Les joueurs invités (profileId = null) ne sont jamais persistés : leur
  * progression vit uniquement en mémoire le temps de la session.
@@ -48,12 +48,33 @@ export function getProgress(profileId) {
 
 /**
  * Sauvegarde la progression d'un profil (pas d'effet pour un invité).
+ * Fusionne avec l'entrée existante (ne touche pas à hideIntro).
  * @param {string|null} profileId
  * @param {{ lastLevel: number, maxLevel: number }} progress
  */
 export function saveProgress(profileId, progress) {
   if (!profileId) return;
-  _store.update(all => ({ ...all, [profileId]: progress }));
+  _store.update(all => ({ ...all, [profileId]: { ...all[profileId], ...progress } }));
+}
+
+/**
+ * Indique si le message d'introduction (règles générales) doit être masqué
+ * pour ce profil. Toujours false pour un invité (rien n'est persisté).
+ * @param {string|null} profileId
+ */
+export function getHideIntro(profileId) {
+  if (!profileId) return false;
+  return !!get(_store)[profileId]?.hideIntro;
+}
+
+/**
+ * Mémorise que le message d'introduction ne doit plus être affiché pour ce
+ * profil (pas d'effet pour un invité).
+ * @param {string|null} profileId
+ */
+export function setHideIntro(profileId, value) {
+  if (!profileId) return;
+  _store.update(all => ({ ...all, [profileId]: { ...all[profileId], hideIntro: value } }));
 }
 
 /**
