@@ -426,9 +426,12 @@
     "faultBtn": "⚠️ Foul",
     "faultWho": "⚠️ Who fouled?",
     "faultOf": "{name} fouled",
+    "faultPickHint": "Choose which ball to return to the table for each opponent:",
+    "faultConfirm": "Confirm",
     "faultReturns": "Balls returned to the table (in order):",
     "faultPutsBack": "returns the",
     "faultNone": "No balls to return.",
+    "faultDisabledHint": "Foul disabled: every player still in has only one ball left.",
     "toast": {
       "ball": "🎱 Ball {n} potted"
     }

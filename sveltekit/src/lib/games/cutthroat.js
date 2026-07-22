@@ -7,12 +7,17 @@
  *  - À son tour, on doit empocher une bille (de préférence adverse)
  *  - Empocher = bille passe en 'out'
  *  - Faute : remet en jeu une bille de chaque adversaire (à partir du
- *    joueur suivant le fautif, dans l'ordre)
+ *    joueur suivant le fautif, dans l'ordre), au choix de l'utilisateur
+ *    parmi les billes déjà empochées de cet adversaire
  *  - Élimination : un joueur sans bille en jeu est éliminé
  *  - Victoire : dernier joueur non éliminé
  *
  *  L'élimination n'est PAS définitive — une faute adverse peut remettre
  *  une bille en jeu et "ressusciter" un joueur.
+ *
+ *  À CT_FAULT_DISABLE_MAX_PLAYERS joueurs ou moins, la faute est
+ *  désactivée dès que tous les joueurs encore en lice n'ont plus
+ *  qu'une seule bille en jeu (fin de partie courte, cf. isFaultDisabled).
  */
 
 export const CT_TOTAL_BALLS = 15;
@@ -22,6 +27,11 @@ export const CT_MAX_PLAYERS     = 15;
 export const CT_DEFAULT_PLAYERS = 3;
 
 export const CT_HISTORY_MAX     = 10;
+
+// Au-delà de ce nombre de joueurs, la désactivation de fin de partie
+// (cf. isFaultDisabled) ne s'applique pas : avec beaucoup de joueurs,
+// une seule bille chacun est la configuration normale, pas une fin de partie.
+export const CT_FAULT_DISABLE_MAX_PLAYERS = 5;
 
 /**
  * Calcule la répartition des billes selon le nombre de joueurs.
@@ -171,29 +181,69 @@ export function pocketBall(state, ballNum) {
 }
 
 /**
- * Applique une faute du joueur d'index `faulterIdx`.
- * Pour chaque adversaire (en partant du joueur SUIVANT le fautif), si
- * ce joueur a au moins une bille empochée, on remet en jeu la première.
- *
- * Renvoie { newState, returns: [{ playerIdx, ball }, ...] }.
+ * Nombre de billes encore en jeu ('in') pour un joueur donné.
  */
-export function applyFault(state, faulterIdx) {
-  const newHistory = pushHistory(state.history, snapshot(state));
-  const newBalls   = { ...state.balls };
+export function remainingCount(state, playerIdx) {
+  return state.distribution.groups[playerIdx]
+    .filter(b => state.balls[b] === 'in').length;
+}
 
+/**
+ * Le système de faute est désactivé en fin de partie à peu de joueurs :
+ * à CT_FAULT_DISABLE_MAX_PLAYERS joueurs ou moins, dès que tous les
+ * joueurs encore en lice n'ont plus qu'une seule bille en jeu, on ne
+ * remet plus rien sur la table (ça allongerait inutilement la partie).
+ */
+export function isFaultDisabled(state) {
+  if (state.players.length > CT_FAULT_DISABLE_MAX_PLAYERS) return false;
+
+  const active = state.players
+    .map((p, i) => ({ p, i }))
+    .filter(({ p }) => !p.eliminated);
+
+  if (active.length === 0) return false;
+  return active.every(({ i }) => remainingCount(state, i) === 1);
+}
+
+/**
+ * Calcule, pour chaque adversaire du joueur `faulterIdx` (en partant du
+ * joueur SUIVANT le fautif, dans l'ordre), la liste de ses billes
+ * actuellement empochées. Seuls les adversaires ayant au moins une
+ * bille empochée apparaissent — c'est parmi cette liste que
+ * l'utilisateur choisit la bille à remettre en jeu pour chacun.
+ *
+ * Renvoie [{ playerIdx, pocketed: [ball, ...] }, ...].
+ */
+export function faultCandidates(state, faulterIdx) {
   const n = state.players.length;
-  const returns = [];
+  const candidates = [];
 
   for (let offset = 1; offset < n; offset++) {
     const idx = (faulterIdx + offset) % n;
     const pocketed = state.distribution.groups[idx]
-      .filter(b => newBalls[b] === 'out');
+      .filter(b => state.balls[b] === 'out');
     if (pocketed.length > 0) {
-      const ball = pocketed[0];
-      newBalls[ball] = 'in';
-      returns.push({ playerIdx: idx, ball });
+      candidates.push({ playerIdx: idx, pocketed });
     }
   }
+
+  return candidates;
+}
+
+/**
+ * Applique une faute : remet en jeu les billes choisies par
+ * l'utilisateur (une par adversaire concerné, cf. faultCandidates).
+ *
+ * `selections` : [{ playerIdx, ball }, ...]
+ *
+ * Renvoie { newState, returns: [{ playerIdx, ball }, ...] }.
+ */
+export function applyFault(state, selections) {
+  const newHistory = pushHistory(state.history, snapshot(state));
+  const newBalls   = { ...state.balls };
+
+  const returns = selections.map(({ playerIdx, ball }) => ({ playerIdx, ball }));
+  returns.forEach(({ ball }) => { newBalls[ball] = 'in'; });
 
   let newState = {
     ...state,
