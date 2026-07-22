@@ -9,14 +9,14 @@ billard américain (14.1). Pas de mise en place particulière — on casse et on
 essaie de rentrer toutes les billes requises selon les règles du niveau.
 
 ## 🔢 Déroulement d'un rack
-- Casse un rack de la taille requise par ton niveau actuel (de 6 à 15 billes).
+- Casse un rack de la taille requise par le niveau en cours (de 6 à 15 billes).
 - Aucune pénalité en cas de touché sur la casse, et les billes rentrées à la
   casse restent rentrées.
-- Après la casse, tu as droit à la **bille en main (BIH)** — tu peux placer la
-  bille blanche n'importe où sur la table — selon les règles de ton niveau (à
+- Après la casse, la **bille en main (BIH)** est autorisée — la bille blanche
+  peut être placée n'importe où sur la table — selon les règles du niveau (à
   chaque coup, un nombre limité de fois supplémentaires, ou juste après la
   casse).
-- Essaie de rentrer toutes les billes requises sans faute ni bille ratée, en
+- Il faut rentrer toutes les billes requises sans faute ni bille ratée, en
   suivant la règle du niveau (ordre libre, rotation, ou groupes 8-ball).
 
 ## 📈 16 niveaux de difficulté
@@ -43,19 +43,20 @@ essaie de rentrer toutes les billes requises selon les règles du niveau.
 ## 🔄 Progression
 RDS est **progressif et adaptatif** :
 - Réussir **2 racks sur 3** à un niveau (toutes les billes requises, sans
-  faute ni bille ratée) → tu montes au niveau suivant.
-- Réussir seulement **1 rack sur 3** → tu restes au niveau actuel.
-- Réussir **0 rack sur 3** → tu descends au niveau inférieur.
+  faute ni bille ratée) → passage au niveau suivant.
+- Réussir seulement **1 rack sur 3** → maintien au niveau actuel.
+- Réussir **0 rack sur 3** → passage au niveau inférieur.
 
-Choisis un niveau où tu es confiant de réussir 2 racks sur 3 pour commencer,
-ou reprends là où tu t'étais arrêté lors de ta dernière session. Ton niveau de
-fin et ton rating associé sont un bon indicateur de ton niveau de jeu — note-le
-au fil du temps pour suivre ta progression.
+Pour commencer, mieux vaut choisir un niveau où réussir 2 racks sur 3 semble
+atteignable, ou reprendre là où la session précédente s'était arrêtée. Le
+niveau de fin de session et le rating associé sont un bon indicateur du niveau
+de jeu — à noter au fil du temps pour suivre sa progression.
 
 ## 🏆 Victoire
 Il n'y a pas de "victoire" unique — RDS est une boucle d'entraînement. Chaque
-session se termine quand tu décides de t'arrêter, et le niveau atteint (ainsi
-que ton meilleur niveau) sont ce sur quoi tu construis, séance après séance.
+session se termine sur décision du joueur, et le niveau atteint (ainsi que le
+meilleur niveau) sont ce sur quoi se construit la progression, séance après
+séance.
 
 ---
 
