@@ -35,8 +35,8 @@ essaie de rentrer toutes les billes requises selon les règles du niveau.
 | 10 | 6 | Dans l'ordre (rotation) | avancé bas (B-) |
 | 11 | 15 | Ordre libre | avancé moyen (B) |
 | 12 | 15 | Règles du 8-ball | avancé confirmé (B+) |
-| 13 | 9 (4 pleines, 4 rayées, 8) | Règles du 8-ball, puis billes restantes dans l'ordre | shortstop bas (A-) |
-| 14 | 9 | Règles du 9-ball | shortstop confirmé (A) |
+| 13 | 9 (4 pleines, 4 rayées, 8) | Règles du 8-ball, puis billes restantes dans l'ordre | expert bas (A-) |
+| 14 | 9 | Règles du 9-ball | expert confirmé (A) |
 | 15 | 15 | Règles du 8-ball, puis billes restantes dans l'ordre | semi-pro / pro (A+/AA) |
 | 16 | 15 | Dans l'ordre (rotation) | pro classe mondiale (A++/AAA) |
 
