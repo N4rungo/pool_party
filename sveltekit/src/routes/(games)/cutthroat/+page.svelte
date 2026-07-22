@@ -40,7 +40,9 @@
     cornerBalls,
     createInitialState,
     pocketBall,
+    faultCandidates,
     applyFault,
+    isFaultDisabled,
     undo
   } from '$lib/games/cutthroat.js';
 
@@ -143,16 +145,66 @@
 
   // ── Faute ─────────────────────────────────────────────
   let faultSelectOpen = false;
+  let faultPickOpen    = false;
   let faultResultOpen = false;
+  let faultPick        = null;
   let faultResult     = null;
 
+  $: faultDisabled = state ? isFaultDisabled(state) : false;
+
   function openFaultMenu() {
+    if (faultDisabled) return;
     faultSelectOpen = true;
   }
 
   function selectFaulter(faulterIdx) {
     faultSelectOpen = false;
-    const { newState, returns } = applyFault(state, faulterIdx);
+    const candidates = faultCandidates(state, faulterIdx);
+
+    // Si aucun adversaire n'a le choix (0 ou 1 bille empochée chacun),
+    // rien à faire choisir : on applique directement.
+    if (candidates.every(c => c.pocketed.length <= 1)) {
+      finalizeFault(faulterIdx, candidates.map(c => ({ playerIdx: c.playerIdx, ball: c.pocketed[0] })));
+      return;
+    }
+
+    faultPick = {
+      faulterIdx,
+      faulterName: state.players[faulterIdx].name,
+      candidates,
+      selections: Object.fromEntries(
+        candidates.filter(c => c.pocketed.length === 1).map(c => [c.playerIdx, c.pocketed[0]])
+      ),
+    };
+    faultPickOpen = true;
+  }
+
+  function pickFaultBall(playerIdx, ball) {
+    faultPick = {
+      ...faultPick,
+      selections: { ...faultPick.selections, [playerIdx]: ball },
+    };
+  }
+
+  $: faultPickComplete = faultPick
+    ? faultPick.candidates.every(c => faultPick.selections[c.playerIdx] != null)
+    : false;
+
+  function confirmFaultPick() {
+    const selections = faultPick.candidates.map(c => ({ playerIdx: c.playerIdx, ball: faultPick.selections[c.playerIdx] }));
+    const faulterIdx = faultPick.faulterIdx;
+    faultPickOpen = false;
+    faultPick = null;
+    finalizeFault(faulterIdx, selections);
+  }
+
+  function closeFaultPick() {
+    faultPickOpen = false;
+    faultPick = null;
+  }
+
+  function finalizeFault(faulterIdx, selections) {
+    const { newState, returns } = applyFault(state, selections);
     state = newState;
     faultResult = {
       faulterIdx,
@@ -394,8 +446,17 @@
 
       <svelte:fragment slot="footer">
         <div class="game-bottombar">
-          <button class="btn-fault" on:click={openFaultMenu}>{$t('cutthroat.faultBtn')}</button>
+          <button
+            class="btn-fault"
+            disabled={faultDisabled}
+            title={faultDisabled ? $t('cutthroat.faultDisabledHint') : ''}
+            on:click={openFaultMenu}>
+            {$t('cutthroat.faultBtn')}
+          </button>
         </div>
+        {#if faultDisabled}
+          <div class="fault-disabled-hint">{$t('cutthroat.faultDisabledHint')}</div>
+        {/if}
       </svelte:fragment>
     </GameLayout>
   </div>
@@ -415,6 +476,37 @@
         {/if}
       {/each}
     </div>
+  {/if}
+</Overlay>
+
+<!-- Choix des billes à remettre en jeu -->
+<Overlay open={faultPickOpen} on:close={closeFaultPick}>
+  {#if faultPick}
+    <h2 style="text-align:center;margin-bottom:6px;">{$t('cutthroat.faultOf', { values: { name: faultPick.faulterName } })}</h2>
+    <div style="font-size:13px;color:rgba(255,255,255,0.55);text-align:center;margin-bottom:14px;">
+      {$t('cutthroat.faultPickHint')}
+    </div>
+    <div class="recap-list">
+      {#each faultPick.candidates as c (c.playerIdx)}
+        <div class="recap-row ct-fault-pick-row">
+          <span class="recap-name">
+            <span class="recap-emoji">{EMOJIS[c.playerIdx % EMOJIS.length]}</span>
+            {state.players[c.playerIdx].name}
+          </span>
+          <div class="ct-balls-row">
+            {#each c.pocketed as b (b)}
+              <BallButton
+                src={`${base}/assets/bille_${b}.png`}
+                alt={`Bille ${b}`}
+                size={36}
+                selected={faultPick.selections[c.playerIdx] === b}
+                on:click={() => pickFaultBall(c.playerIdx, b)} />
+            {/each}
+          </div>
+        </div>
+      {/each}
+    </div>
+    <button class="btn-main btn-gold" disabled={!faultPickComplete} on:click={confirmFaultPick}>{$t('cutthroat.faultConfirm')}</button>
   {/if}
 </Overlay>
 
@@ -791,6 +883,19 @@
     transform: translateY(2px);
     box-shadow: none;
   }
+  .btn-fault:disabled {
+    background: rgba(var(--color-text-rgb), 0.15);
+    color: rgba(var(--color-text-rgb), 0.4);
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+
+  .fault-disabled-hint {
+    margin-top: 8px;
+    text-align: center;
+    font-size: 12px;
+    color: rgba(var(--color-text-rgb), 0.45);
+  }
 
   /* ===== Overlay sélection fautif ===== */
   .ct-fault-list {
@@ -816,5 +921,19 @@
   .ct-fault-btn:hover {
     background: rgba(var(--color-text-rgb), 0.15);
     border-color: rgba(var(--color-gold-rgb), 0.5);
+  }
+
+  /* ===== Overlay choix des billes à remettre en jeu ===== */
+  .ct-fault-pick-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .ct-fault-pick-row .ct-balls-row {
+    width: 100%;
+  }
+  .btn-main:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 </style>

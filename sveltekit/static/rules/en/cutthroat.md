@@ -21,14 +21,15 @@ The last player who still has at least one ball on the table wins.
 On your turn, you must **pocket a ball** (preferably one of your opponents' balls).
 - ✅ You pocket a ball → you shoot again.
 - ❌ You miss → turn passes.
-- ⚠️ You commit a foul (cue ball potted, ball off the table, etc.) → declare the foul in the app, which **returns one ball per opponent** to the table in order, starting with the next player, from the foot spot outward.
+- ⚠️ You commit a foul (cue ball potted, ball off the table, etc.) → declare the foul in the app. Each opponent (starting with the next player, in order) **returns one of their already-pocketed balls, of your choosing**: the app lets you tap whichever of their pocketed balls you want to bring back.
 
 > ⚡ **Important**: pocketing one of your own balls is not a foul, but it's still a ball less in your group. Stay sharp.  
-> 💀 **Elimination**: there's no definitive elimination. Just wait patiently for another player's foul to get back in the game!
+> 💀 **Elimination**: there's no definitive elimination. Just wait patiently for another player's foul to get back in the game!  
+> 🚫 **Short-game ending**: with 5 players or fewer, once every player still in the game has only one ball left, fouls are disabled (no ball is returned to the table anymore), to keep the game from dragging on.
 
 ## 🏆 Winning
 The **last player** whose group still has at least one ball on the table wins. 🥳
 
 ## 💡 Example — the foul
 Tom, Léa and Anna are playing. Tom pockets the cue ball: that's a foul.
-The app shows which balls to return to the table: **one of Léa's balls** and **one of Anna's balls** (the other players, in order).
+The app shows **Léa's** and **Anna's** already-pocketed balls (the other players, in order): you pick which one to return to the table for each of them.

@@ -427,9 +427,12 @@
     "faultBtn": "⚠️ Faute",
     "faultWho": "⚠️ Qui a fait la faute ?",
     "faultOf": "Faute de {name}",
+    "faultPickHint": "Choisissez la bille à remettre en jeu pour chaque adversaire :",
+    "faultConfirm": "Valider",
     "faultReturns": "Remise en jeu des billes (dans l'ordre) :",
     "faultPutsBack": "remet la",
     "faultNone": "Aucune bille à remettre en jeu.",
+    "faultDisabledHint": "Faute désactivée : chaque joueur encore en jeu n'a plus qu'une bille.",
     "toast": {
       "ball": "🎱 Bille {n} empochée"
     }
