@@ -115,18 +115,9 @@
       <span class="player-name">{profile.name}</span>
       <button class="icon-btn" on:click={startRename} title={$t('players.rename')}>✏️</button>
       {#if rdsProgress}
-        <div class="header-rds-badge" title={$t('stats.detail.rdsLevel')}>
-          <svg class="header-rds-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <rect x="4" y="3" width="12" height="15" rx="1.5" />
-            <rect x="7" y="1.3" width="6" height="3" rx="1" />
-            <line x1="6.5" y1="8" x2="13.5" y2="8" />
-            <line x1="6.5" y1="11" x2="13.5" y2="11" />
-            <line x1="6.5" y1="14" x2="11" y2="14" />
-          </svg>
-          <span class="header-rds-text">
-            <span class="header-rds-value">{rdsProgress.maxLevel}</span>
-            <span class="header-rds-label">{$t('stats.detail.rdsLevel')}</span>
-          </span>
+        <div class="header-rds-badge">
+          <span class="header-rds-label">{$t('stats.detail.rdsLevel')}</span>
+          <span class="header-rds-value">{rdsProgress.maxLevel}</span>
         </div>
       {/if}
     {/if}
@@ -283,39 +274,29 @@
   /* ── Badge niveau RDS (aligné à droite du header) ── */
   .header-rds-badge {
     margin-left: auto;
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     gap: 6px;
-    flex-shrink: 0;
-    padding-left: 8px;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(var(--color-text-rgb), 0.08);
+    border-radius: 10px;
+    padding: 6px 10px;
   }
 
-  .header-rds-icon {
-    width: 18px;
-    height: 18px;
-    color: var(--color-gold);
-    flex-shrink: 0;
-  }
-
-  .header-rds-text {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    line-height: 1.15;
+  .header-rds-label {
+    font-size: 10px;
+    color: rgba(var(--color-text-rgb), 0.45);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
   }
 
   .header-rds-value {
     font-size: 16px;
     font-weight: bold;
     color: var(--color-gold);
-  }
-
-  .header-rds-label {
-    font-size: 9px;
-    color: rgba(var(--color-text-rgb), 0.45);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    white-space: nowrap;
+    line-height: 1;
   }
 
   .name-input {
