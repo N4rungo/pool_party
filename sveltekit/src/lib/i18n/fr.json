@@ -536,8 +536,8 @@
     "intro": {
       "title": "Bon à savoir",
       "tip1": "Sauf indication contraire, les billes sont rangées de manière aléatoire.",
-      "tip2": "Sauf au niveau 1, tu joues toujours avec la bille blanche.",
-      "tip3": "Réussis 2 racks sur 3 à un niveau pour monter au suivant.",
+      "tip2": "A l'exception du niveau 1, il faut toujours jouer avec la bille blanche.",
+      "tip3": "Il faut réussir 2 racks sur 3 pour passer au niveau suivant.",
       "dontShowAgain": "Ne plus afficher ce message",
       "ok": "Compris"
     },
