@@ -20,24 +20,24 @@ out under that level's rules.
 
 ## 📈 16 levels of difficulty
 
-| # | Balls | Rules | Rating |
-|---|---|---|---|
-| 1 | 6 | Pocket directly, no cue ball | lower novice |
-| 2 | 6 | Any order, BIH on every shot | mid novice |
-| 3 | 6 | Any order, 3 extra BIHs | upper novice |
-| 4 | 6 | Any order, 2 extra BIHs | lower beginner (D-) |
-| 5 | 6 | Any order, 1 extra BIH | mid beginner (D) |
-| 6 | 7 (3 solids, 3 stripes, 8) | 8-ball rules, 1 extra BIH | upper beginner (D+) |
-| 7 | 9 | Any order, 1 extra BIH | lower intermediate (C-) |
-| 8 | 9 (4 solids, 4 stripes, 8) | 8-ball rules, 1 extra BIH | mid intermediate (C) |
-| 9 | 15 | Any order, 2 extra BIHs | upper intermediate (C+) |
-| 10 | 6 | In order (rotation) | lower advanced (B-) |
-| 11 | 15 | Any order | mid advanced (B) |
-| 12 | 15 | 8-ball rules | upper advanced (B+) |
-| 13 | 9 (4 solids, 4 stripes, 8) | 8-ball rules, remaining balls in order | lower shortstop (A-) |
-| 14 | 9 | 9-ball rules | upper shortstop (A) |
-| 15 | 15 | 8-ball rules, remaining balls in order | semipro / pro (A+/AA) |
-| 16 | 15 | In order (rotation) | world class pro (A++/AAA) |
+| Rating | Balls | Rules |
+|---|---|---|
+| Lower novice | 6 | Pocket directly, no cue ball |
+| Mid novice | 6 | Any order, BIH on every shot |
+| Upper novice | 6 | Any order, 3 extra BIHs |
+| Lower beginner (D-) | 6 | Any order, 2 extra BIHs |
+| Mid beginner (D) | 6 | Any order, 1 extra BIH |
+| Upper beginner (D+) | 7 (3 solids, 3 stripes, 8) | 8-ball rules, 1 extra BIH |
+| Lower intermediate (C-) | 9 | Any order, 1 extra BIH |
+| Mid intermediate (C) | 9 (4 solids, 4 stripes, 8) | 8-ball rules, 1 extra BIH |
+| Upper intermediate (C+) | 15 | Any order, 2 extra BIHs |
+| Lower advanced (B-) | 6 | In order (rotation) |
+| Mid advanced (B) | 15 | Any order |
+| Upper advanced (B+) | 15 | 8-ball rules |
+| Lower shortstop (A-) | 9 (4 solids, 4 stripes, 8) | 8-ball rules, remaining balls in order |
+| Upper shortstop (A) | 9 | 9-ball rules |
+| Semipro / pro (A+/AA) | 15 | 8-ball rules, remaining balls in order |
+| World class pro (A++/AAA) | 15 | In order (rotation) |
 
 ## 🔄 Progression
 RDS is **progressive and adaptive**:

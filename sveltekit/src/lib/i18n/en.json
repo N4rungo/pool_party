@@ -171,7 +171,8 @@
       "noGames": "No games recorded yet",
       "historyTab": "History",
       "max": "max",
-      "avg": "avg"
+      "avg": "avg",
+      "rdsLevel": "RDS Level"
     },
     "gameScore": {
       "chicago": "Points",
@@ -532,6 +533,14 @@
     "bestLevel": "Best",
     "validate": "✅ Rack made",
     "miss": "❌ Rack missed",
+    "intro": {
+      "title": "Good to know",
+      "tip1": "Unless stated otherwise, the balls are racked in random order.",
+      "tip2": "Except on level 1, you always play with the cue ball.",
+      "tip3": "Run 2 out of 3 racks at a level to move up.",
+      "dontShowAgain": "Don't show this again",
+      "ok": "Got it"
+    },
     "rule": {
       "noCueBall": "Remove the cue ball after the break, then pocket each ball directly.",
       "bihEveryShot": "Take cue ball in hand for every shot.",

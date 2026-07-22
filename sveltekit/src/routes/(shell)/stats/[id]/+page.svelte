@@ -9,6 +9,7 @@
     globalStats, gameStats, playedGameIds,
   } from '$lib/utils/stats.js';
   import { GAMES } from '$lib/games.js';
+  import { getProgress as getRdsProgress } from '$lib/stores/rds.js';
   import { t } from 'svelte-i18n';
 
   const MAX_NAME = 16;
@@ -24,6 +25,10 @@
   $: gStats    = globalStats($historyStore, profileId);
   $: gameIds   = playedGameIds($historyStore, profileId);
   $: games     = GAMES.filter(g => gameIds.includes(g.id));
+
+  // RDS best level : simple info supplémentaire, ne compte ni comme partie
+  // jouée ni comme victoire (RDS n'est pas suivi via l'historique de match).
+  $: rdsProgress = getRdsProgress(profileId);
 
   // Default tab: first game played, or 'historique'
   let tab = 'historique';
@@ -109,6 +114,12 @@
     {:else}
       <span class="player-name">{profile.name}</span>
       <button class="icon-btn" on:click={startRename} title={$t('players.rename')}>✏️</button>
+      {#if rdsProgress}
+        <div class="header-rds-badge">
+          <span class="header-rds-label">{$t('stats.detail.rdsLevel')}</span>
+          <span class="header-rds-value">{rdsProgress.maxLevel}</span>
+        </div>
+      {/if}
     {/if}
   </div>
 
@@ -249,7 +260,8 @@
   }
 
   .player-name {
-    flex: 1;
+    flex-shrink: 1;
+    min-width: 0;
     font-size: 22px;
     font-weight: bold;
     color: var(--color-gold);
@@ -257,6 +269,34 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  /* ── Badge niveau RDS (aligné à droite du header) ── */
+  .header-rds-badge {
+    margin-left: auto;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(var(--color-text-rgb), 0.08);
+    border-radius: 10px;
+    padding: 6px 10px;
+  }
+
+  .header-rds-label {
+    font-size: 10px;
+    color: rgba(var(--color-text-rgb), 0.45);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+
+  .header-rds-value {
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--color-gold);
+    line-height: 1;
   }
 
   .name-input {

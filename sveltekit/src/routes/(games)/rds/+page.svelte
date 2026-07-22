@@ -21,7 +21,7 @@
   import { t } from 'svelte-i18n';
   import { get } from 'svelte/store';
   import { getLevel, buildRestrictionKeys, evaluateAttempts, MIN_LEVEL, MAX_LEVEL } from '$lib/games/rds.js';
-  import { getProgress, saveProgress } from '$lib/stores/rds.js';
+  import { getProgress, saveProgress, getHideIntro, setHideIntro } from '$lib/stores/rds.js';
 
   // ── Phase courante ─────────────────────────────────────
   let phase = 'setup';
@@ -53,6 +53,15 @@
   // ── Overlays de résultat ────────────────────────────────
   let outcomeOpen = null; // 'levelUp' | 'stay' | 'levelDown'
   let canContinue = false;
+
+  // ── Introduction (règles générales, une fois le setup terminé) ─────────
+  let introOpen = false;
+  let dontShowIntroAgain = false;
+
+  function closeIntro() {
+    if (dontShowIntroAgain) setHideIntro(profileId, true);
+    introOpen = false;
+  }
 
   // ── Historique (annulation) ─────────────────────────────
   const RDS_MAX_HISTORY = 50;
@@ -93,6 +102,8 @@
     attempts   = [];
     outcomeOpen = null;
     history = [];
+    introOpen = !getHideIntro(profileId);
+    dontShowIntroAgain = false;
     phase = 'game';
   }
 
@@ -323,6 +334,27 @@
   </svelte:fragment>
 </Overlay>
 
+
+<!-- ===== OVERLAY : introduction (règles générales) ===== -->
+<Overlay open={introOpen} dismissOnBackdrop={false} showClose={false}>
+  <div class="intro-content">
+    <div class="outcome-title">{$t('rds.intro.title')}</div>
+    <ul class="intro-tips">
+      <li>{$t('rds.intro.tip1')}</li>
+      <li>{$t('rds.intro.tip2')}</li>
+      <li>{$t('rds.intro.tip3')}</li>
+    </ul>
+    {#if profileId}
+      <label class="intro-checkbox">
+        <input type="checkbox" bind:checked={dontShowIntroAgain} />
+        {$t('rds.intro.dontShowAgain')}
+      </label>
+    {/if}
+  </div>
+  <svelte:fragment slot="footer">
+    <button class="btn-main btn-gold" on:click={closeIntro}>{$t('rds.intro.ok')}</button>
+  </svelte:fragment>
+</Overlay>
 
 
 <!-- ===== OVERLAY RÈGLES ===== -->
@@ -574,5 +606,45 @@
     text-decoration: underline;
     cursor: pointer;
     font-family: inherit;
+  }
+
+  /* ── Introduction ── */
+  .intro-content {
+    text-align: left;
+  }
+
+  .intro-content .outcome-title {
+    text-align: center;
+    margin-bottom: 14px;
+  }
+
+  .intro-tips {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0 0 16px;
+    padding: 0 0 0 20px;
+  }
+
+  .intro-tips li {
+    font-size: 14px;
+    line-height: 1.5;
+    color: rgba(var(--color-text-rgb), 0.85);
+  }
+
+  .intro-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: rgba(var(--color-text-rgb), 0.6);
+    cursor: pointer;
+  }
+
+  .intro-checkbox input {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--color-gold);
+    cursor: pointer;
   }
 </style>

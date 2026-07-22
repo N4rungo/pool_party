@@ -10,6 +10,11 @@
   import { GAMES } from '$lib/games.js';
   import { t } from 'svelte-i18n';
 
+  // RDS n'a pas d'historique de partie (pas de victoires/défaites) — son
+  // seul indicateur (niveau atteint) est déjà affiché sur la fiche du
+  // joueur, donc on l'exclut du filtre "Par jeu".
+  const LEADERBOARD_GAMES = GAMES.filter(g => g.id !== 'rds');
+
   let tab = 'global';
 
   // ── Global ──────────────────────────────────────────────────────────────
@@ -87,7 +92,7 @@
   {:else}
     <div class="filters-row">
       <div class="pill-group wrap">
-        {#each GAMES as g}
+        {#each LEADERBOARD_GAMES as g}
           <button class="pill" class:active={selectedGameId === g.id}
             on:click={() => selectedGameId = g.id}>{g.name}</button>
         {/each}

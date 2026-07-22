@@ -171,7 +171,8 @@
       "noGames": "Aucune partie enregistrée",
       "historyTab": "Historique",
       "max": "max",
-      "avg": "moy."
+      "avg": "moy.",
+      "rdsLevel": "Niveau RDS"
     },
     "gameScore": {
       "chicago": "Points",
@@ -532,6 +533,14 @@
     "bestLevel": "Meilleur",
     "validate": "✅ Rack réussi",
     "miss": "❌ Rack raté",
+    "intro": {
+      "title": "Bon à savoir",
+      "tip1": "Sauf indication contraire, les billes sont rangées de manière aléatoire.",
+      "tip2": "A l'exception du niveau 1, il faut toujours jouer avec la bille blanche.",
+      "tip3": "Il faut réussir 2 racks sur 3 pour passer au niveau suivant.",
+      "dontShowAgain": "Ne plus afficher ce message",
+      "ok": "Compris"
+    },
     "rule": {
       "noCueBall": "Retire la bille blanche après la casse, puis empoche les billes directement.",
       "bihEveryShot": "Bille en main à chaque coup.",
@@ -570,8 +579,8 @@
       "10": "avancé bas (B-)",
       "11": "avancé moyen (B)",
       "12": "avancé confirmé (B+)",
-      "13": "shortstop bas (A-)",
-      "14": "shortstop confirmé (A)",
+      "13": "expert bas (A-)",
+      "14": "expert confirmé (A)",
       "15": "semi-pro / pro (A+/AA)",
       "16": "pro classe mondiale (A++/AAA)"
     }
