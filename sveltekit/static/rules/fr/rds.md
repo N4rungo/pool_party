@@ -21,24 +21,24 @@ essaie de rentrer toutes les billes requises selon les règles du niveau.
 
 ## 📈 16 niveaux de difficulté
 
-| # | Billes | Règles | Niveau |
-|---|---|---|---|
-| 1 | 6 | Empocher directement, sans blanche | novice débutant |
-| 2 | 6 | Ordre libre, bille en main à chaque coup | novice intermédiaire |
-| 3 | 6 | Ordre libre, 3 bille en main supplémentaires | novice confirmé |
-| 4 | 6 | Ordre libre, 2 bille en main supplémentaires | débutant bas (D-) |
-| 5 | 6 | Ordre libre, 1 bille en main supplémentaire | débutant moyen (D) |
-| 6 | 7 (3 pleines, 3 rayées, 8) | Règles du 8-ball, 1 bille en main supplémentaire | débutant confirmé (D+) |
-| 7 | 9 | Ordre libre, 1 bille en main supplémentaire | intermédiaire bas (C-) |
-| 8 | 9 (4 pleines, 4 rayées, 8) | Règles du 8-ball, 1 bille en main supplémentaire | intermédiaire moyen (C) |
-| 9 | 15 | Ordre libre, 2 bille en main supplémentaires | intermédiaire confirmé (C+) |
-| 10 | 6 | Dans l'ordre (rotation) | avancé bas (B-) |
-| 11 | 15 | Ordre libre | avancé moyen (B) |
-| 12 | 15 | Règles du 8-ball | avancé confirmé (B+) |
-| 13 | 9 (4 pleines, 4 rayées, 8) | Règles du 8-ball, puis billes restantes dans l'ordre | expert bas (A-) |
-| 14 | 9 | Règles du 9-ball | expert confirmé (A) |
-| 15 | 15 | Règles du 8-ball, puis billes restantes dans l'ordre | semi-pro / pro (A+/AA) |
-| 16 | 15 | Dans l'ordre (rotation) | pro classe mondiale (A++/AAA) |
+| Niveau | Billes | Règles |
+|---|---|---|
+| Novice débutant | 6 | Empocher directement, sans blanche |
+| Novice intermédiaire | 6 | Ordre libre, bille en main à chaque coup |
+| Novice confirmé | 6 | Ordre libre, 3 bille en main supplémentaires |
+| Débutant bas (D-) | 6 | Ordre libre, 2 bille en main supplémentaires |
+| Débutant moyen (D) | 6 | Ordre libre, 1 bille en main supplémentaire |
+| Débutant confirmé (D+) | 7 (3 pleines, 3 rayées, 8) | Règles du 8-ball, 1 bille en main supplémentaire |
+| Intermédiaire bas (C-) | 9 | Ordre libre, 1 bille en main supplémentaire |
+| Intermédiaire moyen (C) | 9 (4 pleines, 4 rayées, 8) | Règles du 8-ball, 1 bille en main supplémentaire |
+| Intermédiaire confirmé (C+) | 15 | Ordre libre, 2 bille en main supplémentaires |
+| Avancé bas (B-) | 6 | Dans l'ordre (rotation) |
+| Avancé moyen (B) | 15 | Ordre libre |
+| Avancé confirmé (B+) | 15 | Règles du 8-ball |
+| Expert bas (A-) | 9 (4 pleines, 4 rayées, 8) | Règles du 8-ball, puis billes restantes dans l'ordre |
+| Expert confirmé (A) | 9 | Règles du 9-ball |
+| Semi-pro / pro (A+/AA) | 15 | Règles du 8-ball, puis billes restantes dans l'ordre |
+| Pro classe mondiale (A++/AAA) | 15 | Dans l'ordre (rotation) |
 
 ## 🔄 Progression
 RDS est **progressif et adaptatif** :
