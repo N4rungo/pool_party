@@ -172,7 +172,7 @@
       "historyTab": "Historique",
       "max": "max",
       "avg": "moy.",
-      "rdsBest": "Meilleur niveau RDS"
+      "rdsLevel": "Niveau RDS"
     },
     "gameScore": {
       "chicago": "Points",
