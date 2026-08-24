@@ -286,7 +286,7 @@
     "faultRulesLabel": "Règles des fautes :",
     "simpleTip": "Faute : les autres joueurs reçoivent les points automatiquement.",
     "expertTip": "Faute : le joueur lésé choisit (prendre les points / faire rejouer). Free ball disponible.",
-    "shortMode": "Mode rapide (6 rouges)",
+    "shortMode": "⏱️ Mode rapide (6 rouges)",
     "currentTurn": "Tour de {name}",
     "replaying": "Rejoue (suite à une faute)",
     "currentBreak": "Break : {n}",

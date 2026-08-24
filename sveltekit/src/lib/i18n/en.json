@@ -286,7 +286,7 @@
     "faultRulesLabel": "Foul rules:",
     "simpleTip": "Foul: other players receive points automatically.",
     "expertTip": "Foul: the fouled player chooses (take points / force replay). Free ball available.",
-    "shortMode": "Fast mode (6 reds)",
+    "shortMode": "⏱️ Fast mode (6 reds)",
     "currentTurn": "{name}'s turn",
     "replaying": "Replaying (after foul)",
     "currentBreak": "Break: {n}",
