@@ -73,11 +73,17 @@ export function createInitialState(setupPlayers, mode, shortMode = false) {
 }
 
 /**
- * Nombre de points maximal restant en jeu : pour chaque rouge restante,
- * on peut au mieux enchaîner rouge (1) + noire (7), plus les points des
- * couleurs restantes une fois les rouges épuisées.
+ * Nombre de points maximal restant en jeu.
+ * Avant la phase finale : pour chaque rouge restante, on peut au mieux
+ * enchaîner rouge (1) + noire (7), plus les points des couleurs restantes.
+ * En phase finale : uniquement la somme des couleurs pas encore jouées
+ * (jouées dans l'ordre, non remises).
  */
 export function maxPointsRemaining(state) {
+  if (state.phase === 'endgame') {
+    return SNOOKER_COLORS_ORDER.slice(state.endgameColorIdx)
+      .reduce((sum, c) => sum + SNOOKER_BALLS[c].points, 0);
+  }
   return state.redsRemaining * (SNOOKER_BALLS.red.points + SNOOKER_BALLS.black.points)
     + SNOOKER_COLORS_POINTS_SUM;
 }
