@@ -31,7 +31,8 @@ export const SNOOKER_BALLS = {
 
 export const SNOOKER_COLORS_ORDER = ['yellow', 'green', 'brown', 'blue', 'pink', 'black'];
 
-export const SNOOKER_TOTAL_REDS    = 15;
+export const SNOOKER_TOTAL_REDS       = 15;
+export const SNOOKER_TOTAL_REDS_SHORT = 6;
 export const SNOOKER_MIN_PLAYERS   = 2;
 export const SNOOKER_MAX_PLAYERS   = 6;
 export const SNOOKER_DEFAULT_PLAYERS = 2;
@@ -39,10 +40,16 @@ export const SNOOKER_DEFAULT_PLAYERS = 2;
 export const SNOOKER_MIN_FAULT     = 4;
 export const SNOOKER_HISTORY_MAX   = 10;
 
+// Somme des points des couleurs (jaune..noire) : 2+3+4+5+6+7
+const SNOOKER_COLORS_POINTS_SUM = SNOOKER_COLORS_ORDER
+  .reduce((sum, c) => sum + SNOOKER_BALLS[c].points, 0);
+
 /**
  * Crée l'état initial à partir des joueurs configurés et du mode.
+ * `shortMode` = true → seulement 6 rouges sur la table.
  */
-export function createInitialState(setupPlayers, mode) {
+export function createInitialState(setupPlayers, mode, shortMode = false) {
+  const totalReds = shortMode ? SNOOKER_TOTAL_REDS_SHORT : SNOOKER_TOTAL_REDS;
   return {
     players: setupPlayers.map(p => ({
       name:         p.name || 'Joueur',
@@ -51,7 +58,8 @@ export function createInitialState(setupPlayers, mode) {
       bestBreak:    0,
     })),
     currentIndex:    0,
-    redsRemaining:   SNOOKER_TOTAL_REDS,
+    totalReds,
+    redsRemaining:   totalReds,
     phase:           'red',           // 'red' | 'color' | 'endgame'
     endgameColorIdx: 0,               // 0 → jaune, ..., 5 → noire
     mode,                             // 'simple' | 'expert'
@@ -62,6 +70,16 @@ export function createInitialState(setupPlayers, mode) {
 
     history: [],
   };
+}
+
+/**
+ * Nombre de points maximal restant en jeu : pour chaque rouge restante,
+ * on peut au mieux enchaîner rouge (1) + noire (7), plus les points des
+ * couleurs restantes une fois les rouges épuisées.
+ */
+export function maxPointsRemaining(state) {
+  return state.redsRemaining * (SNOOKER_BALLS.red.points + SNOOKER_BALLS.black.points)
+    + SNOOKER_COLORS_POINTS_SUM;
 }
 
 // ── Snapshot / undo ─────────────────────────────────────
@@ -248,8 +266,10 @@ export function getMinFault(state) {
  * - reset le break du fautif
  * - les autres joueurs reçoivent `value` points
  * - passe la main au suivant
+ * `redsPocketed` : nombre de rouges empochées pendant la faute, retirées
+ * définitivement de la table (elles ne comptent pas et ne sont pas remises).
  */
-export function applyFaultSimple(state, value) {
+export function applyFaultSimple(state, value, redsPocketed = 0) {
   const newHistory = pushHistory(state.history, snapshot(state));
   const faulterIdx = state.currentIndex;
 
@@ -260,14 +280,11 @@ export function applyFaultSimple(state, value) {
     return { ...p, score: p.score + value };
   });
 
+  const redsRemaining = Math.max(0, state.redsRemaining - redsPocketed);
+
   // Le break vient d'être validé pour le fautif via bumpBestBreak.
   // On passe la main avec recalcul de phase.
-  let phase = state.phase;
-  if (state.redsRemaining > 0) {
-    phase = 'red';
-  } else if (state.redsRemaining === 0 && state.phase === 'color') {
-    phase = 'endgame';
-  }
+  const phase = redsRemaining > 0 ? 'red' : 'endgame';
 
   return {
     newState: {
@@ -275,6 +292,7 @@ export function applyFaultSimple(state, value) {
       players,
       history:        newHistory,
       phase,
+      redsRemaining,
       currentIndex:   (faulterIdx + 1) % state.players.length,
       mustReplay:     false,
       freeBallActive: false,
@@ -289,7 +307,7 @@ export function applyFaultSimple(state, value) {
  *  - Si replay = false : le joueur suivant prend la main. Si phase 'red' ou
  *    'endgame', on signale qu'on peut proposer la free ball (askFreeBall = true).
  */
-export function applyFaultExpert(state, value, replay) {
+export function applyFaultExpert(state, value, replay, redsPocketed = 0) {
   const newHistory = pushHistory(state.history, snapshot(state));
   const faulterIdx = state.currentIndex;
 
@@ -301,12 +319,17 @@ export function applyFaultExpert(state, value, replay) {
     return { ...p, score: p.score + value };
   });
 
+  const redsRemaining = Math.max(0, state.redsRemaining - redsPocketed);
+  const phaseAfterReds = redsRemaining > 0 ? state.phase : 'endgame';
+
   if (replay) {
     return {
       newState: {
         ...state,
         players,
         history: newHistory,
+        redsRemaining,
+        phase: phaseAfterReds,
         mustReplay: true,
         freeBallActive: false,
       },
@@ -316,6 +339,7 @@ export function applyFaultExpert(state, value, replay) {
 
   // Le joueur suivant prend la main
   const next = (faulterIdx + 1) % state.players.length;
+  const phase = redsRemaining > 0 ? 'red' : 'endgame';
   const askFreeBall = state.phase === 'red' || state.phase === 'endgame';
 
   return {
@@ -323,6 +347,8 @@ export function applyFaultExpert(state, value, replay) {
       ...state,
       players,
       history: newHistory,
+      redsRemaining,
+      phase,
       currentIndex: next,
       mustReplay: false,
       freeBallActive: false,
