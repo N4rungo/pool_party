@@ -47,6 +47,7 @@
     multiShotPoints,
     applyMultiShot,
     getMinFault,
+    maxPointsRemaining,
     applyFaultSimple,
     applyFaultExpert,
     setFreeBall,
@@ -86,6 +87,7 @@
   // Setup
   let count = SNOOKER_DEFAULT_PLAYERS;
   let mode = 'simple';
+  let shortMode = false;
   let randomizeOrder = true;
   let breakOrder = 'alternate';
   let setupPlayers = [];
@@ -133,7 +135,7 @@
   function startGame() {
     picksMap = Object.fromEntries(picks.map(p => [p.name.trim() || p.name, p.profileId]));
     const players = resolveBreakOrder();
-    state = createInitialState(players, mode);
+    state = createInitialState(players, mode, shortMode);
     winnerName = null;
     finalRanking = [];
     phase = 'game';
@@ -207,13 +209,18 @@
   // ── Faute ──────────────────────────────────────────────
   let faultOpen = false;
   let faultValue = SNOOKER_MIN_FAULT;
+  let faultRedPotted = false;
+  let faultRedsPocketed = 0;
   let pendingFaultValue = 0;
+  let pendingRedsPocketed = 0;
 
   let expertChoiceOpen = false;
   let freeBallAskOpen  = false;
 
   function openFault() {
     faultValue = getMinFault(state);
+    faultRedPotted = false;
+    faultRedsPocketed = 0;
     faultOpen = true;
   }
 
@@ -222,22 +229,32 @@
     faultValue = Math.max(min, Math.min(7, faultValue + delta));
   }
 
+  function toggleFaultRedPotted() {
+    faultRedPotted = !faultRedPotted;
+    faultRedsPocketed = faultRedPotted ? 1 : 0;
+  }
+
+  function changeFaultRedsPocketed(delta) {
+    faultRedsPocketed = Math.max(1, Math.min(state.redsRemaining, faultRedsPocketed + delta));
+  }
+
   function confirmFault() {
     faultOpen = false;
     if (state.mode === 'simple') {
-      const { newState } = applyFaultSimple(state, faultValue);
+      const { newState } = applyFaultSimple(state, faultValue, faultRedsPocketed);
       state = newState;
       showToast(get(t)('snooker.toast.fault', { values: { value: faultValue } }));
     } else {
       // Mode expert : on attend le choix
       pendingFaultValue = faultValue;
+      pendingRedsPocketed = faultRedsPocketed;
       expertChoiceOpen = true;
     }
   }
 
   function expertChoice(replay) {
     expertChoiceOpen = false;
-    const { newState, askFreeBall } = applyFaultExpert(state, pendingFaultValue, replay);
+    const { newState, askFreeBall } = applyFaultExpert(state, pendingFaultValue, replay, pendingRedsPocketed);
     state = newState;
     if (replay) {
       showToast(get(t)('snooker.toast.faultReplay', { values: { value: pendingFaultValue, name: state.players[state.currentIndex].name } }));
@@ -361,6 +378,9 @@
   $: phaseLabelText = state ? phaseLabel(state) : '';
   $: winSubText = $t('snooker.winSub', { values: { score: winnerScore, breakMax: winnerBreak } });
   $: msPoints = multiShot ? multiShotPoints(multiShot) : null;
+  $: maxRemainingPoints = state ? maxPointsRemaining(state) : 0;
+  $: showMaxRemaining = state
+    && (state.phase === 'endgame' || (state.totalReds - state.redsRemaining) * 2 >= state.totalReds);
   $: tabCols = state ? (state.players.length >= 5 ? 3 : 2) : 1;
   $: matchRecapGameNumber = $matchStore.currentGame - 1;
   $: matchRecapWinners = $matchStore.results?.[$matchStore.results.length - 1]?.winners ?? [];
@@ -448,7 +468,8 @@
         {/each}
       </div>
 
-      <MatchSetup bind:randomizeOrder bind:matchMode bind:totalGames={matchTotalGames} bind:breakOrder />
+      <MatchSetup bind:extraToggle={shortMode} extraToggleLabel={$t('snooker.shortMode')}
+                  bind:randomizeOrder bind:matchMode bind:totalGames={matchTotalGames} bind:breakOrder />
 
       <button class="btn-main btn-gold" on:click={() => { if (matchMode) startMatch('snooker', setupPlayers.map(p => p.name), matchTotalGames); startGame(); }}>
         {matchMode ? $t('setup.launchMatch') : $t('setup.launchGame')}
@@ -508,6 +529,11 @@
       <div class="snk-phase-label">
         {$t('snooker.redsLeft', { values: { n: state.redsRemaining } })} {phaseLabelText}
       </div>
+      {#if showMaxRemaining}
+        <div class="snk-phase-label snk-max-remaining">
+          {$t('snooker.maxRemaining', { values: { n: maxRemainingPoints } })}
+        </div>
+      {/if}
     </div>
 
     <!-- Action zone selon la phase -->
@@ -626,6 +652,36 @@
       <button class="btn-round-sm" on:click={() => changeFaultValue(+1)}
               disabled={faultValue >= 7}>+</button>
     </div>
+
+    {#if state.redsRemaining > 0}
+      <label class="snk-option-row">
+        <span class="option-label">{$t('snooker.redsPocketedFault')}</span>
+        <div
+          class="snk-toggle-track"
+          class:on={faultRedPotted}
+          on:click={toggleFaultRedPotted}
+          role="switch"
+          aria-checked={faultRedPotted}
+          tabindex="0"
+          on:keydown={(e) => (e.key === 'Enter' || e.key === ' ') && toggleFaultRedPotted()}
+        >
+          <div class="snk-toggle-thumb"></div>
+        </div>
+      </label>
+
+      {#if faultRedPotted}
+        <div class="snk-multi-section">
+          <div class="snk-multi-red-stepper">
+            <button class="btn-round-sm" on:click={() => changeFaultRedsPocketed(-1)}
+                    disabled={faultRedsPocketed <= 1}>−</button>
+            <span class="snk-multi-red-value">{faultRedsPocketed}</span>
+            <button class="btn-round-sm" on:click={() => changeFaultRedsPocketed(+1)}
+                    disabled={faultRedsPocketed >= state.redsRemaining}>+</button>
+          </div>
+        </div>
+      {/if}
+    {/if}
+
     <button class="btn-main btn-gold" on:click={confirmFault}>{$t('setup.validate')}</button>
     <button class="btn-main btn-gray" on:click={() => faultOpen = false}>{$t('common.cancel')}</button>
   {/if}
@@ -964,6 +1020,10 @@
     margin-top: 4px;
   }
 
+  .snk-max-remaining {
+    color: rgba(var(--color-gold-rgb), 0.75);
+  }
+
   /* ===== Action zone ===== */
   .snk-action-zone {
     background: rgba(0, 0, 0, 0.25);
@@ -1095,6 +1155,55 @@
   .snk-multi-total strong {
     color: var(--color-gold);
     font-size: 22px;
+  }
+
+  /* ===== Faute overlay : toggle rouge empochée ===== */
+  .snk-option-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    cursor: pointer;
+    padding: 6px 0;
+  }
+
+  .snk-option-row .option-label {
+    font-size: 14px;
+    font-weight: bold;
+    color: rgba(var(--color-text-rgb), 0.85);
+  }
+
+  .snk-toggle-track {
+    width: 46px;
+    height: 26px;
+    border-radius: 13px;
+    background: rgba(var(--color-text-rgb), 0.15);
+    border: 1px solid rgba(var(--color-text-rgb), 0.25);
+    position: relative;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+  }
+
+  .snk-toggle-track.on {
+    background: linear-gradient(145deg, var(--color-gold-light), var(--color-gold));
+    border-color: var(--color-gold);
+  }
+
+  .snk-toggle-thumb {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+    transition: transform 0.2s;
+  }
+
+  .snk-toggle-track.on .snk-toggle-thumb {
+    transform: translateX(20px);
   }
 
   /* ===== Faute overlay ===== */

@@ -3,6 +3,9 @@
   À placer entre la liste des joueurs et le bouton "Lancer la partie".
 
   Props bindables :
+    - extraToggle      (boolean|undefined) : si défini, affiche un toggle générique
+                                              avant "Ordre aléatoire" (label via extraToggleLabel)
+    - extraToggleLabel (string)            : libellé du toggle générique
     - randomizeOrder (boolean|undefined) : si défini, affiche le toggle "Ordre aléatoire"
     - matchMode      (boolean)           : activer ou non le mode match
     - totalGames     (number)            : nombre de parties (2-10, défaut 3)
@@ -11,10 +14,14 @@
   Usage :
     <MatchSetup bind:randomizeOrder bind:matchMode bind:totalGames bind:breakOrder />
     <MatchSetup bind:matchMode bind:totalGames />   ← sans ordre aléatoire ni casse
+    <MatchSetup bind:extraToggle={shortMode} extraToggleLabel={$t('snooker.shortMode')}
+                bind:randomizeOrder bind:matchMode bind:totalGames />
 -->
 <script>
   import { t } from 'svelte-i18n';
 
+  export let extraToggle = undefined;
+  export let extraToggleLabel = '';
   export let randomizeOrder = undefined;
   export let matchMode = false;
   export let totalGames = 3;
@@ -23,6 +30,23 @@
 
 <div class="match-setup-section">
   <div class="sep"></div>
+
+  {#if extraToggle !== undefined}
+    <label class="option-row">
+      <span class="option-label">{extraToggleLabel}</span>
+      <div
+        class="toggle-track"
+        class:on={extraToggle}
+        on:click={() => extraToggle = !extraToggle}
+        role="switch"
+        aria-checked={extraToggle}
+        tabindex="0"
+        on:keydown={(e) => (e.key === 'Enter' || e.key === ' ') && (extraToggle = !extraToggle)}
+      >
+        <div class="toggle-thumb"></div>
+      </div>
+    </label>
+  {/if}
 
   {#if randomizeOrder !== undefined}
     <label class="option-row">
